@@ -124,11 +124,6 @@
   background: none;
   color: #26595c;
 }
-.vanuatu .brand > span {
-  font-size: 10px;
-  color: var(--muted);
-  white-space: nowrap;
-}
 .vanuatu .round-track {
   display: flex;
   align-items: center;
@@ -184,8 +179,22 @@
   margin: auto;
   align-items: stretch;
 }
+.vanuatu .action-sidebar {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.vanuatu .game-credits {
+  display: flex;
+  flex-direction: column;
+  padding: 3px 8px 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #597674;
+}
 .vanuatu .action-dock {
   display: flex;
+  flex: 1;
   flex-direction: column;
   gap: 5px;
   justify-content: center;
@@ -1026,9 +1035,6 @@ body {
   }
 }
 @media (max-width: 1050px) {
-  .vanuatu .brand > span {
-    display: none;
-  }
   .vanuatu .table {
     grid-template-columns: 127px minmax(0, 1fr);
     gap: 10px;
@@ -1119,7 +1125,14 @@ body {
     flex-direction: column;
     gap: 8px;
   }
+  .vanuatu .action-sidebar {
+    display: contents;
+  }
+  .vanuatu .game-credits {
+    display: none;
+  }
   .vanuatu .action-dock {
+    flex: none;
     flex-direction: row;
     justify-content: stretch;
     gap: 4px;
