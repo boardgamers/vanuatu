@@ -2,7 +2,7 @@ import * as E from "../engine/index.js";
 export const chapterMetadata = [
   {
     id: "planning",
-    version: 1,
+    version: 2,
     title: "Plan your day",
     description: "Place five markers and understand action majorities.",
   },
@@ -54,7 +54,7 @@ export const chapters = {
   planning: {
     game: "vanuatu",
     id: "planning",
-    version: 1,
+    version: 2,
     initialState: () => {
       const s = prepared("plan");
       s.characters = [];
@@ -63,6 +63,11 @@ export const chapters = {
     },
     move: play,
     steps: [
+      {
+        id: "five-actions",
+        title: "Five markers, up to five actions",
+        text: "You may place one marker on each of five different actions and perform all five this round, if each is possible. Stacking markers improves your majority, not the number of times you act. Place them in three passes: 2, 2, then 1.",
+      },
       {
         id: "first-two",
         title: "Plan two actions",
@@ -83,10 +88,37 @@ export const chapters = {
         text: "Place your fifth marker. During the action phase, ties are broken in order from the first player.",
         complete: (s) => s.phase === "actions",
       },
+      {
+        id: "majority",
+        title: "Two markers beat one",
+        text: "If you have 1 marker on Fish and Maya has 2, Maya can fish before you. Your marker stays there. After she fishes and removes both her markers, you may fish on a later turn if you then have the majority and fish remain.",
+      },
+      {
+        id: "ties",
+        title: "Ties follow player order",
+        text: "With 1 marker each, the player earlier in turn order has priority, starting with the first player. A majority means more markers than each opponent, not more than all opponents combined.",
+      },
+      {
+        id: "resolve-first",
+        title: "Resolve your first stack",
+        text: "Choose an available action and perform it. All your markers on that action return together: even a stack of 3 grants only one action. You choose the order of your actions; it need not match placement order.",
+        complete: (s) => planCount(s) < 5,
+      },
+      {
+        id: "no-majority",
+        title: "When you cannot act",
+        text: "You cannot simply wait. If you have no majority anywhere, remove one of your stacks without acting. If you have a majority but that action is impossible, remove that stack too. You must perform a possible action when resolving its stack.",
+      },
+      {
+        id: "finish-round",
+        title: "Finish your planned actions",
+        text: "Resolve your remaining stacks. Watch which actions become available when opponents remove theirs. Planning an action does not guarantee it: someone may take the last fish or use the last space first.",
+        complete: (s) => s.round > 1,
+      },
     ],
     completion: {
       title: "Your plan is ready",
-      text: "Choose an action where you have the most markers, then retrieve your whole stack. Without a majority, retrieve one stack without acting.",
+      text: "Spread your markers for more actions, or stack them for priority. Plan prerequisites first, then choose your action order as the round unfolds.",
     },
   },
   fishing: {

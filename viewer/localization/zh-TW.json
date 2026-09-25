@@ -776,5 +776,18 @@
   "Fishing requires fish on your boat's space. Plan Sail first if needed.": "捕魚時，船必須位於有魚的格子。必要時請先規劃航行。",
   "Exploring requires treasure on your boat's space. Plan Sail first if needed.": "探索時，船必須位於有寶藏的格子。必要時請先規劃航行。",
   "This action is not possible with your current resources and planned actions. Plan its prerequisites first.": "以目前的資源和已規劃的行動，無法執行此行動。請先規劃必要的前置行動。",
-  "Selling requires fish. Plan Fish first if your hold is empty.": "賣魚需要持有魚。如果貨艙是空的，請先規劃捕魚。"
+  "Selling requires fish. Plan Fish first if your hold is empty.": "賣魚需要持有魚。如果貨艙是空的，請先規劃捕魚。",
+  "Five markers, up to five actions": "五個標記，最多五個行動",
+  "You may place one marker on each of five different actions and perform all five this round, if each is possible. Stacking markers improves your majority, not the number of times you act. Place them in three passes: 2, 2, then 1.": "你可以在五種不同行動各放一個標記，只要每個行動都可執行，就能在本回合完成全部五種行動。堆疊標記能加強數量優勢，但不會增加行動次數。分三次放置：2 個、2 個，最後 1 個。",
+  "Two markers beat one": "兩個標記優先於一個",
+  "If you have 1 marker on Fish and Maya has 2, Maya can fish before you. Your marker stays there. After she fishes and removes both her markers, you may fish on a later turn if you then have the majority and fish remain.": "若你在捕魚放了 1 個標記，Maya 放了 2 個，她就能比你先捕魚。你的標記留在原處。她捕魚並收回兩個標記後，如果之後輪到你時你取得數量優勢，而且還有魚，就可以捕魚。",
+  "Ties follow player order": "平手依玩家順序",
+  "With 1 marker each, the player earlier in turn order has priority, starting with the first player. A majority means more markers than each opponent, not more than all opponents combined.": "各有 1 個標記時，從起始玩家算起，順序較前的玩家優先。數量優勢是比每位對手各自的標記多，不必比所有對手的標記總和多。",
+  "Resolve your first stack": "結算第一疊標記",
+  "Choose an available action and perform it. All your markers on that action return together: even a stack of 3 grants only one action. You choose the order of your actions; it need not match placement order.": "選擇可執行的行動並執行。你在該行動的所有標記會一起收回：即使堆了 3 個，也只能行動一次。你自行決定行動順序，不必依照放置順序。",
+  "When you cannot act": "無法行動時",
+  "You cannot simply wait. If you have no majority anywhere, remove one of your stacks without acting. If you have a majority but that action is impossible, remove that stack too. You must perform a possible action when resolving its stack.": "你不能只是等待。若所有行動都沒有數量優勢，就收回自己的一疊標記，不執行行動。若有數量優勢但行動無法執行，也要收回那疊標記。結算一疊標記時，只要行動可執行，就必須執行。",
+  "Finish your planned actions": "完成規劃的行動",
+  "Resolve your remaining stacks. Watch which actions become available when opponents remove theirs. Planning an action does not guarantee it: someone may take the last fish or use the last space first.": "結算剩餘的標記堆。注意對手收回標記後，哪些行動變得可用。規劃不保證能執行：有人可能先捕走最後的魚，或佔用最後的空位。",
+  "Spread your markers for more actions, or stack them for priority. Plan prerequisites first, then choose your action order as the round unfolds.": "分散標記以執行更多行動，或堆疊以爭取優先權。先考慮必要條件，再隨回合變化決定行動順序。"
 }

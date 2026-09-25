@@ -1303,3 +1303,88 @@ body {
 .vanuatu-tutorial .bgs-tutorial-body {
   font-size: 13px;
 }
+
+/* The protocol supplies semantic controls; the viewer supplies their layout. */
+.vanuatu-tutorial,
+.vanuatu-tutorial * {
+  box-sizing: border-box;
+}
+.vanuatu-tutorial .bgs-tutorial-guide {
+  min-width: 0;
+  padding: 14px 18px;
+  border: 1px solid #c9d3b6;
+}
+.vanuatu-tutorial .bgs-tutorial-heading,
+.vanuatu-tutorial .bgs-tutorial-controls,
+.vanuatu-tutorial .bgs-tutorial-playback,
+.vanuatu-tutorial .bgs-tutorial-help {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.vanuatu-tutorial .bgs-tutorial-heading,
+.vanuatu-tutorial .bgs-tutorial-controls {
+  justify-content: space-between;
+}
+.vanuatu-tutorial .bgs-tutorial-heading strong {
+  flex: 1 1 180px;
+  min-width: 0;
+}
+.vanuatu-tutorial .bgs-tutorial-body p {
+  margin: 12px 0;
+  max-width: 85ch;
+  overflow-wrap: anywhere;
+}
+.vanuatu-tutorial .bgs-tutorial-body p:empty {
+  display: none;
+}
+.vanuatu-tutorial button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 36px;
+  padding: 6px 10px;
+  border: 1px solid #cad2b8;
+  border-radius: 6px;
+  font: inherit;
+  cursor: pointer;
+}
+.vanuatu-tutorial button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.vanuatu-tutorial button:focus-visible {
+  outline: 2px solid #ae793f;
+  outline-offset: 2px;
+}
+.vanuatu-tutorial button:hover:not(:disabled) {
+  background: #e0e7cc !important;
+}
+.vanuatu-tutorial .bgs-tutorial-transport {
+  min-width: 36px;
+}
+.vanuatu-tutorial button svg {
+  flex-shrink: 0;
+}
+.vanuatu-tutorial [hidden] {
+  display: none !important;
+}
+.vanuatu-tutorial .bgs-tutorial-body > small {
+  display: block;
+  margin-top: 9px;
+  color: #6c8075;
+  font-size: 11px;
+}
+@media (max-width: 700px) {
+  .vanuatu-tutorial {
+    padding: 8px 8px 0;
+  }
+  .vanuatu-tutorial .bgs-tutorial-guide {
+    padding: 12px;
+  }
+  .vanuatu-tutorial button {
+    min-height: 40px;
+  }
+}
