@@ -36,6 +36,8 @@ const paths = {
   chat: '<path d="M4 5h24v18H13l-7 6v-6H4zM10 12h12M10 17h8" fill="none" stroke="currentColor" stroke-width="2"/>',
   journal:
     '<path d="M6 3h20v26H6zM11 9h10M11 15h10M11 21h7" fill="none" stroke="currentColor" stroke-width="2"/>',
+  colorBlind:
+    '<g transform="scale(1.25)" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="6" cy="7" r="4"/><path d="m17 3 5 9H12Z"/><rect x="3" y="15" width="8" height="7" rx="1"/><path d="m18 15 4 4-4 4-4-4Z"/></g>',
   help: '<circle cx="16" cy="16" r="13" fill="none" stroke="currentColor" stroke-width="2"/><path d="M11 10c0-6 13-6 12 1 0 4-7 4-7 8M16 23v2" fill="none" stroke="currentColor" stroke-width="2.5"/>',
   fullscreen:
     '<path d="M3 12V3h9m8 0h9v9M3 20v9h9m8 0h9v-9" fill="none" stroke="currentColor" stroke-width="2.5"/>',
@@ -73,6 +75,7 @@ const meanings = {
   marker: ["Action marker", "Pion d’action"],
   chat: ["Chat", "Discussion"],
   journal: ["Journal", "Journal"],
+  colorBlind: ["Color-blind mode", "Mode daltonien"],
   help: ["Rules & help", "Règles et aide"],
   fullscreen: ["Full screen", "Plein écran"],
   close: ["Close", "Fermer"],
