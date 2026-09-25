@@ -292,3 +292,23 @@ test("saved beta history replays on its original footprint", async () => {
   assert.deepEqual(E.scores(replayed), fixture.scores);
   assert.ok(E.stripSecret(replayed, 0).board["3,0"]);
 });
+
+test("an unaffordable majority can be retrieved or kept while taking another action", () => {
+  const s = actionState();
+  s.players[0].money = 0;
+  s.players[0].markers.build = 1;
+  const moves = E.availableMoves(s, 0);
+  const discard = moves.find(
+    (m) => m.type === "discard" && m.action === "build",
+  );
+  const fish = moves.find((m) => m.type === "act" && m.action === "fish");
+  assert.ok(discard);
+  assert.ok(fish);
+  assert.ok(!moves.some((m) => m.type === "act" && m.action === "build"));
+  const retrieved = E.move(s, discard, 0);
+  assert.equal(retrieved.players[0].markers.build, 0);
+  assert.equal(retrieved.players[0].markers.fish, 2);
+  assert.deepEqual(retrieved.board["0,0"].huts, []);
+  const waited = E.move(s, fish, 0);
+  assert.equal(waited.players[0].markers.build, 1);
+});

@@ -107,7 +107,7 @@ export const chapters = {
       {
         id: "no-majority",
         title: "When you cannot act",
-        text: "You cannot simply wait. If you have no majority anywhere, remove one of your stacks without acting. If you have a majority but that action is impossible, remove that stack too. You must perform a possible action when resolving its stack.",
+        text: "If you cannot afford Build yet, you can choose another action where you have the majority and keep Build for later. Resolving Build now means retrieving its markers without building. If you have no majority anywhere, you must retrieve one stack without acting. When resolving an action you can perform, you must perform it.",
       },
       {
         id: "finish-round",

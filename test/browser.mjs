@@ -204,10 +204,76 @@ assert.equal(
 );
 for (const width of [1440, 390]) {
   await page.setViewportSize({ width, height: width === 390 ? 844 : 1000 });
+  // Resolving an unaffordable majority is retrieval only, and selecting actions
+  // must preserve the board's SVG/images (including its current zoom and scroll).
+  const poor = actionState();
+  poor.players[0].money = 0;
+  poor.players[0].character = null;
+  await page.evaluate((s) => window.vanuatuDemo.setState(s), poor);
+  await page.locator("[data-zoom]").click();
+  await page.evaluate(() => {
+    const map = document.querySelector(".map-scroll");
+    map.scrollLeft = 120;
+    map.scrollTop = 80;
+    window.boardBeforeAction = {
+      map,
+      svg: map.querySelector("svg"),
+      images: [...map.querySelectorAll("image")],
+      x: map.scrollLeft,
+      y: map.scrollTop,
+      state: JSON.stringify(window.vanuatuDemo.state),
+    };
+  });
+  const build = page.locator('[data-action="build"]');
+  assert.match(await build.getAttribute("class"), /retrieve-only/);
+  assert.match(await build.getAttribute("title"), /Retrieve without acting/);
+  await build.click();
+  assert.match(
+    await page.locator(".turn-tray").innerText(),
+    /Not enough vatus/,
+  );
+  assert.match(
+    await page.locator(".turn-tray [data-move]").innerText(),
+    /Retrieve without acting/,
+  );
+  await page.screenshot({
+    path: `.local/qa/unaffordable-build-${width}.png`,
+    fullPage: true,
+  });
+  await page.locator('[data-action="sail"]').click();
+  await page.locator("[data-cancel]").click();
+  await page.locator('[data-action="build"]').click();
+  assert.ok(
+    await page.evaluate(() => {
+      const before = window.boardBeforeAction,
+        map = document.querySelector(".map-scroll");
+      return (
+        map === before.map &&
+        map.querySelector("svg") === before.svg &&
+        [...map.querySelectorAll("image")].every(
+          (image, i) => image === before.images[i],
+        ) &&
+        map.scrollLeft === before.x &&
+        map.scrollTop === before.y &&
+        JSON.stringify(window.vanuatuDemo.state) === before.state
+      );
+    }),
+    "Selecting and cancelling actions must not rebuild or scroll the board",
+  );
+  await page.locator("[data-zoom]").click();
   for (const action of E.ACTIONS) {
     const s = actionState();
     await page.evaluate((s) => window.vanuatuDemo.setState(s), s);
+    await page.evaluate(() => {
+      window.actionBoard = document.querySelector(".archipelago");
+    });
     await page.locator(`[data-action="${action}"]`).click();
+    assert.ok(
+      await page.evaluate(
+        () => window.actionBoard === document.querySelector(".archipelago"),
+      ),
+      `${action} must preserve the board`,
+    );
     const targets = page.locator(".map-cell.legal");
     if (await targets.count()) await targets.first().click();
     const option = page.locator(".turn-tray [data-move]").first();

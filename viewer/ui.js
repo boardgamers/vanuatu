@@ -117,7 +117,7 @@ export function mountGame(target, options = {}) {
     if (m.type === "plan" || m.type === "neutral")
       return m.actions.map((a) => icon(a)).join("");
     if (m.type === "discard")
-      return `${icon("undo")} ${t("discard")} ${icon(m.action)}`;
+      return `${icon("undo")} ${"Retrieve without acting"} ${icon(m.action)}`;
     if (m.type === "rest") return restContent(m.token);
     if (m.type === "governor") return `${icon(m.from)} → ${icon(m.to)}`;
     if (m.type === "treasure")
@@ -196,6 +196,11 @@ export function mountGame(target, options = {}) {
               (m) =>
                 (m.type === "act" || m.type === "discard") && m.action === a,
             );
+        const retrieveOnly =
+          !planning &&
+          allowed &&
+          working().some((m) => m.type === "discard" && m.action === a) &&
+          !working().some((m) => m.type === "act" && m.action === a);
         const explain =
           planning &&
           s.phase === "plan" &&
@@ -220,9 +225,9 @@ export function mountGame(target, options = {}) {
           )
           .join("");
         return btn(
-          `<span class="action-symbol">${icon(a)}</span><span class="action-content"><span class="action-label">${t(a)}</span><span class="action-stacks">${stacks}${s.neutral[a] ? `<span class="marker-stack neutral" title="${"Neutral markers"}">${s.neutral[a]}</span>` : ""}${countDraft ? `<span class="draft-marker" title="${"Markers being placed"}">+${countDraft}</span>` : ""}</span></span>`,
-          `data-action="${a}" ${allowed ? "" : explain ? `aria-disabled="true" data-unavailable="${esc(hint)}" title="${esc(hint)}"` : "disabled"} aria-pressed="${action === a}"`,
-          `${action === a ? "chosen" : ""} ${allowed ? "available" : ""}`,
+          `<span class="action-symbol">${icon(a)}</span><span class="action-content"><span class="action-label">${t(a)}</span><span class="action-stacks">${stacks}${retrieveOnly ? `<span class="retrieve-only-icon">${icon("undo", "Retrieve without acting")}</span>` : ""}${s.neutral[a] ? `<span class="marker-stack neutral" title="${"Neutral markers"}">${s.neutral[a]}</span>` : ""}${countDraft ? `<span class="draft-marker" title="${"Markers being placed"}">+${countDraft}</span>` : ""}</span></span>`,
+          `data-action="${a}" ${retrieveOnly ? `title="${"Retrieve without acting"}"` : ""} ${allowed ? "" : explain ? `aria-disabled="true" data-unavailable="${esc(hint)}" title="${esc(hint)}"` : "disabled"} aria-pressed="${action === a}"`,
+          `${action === a ? "chosen" : ""} ${allowed ? "available" : ""} ${retrieveOnly ? "retrieve-only" : ""}`,
         );
       },
     ).join("")}</nav>`;
@@ -285,19 +290,45 @@ export function mountGame(target, options = {}) {
       (m) => m.type === "discard" && m.action === action,
     );
     const governor = moves.some((m) => m.type === "governor");
+    const buildCost = own()?.character === "builder" && !own()?.used ? 1 : 3;
     const pickText =
-      targets.length && !selected ? `${icon("sail")} ${"Choose a space"}` : "";
+      discard &&
+      action === "build" &&
+      !s.options.risingWaters &&
+      own()?.money < buildCost
+        ? `${"Not enough vatus."} ${token("coin", `${own().money}/${buildCost}`, `${t("cost")}: ${buildCost}`)}`
+        : targets.length && !selected
+          ? `${icon("sail")} ${"Choose a space"}`
+          : "";
     return `<div class="turn-tray"><div class="tray-title">${selectedAction ? `${icon(action)} ${t(action)}` : t("actions")}</div>${hasBonus && hasNormal ? `<label class="bonus-switch" title="${charHelp(own()?.character)}"><input type="checkbox" data-bonus ${bonus ? "checked" : ""}>${charName(own()?.character)}</label>` : ""}<span class="pick-hint">${pickText}</span><div class="move-options">${opts.map((m) => moveButton(m, true)).join("")}${discard ? moveButton(discard) : ""}</div>${governor ? btn(`${icon("marker")} ↔`, `data-governor title="${t("governor")}"`) : ""}${selectedAction ? titled(t("cancel"), icon("close"), "data-cancel", "icon-button") : ""}</div>`;
   }
   function tradeShips() {
     const help = `Foreign trade\n${colorBlind ? "K: kava · C: copra · B: beef." : "Green: kava · White: copra · Red: beef."}\nEach export fills the first ship (1 → 3) still needing that good. ✓ = already delivered.\nCompleting a ship adds 2 prosperity points.`;
     return `<div class="demand-ships" title="${esc(help)}" aria-label="${esc(help)}">${s.demands.map((d, i) => `<div class="demand-ship"><small>${i + 1}</small>${d.goods.map((g, j) => `<span class="${d.filled[j] ? "filled" : ""}">${icon(g)}${d.filled[j] ? icon("check") : ""}</span>`).join("")}${icon("buy")}</div>`).join("")}</div>`;
   }
-  function renderDraft() {
+  function renderControls() {
     const focus = document.activeElement?.getAttribute("data-action");
     play.querySelector(".action-dock").outerHTML = dock();
     play.querySelector(".turn-tray").outerHTML = tray();
     observeTray();
+    const targets = new Set(actualTargets());
+    for (const cell of play.querySelectorAll(".map-cell[data-cell]")) {
+      const id = cell.dataset.cell;
+      const selectable = targets.has(id);
+      cell.classList.toggle("legal", selectable);
+      cell.classList.toggle("selected", selected === id);
+      if (selectable) {
+        cell.setAttribute("role", "button");
+        cell.setAttribute("tabindex", "0");
+        cell.setAttribute(
+          "aria-label",
+          `${t(s.board[id]?.type === "island" ? "island" : "sea")} ${id}`,
+        );
+      } else {
+        for (const attribute of ["role", "tabindex", "aria-label"])
+          cell.removeAttribute(attribute);
+      }
+    }
     if (focus)
       play
         .querySelector(`[data-action="${focus}"]`)
@@ -392,7 +423,8 @@ export function mountGame(target, options = {}) {
             .join("")}</p></div></div>`,
         );
     }
-    render();
+    if (s.phase === "expand") render();
+    else renderControls();
   }
   root.addEventListener(
     "click",
@@ -441,7 +473,7 @@ export function mountGame(target, options = {}) {
           draft.push(d.action);
           if (s.phase === "neutral")
             draft.sort((a, b) => ACTIONS.indexOf(a) - ACTIONS.indexOf(b));
-          renderDraft();
+          renderControls();
           return;
         } else {
           action = d.action;
@@ -449,12 +481,12 @@ export function mountGame(target, options = {}) {
           const targets = actualTargets();
           if (targets.length === 1) selected = targets[0];
         }
-        render();
+        renderControls();
         return;
       }
       if ("undo" in d) {
         draft.pop();
-        renderDraft();
+        renderControls();
         return;
       }
       if ("tile" in d) {
@@ -466,7 +498,7 @@ export function mountGame(target, options = {}) {
       if ("cancel" in d) {
         action = null;
         selected = null;
-        render();
+        renderControls();
         return;
       }
       if ("overview" in d) {
@@ -589,7 +621,7 @@ export function mountGame(target, options = {}) {
     (e) => {
       if (e.target.matches("[data-bonus]")) {
         bonus = e.target.checked;
-        render();
+        renderControls();
       }
       if (e.target.matches("[data-pref]")) {
         const key = e.target.dataset.pref,

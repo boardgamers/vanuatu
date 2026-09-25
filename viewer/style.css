@@ -242,6 +242,15 @@
   background: #fcf8e9;
   box-shadow: inset 3px 0 #ae793f;
 }
+.vanuatu .action-dock .retrieve-only {
+  background: #eeece1;
+  box-shadow: inset 3px 0 #8c9890;
+}
+.vanuatu .retrieve-only-icon .icon {
+  width: 14px;
+  height: 14px;
+  color: #697e74;
+}
 .vanuatu .action-dock .chosen {
   background: #f5d99f;
   box-shadow:
@@ -1137,6 +1146,9 @@ body {
   }
   .vanuatu .action-dock .available {
     box-shadow: inset 0 3px #ae793f;
+  }
+  .vanuatu .action-dock .retrieve-only {
+    box-shadow: inset 0 3px #8c9890;
   }
   .vanuatu .action-dock .chosen {
     box-shadow:

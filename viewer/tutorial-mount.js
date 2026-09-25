@@ -19,7 +19,7 @@ export async function mountLesson(target, options) {
   guide.className = "vanuatu-tutorial";
   target.append(guide);
   const ui = mountGame(target, {
-    language: "en",
+    language: options.locale ?? "en",
     onMove: async (m) => {
       const accepted = await tutorial.play(m);
       if (!accepted)
@@ -30,6 +30,7 @@ export async function mountLesson(target, options) {
         );
     },
   });
+  if (options.locale) ui.setPreferences({ locale: options.locale });
   ui.setPlayer(0);
   const off = tutorial.subscribe((snapshot) => {
     ui.render(stripSecret(snapshot.state, 0));

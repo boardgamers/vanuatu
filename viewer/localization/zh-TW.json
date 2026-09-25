@@ -132,7 +132,6 @@
   "Choose Sail and move to the ocean space with fish value 2. Each space costs 1 vatu.": "選擇航行，移動到魚獲價值為 2 的海洋格。每移動一格花費 1 瓦圖。",
   "Choose a character": "選擇一個角色",
   "Choose a character, then place your 5 markers in three passes: 2, 2, 1. On your turn, take an action where you have the most markers. Ties follow turn order from the first player": "選擇一個角色，然後分三次放置你的 5 個標記：2、2、1。輪到你時，執行你標記最多的行動。平手時從起始玩家開始依序決定",
-  "Choose a character, then place your 5 markers in three passes: 2, 2, 1. On your turn, take an action where you have the most markers. Ties follow turn order from the first player {p0}. Retrieve all your markers from that action. Without a majority, retrieve one stack without performing its action.": "選擇角色，再分三次放置自己的 5 個標記：2、2、1。輪到你時，選擇一個自己的標記數比其他每位玩家都多的行動。平手時，按起始玩家 {p0} 起算的順序決定。執行後收回自己在該行動上的所有標記。若所有行動都沒有優先權，收回自己的一堆標記，但不執行行動。",
   "Choose a rest token": "選擇一個休息標記",
   "Choose a space": "選擇格子",
   "Choose an action": "選擇一個行動",
@@ -786,11 +785,14 @@
   "Resolve your first stack": "結算第一疊標記",
   "Choose an available action and perform it. All your markers on that action return together: even a stack of 3 grants only one action. You choose the order of your actions; it need not match placement order.": "選擇可執行的行動並執行。你在該行動的所有標記會一起收回：即使堆了 3 個，也只能行動一次。你自行決定行動順序，不必依照放置順序。",
   "When you cannot act": "無法行動時",
-  "You cannot simply wait. If you have no majority anywhere, remove one of your stacks without acting. If you have a majority but that action is impossible, remove that stack too. You must perform a possible action when resolving its stack.": "你不能只是等待。若所有行動都沒有數量優勢，就收回自己的一疊標記，不執行行動。若有數量優勢但行動無法執行，也要收回那疊標記。結算一疊標記時，只要行動可執行，就必須執行。",
   "Finish your planned actions": "完成規劃的行動",
   "Resolve your remaining stacks. Watch which actions become available when opponents remove theirs. Planning an action does not guarantee it: someone may take the last fish or use the last space first.": "結算剩餘的標記堆。注意對手收回標記後，哪些行動變得可用。規劃不保證能執行：有人可能先捕走最後的魚，或佔用最後的空位。",
   "Spread your markers for more actions, or stack them for priority. Plan prerequisites first, then choose your action order as the round unfolds.": "分散標記以執行更多行動，或堆疊以爭取優先權。先考慮必要條件，再隨回合變化決定行動順序。",
   "Show full board": "顯示整個圖板",
   "Focus on placed tiles": "聚焦已放置的板塊",
-  "Upcoming tiles": "接下來的板塊"
+  "Upcoming tiles": "接下來的板塊",
+  "Choose a character, then place your 5 markers in three passes: 2, 2, 1. On your turn, take an action where you have the most markers. Ties follow turn order from the first player {p0}. Retrieve all your markers from that action. If you have no majority on any action, retrieve one stack without acting. You may also choose an impossible action where you hold the majority and retrieve its markers without acting.": "選擇角色，再分三次放置自己的 5 個標記：2、2、1。輪到你時，選擇一個自己的標記數比其他每位玩家都多的行動。平手時，按起始玩家 {p0} 起算的順序決定。執行後收回自己在該行動上的所有標記。 若所有行動都沒有優先權，收回自己的一堆標記，但不執行行動。也可以選擇一個自己有優先權、但目前無法執行的行動，直接收回該處的標記。",
+  "Retrieve without acting": "收回標記，不執行行動",
+  "Not enough vatus.": "瓦圖不足。",
+  "If you cannot afford Build yet, you can choose another action where you have the majority and keep Build for later. Resolving Build now means retrieving its markers without building. If you have no majority anywhere, you must retrieve one stack without acting. When resolving an action you can perform, you must perform it.": "若目前付不起建造費用，可以先選擇另一個自己有優先權的行動，把建造留到之後。現在選擇處理建造，就只能收回標記，不建造。若所有行動都沒有優先權，就必須收回自己的一堆標記而不執行行動。若選擇處理的行動可以執行，就必須執行。"
 }

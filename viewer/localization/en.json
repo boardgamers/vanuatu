@@ -132,7 +132,6 @@
   "Choose Sail and move to the ocean space with fish value 2. Each space costs 1 vatu.": "Choose Sail and move to the ocean space with fish value 2. Each space costs 1 vatu.",
   "Choose a character": "Choose a character",
   "Choose a character, then place your 5 markers in three passes: 2, 2, 1. On your turn, take an action where you have the most markers. Ties follow turn order from the first player": "Choose a character, then place your 5 markers in three passes: 2, 2, 1. On your turn, take an action where you have the most markers. Ties follow turn order from the first player",
-  "Choose a character, then place your 5 markers in three passes: 2, 2, 1. On your turn, take an action where you have the most markers. Ties follow turn order from the first player {p0}. Retrieve all your markers from that action. Without a majority, retrieve one stack without performing its action.": "Choose a character, then place your 5 markers in three passes: 2, 2, 1. On your turn, take an action where you have the most markers. Ties follow turn order from the first player {p0}. Retrieve all your markers from that action. Without a majority, retrieve one stack without performing its action.",
   "Choose a rest token": "Choose a rest token",
   "Choose a space": "Choose a space",
   "Choose an action": "Choose an action",
@@ -786,11 +785,14 @@
   "Resolve your first stack": "Resolve your first stack",
   "Choose an available action and perform it. All your markers on that action return together: even a stack of 3 grants only one action. You choose the order of your actions; it need not match placement order.": "Choose an available action and perform it. All your markers on that action return together: even a stack of 3 grants only one action. You choose the order of your actions; it need not match placement order.",
   "When you cannot act": "When you cannot act",
-  "You cannot simply wait. If you have no majority anywhere, remove one of your stacks without acting. If you have a majority but that action is impossible, remove that stack too. You must perform a possible action when resolving its stack.": "You cannot simply wait. If you have no majority anywhere, remove one of your stacks without acting. If you have a majority but that action is impossible, remove that stack too. You must perform a possible action when resolving its stack.",
   "Finish your planned actions": "Finish your planned actions",
   "Resolve your remaining stacks. Watch which actions become available when opponents remove theirs. Planning an action does not guarantee it: someone may take the last fish or use the last space first.": "Resolve your remaining stacks. Watch which actions become available when opponents remove theirs. Planning an action does not guarantee it: someone may take the last fish or use the last space first.",
   "Spread your markers for more actions, or stack them for priority. Plan prerequisites first, then choose your action order as the round unfolds.": "Spread your markers for more actions, or stack them for priority. Plan prerequisites first, then choose your action order as the round unfolds.",
   "Show full board": "Show full board",
   "Focus on placed tiles": "Focus on placed tiles",
-  "Upcoming tiles": "Upcoming tiles"
+  "Upcoming tiles": "Upcoming tiles",
+  "Choose a character, then place your 5 markers in three passes: 2, 2, 1. On your turn, take an action where you have the most markers. Ties follow turn order from the first player {p0}. Retrieve all your markers from that action. If you have no majority on any action, retrieve one stack without acting. You may also choose an impossible action where you hold the majority and retrieve its markers without acting.": "Choose a character, then place your 5 markers in three passes: 2, 2, 1. On your turn, take an action where you have the most markers. Ties follow turn order from the first player {p0}. Retrieve all your markers from that action. If you have no majority on any action, retrieve one stack without acting. You may also choose an impossible action where you hold the majority and retrieve its markers without acting.",
+  "Retrieve without acting": "Retrieve without acting",
+  "Not enough vatus.": "Not enough vatus.",
+  "If you cannot afford Build yet, you can choose another action where you have the majority and keep Build for later. Resolving Build now means retrieving its markers without building. If you have no majority anywhere, you must retrieve one stack without acting. When resolving an action you can perform, you must perform it.": "If you cannot afford Build yet, you can choose another action where you have the majority and keep Build for later. Resolving Build now means retrieving its markers without building. If you have no majority anywhere, you must retrieve one stack without acting. When resolving an action you can perform, you must perform it."
 }

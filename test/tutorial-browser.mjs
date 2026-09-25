@@ -101,8 +101,44 @@ try {
     assert.deepEqual(errors, []);
     await page.close();
   }
+  for (const [locale, sail, rule] of [
+    ["fr", "Naviguer", "Si vous n’avez la majorité sur aucune action"],
+    ["nl", "Varen", "Als je bij geen enkele actie de meerderheid hebt"],
+  ]) {
+    const page = await browser.newPage();
+    await page.goto(`http://127.0.0.1:${server.address().port}/`);
+    await page.evaluate(async (locale) => {
+      await window.vanuatu.launchTutorial("#game", {
+        chapter: "planning",
+        locale,
+      });
+    }, locale);
+    await page.waitForFunction(
+      (expected) =>
+        document.querySelector('[data-action="sail"] .action-label')
+          ?.textContent === expected,
+      sail,
+    );
+    assert.ok(
+      !(await page.locator(".bgs-tutorial-body").innerText()).includes(
+        "You may place",
+      ),
+    );
+    await page.locator("[data-help]").first().click();
+    assert.ok((await page.locator("dialog[open]").innerText()).includes(rule));
+    assert.equal(
+      await page.locator("[data-language]").count(),
+      0,
+      "Hosted tutorials follow the language supplied by BGS",
+    );
+    await page.screenshot({
+      path: `.local/qa/tutorial-language-${locale}.png`,
+      fullPage: true,
+    });
+    await page.close();
+  }
   console.log(
-    "Nine tutorial steps, completion controls, next chapter and mobile/desktop layout passed.",
+    "Nine tutorial steps, completion controls, mobile/desktop layout and French/Dutch locale forwarding passed.",
   );
 } finally {
   await browser.close();

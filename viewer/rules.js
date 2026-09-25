@@ -23,7 +23,7 @@ export function rulesHtml(lang = "en") {
     [
       "Plan, then act",
       message(
-        "Choose a character, then place your 5 markers in three passes: 2, 2, 1. On your turn, take an action where you have the most markers. Ties follow turn order from the first player {p0}. Retrieve all your markers from that action. Without a majority, retrieve one stack without performing its action.",
+        "Choose a character, then place your 5 markers in three passes: 2, 2, 1. On your turn, take an action where you have the most markers. Ties follow turn order from the first player {p0}. Retrieve all your markers from that action. If you have no majority on any action, retrieve one stack without acting. You may also choose an impossible action where you hold the majority and retrieve its markers without acting.",
         [icon("first")],
       ),
     ],
