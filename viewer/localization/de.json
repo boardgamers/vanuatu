@@ -398,7 +398,7 @@
   "Sélectionné": "Ausgewählt",
   "Terminé": "Beendet",
   "That move is not available": "Dieser Zug ist nicht verfügbar",
-  "The fish market falls after a sale and resets next round. Every 10 vatus automatically becomes 5 prosperity.": "Der Fischpreis sinkt nach jedem Verkauf und wird zu Beginn der nächsten Runde zurückgesetzt. Je 10 Vatu werden automatisch in 5 Wohlstand umgewandelt.",
+  "The fish price has dropped from 3 to 2 (top left of the board). It resets to 3 next round. Every 10 vatus automatically becomes 5 prosperity.": "Der Fischpreis ist von 3 auf 2 gesunken (oben links auf dem Spielplan). Zu Beginn der nächsten Runde wird er auf 3 zurückgesetzt. Je 10 Vatu werden automatisch in 5 Wohlstand umgewandelt.",
   "The game has ended": "Das Spiel ist beendet",
   "The islands were submerged": "Die Inseln sind versunken",
   "The others have placed their markers. Reinforce an action or plan something new. An action can be performed once, however many markers you place there.": "Die anderen haben ihre Marker platziert. Verstärke eine Aktion oder plane etwas Neues. Eine Aktion kann nur einmal ausgeführt werden, egal wie viele Marker du dort platzierst.",
@@ -796,5 +796,6 @@
   "Not enough vatus.": "Nicht genug Vatu.",
   "If you cannot afford Build yet, you can choose another action where you have the majority and keep Build for later. Resolving Build now means retrieving its markers without building. If you have no majority anywhere, you must retrieve one stack without acting. When resolving an action you can perform, you must perform it.": "Kannst du Bauen noch nicht bezahlen, darfst du zuerst eine andere Aktion wählen, bei der du die Mehrheit hast, und Bauen für später aufheben. Wählst du Bauen jetzt, nimmst du deine Marker zurück, ohne zu bauen. Hast du nirgends die Mehrheit, musst du einen Stapel ohne Aktion zurücknehmen. Ist eine gewählte Aktion möglich, musst du sie ausführen.",
   "Designed by {p0}": "Autor: {p0}",
-  "Published by {p0}": "Verlag: {p0}"
+  "Published by {p0}": "Verlag: {p0}",
+  "Fish price: {p0} vatus per fish value. Falls by 1 after each sale (minimum 1); resets to 3 next round.": "Fischpreis: {p0} Vatu pro Fischwert. Sinkt nach jedem Verkauf um 1 (mindestens 1); wird zu Beginn der nächsten Runde auf 3 zurückgesetzt."
 }

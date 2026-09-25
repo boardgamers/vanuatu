@@ -398,7 +398,7 @@
   "Sélectionné": "Sélectionné",
   "Terminé": "Terminé",
   "That move is not available": "Ce coup n'est pas disponible",
-  "The fish market falls after a sale and resets next round. Every 10 vatus automatically becomes 5 prosperity.": "Le prix du poisson baisse après une vente et revient à sa valeur initiale à la manche suivante. Chaque tranche de 10 vatus est automatiquement convertie en 5 points de prospérité.",
+  "The fish price has dropped from 3 to 2 (top left of the board). It resets to 3 next round. Every 10 vatus automatically becomes 5 prosperity.": "Le prix du poisson est passé de 3 à 2 (en haut à gauche du plateau). Il reviendra à 3 à la prochaine manche. Chaque tranche de 10 vatus est automatiquement convertie en 5 points de prospérité.",
   "The game has ended": "La partie est terminée",
   "The islands were submerged": "Les îles ont été submergées",
   "The others have placed their markers. Reinforce an action or plan something new. An action can be performed once, however many markers you place there.": "Les autres joueurs ont placé leurs pions. Renforcez une action ou programmez-en une autre. Vous ne pouvez effectuer chaque action qu’une fois, quel que soit le nombre de pions que vous y placez.",
@@ -796,5 +796,6 @@
   "Not enough vatus.": "Pas assez de vatus.",
   "If you cannot afford Build yet, you can choose another action where you have the majority and keep Build for later. Resolving Build now means retrieving its markers without building. If you have no majority anywhere, you must retrieve one stack without acting. When resolving an action you can perform, you must perform it.": "Si vous ne pouvez pas encore payer pour Construire, vous pouvez choisir une autre action où vous êtes majoritaire et garder Construire pour plus tard. Résoudre Construire maintenant signifie reprendre ses pions sans construire. Si vous n’avez la majorité nulle part, vous devez reprendre une pile sans agir. Lorsque vous résolvez une action réalisable, vous devez l’effectuer.",
   "Designed by {p0}": "Créé par {p0}",
-  "Published by {p0}": "Édité par {p0}"
+  "Published by {p0}": "Édité par {p0}",
+  "Fish price: {p0} vatus per fish value. Falls by 1 after each sale (minimum 1); resets to 3 next round.": "Prix du poisson : {p0} vatus par point de valeur du poisson. Baisse de 1 après chaque vente (minimum 1) ; revient à 3 à la prochaine manche."
 }

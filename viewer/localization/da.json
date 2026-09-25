@@ -398,7 +398,7 @@
   "Sélectionné": "Valgt",
   "Terminé": "Afsluttet",
   "That move is not available": "Det træk er ikke tilgængeligt",
-  "The fish market falls after a sale and resets next round. Every 10 vatus automatically becomes 5 prosperity.": "Fiskeprisen falder efter hvert salg og vender tilbage til startværdien i næste runde. Hver 10 vatu veksles automatisk til 5 velstand.",
+  "The fish price has dropped from 3 to 2 (top left of the board). It resets to 3 next round. Every 10 vatus automatically becomes 5 prosperity.": "Fiskeprisen er faldet fra 3 til 2 (øverst til venstre på brættet). Den sættes tilbage til 3 i starten af næste runde. Hver 10 vatu veksles automatisk til 5 velstand.",
   "The game has ended": "Spillet er slut",
   "The islands were submerged": "Øerne blev oversvømmet",
   "The others have placed their markers. Reinforce an action or plan something new. An action can be performed once, however many markers you place there.": "De andre har placeret deres markører. Forstærk en handling eller planlæg noget nyt. En handling kan udføres én gang, uanset hvor mange markører du placerer der.",
@@ -796,5 +796,6 @@
   "Not enough vatus.": "Ikke nok vatu.",
   "If you cannot afford Build yet, you can choose another action where you have the majority and keep Build for later. Resolving Build now means retrieving its markers without building. If you have no majority anywhere, you must retrieve one stack without acting. When resolving an action you can perform, you must perform it.": "Har du endnu ikke råd til at bygge, kan du vælge en anden handling, hvor du har flertal, og gemme Byg til senere. Vælger du Byg nu, tager du markørerne tilbage uden at bygge. Har du ikke flertal nogen steder, skal du tage én stak tilbage uden handling. Kan den valgte handling udføres, skal du udføre den.",
   "Designed by {p0}": "Designet af {p0}",
-  "Published by {p0}": "Udgivet af {p0}"
+  "Published by {p0}": "Udgivet af {p0}",
+  "Fish price: {p0} vatus per fish value. Falls by 1 after each sale (minimum 1); resets to 3 next round.": "Fiskepris: {p0} vatu pr. point fiskeværdi. Falder med 1 efter hvert salg (mindst 1); sættes tilbage til 3 i starten af næste runde."
 }

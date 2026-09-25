@@ -398,7 +398,7 @@
   "Sélectionné": "Selezionato",
   "Terminé": "Terminato",
   "That move is not available": "Questa mossa non è disponibile",
-  "The fish market falls after a sale and resets next round. Every 10 vatus automatically becomes 5 prosperity.": "Il prezzo del pesce scende dopo ogni vendita e torna al valore iniziale nel round successivo. Ogni 10 vatu si convertono automaticamente in 5 prosperità.",
+  "The fish price has dropped from 3 to 2 (top left of the board). It resets to 3 next round. Every 10 vatus automatically becomes 5 prosperity.": "Il prezzo del pesce è sceso da 3 a 2 (in alto a sinistra sul tabellone). Tornerà a 3 all’inizio del prossimo round. Ogni 10 vatu si convertono automaticamente in 5 prosperità.",
   "The game has ended": "La partita è terminata",
   "The islands were submerged": "Le isole sono state sommerse",
   "The others have placed their markers. Reinforce an action or plan something new. An action can be performed once, however many markers you place there.": "Gli altri hanno piazzato i loro segnalini. Rafforza un'azione o pianifica qualcosa di nuovo. Un'azione può essere eseguita una sola volta, indipendentemente da quanti segnalini piazzi lì.",
@@ -796,5 +796,6 @@
   "Not enough vatus.": "Vatu insufficienti.",
   "If you cannot afford Build yet, you can choose another action where you have the majority and keep Build for later. Resolving Build now means retrieving its markers without building. If you have no majority anywhere, you must retrieve one stack without acting. When resolving an action you can perform, you must perform it.": "Se non puoi ancora permetterti di Costruire, puoi scegliere un’altra azione in cui hai la maggioranza e tenere Costruire per dopo. Risolvere Costruire adesso significa ritirare i segnalini senza costruire. Se non hai la maggioranza da nessuna parte, devi ritirare una pila senza agire. Quando risolvi un’azione che puoi eseguire, devi eseguirla.",
   "Designed by {p0}": "Ideato da {p0}",
-  "Published by {p0}": "Pubblicato da {p0}"
+  "Published by {p0}": "Pubblicato da {p0}",
+  "Fish price: {p0} vatus per fish value. Falls by 1 after each sale (minimum 1); resets to 3 next round.": "Prezzo del pesce: {p0} vatu per punto di valore del pesce. Scende di 1 dopo ogni vendita (minimo 1); torna a 3 all’inizio del prossimo round."
 }

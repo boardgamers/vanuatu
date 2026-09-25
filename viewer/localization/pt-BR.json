@@ -398,7 +398,7 @@
   "Sélectionné": "Selecionado",
   "Terminé": "Concluído",
   "That move is not available": "Esse movimento não está disponível",
-  "The fish market falls after a sale and resets next round. Every 10 vatus automatically becomes 5 prosperity.": "O preço dos peixes cai após cada venda e volta ao valor inicial na próxima rodada. A cada 10 vatus, você recebe automaticamente 5 de prosperidade em troca.",
+  "The fish price has dropped from 3 to 2 (top left of the board). It resets to 3 next round. Every 10 vatus automatically becomes 5 prosperity.": "O preço dos peixes caiu de 3 para 2 (no canto superior esquerdo do tabuleiro). Ele volta a 3 no início da próxima rodada. A cada 10 vatus, você recebe automaticamente 5 de prosperidade em troca.",
   "The game has ended": "O jogo terminou",
   "The islands were submerged": "As ilhas foram submersas",
   "The others have placed their markers. Reinforce an action or plan something new. An action can be performed once, however many markers you place there.": "Os outros colocaram seus marcadores. Reforce uma ação ou planeje algo novo. Uma ação pode ser realizada uma vez, não importa quantos marcadores você coloque lá.",
@@ -796,5 +796,6 @@
   "Not enough vatus.": "Vatus insuficientes.",
   "If you cannot afford Build yet, you can choose another action where you have the majority and keep Build for later. Resolving Build now means retrieving its markers without building. If you have no majority anywhere, you must retrieve one stack without acting. When resolving an action you can perform, you must perform it.": "Se ainda não puder pagar para Construir, pode escolher outra ação na qual tenha maioria e deixar Construir para depois. Resolver Construir agora significa recolher seus marcadores sem construir. Se não tiver maioria em nenhuma ação, deve recolher uma pilha sem agir. Ao resolver uma ação que pode executar, deve executá-la.",
   "Designed by {p0}": "Criado por {p0}",
-  "Published by {p0}": "Publicado por {p0}"
+  "Published by {p0}": "Publicado por {p0}",
+  "Fish price: {p0} vatus per fish value. Falls by 1 after each sale (minimum 1); resets to 3 next round.": "Preço dos peixes: {p0} vatus por ponto de valor do peixe. Cai 1 após cada venda (mínimo 1); volta a 3 no início da próxima rodada."
 }

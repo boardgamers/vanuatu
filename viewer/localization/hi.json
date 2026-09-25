@@ -398,7 +398,7 @@
   "Sélectionné": "चयनित",
   "Terminé": "समाप्त",
   "That move is not available": "वह चाल उपलब्ध नहीं है",
-  "The fish market falls after a sale and resets next round. Every 10 vatus automatically becomes 5 prosperity.": "हर बिक्री के बाद मछली की कीमत घटती है और अगले दौर में शुरुआती कीमत पर लौट आती है। हर 10 वातु अपने आप 5 समृद्धि में बदल जाते हैं।",
+  "The fish price has dropped from 3 to 2 (top left of the board). It resets to 3 next round. Every 10 vatus automatically becomes 5 prosperity.": "मछली की कीमत 3 से घटकर 2 हो गई है (बोर्ड के ऊपर बाईं ओर)। अगले दौर की शुरुआत में यह फिर 3 हो जाएगी। हर 10 वातु अपने आप 5 समृद्धि में बदल जाते हैं।",
   "The game has ended": "खेल समाप्त हो गया है",
   "The islands were submerged": "द्वीप डूब गए",
   "The others have placed their markers. Reinforce an action or plan something new. An action can be performed once, however many markers you place there.": "अन्य खिलाड़ियों ने अपने मार्कर रख दिए हैं। किसी क्रिया पर और मार्कर रखें या नई क्रिया की योजना बनाएँ। आप किसी क्रिया पर कितने भी मार्कर रखें, उसे केवल एक बार कर सकते हैं।",
@@ -796,5 +796,6 @@
   "Not enough vatus.": "पर्याप्त वातु नहीं हैं।",
   "If you cannot afford Build yet, you can choose another action where you have the majority and keep Build for later. Resolving Build now means retrieving its markers without building. If you have no majority anywhere, you must retrieve one stack without acting. When resolving an action you can perform, you must perform it.": "यदि अभी निर्माण के लिए पर्याप्त धन नहीं है, तो आप कोई दूसरी क्रिया चुन सकते हैं जिस पर आपका बहुमत है, और निर्माण को बाद के लिए रख सकते हैं। अभी निर्माण चुनने पर, बिना निर्माण किए उसके मार्कर वापस लेने होंगे। यदि कहीं भी आपका बहुमत नहीं है, तो क्रिया किए बिना एक ढेर वापस लेना होगा। यदि चुनी गई क्रिया संभव है, तो उसे करना अनिवार्य है।",
   "Designed by {p0}": "डिज़ाइन: {p0}",
-  "Published by {p0}": "प्रकाशक: {p0}"
+  "Published by {p0}": "प्रकाशक: {p0}",
+  "Fish price: {p0} vatus per fish value. Falls by 1 after each sale (minimum 1); resets to 3 next round.": "मछली की कीमत: मछली के मूल्य के हर अंक पर {p0} वातु। हर बिक्री के बाद 1 घटती है (न्यूनतम 1); अगले दौर की शुरुआत में फिर 3 हो जाती है।"
 }

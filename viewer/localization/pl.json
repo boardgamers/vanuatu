@@ -398,7 +398,7 @@
   "Sélectionné": "Wybrany",
   "Terminé": "Zakończony",
   "That move is not available": "Ten ruch jest niedostępny",
-  "The fish market falls after a sale and resets next round. Every 10 vatus automatically becomes 5 prosperity.": "Cena ryb spada po każdej sprzedaży i wraca do wartości początkowej w następnej rundzie. Każde 10 vatu automatycznie zamienia się w 5 dobrobytu.",
+  "The fish price has dropped from 3 to 2 (top left of the board). It resets to 3 next round. Every 10 vatus automatically becomes 5 prosperity.": "Cena ryb spadła z 3 do 2 (lewy górny róg planszy). Na początku następnej rundy wróci do 3. Każde 10 vatu automatycznie zamienia się w 5 dobrobytu.",
   "The game has ended": "Gra się zakończyła",
   "The islands were submerged": "Wyspy zatonęły",
   "The others have placed their markers. Reinforce an action or plan something new. An action can be performed once, however many markers you place there.": "Pozostali umieścili swoje znaczniki. Wzmocnij akcję lub zaplanuj coś nowego. Akcję można wykonać raz, niezależnie od liczby umieszczonych tam znaczników.",
@@ -796,5 +796,6 @@
   "Not enough vatus.": "Za mało vatu.",
   "If you cannot afford Build yet, you can choose another action where you have the majority and keep Build for later. Resolving Build now means retrieving its markers without building. If you have no majority anywhere, you must retrieve one stack without acting. When resolving an action you can perform, you must perform it.": "Jeśli nie stać cię jeszcze na Budowę, możesz wybrać inną akcję, na której masz większość, i zostawić Budowę na później. Rozpatrzenie Budowy teraz oznacza zabranie pionków bez budowania. Jeśli nigdzie nie masz większości, musisz zabrać jeden stos bez wykonywania akcji. Gdy rozpatrujesz akcję, którą możesz wykonać, musisz ją wykonać.",
   "Designed by {p0}": "Autor: {p0}",
-  "Published by {p0}": "Wydawca: {p0}"
+  "Published by {p0}": "Wydawca: {p0}",
+  "Fish price: {p0} vatus per fish value. Falls by 1 after each sale (minimum 1); resets to 3 next round.": "Cena ryb: {p0} vatu za punkt wartości ryb. Spada o 1 po każdej sprzedaży (minimum 1); na początku następnej rundy wraca do 3."
 }

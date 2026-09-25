@@ -132,6 +132,8 @@ export const chapters = {
       s.players[0].markers.sail = 1;
       s.players[0].markers.fish = 1;
       s.players[0].markers.sell = 1;
+      // Leave Rest unresolved so the sale's price drop is visible before round setup.
+      s.players[0].markers.rest = 2;
       return s;
     },
     move: play,
@@ -163,7 +165,7 @@ export const chapters = {
     ],
     completion: {
       title: "Trade keeps you moving",
-      text: "The fish market falls after a sale and resets next round. Every 10 vatus automatically becomes 5 prosperity.",
+      text: "The fish price has dropped from 3 to 2 (top left of the board). It resets to 3 next round. Every 10 vatus automatically becomes 5 prosperity.",
     },
   },
   islands: {

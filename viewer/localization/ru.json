@@ -398,7 +398,7 @@
   "Sélectionné": "Выбрано",
   "Terminé": "Завершено",
   "That move is not available": "Этот ход недоступен",
-  "The fish market falls after a sale and resets next round. Every 10 vatus automatically becomes 5 prosperity.": "Цена рыбы снижается после каждой продажи и возвращается к исходному значению в следующем раунде. Каждые 10 вату автоматически обмениваются на 5 процветания.",
+  "The fish price has dropped from 3 to 2 (top left of the board). It resets to 3 next round. Every 10 vatus automatically becomes 5 prosperity.": "Цена рыбы снизилась с 3 до 2 (в левом верхнем углу поля). В начале следующего раунда она вернётся к 3. Каждые 10 вату автоматически обмениваются на 5 очков процветания.",
   "The game has ended": "Игра окончена",
   "The islands were submerged": "Острова были затоплены",
   "The others have placed their markers. Reinforce an action or plan something new. An action can be performed once, however many markers you place there.": "Остальные разместили свои маркеры. Усиль действие или запланируй что-то новое. Действие можно выполнить один раз, сколько бы маркеров ты туда ни поставил.",
@@ -796,5 +796,6 @@
   "Not enough vatus.": "Недостаточно вату.",
   "If you cannot afford Build yet, you can choose another action where you have the majority and keep Build for later. Resolving Build now means retrieving its markers without building. If you have no majority anywhere, you must retrieve one stack without acting. When resolving an action you can perform, you must perform it.": "Если денег на строительство пока не хватает, можно выбрать другое действие, где у вас есть большинство, а строительство оставить на потом. Выбрав строительство сейчас, вы заберёте фишки, ничего не построив. Если большинства нет нигде, вы обязаны забрать одну стопку без действия. Если выбранное действие выполнимо, его обязательно нужно выполнить.",
   "Designed by {p0}": "Автор: {p0}",
-  "Published by {p0}": "Издатель: {p0}"
+  "Published by {p0}": "Издатель: {p0}",
+  "Fish price: {p0} vatus per fish value. Falls by 1 after each sale (minimum 1); resets to 3 next round.": "Цена рыбы: {p0} вату за единицу ценности рыбы. Снижается на 1 после каждой продажи (минимум 1); в начале следующего раунда возвращается к 3."
 }

@@ -398,7 +398,7 @@
   "Sélectionné": "Đã chọn",
   "Terminé": "Đã hoàn thành",
   "That move is not available": "Nước đi đó không khả dụng",
-  "The fish market falls after a sale and resets next round. Every 10 vatus automatically becomes 5 prosperity.": "Giá cá giảm sau mỗi lần bán và trở về mức ban đầu ở vòng tiếp theo. Cứ 10 vatu sẽ tự động đổi thành 5 thịnh vượng.",
+  "The fish price has dropped from 3 to 2 (top left of the board). It resets to 3 next round. Every 10 vatus automatically becomes 5 prosperity.": "Giá cá đã giảm từ 3 xuống 2 (ở góc trên bên trái bàn chơi). Giá sẽ trở lại 3 khi vòng tiếp theo bắt đầu. Cứ 10 vatu sẽ tự động đổi thành 5 thịnh vượng.",
   "The game has ended": "Trò chơi đã kết thúc",
   "The islands were submerged": "Các hòn đảo đã bị nhấn chìm",
   "The others have placed their markers. Reinforce an action or plan something new. An action can be performed once, however many markers you place there.": "Những người khác đã đặt điểm đánh dấu. Tăng cường một hành động hoặc lên kế hoạch mới. Một hành động chỉ thực hiện một lần, dù bạn đặt bao nhiêu điểm đánh dấu ở đó.",
@@ -796,5 +796,6 @@
   "Not enough vatus.": "Không đủ vatu.",
   "If you cannot afford Build yet, you can choose another action where you have the majority and keep Build for later. Resolving Build now means retrieving its markers without building. If you have no majority anywhere, you must retrieve one stack without acting. When resolving an action you can perform, you must perform it.": "Nếu chưa đủ tiền để Xây dựng, bạn có thể chọn hành động khác mà mình chiếm đa số và để Xây dựng lại sau. Giải quyết Xây dựng ngay lúc này nghĩa là thu hồi quân mà không xây. Nếu không chiếm đa số ở bất kỳ hành động nào, bạn phải thu hồi một chồng quân mà không hành động. Nếu hành động đã chọn có thể thực hiện được, bạn bắt buộc phải thực hiện.",
   "Designed by {p0}": "Thiết kế: {p0}",
-  "Published by {p0}": "Phát hành: {p0}"
+  "Published by {p0}": "Phát hành: {p0}",
+  "Fish price: {p0} vatus per fish value. Falls by 1 after each sale (minimum 1); resets to 3 next round.": "Giá cá: {p0} vatu cho mỗi điểm giá trị cá. Giảm 1 sau mỗi lần bán (tối thiểu 1); trở lại 3 khi vòng tiếp theo bắt đầu."
 }

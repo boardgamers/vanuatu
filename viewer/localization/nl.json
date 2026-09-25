@@ -398,7 +398,7 @@
   "Sélectionné": "Geselecteerd",
   "Terminé": "Beëindigd",
   "That move is not available": "Die zet is niet beschikbaar",
-  "The fish market falls after a sale and resets next round. Every 10 vatus automatically becomes 5 prosperity.": "De visprijs daalt na elke verkoop en keert aan het begin van de volgende ronde terug naar de beginwaarde. Elke 10 vatu wordt automatisch omgezet in 5 welvaart.",
+  "The fish price has dropped from 3 to 2 (top left of the board). It resets to 3 next round. Every 10 vatus automatically becomes 5 prosperity.": "De visprijs is gedaald van 3 naar 2 (linksboven op het bord). Aan het begin van de volgende ronde wordt de prijs weer 3. Elke 10 vatu wordt automatisch omgezet in 5 welvaart.",
   "The game has ended": "Het spel is afgelopen",
   "The islands were submerged": "De eilanden zijn ondergelopen",
   "The others have placed their markers. Reinforce an action or plan something new. An action can be performed once, however many markers you place there.": "De anderen hebben hun markers geplaatst. Versterk een actie of plan iets nieuws. Je kunt een actie één keer uitvoeren, ongeacht hoeveel markers je erop plaatst.",
@@ -796,5 +796,6 @@
   "Not enough vatus.": "Niet genoeg vatu.",
   "If you cannot afford Build yet, you can choose another action where you have the majority and keep Build for later. Resolving Build now means retrieving its markers without building. If you have no majority anywhere, you must retrieve one stack without acting. When resolving an action you can perform, you must perform it.": "Als je Bouwen nog niet kunt betalen, mag je een andere actie kiezen waarbij je de meerderheid hebt en Bouwen bewaren voor later. Als je Bouwen nu afhandelt, neem je je pionnen terug zonder te bouwen. Heb je nergens de meerderheid, dan moet je één stapel terugnemen zonder actie. Kun je de gekozen actie uitvoeren, dan moet je die uitvoeren.",
   "Designed by {p0}": "Ontworpen door {p0}",
-  "Published by {p0}": "Uitgegeven door {p0}"
+  "Published by {p0}": "Uitgegeven door {p0}",
+  "Fish price: {p0} vatus per fish value. Falls by 1 after each sale (minimum 1); resets to 3 next round.": "Visprijs: {p0} vatu per punt viswaarde. Daalt na elke verkoop met 1 (minimum 1); wordt aan het begin van de volgende ronde weer 3."
 }

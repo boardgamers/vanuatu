@@ -398,7 +398,7 @@
   "Sélectionné": "Επιλεγμένο",
   "Terminé": "Ολοκληρώθηκε",
   "That move is not available": "Αυτή η κίνηση δεν είναι διαθέσιμη",
-  "The fish market falls after a sale and resets next round. Every 10 vatus automatically becomes 5 prosperity.": "Η τιμή των ψαριών μειώνεται μετά από κάθε πώληση και επιστρέφει στην αρχική τιμή στον επόμενο γύρο. Κάθε 10 βάτου μετατρέπονται αυτόματα σε 5 ευημερία.",
+  "The fish price has dropped from 3 to 2 (top left of the board). It resets to 3 next round. Every 10 vatus automatically becomes 5 prosperity.": "Η τιμή των ψαριών έπεσε από 3 σε 2 (πάνω αριστερά στο ταμπλό). Στην αρχή του επόμενου γύρου επανέρχεται στο 3. Κάθε 10 βάτου μετατρέπονται αυτόματα σε 5 πόντους ευημερίας.",
   "The game has ended": "Το παιχνίδι τελείωσε",
   "The islands were submerged": "Τα νησιά βυθίστηκαν",
   "The others have placed their markers. Reinforce an action or plan something new. An action can be performed once, however many markers you place there.": "Οι άλλοι έχουν τοποθετήσει τους δείκτες τους. Ενίσχυσε μια ενέργεια ή σχεδίασε κάτι νέο. Μια ενέργεια μπορεί να εκτελεστεί μία φορά, όσους δείκτες κι αν τοποθετήσεις εκεί.",
@@ -796,5 +796,6 @@
   "Not enough vatus.": "Δεν αρκούν τα βάτου.",
   "If you cannot afford Build yet, you can choose another action where you have the majority and keep Build for later. Resolving Build now means retrieving its markers without building. If you have no majority anywhere, you must retrieve one stack without acting. When resolving an action you can perform, you must perform it.": "Αν δεν μπορείς ακόμη να πληρώσεις για Κατασκευή, μπορείς να επιλέξεις άλλη δράση όπου έχεις την πλειοψηφία και να κρατήσεις την Κατασκευή για αργότερα. Αν την επιλέξεις τώρα, παίρνεις πίσω τους δείκτες σου χωρίς να χτίσεις. Αν δεν έχεις πλειοψηφία πουθενά, πρέπει να πάρεις πίσω μία στοίβα χωρίς δράση. Αν η δράση που επιλέγεις είναι εφικτή, πρέπει να την εκτελέσεις.",
   "Designed by {p0}": "Σχεδιασμός: {p0}",
-  "Published by {p0}": "Έκδοση: {p0}"
+  "Published by {p0}": "Έκδοση: {p0}",
+  "Fish price: {p0} vatus per fish value. Falls by 1 after each sale (minimum 1); resets to 3 next round.": "Τιμή ψαριών: {p0} βάτου ανά μονάδα αξίας ψαριού. Μειώνεται κατά 1 μετά από κάθε πώληση (ελάχιστο 1) και επανέρχεται στο 3 στην αρχή του επόμενου γύρου."
 }

@@ -140,6 +140,73 @@ try {
     });
     await page.close();
   }
+  for (const [locale, completion, tooltip] of [
+    [
+      "en",
+      "The fish price has dropped from 3 to 2",
+      "Falls by 1 after each sale",
+    ],
+    [
+      "fr",
+      "Le prix du poisson est passé de 3 à 2",
+      "Baisse de 1 après chaque vente",
+    ],
+  ]) {
+    const page = await browser.newPage({
+      viewport: { width: 1440, height: 1000 },
+    });
+    const launch = async () => {
+      await page.evaluate(async (locale) => {
+        await window.vanuatu.launchTutorial("#game", {
+          chapter: "fishing",
+          locale,
+          onProgress: (progress) => (window.progress = progress),
+        });
+      }, locale);
+    };
+    await page.goto(`http://127.0.0.1:${server.address().port}/`);
+    await launch();
+    assert.equal(await page.locator(".fish-price b").innerText(), "3");
+    for (const action of ["sail", "fish", "sell"]) {
+      await page.locator(`[data-action="${action}"]`).click();
+      if (action === "sail")
+        await page.locator('.map-cell[data-cell="1,0"]').click();
+      await page.locator(".turn-tray .primary[data-move]").first().click();
+    }
+    const verify = async () => {
+      await page.waitForFunction(() => window.progress?.completed);
+      await page.waitForFunction(
+        (text) =>
+          document
+            .querySelector(".bgs-tutorial-body")
+            ?.textContent.includes(text),
+        completion,
+      );
+      assert.equal(await page.locator(".fish-price b").innerText(), "2");
+      assert.equal(
+        await page.locator(".round-track .current").innerText(),
+        "1",
+      );
+      assert.ok(
+        (await page.locator(".fish-price").getAttribute("title")).includes(
+          tooltip,
+        ),
+      );
+      assert.equal(
+        await page.locator(".fish-price .token").getAttribute("title"),
+        await page.locator(".fish-price").getAttribute("title"),
+      );
+    };
+    await verify();
+    await page.screenshot({
+      path: `.local/qa/tutorial-fish-price-${locale}.png`,
+      fullPage: true,
+    });
+    await page.reload();
+    await launch();
+    await verify();
+    await page.close();
+  }
   const saved = new Map();
   const lesson = await createTutorial({
     ...chapters.planning,
@@ -208,7 +275,7 @@ try {
   );
   await page.close();
   console.log(
-    "Nine tutorial steps, completion controls, mobile/desktop layout, French/Dutch locale forwarding and white-resource export passed.",
+    "Nine tutorial steps, completion controls, mobile/desktop layout, French/Dutch locale forwarding, fishing price and restored progress, and white-resource export passed.",
   );
 } finally {
   await browser.close();

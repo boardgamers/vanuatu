@@ -398,7 +398,7 @@
   "Sélectionné": "Selectat",
   "Terminé": "Terminat",
   "That move is not available": "Această mutare nu este disponibilă",
-  "The fish market falls after a sale and resets next round. Every 10 vatus automatically becomes 5 prosperity.": "Prețul peștelui scade după fiecare vânzare și revine la valoarea inițială în runda următoare. Fiecare 10 vatu se transformă automat în 5 prosperitate.",
+  "The fish price has dropped from 3 to 2 (top left of the board). It resets to 3 next round. Every 10 vatus automatically becomes 5 prosperity.": "Prețul peștelui a scăzut de la 3 la 2 (în stânga sus a tablei). Revine la 3 la începutul rundei următoare. Fiecare 10 vatu se transformă automat în 5 puncte de prosperitate.",
   "The game has ended": "Jocul s-a terminat",
   "The islands were submerged": "Insulele au fost scufundate",
   "The others have placed their markers. Reinforce an action or plan something new. An action can be performed once, however many markers you place there.": "Ceilalți și-au plasat marcatorii. Întărește o acțiune sau planifică ceva nou. O acțiune poate fi efectuată o singură dată, indiferent câți marcatori plasezi acolo.",
@@ -796,5 +796,6 @@
   "Not enough vatus.": "Nu ai destui vatu.",
   "If you cannot afford Build yet, you can choose another action where you have the majority and keep Build for later. Resolving Build now means retrieving its markers without building. If you have no majority anywhere, you must retrieve one stack without acting. When resolving an action you can perform, you must perform it.": "Dacă nu îți permiți încă să construiești, poți alege altă acțiune la care ai majoritatea și să păstrezi Construcția pentru mai târziu. Rezolvarea Construcției acum înseamnă să îți retragi pionii fără să construiești. Dacă nu ai majoritatea nicăieri, trebuie să retragi un teanc fără să acționezi. Când rezolvi o acțiune posibilă, trebuie să o efectuezi.",
   "Designed by {p0}": "Creat de {p0}",
-  "Published by {p0}": "Publicat de {p0}"
+  "Published by {p0}": "Publicat de {p0}",
+  "Fish price: {p0} vatus per fish value. Falls by 1 after each sale (minimum 1); resets to 3 next round.": "Prețul peștelui: {p0} vatu pentru fiecare punct din valoarea peștelui. Scade cu 1 după fiecare vânzare (minimum 1); revine la 3 la începutul rundei următoare."
 }
