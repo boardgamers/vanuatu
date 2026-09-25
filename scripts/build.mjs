@@ -27,5 +27,5 @@ for (const [entry, format] of [
   });
 await writeFile(
   "dist/index.html",
-  '<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Vanuatu · Private beta</title><link rel="stylesheet" href="preview.css"><body><div id="game"></div><script type="module" src="preview.js"></script></body></html>',
+  '<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Vanuatu · Local practice</title><link rel="stylesheet" href="preview.css"><body><div id="game"></div><script type="module" src="preview.js"></script></body></html>',
 );

@@ -41,7 +41,7 @@ if (params.has("lesson")) {
   const control = document.createElement("div");
   control.className = "preview-controls";
   control.innerHTML =
-    '<span>Local practice · private beta</span><button data-new>New game</button><label><input type="checkbox" data-hotseat> Every seat</label><button data-step>Bot move</button><button data-auto>Autoplay</button><label>Players <select data-count><option>2</option><option selected>3</option><option>4</option><option>5</option></select></label><label><input type="checkbox" data-water> Rising Waters</label>';
+    '<span>Local practice</span><button data-new>New game</button><label><input type="checkbox" data-hotseat> Every seat</label><button data-step>Bot move</button><button data-auto>Autoplay</button><label>Players <select data-count><option>2</option><option selected>3</option><option>4</option><option>5</option></select></label><label><input type="checkbox" data-water> Rising Waters</label>';
   document.body.prepend(control);
   control.querySelector("[data-count]").value = state.players.length;
   control.querySelector("[data-water]").checked = state.options.risingWaters;

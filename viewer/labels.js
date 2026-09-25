@@ -57,7 +57,6 @@ const entries = {
   zoom: ["Zoom board", "Agrandir le plateau"],
   colorBlind: ["Color symbols", "Symboles de couleur"],
   sound: ["Game sounds", "Sons du jeu"],
-  private: ["Private beta", "Bêta privée"],
   credit: ["Credits", "Crédits"],
   rules: ["Simplified rules", "Règles simplifiées"],
   original: ["Original rulebook", "Règles originales"],

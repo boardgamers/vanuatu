@@ -37,10 +37,36 @@ const browser = await chromium.launch({
     : {}),
 });
 const errors = [];
-const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+const page = await browser.newPage({
+  viewport: { width: 1440, height: 1000 },
+  locale: "fr-FR",
+});
 page.on("pageerror", (e) => errors.push(e.message));
 await page.goto(base + "/?new&hotseat");
 await page.waitForSelector("[data-character-choice]");
+// Browser language does not override the English default; an explicit choice persists.
+assert.equal(
+  await page.locator("[data-back] span").textContent(),
+  "Back to board",
+);
+await page.locator("[data-help]").first().click();
+await page.locator("[data-language]").selectOption("fr");
+assert.equal(
+  await page.locator("[data-back] span").textContent(),
+  "Retour au plateau",
+);
+await page.reload();
+await page.waitForSelector("[data-character-choice]");
+assert.equal(
+  await page.locator("[data-back] span").textContent(),
+  "Retour au plateau",
+);
+await page.locator("[data-help]").first().click();
+await page.locator("[data-language]").selectOption("en");
+assert.equal(
+  await page.locator("[data-back] span").textContent(),
+  "Back to board",
+);
 await page.locator("[data-character-choice]").first().click();
 assert.equal(await page.locator("dialog[open]").count(), 1);
 await page.locator("dialog [data-move]").click();

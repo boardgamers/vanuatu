@@ -1,17 +1,17 @@
-# Vanuatu private beta — implementation and open questions
+# Vanuatu beta — implementation and open questions
 
 25 September 2026 · Second edition, Quined Games (2016)
 
 ## Available
 
-- Private, unlisted [BGS game](https://boardgamers.space/boardgame/vanuatu), access granted to **coyotte508**.
-- Private [Codeberg repository](https://codeberg.org/boardgamers/vanuatu).
+- Listed beta [BGS game](https://boardgamers.space/boardgame/vanuatu), access granted to **coyotte508**.
+- Public [Codeberg repository](https://codeberg.org/boardgamers/vanuatu).
 - Local practice: `http://127.0.0.1:5246/` (start with `pnpm build && pnpm dev`).
 - Three guided lessons: planning, fishing/trade, and island development.
 
 The engine covers eight rounds, 2–5 players, all eleven characters, the official two-player rules, optional play without characters for 3–5 players, and Rising Waters. It automates setup, replenishment, income conversion, turn order, mandatory retrieval when no decision remains, floods and final scoring. Free treasure sales and the Beggar remain available out of turn.
 
-The viewer uses a large interactive map, a compact action dock and player supplies below the board. It supports tap-based mobile play, legal destination highlights, character bonuses, resource pictograms, shared sound/color-blind preferences, English/French game text, BGS chat with translation and editing, journal, replay, finished-game analysis, player hover cards, fullscreen and board-thumbnail rendering. Tutorial text is currently English.
+The viewer uses a large interactive map, a compact action dock and player supplies below the board. It supports tap-based mobile play, legal destination highlights, character bonuses, resource pictograms, shared sound/color-blind preferences, English game text by default, with an optional French translation, BGS chat with translation and editing, journal, replay, finished-game analysis, player hover cards, fullscreen and board-thumbnail rendering. Tutorial text is currently English.
 
 ## Points requiring publisher confirmation
 
@@ -52,7 +52,7 @@ The fixed starting island is additional to this table. Two tiles of each letter 
 - 22 focused engine/tutorial tests: majorities, prerequisites, optional powers, money conversion, two-player blocking, illegal-move immutability, hidden information, dropped players, deterministic replay, floods and complete tutorials.
 - 80 full simulated games (14,653 moves in the final sweep), across 2/3/4/5 players with and without Rising Waters. Both purposeful bots and varied legal choices exercise all nine actions and the Governor. These check termination, resource invariants and deterministic reconstruction; they do not establish strategic bot strength or resolve component discrepancies.
 - Browser checks at **1440 px** and **390 px**: all nine actions, planning, tile placement, final scores, no page-width overflow, color symbols, replay, analysis chat hiding, player hover, board thumbnails, chat scroll-to-bottom, translation controls and ↑ editing.
-- The installed production engine completed an eight-round bot game and reconstructed its history. The uploaded viewer is checked through a protocol harness. A signed-out browser correctly cannot open the private game; a real multi-account online session remains a useful beta playtest.
+- The installed production engine completed an eight-round bot game and reconstructed its history. The uploaded viewer is checked through a protocol harness. A real multi-account online session remains a useful beta playtest.
 
 ## Sources
 
@@ -64,4 +64,4 @@ Rules take precedence over artwork where they specify the behavior. Supplied com
 - [BGG second-edition page](https://boardgamegeek.com/boardgame/193927/vanuatu-second-edition), including its listing of the publisher’s corrected English rulebook. BGG’s direct page fetch was blocked, so no unverified forum clarification has been treated as authoritative.
 - [BGG discussion of fish sales and optional treasure sales](https://boardgamegeek.com/thread/1883649/fish-price-and-treasure), consistent with the English rulebook: the market decreases once per sale action; treasure liquidation is optional.
 
-Artwork remains the property of its rights holders. The private repository and beta are not permission to redistribute the supplied materials.
+Artwork remains the property of its rights holders. Public access to the repository does not grant a license to redistribute the supplied materials.

@@ -1,8 +1,8 @@
-# Vanuatu — Boardgamers private beta
+# Vanuatu — Boardgamers
 
 A board-first adaptation of Alain Epron's **Vanuatu**, second edition (Quined Games, 2016). Artwork by Konstantin Vohwinkel, supplied by the publisher for this adaptation.
 
-This repository and the BGS listing remain **private**. Supplied artwork and game materials remain the property of their respective rights holders; permission to use them for this adaptation is not a general redistribution license.
+The repository is public; the game is listed on BGS as a beta. Supplied artwork and game materials remain the property of their respective rights holders; permission to use them for this adaptation is not a general redistribution license.
 
 ## Development
 
@@ -23,6 +23,6 @@ Component uncertainties and implementation validation are recorded in the beta r
 
 Read [the beta report](docs/BETA-REPORT.md) before public release: the supplied ocean values and one outer board location still need confirmation. Bots are suitable for practice and automated coverage, not a claim of strong competitive play.
 
-Guided lessons are available locally at `/?lesson=planning`, `/?lesson=fishing` and `/?lesson=islands`. Add `?players=2&new`, `?water&new` or `?hotseat&new` for practice variants. Practice progress stays in this browser.
+Guided lessons are available locally at `/?lesson=planning`, `/?lesson=fishing` and `/?lesson=islands`. Add `?players=2&new`, `?water&new` or `?hotseat&new` for practice variants. Practice progress stays in this browser. The viewer defaults to English; French can be selected in Help or in the BGS game preferences.
 
-Release: `pnpm build && pnpm test && pnpm test:browser`, then `node scripts/publish-private.mjs`. The publisher reads the admin token from `~/.bgs`, keeps the version private and checks the unlisted flag. It refuses to overwrite a public version. `node test/simulations.mjs` runs the longer complete-game sweep.
+Release: `pnpm build && pnpm test && pnpm test:browser`, then `node scripts/publish-beta.mjs`. The publisher reads the admin token from `~/.bgs`, keeps the version in beta and ensures the game is listed. It refuses to overwrite a public version. `node test/simulations.mjs` runs the longer complete-game sweep.

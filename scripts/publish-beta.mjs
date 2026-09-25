@@ -25,26 +25,23 @@ async function api(path, method = "GET", body, contentType) {
 const versions = await api("/versions");
 const existing = versions.some((v) => v.version === 1) ? await api("/1") : null;
 if (existing?.public)
-  throw Error(
-    "Refusing to change a public release with the private-beta publisher.",
-  );
+  throw Error("Refusing to change a public release with the beta publisher.");
 const defaults = {
   public: false,
   meta: { botsPublic: true },
   label: "Vanuatu",
   players: [2, 3, 4, 5],
-  unlisted: true,
   description:
     "Compete for prosperity in a growing Pacific archipelago. Plan actions, sail, trade and welcome tourists. Includes all eleven characters, the official two-player variant and Rising Waters.",
   credits:
-    "Designed by **Alain Epron**. Artwork by **Konstantin Vohwinkel**; graphic design and rulebook by **Rafaël Theunis**.\n\n[Vanuatu — Quined Games, second edition (2016)](https://www.quined.nl/featured_item/vanuatu-2nd-edition/). Supplied artwork used with permission for this adaptation.\n\n[Source code (private beta)](https://codeberg.org/boardgamers/vanuatu).",
+    "Designed by **Alain Epron**. Artwork by **Konstantin Vohwinkel**; graphic design and rulebook by **Rafaël Theunis**.\n\n[Vanuatu — Quined Games, second edition (2016)](https://www.quined.nl/featured_item/vanuatu-2nd-edition/). Supplied artwork used with permission for this adaptation.\n\n[Source code](https://codeberg.org/boardgamers/vanuatu).",
   links: {
     source: "https://codeberg.org/boardgamers/vanuatu",
     publisher: "https://www.quined.nl/featured_item/vanuatu-2nd-edition/",
     bgg: "https://boardgamegeek.com/boardgame/193927/vanuatu-second-edition",
   },
   rules:
-    "[Original rules (English PDF)](https://www.quined.nl/wp-content/uploads/2019/01/Vanuatu_Rulebook_UK_WEBversion-4.pdf) · [Règles originales (PDF français)](https://quined.nl/wp-content/uploads/2019/01/Vanuatu_Rulebook_FR-WEBversion.pdf) · [Official two-player rules](https://quined.nl/wp-content/uploads/2017/06/Vanuatu2p_EN.pdf)\n\n**Eight rounds to prosper.** Choose a character, then place five action markers in batches of 2, 2 and 1. Resolve one action at a time where you have the most markers; ties follow player order. Retrieve all your markers from that action. With no majority, retrieve a stack without acting.\n\nSail to reach fish and treasure, or trade and build beside islands. Every 10 vatus becomes 5 prosperity immediately. At the end, remaining money and treasure score points; every hut earns 2 prosperity per tourist on its island. Most prosperity wins.",
+    "[Original rules (English PDF)](https://www.quined.nl/wp-content/uploads/2019/01/Vanuatu_Rulebook_UK_WEBversion-4.pdf) · [Official two-player rules](https://quined.nl/wp-content/uploads/2017/06/Vanuatu2p_EN.pdf)\n\n**Eight rounds to prosper.** Choose a character, then place five action markers in batches of 2, 2 and 1. Resolve one action at a time where you have the most markers; ties follow player order. Retrieve all your markers from that action. With no majority, retrieve a stack without acting.\n\nSail to reach fish and treasure, or trade and build beside islands. Every 10 vatus becomes 5 prosperity immediately. At the end, remaining money and treasure score points; every hut earns 2 prosperity per tourist on its island. Most prosperity wins.",
   viewer: {
     url: "",
     topLevelVariable: "vanuatu",
@@ -67,9 +64,8 @@ const defaults = {
       name: "language",
       label: "Language",
       type: "select",
-      default: "auto",
+      default: "en",
       items: [
-        { name: "auto", label: "Automatic" },
         { name: "en", label: "English" },
         { name: "fr", label: "Français" },
       ],
@@ -86,10 +82,7 @@ const defaults = {
   ],
   expansions: [{ name: "rising-waters", label: "Rising Waters" }],
 };
-if (!existing) {
-  const { unlisted, ...initial } = defaults;
-  await api("/1", "PUT", initial);
-}
+if (!existing) await api("/1", "PUT", defaults);
 await mkdir(".local/release", { recursive: true });
 if (existing)
   await writeFile(
@@ -125,8 +118,9 @@ const style = await api(
   css,
   "application/octet-stream",
 );
+const { unlisted: _unlisted, ...previous } = existing ?? {};
 await api("/1", "PUT", {
-  ...existing,
+  ...previous,
   ...defaults,
   engine: { ...engine.engine, entryPoint: "dist/engine.js" },
   viewer: {
@@ -135,7 +129,7 @@ await api("/1", "PUT", {
     dependencies: { scripts: [], stylesheets: [style.url] },
   },
 });
-await api("/meta", "PUT", { unlisted: true });
+await api("/meta", "PUT", { unlisted: null });
 await api(
   "/assets/cover?name=Vanuatu",
   "PUT",
@@ -148,7 +142,7 @@ if (!access.some((u) => u.username === "coyotte508"))
 const published = await api("/1"),
   meta = await api("/meta");
 assert.equal(published.public, false);
-assert.equal(meta.unlisted, true);
+assert.ok(!meta.unlisted);
 assert.equal(published.engine.package.version, pkg.version);
 assert.equal(published.viewer.chat, true);
 await writeFile(
@@ -157,8 +151,8 @@ await writeFile(
 );
 console.log(
   JSON.stringify({
-    private: !published.public,
-    unlisted: meta.unlisted,
+    beta: !published.public,
+    listed: !meta.unlisted,
     engine: published.engine.package.version,
     viewer: published.viewer.url,
     betaUsers: (await api("/beta-users")).map((u) => u.username),

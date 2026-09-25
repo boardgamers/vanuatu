@@ -40,8 +40,7 @@ export function mountGame(target, options = {}) {
     tile = null,
     bonus = true,
     zoom = false,
-    lang =
-      options.language ?? (navigator.language.startsWith("fr") ? "fr" : "en"),
+    lang = options.language ?? "en",
     colorBlind = false,
     sound = false,
     revision,
@@ -259,7 +258,7 @@ export function mountGame(target, options = {}) {
             .map((m) => m.cell)
         : actualTargets();
     play.innerHTML = `<header class="game-header"><div class="brand">${btn("Vanuatu", "data-boardgame", "wordmark")}<span>Alain Epron · Quined Games</span></div><div class="round-track" aria-label="${t("round")} ${s.round}/8">${Array.from({ length: 8 }, (_, i) => `<span class="${i + 1 === s.round ? "current" : i + 1 < s.round ? "past" : ""}">${i + 1}</span>`).join("")}</div><nav class="header-tools">${analysis || !options.chat ? "" : titled(t("chat"), `${icon("chat")}<span class="unread-badge" hidden></span>`, 'data-activity="chat"', "icon-button")}${titled(t("journal"), icon("journal"), 'data-activity="journal"', "icon-button")}${titled(t("help"), icon("help"), "data-help", "icon-button")}${titled(t("full"), icon("fullscreen"), "data-fullscreen", "icon-button")}</nav></header>
-  <div class="table">${dock()}<section class="sea-board" style="--ocean:url('${assets.ocean}')"><div class="sea-dashboard"><div class="market-info"><span title="${t("market")}">${icon("fish")} = ${token("coin", s.market)}</span><span title="${t("tourist")}">${token("tourist", s.tourists)}</span>${s.waterCountdown !== null ? `<span title="${t("waterLeft")}">${token("water", s.waterCountdown)}</span>` : ""}</div><div class="demand-ships" aria-label="${t("demand")}">${s.demands.map((d, i) => `<div class="demand-ship" title="${t("demand")} ${i + 1} · +2 ${t("point")}"><small>${i + 1}</small>${d.goods.map((g, j) => `<span class="${d.filled[j] ? "filled" : ""}">${icon(g)}${d.filled[j] ? icon("check") : ""}</span>`).join("")}${icon("buy")}</div>`).join("")}</div></div><div class="map-scroll ${zoom ? "zoomed" : ""}">${boardSvg(s, { player, colorBlind, selected, targets, hoverTile: s.phase === "expand" ? tile : null, t })}</div><div class="map-tools">${titled(zoom ? t("fit") : t("zoom"), icon(zoom ? "eye" : "zoom"), "data-zoom", "icon-button")}</div>${s.upcoming.length && s.phase !== "expand" ? `<div class="upcoming" title="${t("next")}">${s.upcoming.map((id) => `<img src="${assets[TILES[id].art]}" alt="${t(TILES[id].type === "island" ? "island" : "sea")}">`).join("")}</div>` : ""}${trayHtml}</section></div><section class="players">${s.players.map(playerCard).join("")}</section><footer class="play-footer"><span>${t("private")}</span><span title="${lang === "fr" ? "Conversion automatique" : "Automatic conversion"}">${token("coin", 10)} → ${token("point", 5)}</span>${btn(t("help"), "data-help", "text-button")}</footer>`;
+  <div class="table">${dock()}<section class="sea-board" style="--ocean:url('${assets.ocean}')"><div class="sea-dashboard"><div class="market-info"><span title="${t("market")}">${icon("fish")} = ${token("coin", s.market)}</span><span title="${t("tourist")}">${token("tourist", s.tourists)}</span>${s.waterCountdown !== null ? `<span title="${t("waterLeft")}">${token("water", s.waterCountdown)}</span>` : ""}</div><div class="demand-ships" aria-label="${t("demand")}">${s.demands.map((d, i) => `<div class="demand-ship" title="${t("demand")} ${i + 1} · +2 ${t("point")}"><small>${i + 1}</small>${d.goods.map((g, j) => `<span class="${d.filled[j] ? "filled" : ""}">${icon(g)}${d.filled[j] ? icon("check") : ""}</span>`).join("")}${icon("buy")}</div>`).join("")}</div></div><div class="map-scroll ${zoom ? "zoomed" : ""}">${boardSvg(s, { player, colorBlind, selected, targets, hoverTile: s.phase === "expand" ? tile : null, t })}</div><div class="map-tools">${titled(zoom ? t("fit") : t("zoom"), icon(zoom ? "eye" : "zoom"), "data-zoom", "icon-button")}</div>${s.upcoming.length && s.phase !== "expand" ? `<div class="upcoming" title="${t("next")}">${s.upcoming.map((id) => `<img src="${assets[TILES[id].art]}" alt="${t(TILES[id].type === "island" ? "island" : "sea")}">`).join("")}</div>` : ""}${trayHtml}</section></div><section class="players">${s.players.map(playerCard).join("")}</section><footer class="play-footer"><span title="${lang === "fr" ? "Conversion automatique" : "Automatic conversion"}">${token("coin", 10)} → ${token("point", 5)}</span>${btn(t("help"), "data-help", "text-button")}</footer>`;
     const newScroll = play.querySelector(".map-scroll");
     if (newScroll) {
       newScroll.scrollLeft = sx;
@@ -510,6 +509,7 @@ export function mountGame(target, options = {}) {
         closeDialog();
         activity.setLanguage(lang);
         render();
+        options.onPreference?.("language", lang);
       }
     },
     listener,
@@ -574,6 +574,7 @@ export function mountGame(target, options = {}) {
       if (["en", "fr"].includes(p.language)) {
         lang = p.language;
         t = translator(lang);
+        activity.setLanguage(lang);
       }
       render();
     },
