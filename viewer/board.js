@@ -5,11 +5,28 @@ export const center = (id) => {
   const [q, r] = id.split(",").map(Number);
   return { x: 355 + q * 162 - r * 81, y: 150 + r * 140.3 };
 };
-function hex(x, y, r = 94) {
-  return Array.from({ length: 6 }, (_, i) => {
-    const a = ((60 * i - 30) * Math.PI) / 180;
-    return `${x + Math.cos(a) * r},${y + Math.sin(a) * r}`;
-  }).join(" ");
+// Opposite sides share the same S-curve, so neighbouring tiles interlock.
+// Use the board spacing directly to keep their vertices and curves identical.
+function tilePath(x, y) {
+  const h = 140.3 / 3;
+  const vertices = [
+    [81, -h],
+    [81, h],
+    [0, 2 * h],
+    [-81, h],
+    [-81, -h],
+    [0, -2 * h],
+  ].map(([dx, dy]) => ({ x: x + dx, y: y + dy }));
+  let path = `M${vertices[0].x},${vertices[0].y}`;
+  for (let i = 0; i < 6; i++) {
+    const a = vertices[i],
+      b = vertices[(i + 1) % 6];
+    const dx = b.x - a.x,
+      dy = b.y - a.y;
+    const bend = 0.28;
+    path += `C${a.x + dx / 3 - dy * bend},${a.y + dy / 3 + dx * bend} ${a.x + (2 * dx) / 3 + dy * bend},${a.y + (2 * dy) / 3 - dx * bend} ${b.x},${b.y}`;
+  }
+  return path + "Z";
 }
 const symbols = ["●", "◆", "▲", "■", "✦"];
 function resourceBadge(x, y, items) {
@@ -47,7 +64,7 @@ export function boardSvg(
   const defs = all
     .map(
       (c) =>
-        `<clipPath id="cell-${c.q + 2}-${c.r}"><polygon points="${hex(c.x, c.y)}"/></clipPath>`,
+        `<clipPath id="cell-${c.q + 2}-${c.r}"><path d="${tilePath(c.x, c.y)}"/></clipPath>`,
     )
     .join("");
   let svg = `<svg class="archipelago" viewBox="${x0} ${y0} ${x1 - x0} ${y1 - y0}" role="group" aria-label="Vanuatu"><defs>${defs}<filter id="boat-shadow"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-opacity=".3"/></filter></defs>`;
@@ -56,11 +73,11 @@ export function boardSvg(
       legal = targetSet.has(c.id),
       spec = tile ? TILES[tile.id] : null;
     svg += `<g class="map-cell ${tile ? "occupied" : ""} ${legal ? "legal" : ""} ${selected === c.id ? "selected" : ""}" data-cell="${c.id}" ${legal ? `role="button" tabindex="0" aria-label="${esc(t(tile?.type === "island" ? "island" : "sea"))} ${c.id}"` : ""}>`;
-    svg += `<title>${esc(tile ? `${t(tile.type === "island" ? "island" : "sea")} · ${c.id}${tile.submerged ? ` · ${"Submerged"}` : ""}` : "Tile space")}</title><polygon class="cell-surface" points="${hex(c.x, c.y)}"/>`;
+    svg += `<title>${esc(tile ? `${t(tile.type === "island" ? "island" : "sea")} · ${c.id}${tile.submerged ? ` · ${"Submerged"}` : ""}` : "Tile space")}</title><path class="cell-surface" d="${tilePath(c.x, c.y)}"/>`;
     if (tile) {
       svg += `<image href="${boardArt(spec)}" x="${c.x - 111}" y="${c.y - 111}" width="222" height="222" clip-path="url(#cell-${c.q + 2}-${c.r})"/>`;
       if (tile.submerged) {
-        svg += `<polygon points="${hex(c.x, c.y)}" fill="#1c708ca6"/>${svgIcon("water", c.x - 25, c.y - 25, 50)}`;
+        svg += `<path d="${tilePath(c.x, c.y)}" fill="#1c708ca6"/>${svgIcon("water", c.x - 25, c.y - 25, 50)}`;
       } else if (tile.type === "sea") {
         const res = [
           ...(spec.fish ? [["fish", tile.fish]] : []),
@@ -80,6 +97,7 @@ export function boardSvg(
           );
       } else {
         const goods = Object.entries(tile.goods).filter(([, n]) => n > 0);
+        svg += '<g class="island-goods">';
         let j = 0;
         for (const [good, n] of goods)
           for (let k = 0; k < n; k++, j++)
@@ -88,12 +106,13 @@ export function boardSvg(
               c.x -
                 goods.reduce((sum, [, count]) => sum + count, 0) * 14 +
                 j * 28,
-              c.y + 48,
+              c.y + 34,
               29,
               "currentColor",
               `${label(good)} · ${"available to export"}`,
               colorBlind,
             );
+        svg += "</g>";
         const huts = tile.huts;
         for (let i = 0; i < spec.huts; i++) {
           const x = c.x - spec.huts * 16 + i * 32,
@@ -111,7 +130,7 @@ export function boardSvg(
             svg += `<text x="${x + 16}" y="${y + 26}" class="color-symbol">${symbols[huts[i]]}</text>`;
           svg += "</g>";
         }
-        svg += resourceBadge(c.x, c.y + 10, [
+        svg += resourceBadge(c.x, c.y + 4, [
           {
             kind: "tourist",
             value: `${tile.tourists}/${spec.tourists}`,
@@ -139,7 +158,7 @@ export function boardSvg(
       svg += `<image class="tile-ghost" href="${boardArt(TILES[hoverTile])}" x="${c.x - 103}" y="${c.y - 103}" width="206" height="206" clip-path="url(#cell-${c.q + 2}-${c.r})"/>`;
     if (!tile)
       svg += `<text x="${c.x}" y="${c.y + 7}" class="empty-label">${legal ? "+" : "·"}</text>`;
-    svg += `<polygon class="cell-ring" points="${hex(c.x, c.y, 92)}"/>`;
+    svg += `<path class="cell-ring" d="${tilePath(c.x, c.y)}"/>`;
     const boats = s.players
       .map((p, i) => ({ p, i }))
       .filter(({ p }) => p.boat === c.id);
