@@ -410,6 +410,9 @@
   display: flex;
   gap: 7px;
 }
+.vanuatu .demand-ships * {
+  pointer-events: none;
+}
 .vanuatu .demand-ship {
   background: #faf1cfdf;
   border: 1px solid #b7975c66;
