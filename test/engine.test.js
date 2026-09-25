@@ -1,0 +1,179 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import * as E from "../engine/index.js";
+function actionState(players = 3) {
+  const s = E.init(players, [], {}, "fixture");
+  s.phase = "actions";
+  s.actor = 0;
+  s.first = 0;
+  for (const p of s.players) {
+    p.character = null;
+    p.markers = Object.fromEntries(E.ACTIONS.map((a) => [a, 0]));
+    p.boat = "1,0";
+  }
+  s.board["1,0"] = E.tileState("startWreck");
+  s.players[0].markers.fish = 2;
+  s.players[1].markers.rest = 1;
+  return s;
+}
+const act = (s, p, action, fields = {}) =>
+  E.availableMoves(s, p).find(
+    (m) =>
+      m.action === action &&
+      Object.entries(fields).every(
+        ([k, v]) => JSON.stringify(m[k]) === JSON.stringify(v),
+      ),
+  );
+test("seeded setup, deck ordering and player counts", () => {
+  for (let n = 2; n <= 5; n++) {
+    const a = E.init(n, [], {}, "seed"),
+      b = E.init(n, [], {}, "seed");
+    assert.deepEqual(a, b);
+    assert.equal(a.upcoming[0][0], "a");
+    assert.equal(a.upcoming[1][0], "b");
+    assert.equal(Object.keys(a.board).length, 4);
+    assert.equal(a._touristDeck.length, 7);
+    assert.equal(a.players[0].money, 3);
+  }
+});
+test("majorities use turn order and all tokens are retrieved", () => {
+  let s = actionState();
+  s.players[1].markers.fish = 2;
+  s.first = 1;
+  assert.equal(E.majority(s, 0, "fish"), false);
+  s.first = 0;
+  assert.equal(E.majority(s, 0, "fish"), true);
+  s = E.move(s, act(s, 0, "fish"), 0);
+  assert.equal(s.players[0].markers.fish, 0);
+  assert.deepEqual(s.players[0].fish, [1]);
+  assert.equal(s.board["1,0"].fish, 0);
+});
+test("income converts immediately, and selling lowers the market once", () => {
+  let s = actionState();
+  s.players[0].markers = { ...s.players[0].markers, fish: 0, sell: 2 };
+  s.players[0].fish = [1, 2];
+  s.players[0].money = 3;
+  s.board["0,0"].huts = [0];
+  const m = act(s, 0, "sell", { fish: [1, 2] });
+  s = E.move(s, m, 0);
+  assert.equal(s.players[0].money, 2);
+  assert.equal(s.players[0].score, 5);
+  assert.equal(s.market, 2);
+});
+test("planning requires an achievable prerequisite and considers existing plans", () => {
+  const s = actionState();
+  s.players[0].markers.fish = 0;
+  s.players[0].money = 0;
+  assert.equal(E.canPlan(s, 0, "sell"), false);
+  s.players[0].markers.fish = 1;
+  s.players[0].markers.build = 1;
+  s.players[0].money = 3;
+  assert.equal(E.canPlan(s, 0, "sell"), true);
+});
+test("buyer exports to first demand and completion gives +2", () => {
+  let s = actionState();
+  s.players[0].markers.buy = 1;
+  s.players[0].markers.fish = 0;
+  s.players[0].character = "buyer";
+  s.demands = [
+    { id: 1, goods: ["kava", "kava"], filled: [false, false] },
+    { id: 2, goods: ["kava"], filled: [false] },
+  ];
+  s = E.move(
+    s,
+    act(s, 0, "buy", { cell: "0,0", good: "kava", bonus: true }),
+    0,
+  );
+  assert.deepEqual(s.demands[0].filled, [true, true]);
+  assert.deepEqual(s.demands[1].filled, [false]);
+  assert.equal(s.players[0].score, 4);
+});
+test("character is optional and a bonus is usable only once", () => {
+  let s = actionState();
+  s.players[0].character = "fisherman";
+  assert.ok(act(s, 0, "fish", { bonus: false }));
+  s = E.move(s, act(s, 0, "fish", { bonus: true }), 0);
+  assert.equal(s.players[0].score, 1);
+  assert.equal(s.players[0].used, true);
+});
+test("two-player neutral thresholds and matching character ties", () => {
+  const s = actionState(2);
+  s.neutral.fish = 2;
+  assert.equal(E.majority(s, 0, "fish"), false);
+  s.players[0].character = "fisherman";
+  assert.equal(E.majority(s, 0, "fish"), true);
+  s.players[0].used = true;
+  assert.equal(E.majority(s, 0, "fish"), true);
+});
+test("preacher can break a blocked turn but cannot ignore another majority", () => {
+  const s = actionState();
+  s.players[0].character = "preacher";
+  s.players[1].markers.fish = 3;
+  assert.ok(E.availableMoves(s, 0).some((m) => m.preach));
+  s.players[0].markers.rest = 2;
+  assert.ok(!E.availableMoves(s, 0).some((m) => m.preach));
+});
+test("governor transfers the entire stack and uses the turn", () => {
+  let s = actionState();
+  s.players[0].character = "governor";
+  s = E.move(s, { type: "governor", from: "fish", to: "explore" }, 0);
+  assert.equal(s.players[0].markers.explore, 2);
+  assert.equal(s.players[0].markers.fish, 0);
+  assert.equal(s.players[0].used, true);
+  assert.equal(s.actor, 1);
+});
+test("free treasure sales work out of turn and do not add clock increments", () => {
+  let s = actionState();
+  s.players[2].treasures = [2];
+  const inc = [...s.increments];
+  s = E.move(s, { type: "treasure", values: [2] }, 2);
+  assert.equal(s.players[2].money, 5);
+  assert.equal(s.actor, 0);
+  assert.deepEqual(s.increments, inc);
+});
+test("illegal moves cannot mutate the source state", () => {
+  const s = actionState(),
+    before = structuredClone(s);
+  assert.throws(() =>
+    E.move(
+      s,
+      { type: "act", action: "buy", good: "beef", cell: "0,0", bonus: false },
+      0,
+    ),
+  );
+  assert.deepEqual(s, before);
+});
+test("hidden deck, future RNG and rest choice are not exposed", () => {
+  const s = actionState();
+  s.players[1].rest = "first";
+  s.phase = "rest";
+  s.actor = 0;
+  const spectator = E.stripSecret(s);
+  assert.ok(!("_seed" in spectator));
+  assert.ok(!("_history" in spectator));
+  assert.ok(!("restAvailable" in spectator));
+  assert.equal(spectator.players[1].rest, "hidden");
+  assert.deepEqual(spectator.legal, []);
+  assert.ok(E.stripSecret(s, 0).restAvailable);
+});
+test("deterministic replay reconstructs every history boundary", () => {
+  let s = E.init(3, [], {}, "replay");
+  for (let n = 0; n < 14; n++) s = E.moveAI(s, s.actor);
+  for (let n = 1; n <= E.logLength(s); n++) {
+    const r = E.createAnalysis(s, { to: n });
+    assert.equal(E.logLength(r), n);
+    assert.deepEqual(
+      E.stripSecret(r, 0).board,
+      E.logSlice(s, { player: 0, start: n - 1, end: n - 1 }).frames[0].board,
+    );
+  }
+});
+test("Rising Waters floods after its action countdown and dikes protect edges", () => {
+  let s = actionState();
+  s.options.risingWaters = true;
+  s.waterCountdown = 1;
+  s.board["0,0"].dikes = ["1,0"];
+  s = E.move(s, act(s, 0, "fish"), 0);
+  assert.equal(s.board["0,0"].water, 2);
+  assert.equal(s.waterTriggered, true);
+});

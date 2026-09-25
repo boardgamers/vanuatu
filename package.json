@@ -1,0 +1,29 @@
+{
+  "name": "@boardgamers/vanuatu",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/engine.js",
+  "files": [
+    "dist/engine.js"
+  ],
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --test test/*.test.js",
+    "dev": "node scripts/dev.mjs",
+    "test:browser": "node test/browser.mjs"
+  },
+  "dependencies": {
+    "@boardgamers/protocol": "0.6.0",
+    "@noble/hashes": "2.0.1"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.12",
+    "playwright": "1.62.1",
+    "prettier": "3.6.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@codeberg.org/boardgamers/vanuatu.git"
+  }
+}
