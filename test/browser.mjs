@@ -44,6 +44,16 @@ const page = await browser.newPage({
 page.on("pageerror", (e) => errors.push(e.message));
 await page.goto(base + "/?new&hotseat");
 await page.waitForSelector("[data-character-choice]");
+// The overview remains reachable above the taller character-selection tray.
+for (const width of [390, 1440]) {
+  await page.setViewportSize({ width, height: 1000 });
+  await page.locator("[data-overview]").click();
+  assert.equal(
+    await page.locator("[data-overview]").getAttribute("aria-pressed"),
+    "true",
+  );
+  await page.locator("[data-overview]").click();
+}
 // Empty action stacks do not leave labels above their icons or shift columns.
 const actionLayout = await page
   .locator(".action-dock > button")
@@ -225,6 +235,48 @@ for (const width of [1440, 390]) {
     path: `.local/qa/actions-${width}.png`,
     fullPage: true,
   });
+  const closeView = await page.locator(".archipelago").getAttribute("viewBox");
+  const position = await page.evaluate(() =>
+    JSON.stringify(window.vanuatuDemo.state),
+  );
+  await page.locator("[data-overview]").click();
+  assert.equal(
+    await page.locator("[data-overview]").getAttribute("aria-pressed"),
+    "true",
+  );
+  assert.ok(
+    await page.locator(".archipelago").evaluate((svg) => {
+      const box = svg.viewBox.baseVal;
+      return [...svg.querySelectorAll(".cell-surface")].every((path) => {
+        const cell = path.getBBox();
+        return (
+          cell.x >= box.x &&
+          cell.y >= box.y &&
+          cell.x + cell.width <= box.x + box.width &&
+          cell.y + cell.height <= box.y + box.height
+        );
+      });
+    }),
+    "Overview must include every empty space",
+  );
+  assert.equal(await page.locator(".map-cell").count(), 16);
+  assert.equal(
+    await page.evaluate(() => JSON.stringify(window.vanuatuDemo.state)),
+    position,
+  );
+  await page.screenshot({
+    path: `.local/qa/overview-${width}.png`,
+    fullPage: true,
+  });
+  await page.locator("[data-overview]").click();
+  assert.equal(
+    await page.locator(".archipelago").getAttribute("viewBox"),
+    closeView,
+  );
+  await page.locator("[data-zoom]").click();
+  await page.locator("[data-overview]").click();
+  assert.equal(await page.locator(".map-scroll.zoomed").count(), 0);
+  await page.locator("[data-overview]").click();
   await page.locator("[data-help]").first().click();
   await page.locator('[data-pref="colorBlind"]').check();
   await page.locator("[data-close]").click();
@@ -370,7 +422,13 @@ assert.ok(
     (el) => Math.abs(el.scrollHeight - el.scrollTop - el.clientHeight) < 2,
   ),
 );
+await page.locator(".chat-composer input").focus();
 await page.locator(".chat-composer input").press("ArrowUp");
+await page.waitForFunction(
+  () =>
+    document.querySelector(".chat-composer input").value ===
+    "Practice message 79",
+);
 assert.equal(
   await page.locator(".chat-composer input").inputValue(),
   "Practice message 79",

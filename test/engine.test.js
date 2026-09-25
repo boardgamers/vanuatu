@@ -245,3 +245,50 @@ test("Governor marker movement does not perform an action or advance the flood d
   assert.equal(s.waterCountdown, 1);
   assert.equal(s.waterTriggered, false);
 });
+
+test("printed footprint has 4/5/6/1 cells and the bottom touches row-three spaces 2 and 3", () => {
+  const s = E.init(3, [], {}, "printed-board");
+  const rows = [0, 1, 2, 3].map((r) =>
+    E.boardCells(s).filter((c) => c.r === r),
+  );
+  assert.deepEqual(
+    rows.map((row) => row.length),
+    [4, 5, 6, 1],
+  );
+  assert.deepEqual(
+    E.neighbors(rows[3][0].id, s).sort(),
+    [rows[2][1].id, rows[2][2].id].sort(),
+  );
+  s.phase = "expand";
+  s.upcoming = ["startFish"];
+  s.board["3,1"] = E.tileState("a1");
+  s.board["3,2"] = E.tileState("startBoat");
+  assert.ok(E.placementOptions(s).some((m) => m.cell === "4,2"));
+  assert.ok(!E.placementOptions(s).some((m) => m.cell === "3,0"));
+  const old = structuredClone(s);
+  delete old.boardLayout;
+  assert.ok(!E.placementOptions(old).some((m) => m.cell === "4,2"));
+  assert.ok(E.boardCells(old).some((c) => c.id === "3,0"));
+});
+
+test("saved beta history replays on its original footprint", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const fixture = JSON.parse(
+    await readFile(
+      new URL("./fixtures/legacy-board.json", import.meta.url),
+      "utf8",
+    ),
+  );
+  const saved = {
+    _setup: fixture.setup,
+    _history: fixture.history,
+    _frames: Array(fixture.history.length + 1),
+    players: fixture.players,
+  };
+  const replayed = E.replay(saved);
+  assert.equal(replayed.boardLayout, 1);
+  assert.equal(replayed.finished, true);
+  assert.deepEqual(replayed.board, fixture.board);
+  assert.deepEqual(E.scores(replayed), fixture.scores);
+  assert.ok(E.stripSecret(replayed, 0).board["3,0"]);
+});

@@ -1,0 +1,1280 @@
+{
+  "setup": {
+    "count": 3,
+    "expansions": [],
+    "options": {},
+    "seed": "legacy-footprint"
+  },
+  "history": [
+    {
+      "p": 1,
+      "move": {
+        "type": "character",
+        "character": "navigator"
+      }
+    },
+    {
+      "p": 2,
+      "move": {
+        "type": "character",
+        "character": "builder"
+      }
+    },
+    {
+      "p": 0,
+      "move": {
+        "type": "character",
+        "character": "buyer"
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "plan",
+        "actions": ["build", "build"]
+      }
+    },
+    {
+      "p": 2,
+      "move": {
+        "type": "plan",
+        "actions": ["build", "build"]
+      }
+    },
+    {
+      "p": 0,
+      "move": {
+        "type": "plan",
+        "actions": ["buy", "buy"]
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "plan",
+        "actions": ["build", "build"]
+      }
+    },
+    {
+      "p": 2,
+      "move": {
+        "type": "plan",
+        "actions": ["build", "build"]
+      }
+    },
+    {
+      "p": 0,
+      "move": {
+        "type": "plan",
+        "actions": ["buy", "buy"]
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "plan",
+        "actions": ["build"]
+      }
+    },
+    {
+      "p": 2,
+      "move": {
+        "type": "plan",
+        "actions": ["build"]
+      }
+    },
+    {
+      "p": 0,
+      "move": {
+        "type": "plan",
+        "actions": ["buy"]
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "act",
+        "action": "build",
+        "bonus": false,
+        "cell": "0,0",
+        "hut": true
+      }
+    },
+    {
+      "p": 2,
+      "move": {
+        "type": "act",
+        "action": "build",
+        "bonus": true,
+        "cell": "0,0",
+        "hut": true
+      }
+    },
+    {
+      "p": 0,
+      "move": {
+        "type": "act",
+        "action": "buy",
+        "bonus": true,
+        "cell": "0,0",
+        "good": "kava"
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "place",
+        "tile": "a2",
+        "cell": "2,1"
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "place",
+        "tile": "b1",
+        "cell": "-1,0"
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "character",
+        "character": "artist"
+      }
+    },
+    {
+      "p": 2,
+      "move": {
+        "type": "character",
+        "character": "navigator"
+      }
+    },
+    {
+      "p": 0,
+      "move": {
+        "type": "character",
+        "character": "fisherman"
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "plan",
+        "actions": ["draw", "draw"]
+      }
+    },
+    {
+      "p": 2,
+      "move": {
+        "type": "plan",
+        "actions": ["sail", "explore"]
+      }
+    },
+    {
+      "p": 0,
+      "move": {
+        "type": "plan",
+        "actions": ["sail", "fish"]
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "plan",
+        "actions": ["draw", "draw"]
+      }
+    },
+    {
+      "p": 2,
+      "move": {
+        "type": "plan",
+        "actions": ["explore", "explore"]
+      }
+    },
+    {
+      "p": 0,
+      "move": {
+        "type": "plan",
+        "actions": ["fish", "fish"]
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "plan",
+        "actions": ["draw"]
+      }
+    },
+    {
+      "p": 2,
+      "move": {
+        "type": "plan",
+        "actions": ["explore"]
+      }
+    },
+    {
+      "p": 0,
+      "move": {
+        "type": "plan",
+        "actions": ["fish"]
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "act",
+        "action": "draw",
+        "bonus": true,
+        "cell": "2,1"
+      }
+    },
+    {
+      "p": 2,
+      "move": {
+        "type": "act",
+        "action": "sail",
+        "path": ["1,1"],
+        "bonus": true
+      }
+    },
+    {
+      "p": 0,
+      "move": {
+        "type": "act",
+        "action": "sail",
+        "path": ["1,1"],
+        "bonus": false
+      }
+    },
+    {
+      "p": 2,
+      "move": {
+        "type": "act",
+        "action": "explore",
+        "bonus": false
+      }
+    },
+    {
+      "p": 0,
+      "move": {
+        "type": "act",
+        "action": "fish",
+        "bonus": true
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "place",
+        "tile": "d1",
+        "cell": "-1,1"
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "place",
+        "tile": "c1",
+        "cell": "2,0"
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "character",
+        "character": "guide"
+      }
+    },
+    {
+      "p": 2,
+      "move": {
+        "type": "character",
+        "character": "diver"
+      }
+    },
+    {
+      "p": 0,
+      "move": {
+        "type": "character",
+        "character": "navigator"
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "plan",
+        "actions": ["tourist", "tourist"]
+      }
+    },
+    {
+      "p": 2,
+      "move": {
+        "type": "plan",
+        "actions": ["explore", "explore"]
+      }
+    },
+    {
+      "p": 0,
+      "move": {
+        "type": "plan",
+        "actions": ["explore", "explore"]
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "plan",
+        "actions": ["tourist", "tourist"]
+      }
+    },
+    {
+      "p": 2,
+      "move": {
+        "type": "plan",
+        "actions": ["explore", "explore"]
+      }
+    },
+    {
+      "p": 0,
+      "move": {
+        "type": "plan",
+        "actions": ["explore", "explore"]
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "plan",
+        "actions": ["tourist"]
+      }
+    },
+    {
+      "p": 2,
+      "move": {
+        "type": "plan",
+        "actions": ["explore"]
+      }
+    },
+    {
+      "p": 0,
+      "move": {
+        "type": "plan",
+        "actions": ["explore"]
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "act",
+        "action": "tourist",
+        "bonus": true,
+        "cell": "2,1"
+      }
+    },
+    {
+      "p": 2,
+      "move": {
+        "type": "act",
+        "action": "explore",
+        "bonus": true
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "place",
+        "tile": "e2",
+        "cell": "3,1"
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "place",
+        "tile": "f2",
+        "cell": "0,2"
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "character",
+        "character": "artist"
+      }
+    },
+    {
+      "p": 2,
+      "move": {
+        "type": "character",
+        "character": "builder"
+      }
+    },
+    {
+      "p": 0,
+      "move": {
+        "type": "character",
+        "character": "buyer"
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "plan",
+        "actions": ["draw", "draw"]
+      }
+    },
+    {
+      "p": 2,
+      "move": {
+        "type": "plan",
+        "actions": ["build", "build"]
+      }
+    },
+    {
+      "p": 0,
+      "move": {
+        "type": "plan",
+        "actions": ["buy", "buy"]
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "plan",
+        "actions": ["draw", "draw"]
+      }
+    },
+    {
+      "p": 2,
+      "move": {
+        "type": "plan",
+        "actions": ["build", "build"]
+      }
+    },
+    {
+      "p": 0,
+      "move": {
+        "type": "plan",
+        "actions": ["buy", "buy"]
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "plan",
+        "actions": ["draw"]
+      }
+    },
+    {
+      "p": 2,
+      "move": {
+        "type": "plan",
+        "actions": ["build"]
+      }
+    },
+    {
+      "p": 0,
+      "move": {
+        "type": "plan",
+        "actions": ["buy"]
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "act",
+        "action": "draw",
+        "bonus": true,
+        "cell": "2,1"
+      }
+    },
+    {
+      "p": 2,
+      "move": {
+        "type": "act",
+        "action": "build",
+        "bonus": true,
+        "cell": "2,1",
+        "hut": true
+      }
+    },
+    {
+      "p": 0,
+      "move": {
+        "type": "act",
+        "action": "buy",
+        "bonus": true,
+        "cell": "2,1",
+        "good": "kava"
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "place",
+        "tile": "a1",
+        "cell": "1,2"
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "place",
+        "tile": "b2",
+        "cell": "2,2"
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "character",
+        "character": "fisherman"
+      }
+    },
+    {
+      "p": 2,
+      "move": {
+        "type": "character",
+        "character": "navigator"
+      }
+    },
+    {
+      "p": 0,
+      "move": {
+        "type": "character",
+        "character": "artist"
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "plan",
+        "actions": ["draw", "draw"]
+      }
+    },
+    {
+      "p": 2,
+      "move": {
+        "type": "plan",
+        "actions": ["build", "build"]
+      }
+    },
+    {
+      "p": 0,
+      "move": {
+        "type": "plan",
+        "actions": ["draw", "draw"]
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "plan",
+        "actions": ["draw", "draw"]
+      }
+    },
+    {
+      "p": 2,
+      "move": {
+        "type": "plan",
+        "actions": ["build", "build"]
+      }
+    },
+    {
+      "p": 0,
+      "move": {
+        "type": "plan",
+        "actions": ["draw", "draw"]
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "plan",
+        "actions": ["draw"]
+      }
+    },
+    {
+      "p": 2,
+      "move": {
+        "type": "plan",
+        "actions": ["build"]
+      }
+    },
+    {
+      "p": 0,
+      "move": {
+        "type": "plan",
+        "actions": ["draw"]
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "act",
+        "action": "draw",
+        "bonus": false,
+        "cell": "0,0"
+      }
+    },
+    {
+      "p": 2,
+      "move": {
+        "type": "treasure",
+        "values": [1, 2]
+      }
+    },
+    {
+      "p": 2,
+      "move": {
+        "type": "act",
+        "action": "build",
+        "bonus": false,
+        "cell": "2,1",
+        "hut": true
+      }
+    },
+    {
+      "p": 0,
+      "move": {
+        "type": "act",
+        "action": "draw",
+        "bonus": true,
+        "cell": "1,2"
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "place",
+        "tile": "d2",
+        "cell": "3,0"
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "place",
+        "tile": "c2",
+        "cell": "-1,2"
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "character",
+        "character": "guide"
+      }
+    },
+    {
+      "p": 2,
+      "move": {
+        "type": "character",
+        "character": "buyer"
+      }
+    },
+    {
+      "p": 0,
+      "move": {
+        "type": "character",
+        "character": "fisherman"
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "plan",
+        "actions": ["tourist", "tourist"]
+      }
+    },
+    {
+      "p": 2,
+      "move": {
+        "type": "plan",
+        "actions": ["buy", "buy"]
+      }
+    },
+    {
+      "p": 0,
+      "move": {
+        "type": "plan",
+        "actions": ["draw", "draw"]
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "plan",
+        "actions": ["tourist", "tourist"]
+      }
+    },
+    {
+      "p": 2,
+      "move": {
+        "type": "plan",
+        "actions": ["buy", "buy"]
+      }
+    },
+    {
+      "p": 0,
+      "move": {
+        "type": "plan",
+        "actions": ["draw", "draw"]
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "plan",
+        "actions": ["tourist"]
+      }
+    },
+    {
+      "p": 2,
+      "move": {
+        "type": "plan",
+        "actions": ["buy"]
+      }
+    },
+    {
+      "p": 0,
+      "move": {
+        "type": "plan",
+        "actions": ["draw"]
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "act",
+        "action": "tourist",
+        "bonus": true,
+        "cell": "2,1"
+      }
+    },
+    {
+      "p": 2,
+      "move": {
+        "type": "act",
+        "action": "buy",
+        "bonus": true,
+        "cell": "2,1",
+        "good": "copra"
+      }
+    },
+    {
+      "p": 0,
+      "move": {
+        "type": "act",
+        "action": "draw",
+        "bonus": false,
+        "cell": "1,2"
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "place",
+        "tile": "e1",
+        "cell": "3,2"
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "place",
+        "tile": "f1",
+        "cell": "1,3"
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "character",
+        "character": "navigator"
+      }
+    },
+    {
+      "p": 2,
+      "move": {
+        "type": "character",
+        "character": "guide"
+      }
+    },
+    {
+      "p": 0,
+      "move": {
+        "type": "character",
+        "character": "builder"
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "plan",
+        "actions": ["sail", "explore"]
+      }
+    },
+    {
+      "p": 2,
+      "move": {
+        "type": "plan",
+        "actions": ["tourist", "tourist"]
+      }
+    },
+    {
+      "p": 0,
+      "move": {
+        "type": "plan",
+        "actions": ["tourist", "build"]
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "plan",
+        "actions": ["explore", "explore"]
+      }
+    },
+    {
+      "p": 2,
+      "move": {
+        "type": "plan",
+        "actions": ["tourist", "tourist"]
+      }
+    },
+    {
+      "p": 0,
+      "move": {
+        "type": "plan",
+        "actions": ["build", "build"]
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "plan",
+        "actions": ["explore"]
+      }
+    },
+    {
+      "p": 2,
+      "move": {
+        "type": "plan",
+        "actions": ["tourist"]
+      }
+    },
+    {
+      "p": 0,
+      "move": {
+        "type": "plan",
+        "actions": ["build"]
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "act",
+        "action": "sail",
+        "path": ["1,1", "0,1", "-1,0"],
+        "bonus": true
+      }
+    },
+    {
+      "p": 2,
+      "move": {
+        "type": "act",
+        "action": "tourist",
+        "bonus": true,
+        "cell": "2,1"
+      }
+    },
+    {
+      "p": 0,
+      "move": {
+        "type": "act",
+        "action": "tourist",
+        "bonus": false,
+        "cell": "2,1"
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "act",
+        "action": "explore",
+        "bonus": false
+      }
+    },
+    {
+      "p": 0,
+      "move": {
+        "type": "act",
+        "action": "build",
+        "bonus": true,
+        "cell": "2,1",
+        "hut": true
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "character",
+        "character": "fisherman"
+      }
+    },
+    {
+      "p": 2,
+      "move": {
+        "type": "character",
+        "character": "navigator"
+      }
+    },
+    {
+      "p": 0,
+      "move": {
+        "type": "character",
+        "character": "buyer"
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "plan",
+        "actions": ["fish", "fish"]
+      }
+    },
+    {
+      "p": 2,
+      "move": {
+        "type": "plan",
+        "actions": ["sail", "explore"]
+      }
+    },
+    {
+      "p": 0,
+      "move": {
+        "type": "plan",
+        "actions": ["buy", "buy"]
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "plan",
+        "actions": ["fish", "fish"]
+      }
+    },
+    {
+      "p": 2,
+      "move": {
+        "type": "plan",
+        "actions": ["explore", "explore"]
+      }
+    },
+    {
+      "p": 0,
+      "move": {
+        "type": "plan",
+        "actions": ["buy", "buy"]
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "plan",
+        "actions": ["fish"]
+      }
+    },
+    {
+      "p": 2,
+      "move": {
+        "type": "plan",
+        "actions": ["explore"]
+      }
+    },
+    {
+      "p": 0,
+      "move": {
+        "type": "plan",
+        "actions": ["buy"]
+      }
+    },
+    {
+      "p": 1,
+      "move": {
+        "type": "act",
+        "action": "fish",
+        "bonus": true
+      }
+    },
+    {
+      "p": 2,
+      "move": {
+        "type": "act",
+        "action": "sail",
+        "path": ["0,1", "-1,0"],
+        "bonus": true
+      }
+    },
+    {
+      "p": 0,
+      "move": {
+        "type": "act",
+        "action": "buy",
+        "bonus": true,
+        "cell": "2,1",
+        "good": "kava"
+      }
+    },
+    {
+      "p": 2,
+      "move": {
+        "type": "act",
+        "action": "explore",
+        "bonus": false
+      }
+    }
+  ],
+  "players": [
+    {
+      "name": "Player 1",
+      "dropped": false
+    },
+    {
+      "name": "Player 2",
+      "dropped": false
+    },
+    {
+      "name": "Player 3",
+      "dropped": false
+    }
+  ],
+  "board": {
+    "0,0": {
+      "id": "efate",
+      "type": "island",
+      "fish": 0,
+      "treasure": 0,
+      "goods": {
+        "kava": 0,
+        "copra": 1,
+        "beef": 1
+      },
+      "huts": [1, 2],
+      "drawings": 1,
+      "tourists": 0,
+      "water": 0,
+      "dikes": [],
+      "submerged": false
+    },
+    "1,0": {
+      "id": "startBoat",
+      "type": "sea",
+      "fish": 0,
+      "treasure": 0,
+      "goods": {},
+      "huts": [],
+      "drawings": 0,
+      "tourists": 0,
+      "water": 0,
+      "dikes": [],
+      "submerged": false
+    },
+    "0,1": {
+      "id": "startFish",
+      "type": "sea",
+      "fish": 2,
+      "treasure": 0,
+      "goods": {},
+      "huts": [],
+      "drawings": 0,
+      "tourists": 0,
+      "water": 0,
+      "dikes": [],
+      "submerged": false
+    },
+    "1,1": {
+      "id": "startWreck",
+      "type": "sea",
+      "fish": 0,
+      "treasure": 0,
+      "goods": {},
+      "huts": [],
+      "drawings": 0,
+      "tourists": 0,
+      "water": 0,
+      "dikes": [],
+      "submerged": false
+    },
+    "2,1": {
+      "id": "a2",
+      "type": "island",
+      "fish": 0,
+      "treasure": 0,
+      "goods": {
+        "kava": 0,
+        "copra": 1
+      },
+      "huts": [2, 2, 0],
+      "drawings": 2,
+      "tourists": 4,
+      "water": 0,
+      "dikes": [],
+      "submerged": false
+    },
+    "-1,0": {
+      "id": "b1",
+      "type": "sea",
+      "fish": 0,
+      "treasure": 1,
+      "goods": {},
+      "huts": [],
+      "drawings": 0,
+      "tourists": 0,
+      "water": 0,
+      "dikes": [],
+      "submerged": false
+    },
+    "-1,1": {
+      "id": "d1",
+      "type": "island",
+      "fish": 0,
+      "treasure": 0,
+      "goods": {
+        "kava": 2
+      },
+      "huts": [],
+      "drawings": 0,
+      "tourists": 0,
+      "water": 0,
+      "dikes": [],
+      "submerged": false
+    },
+    "2,0": {
+      "id": "c1",
+      "type": "sea",
+      "fish": 0,
+      "treasure": 0,
+      "goods": {},
+      "huts": [],
+      "drawings": 0,
+      "tourists": 0,
+      "water": 0,
+      "dikes": [],
+      "submerged": false
+    },
+    "3,1": {
+      "id": "e2",
+      "type": "sea",
+      "fish": 2,
+      "treasure": 0,
+      "goods": {},
+      "huts": [],
+      "drawings": 0,
+      "tourists": 0,
+      "water": 0,
+      "dikes": [],
+      "submerged": false
+    },
+    "0,2": {
+      "id": "f2",
+      "type": "sea",
+      "fish": 3,
+      "treasure": 0,
+      "goods": {},
+      "huts": [],
+      "drawings": 0,
+      "tourists": 0,
+      "water": 0,
+      "dikes": [],
+      "submerged": false
+    },
+    "1,2": {
+      "id": "a1",
+      "type": "island",
+      "fish": 0,
+      "treasure": 0,
+      "goods": {
+        "kava": 1,
+        "beef": 1
+      },
+      "huts": [],
+      "drawings": 2,
+      "tourists": 0,
+      "water": 0,
+      "dikes": [],
+      "submerged": false
+    },
+    "2,2": {
+      "id": "b2",
+      "type": "sea",
+      "fish": 3,
+      "treasure": 0,
+      "goods": {},
+      "huts": [],
+      "drawings": 0,
+      "tourists": 0,
+      "water": 0,
+      "dikes": [],
+      "submerged": false
+    },
+    "3,0": {
+      "id": "d2",
+      "type": "island",
+      "fish": 0,
+      "treasure": 0,
+      "goods": {
+        "kava": 1,
+        "copra": 1
+      },
+      "huts": [],
+      "drawings": 0,
+      "tourists": 0,
+      "water": 0,
+      "dikes": [],
+      "submerged": false
+    },
+    "-1,2": {
+      "id": "c2",
+      "type": "sea",
+      "fish": 1,
+      "treasure": 2,
+      "goods": {},
+      "huts": [],
+      "drawings": 0,
+      "tourists": 0,
+      "water": 0,
+      "dikes": [],
+      "submerged": false
+    },
+    "3,2": {
+      "id": "e1",
+      "type": "sea",
+      "fish": 0,
+      "treasure": 0,
+      "goods": {},
+      "huts": [],
+      "drawings": 0,
+      "tourists": 0,
+      "water": 0,
+      "dikes": [],
+      "submerged": false
+    },
+    "1,3": {
+      "id": "f1",
+      "type": "sea",
+      "fish": 3,
+      "treasure": 1,
+      "goods": {},
+      "huts": [],
+      "drawings": 0,
+      "tourists": 0,
+      "water": 0,
+      "dikes": [],
+      "submerged": false
+    }
+  },
+  "scores": [24, 30, 30]
+}

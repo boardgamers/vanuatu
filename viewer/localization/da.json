@@ -789,5 +789,7 @@
   "You cannot simply wait. If you have no majority anywhere, remove one of your stacks without acting. If you have a majority but that action is impossible, remove that stack too. You must perform a possible action when resolving its stack.": "Du må ikke bare vente. Har du intet flertal nogen steder, skal du fjerne en af dine stakke uden at handle. Har du flertallet, men handlingen er umulig, skal du også fjerne den stak. Når du afvikler en stak, skal du udføre handlingen, hvis den er mulig.",
   "Finish your planned actions": "Afslut dine planlagte handlinger",
   "Resolve your remaining stacks. Watch which actions become available when opponents remove theirs. Planning an action does not guarantee it: someone may take the last fish or use the last space first.": "Afvikl dine resterende stakke. Hold øje med, hvilke handlinger der bliver tilgængelige, når modstanderne fjerner deres markører. En planlagt handling er ikke garanteret: nogen kan tage den sidste fisk eller den sidste plads før dig.",
-  "Spread your markers for more actions, or stack them for priority. Plan prerequisites first, then choose your action order as the round unfolds.": "Spred markørerne for flere handlinger, eller saml dem i stakke for prioritet. Planlæg forudsætningerne, og vælg så rækkefølgen af dine handlinger undervejs i runden."
+  "Spread your markers for more actions, or stack them for priority. Plan prerequisites first, then choose your action order as the round unfolds.": "Spred markørerne for flere handlinger, eller saml dem i stakke for prioritet. Planlæg forudsætningerne, og vælg så rækkefølgen af dine handlinger undervejs i runden.",
+  "Show full board": "Vis hele brættet",
+  "Focus on placed tiles": "Fokusér på lagte brikker"
 }

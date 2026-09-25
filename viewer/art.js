@@ -7,7 +7,7 @@ export const esc = (x) =>
       ],
   );
 const paths = {
-  sail: '<path d="M3 17h26l-5 8H9z" fill="currentColor"/><path d="M16 3v13H5z" fill="#f8e3a4" stroke="currentColor"/><path d="M18 4v12h9z" fill="#fcf5df" stroke="currentColor"/>',
+  sail: '<path d="M12 3Q24 6 28 19L12 21Z" fill="currentColor" stroke="#244e53" stroke-width=".8"/><path d="M11 2v21M11 5v14" fill="none" stroke="#244e53" stroke-width="1.4"/><path d="m3 24 27-5-7 10H10Z" fill="currentColor" stroke="#244e53" stroke-width=".8"/><path d="m5 24 23-4" fill="none" stroke="#fff5d5" stroke-width="1.2"/>',
   fish: '<path d="M4 16C10 4 21 5 26 12l5-5v18l-5-5C18 28 10 27 4 16Z" fill="#df83a4" stroke="#a6426a"/><circle cx="10" cy="14" r="1.5" fill="#713847"/>',
   sell: '<path d="M3 10h26l-2 17H5z" fill="#d3a163" stroke="#754627"/><path d="M8 5h16l4 6H4z" fill="#f4bc65"/><path d="M8 16h16M8 21h16" stroke="#805938"/>',
   explore:
@@ -39,6 +39,8 @@ const paths = {
   colorBlind:
     '<g transform="scale(1.25)" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="6" cy="7" r="4"/><path d="m17 3 5 9H12Z"/><rect x="3" y="15" width="8" height="7" rx="1"/><path d="m18 15 4 4-4 4-4-4Z"/></g>',
   help: '<circle cx="16" cy="16" r="13" fill="none" stroke="currentColor" stroke-width="2"/><path d="M11 10c0-6 13-6 12 1 0 4-7 4-7 8M16 23v2" fill="none" stroke="currentColor" stroke-width="2.5"/>',
+  overview:
+    '<path d="M3 11V3h8m10 0h8v8M3 21v8h8m10 0h8v-8" fill="none" stroke="currentColor" stroke-width="2"/><path d="m16 7 8 5v9l-8 5-8-5v-9Z" fill="none" stroke="currentColor" stroke-width="2"/>',
   fullscreen:
     '<path d="M3 12V3h9m8 0h9v9M3 20v9h9m8 0h9v-9" fill="none" stroke="currentColor" stroke-width="2.5"/>',
   close:

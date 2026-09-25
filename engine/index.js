@@ -9,7 +9,7 @@ import {
   REST,
   TILES,
   DEMANDS,
-  CELLS,
+  boardCells,
   START_CELLS,
   neighbors,
   tileState,
@@ -56,7 +56,7 @@ function pay(s, p, n) {
   s.players[p].money -= n;
 }
 function adjacentIslands(s, p) {
-  return neighbors(s.players[p].boat).filter(
+  return neighbors(s.players[p].boat, s).filter(
     (c) => s.board[c]?.type === "island" && !s.board[c].submerged,
   );
 }
@@ -77,6 +77,9 @@ function saveFrame(s) {
   s._frames.push(capture(s));
 }
 export function init(count, expansions = [], options = {}, seed = "vanuatu") {
+  return initialize(count, expansions, options, seed, 2);
+}
+function initialize(count, expansions, options, seed, boardLayout) {
   check(
     Number.isInteger(count) && count >= 2 && count <= 5,
     "Vanuatu is for 2–5 players",
@@ -87,6 +90,7 @@ export function init(count, expansions = [], options = {}, seed = "vanuatu") {
   );
   const s = {
     version: 1,
+    boardLayout,
     round: 1,
     phase: "character",
     actor: 0,
@@ -241,7 +245,7 @@ export function sailOptions(s, p, bonus = false) {
       }
     }
     if (path.length === max) return;
-    for (const next of neighbors(c)) {
+    for (const next of neighbors(c, s)) {
       if (s.board[next]?.type === "sea" && !s.board[next].submerged)
         visit(next, [...path, next]);
     }
@@ -285,7 +289,7 @@ export function actionOptions(s, p, action) {
             a.money >= (bonus ? 1 : 3);
           if (hut) out.push({ ...base, cell, hut: true });
           if (s.options.risingWaters && s.dikesLeft && a.money >= 1)
-            for (const edge of neighbors(cell).filter(
+            for (const edge of neighbors(cell, s).filter(
               (c) =>
                 s.board[c]?.type === "sea" &&
                 !s.board[c].submerged &&
@@ -527,13 +531,16 @@ function canPlanUncached(s, p, target, markers) {
 }
 export function placementOptions(s) {
   const candidates = s.upcoming.flatMap((id) =>
-    CELLS.filter(
-      (c) =>
-        !s.board[c.id] && neighbors(c.id).filter((n) => s.board[n]).length >= 2,
-    ).map((c) => ({ type: "place", tile: id, cell: c.id })),
+    boardCells(s)
+      .filter(
+        (c) =>
+          !s.board[c.id] &&
+          neighbors(c.id, s).filter((n) => s.board[n]).length >= 2,
+      )
+      .map((c) => ({ type: "place", tile: id, cell: c.id })),
   );
   const strict = candidates.filter((m) => {
-    const adj = neighbors(m.cell)
+    const adj = neighbors(m.cell, s)
       .map((c) => s.board[c])
       .filter(Boolean);
     return TILES[m.tile].type === "island"
@@ -672,7 +679,7 @@ function flood(s) {
   say(s, "flood");
   for (const [cell, t] of Object.entries(s.board)) {
     if (t.type !== "island" || t.submerged) continue;
-    const n = neighbors(cell).filter(
+    const n = neighbors(cell, s).filter(
       (c) =>
         s.board[c]?.type === "sea" &&
         !s.board[c].submerged &&
@@ -1019,7 +1026,13 @@ export function replay(s, { to = logLength(s) } = {}) {
     "Invalid replay position",
   );
   const b = s._setup;
-  let r = init(b.count, b.expansions, b.options, b.seed);
+  let r = initialize(
+    b.count,
+    b.expansions,
+    b.options,
+    b.seed,
+    s.boardLayout ?? 1,
+  );
   for (const h of s._history.slice(0, to - 1)) r = applyMove(r, h.move, h.p);
   s.players.forEach((p, i) => {
     r.players[i].name = p.name;
@@ -1042,7 +1055,7 @@ function chooseAI(s, p) {
       return a.money < 3 ? sum(m.values) * 0.5 - 1 : -30;
     if (m.type === "beg") return a.money < 3 ? 1 : -30;
     if (m.type === "place") {
-      const adj = neighbors(m.cell)
+      const adj = neighbors(m.cell, s)
         .map((c) => s.board[c])
         .filter(Boolean);
       return TILES[m.tile].type === "island"
@@ -1112,7 +1125,7 @@ function chooseAI(s, p) {
     if (m.action === "sail") {
       const cell = m.path.at(-1),
         t = s.board[cell];
-      const lands = neighbors(cell)
+      const lands = neighbors(cell, s)
         .map((c) => s.board[c])
         .filter((t) => t?.type === "island" && !t.submerged);
       return (

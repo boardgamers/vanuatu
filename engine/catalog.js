@@ -89,7 +89,6 @@ export const CELLS = [
   [0, 0],
   [1, 0],
   [2, 0],
-  [3, 0],
   [-1, 1],
   [0, 1],
   [1, 1],
@@ -100,8 +99,14 @@ export const CELLS = [
   [1, 2],
   [2, 2],
   [3, 2],
+  [4, 2],
   [1, 3],
 ].map(([q, r]) => ({ id: `${q},${r}`, q, r }));
+// Preserve the provisional footprint for saved beta games and their replays.
+const LEGACY_CELLS = CELLS.filter(({ id }) => id !== "4,2");
+LEGACY_CELLS.splice(4, 0, { id: "3,0", q: 3, r: 0 });
+export const boardCells = (state) =>
+  state && state.boardLayout !== 2 ? LEGACY_CELLS : CELLS;
 export const DIRECTIONS = [
   [1, 0],
   [1, 1],
@@ -111,10 +116,10 @@ export const DIRECTIONS = [
   [0, -1],
 ];
 export const START_CELLS = ["1,0", "0,1", "1,1"];
-export function neighbors(id) {
+export function neighbors(id, state) {
   const [q, r] = id.split(",").map(Number);
   return DIRECTIONS.map(([a, b]) => `${q + a},${r + b}`).filter((c) =>
-    CELLS.some((x) => x.id === c),
+    boardCells(state).some((x) => x.id === c),
   );
 }
 export function tileState(id) {

@@ -789,5 +789,7 @@
   "You cannot simply wait. If you have no majority anywhere, remove one of your stacks without acting. If you have a majority but that action is impossible, remove that stack too. You must perform a possible action when resolving its stack.": "आप बस इंतज़ार नहीं कर सकते। यदि कहीं भी आपकी बढ़त नहीं है, तो बिना क्रिया किए अपना एक ढेर हटाएँ। बढ़त होने पर भी यदि क्रिया असंभव है, तो वह ढेर भी हटाएँ। किसी ढेर को निपटाते समय उसकी क्रिया संभव हो, तो उसे करना अनिवार्य है।",
   "Finish your planned actions": "नियोजित क्रियाएँ पूरी करें",
   "Resolve your remaining stacks. Watch which actions become available when opponents remove theirs. Planning an action does not guarantee it: someone may take the last fish or use the last space first.": "अपने बचे हुए ढेर निपटाएँ। देखें कि विरोधियों के मार्कर हटने से कौन-सी क्रियाएँ उपलब्ध होती हैं। क्रिया की योजना बना लेना उसकी गारंटी नहीं है: कोई पहले ही आखिरी मछली ले सकता है या आखिरी जगह भर सकता है।",
-  "Spread your markers for more actions, or stack them for priority. Plan prerequisites first, then choose your action order as the round unfolds.": "अधिक क्रियाओं के लिए मार्कर फैलाएँ, या प्राथमिकता के लिए ढेर बनाएँ। आवश्यक शर्तों की योजना बनाएँ, फिर दौर की स्थिति के अनुसार क्रियाओं का क्रम चुनें।"
+  "Spread your markers for more actions, or stack them for priority. Plan prerequisites first, then choose your action order as the round unfolds.": "अधिक क्रियाओं के लिए मार्कर फैलाएँ, या प्राथमिकता के लिए ढेर बनाएँ। आवश्यक शर्तों की योजना बनाएँ, फिर दौर की स्थिति के अनुसार क्रियाओं का क्रम चुनें।",
+  "Show full board": "पूरा बोर्ड दिखाएँ",
+  "Focus on placed tiles": "रखी हुई टाइलों पर केंद्रित करें"
 }

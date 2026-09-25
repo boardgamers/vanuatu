@@ -789,5 +789,7 @@
   "You cannot simply wait. If you have no majority anywhere, remove one of your stacks without acting. If you have a majority but that action is impossible, remove that stack too. You must perform a possible action when resolving its stack.": "Non puoi semplicemente aspettare. Se non hai la maggioranza da nessuna parte, rimuovi una delle tue pile senza agire. Se hai la maggioranza ma l’azione è impossibile, rimuovi anche quella pila. Quando risolvi una pila, devi eseguire l’azione se è possibile.",
   "Finish your planned actions": "Completa le azioni pianificate",
   "Resolve your remaining stacks. Watch which actions become available when opponents remove theirs. Planning an action does not guarantee it: someone may take the last fish or use the last space first.": "Risolvi le pile rimaste. Osserva quali azioni diventano disponibili quando gli avversari rimuovono i loro segnalini. Pianificare un’azione non la garantisce: qualcuno potrebbe prendere prima l’ultimo pesce o l’ultimo posto.",
-  "Spread your markers for more actions, or stack them for priority. Plan prerequisites first, then choose your action order as the round unfolds.": "Distribuisci i segnalini per più azioni o impilali per la priorità. Pianifica i prerequisiti, poi scegli l’ordine delle azioni durante il round."
+  "Spread your markers for more actions, or stack them for priority. Plan prerequisites first, then choose your action order as the round unfolds.": "Distribuisci i segnalini per più azioni o impilali per la priorità. Pianifica i prerequisiti, poi scegli l’ordine delle azioni durante il round.",
+  "Show full board": "Mostra tutto il tabellone",
+  "Focus on placed tiles": "Centra sulle tessere piazzate"
 }

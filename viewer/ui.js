@@ -47,6 +47,7 @@ export function mountGame(target, options = {}) {
     tile = null,
     bonus = true,
     zoom = false,
+    overview = false,
     lang = resolveLocale(options.language ?? "en"),
     hostedLocale = false,
     colorBlind = false,
@@ -66,6 +67,17 @@ export function mountGame(target, options = {}) {
   const moveSound = createMoveSound();
   const events = new AbortController();
   const listener = { signal: events.signal };
+  const trayObserver = new ResizeObserver(([entry]) => {
+    entry.target.parentElement?.style.setProperty(
+      "--tray-height",
+      `${entry.target.getBoundingClientRect().height}px`,
+    );
+  });
+  function observeTray() {
+    trayObserver.disconnect();
+    const tray = play.querySelector(".turn-tray");
+    if (tray) trayObserver.observe(tray);
+  }
   const activity = mountActivity(root.querySelector(".activity-root"), {
     chat: options.chat,
     openPlayer: options.onOpenPlayer,
@@ -285,6 +297,7 @@ export function mountGame(target, options = {}) {
     const focus = document.activeElement?.getAttribute("data-action");
     play.querySelector(".action-dock").outerHTML = dock();
     play.querySelector(".turn-tray").outerHTML = tray();
+    observeTray();
     if (focus)
       play
         .querySelector(`[data-action="${focus}"]`)
@@ -309,7 +322,8 @@ export function mountGame(target, options = {}) {
             .map((m) => m.cell)
         : actualTargets();
     play.innerHTML = `<header class="game-header"><div class="brand">${btn("🏝️ Vanuatu", "data-boardgame", "wordmark")}<span>Alain Epron · Quined Games</span></div><div class="round-track" aria-label="${t("round")} ${s.round}/8">${Array.from({ length: 8 }, (_, i) => `<span title="${t("round")} ${i + 1}/8" class="${i + 1 === s.round ? "current" : i + 1 < s.round ? "past" : ""}">${i + 1}</span>`).join("")}</div><nav class="header-tools">${analysis || !options.chat ? "" : titled(t("chat"), `${icon("chat")}<span class="unread-badge" hidden></span>`, 'data-activity="chat"', "icon-button")}${titled(t("journal"), icon("journal"), 'data-activity="journal"', "icon-button")}${titled(t("colorBlind"), icon("colorBlind"), `data-color-blind aria-pressed="${colorBlind}"`, "icon-button")}${titled(t("help"), icon("help"), "data-help", "icon-button")}${titled(t("full"), icon("fullscreen"), "data-fullscreen", "icon-button")}</nav></header>
-  <div class="table">${dock()}<section class="sea-board" style="--ocean:url('${assets.ocean}')"><div class="sea-dashboard"><div class="market-info"><span title="${t("market")}">${icon("fish", t("market"))} = ${token("coin", s.market, `${t("market")}: ${s.market} ${"vatus per fish value"}`)}</span><span title="${t("tourist")}">${token("tourist", s.tourists, `${"Tourists available this round"}: ${s.tourists}`)}</span>${s.waterCountdown !== null ? `<span title="${t("waterLeft")}">${token("water", s.waterCountdown, `${t("waterLeft")}: ${s.waterCountdown}`)}</span>` : ""}</div>${tradeShips()}</div><div class="map-scroll ${zoom ? "zoomed" : ""}">${boardSvg(s, { player, colorBlind, language: lang, selected, targets, hoverTile: s.phase === "expand" ? tile : null, t })}</div><div class="map-tools">${titled(zoom ? t("fit") : t("zoom"), icon(zoom ? "eye" : "zoom"), "data-zoom", "icon-button")}</div>${s.upcoming.length && s.phase !== "expand" ? `<div class="upcoming" title="${t("next")}">${s.upcoming.map((id) => `<img src="${assets[TILES[id].art]}" alt="${t(TILES[id].type === "island" ? "island" : "sea")}">`).join("")}</div>` : ""}${trayHtml}</section></div><section class="players">${s.players.map(playerCard).join("")}</section><footer class="play-footer"><span title="${"Automatic conversion"}">${token("coin", 10)} → ${token("point", 5)}</span>${btn(t("help"), "data-help", "text-button")}</footer>`;
+  <div class="table">${dock()}<section class="sea-board" style="--ocean:url('${assets.ocean}')"><div class="sea-dashboard"><div class="market-info"><span title="${t("market")}">${icon("fish", t("market"))} = ${token("coin", s.market, `${t("market")}: ${s.market} ${"vatus per fish value"}`)}</span><span title="${t("tourist")}">${token("tourist", s.tourists, `${"Tourists available this round"}: ${s.tourists}`)}</span>${s.waterCountdown !== null ? `<span title="${t("waterLeft")}">${token("water", s.waterCountdown, `${t("waterLeft")}: ${s.waterCountdown}`)}</span>` : ""}</div>${tradeShips()}</div><div class="map-scroll ${zoom ? "zoomed" : ""}">${boardSvg(s, { player, colorBlind, overview, language: lang, selected, targets, hoverTile: s.phase === "expand" ? tile : null, t })}</div><div class="map-tools">${titled(overview ? "Focus on placed tiles" : "Show full board", icon("overview"), `data-overview aria-pressed="${overview}"`, "icon-button")}${titled(zoom ? t("fit") : t("zoom"), icon(zoom ? "eye" : "zoom"), "data-zoom", "icon-button")}</div>${s.upcoming.length && s.phase !== "expand" ? `<div class="upcoming" title="${t("next")}">${s.upcoming.map((id) => `<img src="${assets[TILES[id].art]}" alt="${t(TILES[id].type === "island" ? "island" : "sea")}">`).join("")}</div>` : ""}${trayHtml}</section></div><section class="players">${s.players.map(playerCard).join("")}</section><footer class="play-footer"><span title="${"Automatic conversion"}">${token("coin", 10)} → ${token("point", 5)}</span>${btn(t("help"), "data-help", "text-button")}</footer>`;
+    observeTray();
     const newScroll = play.querySelector(".map-scroll");
     if (newScroll) {
       newScroll.scrollLeft = sx;
@@ -444,9 +458,18 @@ export function mountGame(target, options = {}) {
         render();
         return;
       }
+      if ("overview" in d) {
+        overview = !overview;
+        zoom = false;
+        render();
+        play.querySelector("[data-overview]").focus({ preventScroll: true });
+        return;
+      }
       if ("zoom" in d) {
         zoom = !zoom;
+        if (zoom) overview = false;
         render();
+        play.querySelector("[data-zoom]").focus({ preventScroll: true });
         return;
       }
       if ("characterChoice" in d) {
@@ -652,6 +675,7 @@ export function mountGame(target, options = {}) {
     },
     destroy() {
       events.abort();
+      trayObserver.disconnect();
       moveSound.destroy();
       offChat?.();
       activity.destroy();

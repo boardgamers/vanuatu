@@ -789,5 +789,7 @@
   "You cannot simply wait. If you have no majority anywhere, remove one of your stacks without acting. If you have a majority but that action is impossible, remove that stack too. You must perform a possible action when resolving its stack.": "Je mag niet gewoon wachten. Heb je nergens de meerderheid, haal dan één van je stapels weg zonder actie. Heb je de meerderheid maar is de actie onmogelijk, haal die stapel dan ook weg. Bij het afhandelen van een stapel moet je de actie uitvoeren als die mogelijk is.",
   "Finish your planned actions": "Rond je geplande acties af",
   "Resolve your remaining stacks. Watch which actions become available when opponents remove theirs. Planning an action does not guarantee it: someone may take the last fish or use the last space first.": "Handel je resterende stapels af. Let op welke acties beschikbaar komen wanneer tegenstanders hun markers weghalen. Een geplande actie is niet gegarandeerd: iemand kan eerder de laatste vis of de laatste plek nemen.",
-  "Spread your markers for more actions, or stack them for priority. Plan prerequisites first, then choose your action order as the round unfolds.": "Verspreid je markers voor meer acties of stapel ze voor voorrang. Plan wat je vooraf nodig hebt en bepaal de volgorde van je acties tijdens de ronde."
+  "Spread your markers for more actions, or stack them for priority. Plan prerequisites first, then choose your action order as the round unfolds.": "Verspreid je markers voor meer acties of stapel ze voor voorrang. Plan wat je vooraf nodig hebt en bepaal de volgorde van je acties tijdens de ronde.",
+  "Show full board": "Toon het hele speelbord",
+  "Focus on placed tiles": "Richt op geplaatste tegels"
 }

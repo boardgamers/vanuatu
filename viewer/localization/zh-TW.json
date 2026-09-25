@@ -789,5 +789,7 @@
   "You cannot simply wait. If you have no majority anywhere, remove one of your stacks without acting. If you have a majority but that action is impossible, remove that stack too. You must perform a possible action when resolving its stack.": "你不能只是等待。若所有行動都沒有數量優勢，就收回自己的一疊標記，不執行行動。若有數量優勢但行動無法執行，也要收回那疊標記。結算一疊標記時，只要行動可執行，就必須執行。",
   "Finish your planned actions": "完成規劃的行動",
   "Resolve your remaining stacks. Watch which actions become available when opponents remove theirs. Planning an action does not guarantee it: someone may take the last fish or use the last space first.": "結算剩餘的標記堆。注意對手收回標記後，哪些行動變得可用。規劃不保證能執行：有人可能先捕走最後的魚，或佔用最後的空位。",
-  "Spread your markers for more actions, or stack them for priority. Plan prerequisites first, then choose your action order as the round unfolds.": "分散標記以執行更多行動，或堆疊以爭取優先權。先考慮必要條件，再隨回合變化決定行動順序。"
+  "Spread your markers for more actions, or stack them for priority. Plan prerequisites first, then choose your action order as the round unfolds.": "分散標記以執行更多行動，或堆疊以爭取優先權。先考慮必要條件，再隨回合變化決定行動順序。",
+  "Show full board": "顯示整個圖板",
+  "Focus on placed tiles": "聚焦已放置的板塊"
 }

@@ -789,5 +789,7 @@
   "You cannot simply wait. If you have no majority anywhere, remove one of your stacks without acting. If you have a majority but that action is impossible, remove that stack too. You must perform a possible action when resolving its stack.": "Просто ждать нельзя. Если у вас нигде нет преимущества, уберите одну свою стопку без действия. Если преимущество есть, но действие невозможно, эту стопку тоже нужно убрать. Разыгрывая стопку, вы обязаны выполнить действие, если оно возможно.",
   "Finish your planned actions": "Завершите запланированные действия",
   "Resolve your remaining stacks. Watch which actions become available when opponents remove theirs. Planning an action does not guarantee it: someone may take the last fish or use the last space first.": "Разыграйте оставшиеся стопки. Следите, какие действия становятся доступны после того, как соперники убирают свои маркеры. План не гарантирует действие: кто-то может раньше забрать последнюю рыбу или занять последнее место.",
-  "Spread your markers for more actions, or stack them for priority. Plan prerequisites first, then choose your action order as the round unfolds.": "Распределяйте маркеры ради большего числа действий или собирайте стопки ради приоритета. Учитывайте необходимые условия, а порядок действий выбирайте по ходу раунда."
+  "Spread your markers for more actions, or stack them for priority. Plan prerequisites first, then choose your action order as the round unfolds.": "Распределяйте маркеры ради большего числа действий или собирайте стопки ради приоритета. Учитывайте необходимые условия, а порядок действий выбирайте по ходу раунда.",
+  "Show full board": "Показать всё поле",
+  "Focus on placed tiles": "Сосредоточиться на выложенных тайлах"
 }
