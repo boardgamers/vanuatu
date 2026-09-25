@@ -189,12 +189,11 @@
 }
 .vanuatu .action-dock > button {
   position: relative;
-  display: grid;
-  grid-template-columns: 33px 1fr;
-  grid-template-rows: auto auto;
-  justify-items: start;
-  column-gap: 7px;
-  row-gap: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 7px;
+  text-align: left;
   min-height: 54px;
   border: 0;
   border-bottom: 1px solid #d1d4c5;
@@ -204,12 +203,22 @@
   box-shadow: inset 3px 0 #a2b6a4;
 }
 .vanuatu .action-dock .action-symbol {
-  grid-row: 1/3;
-  align-self: center;
+  display: flex;
+  flex: 0 0 33px;
+  align-items: center;
 }
 .vanuatu .action-dock .action-symbol .icon {
   height: 30px;
   width: 30px;
+}
+.vanuatu .action-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+}
+.vanuatu .action-stacks:empty {
+  display: none;
 }
 .vanuatu .action-label {
   font-size: 11px;
@@ -310,7 +319,11 @@
 .vanuatu .cell-ring {
   fill: none;
   stroke: none;
+  stroke-width: 1;
   pointer-events: none;
+}
+.vanuatu .map-cell.occupied .cell-ring {
+  stroke: #e8fff980;
 }
 .vanuatu .empty-label {
   fill: #def6ed99;
@@ -344,6 +357,12 @@
   stroke: #fffbe3;
   stroke-width: 1px;
 }
+.vanuatu .resource-badge .resource-n {
+  text-anchor: start;
+}
+.vanuatu .resource-badge svg {
+  pointer-events: none;
+}
 .vanuatu .color-symbol {
   font-size: 15px;
   font-weight: 700;
@@ -354,7 +373,7 @@
   stroke-width: 2px;
 }
 .vanuatu .boat {
-  pointer-events: none;
+  pointer-events: auto;
 }
 .vanuatu .boat.own {
   filter: drop-shadow(0 0 3px #fffbe3);
@@ -429,13 +448,15 @@
 .vanuatu .map-tools button {
   background: #fff8dfcf;
 }
+.vanuatu .sea-dashboard > * {
+  pointer-events: auto;
+}
 .vanuatu .upcoming {
   position: absolute;
   right: 13px;
   bottom: 87px;
   display: flex;
   gap: 0;
-  pointer-events: none;
 }
 .vanuatu .upcoming img {
   width: 57px;
@@ -958,7 +979,9 @@ body {
   }
   .vanuatu .action-dock > button {
     padding: 5px 7px;
-    grid-template-columns: 26px 1fr;
+  }
+  .vanuatu .action-dock .action-symbol {
+    flex-basis: 26px;
   }
   .vanuatu .action-dock .action-symbol .icon {
     width: 26px;
@@ -1058,6 +1081,12 @@ body {
     min-height: 74px;
     padding: 4px;
     box-shadow: inset 0 3px #a2b6a4;
+  }
+  .vanuatu .action-content {
+    align-items: center;
+  }
+  .vanuatu .action-dock .action-symbol {
+    flex-basis: auto;
   }
   .vanuatu .action-dock .available {
     box-shadow: inset 0 3px #ae793f;

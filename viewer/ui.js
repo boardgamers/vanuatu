@@ -6,7 +6,12 @@ import {
   VALUES,
 } from "../engine/catalog.js";
 import { assets } from "./assets.js";
-import { icon, token, esc } from "./art.js";
+import {
+  icon as renderIcon,
+  token as renderToken,
+  iconLabel,
+  esc,
+} from "./art.js";
 import { boardSvg, center } from "./board.js";
 import { translator, characterHelp } from "./labels.js";
 import { mountActivity } from "./activity.js";
@@ -45,6 +50,10 @@ export function mountGame(target, options = {}) {
     sound = false,
     revision,
     focusReturn;
+  const icon = (name, label) =>
+    renderIcon(name, label ?? iconLabel(name, lang));
+  const token = (name, n, label) =>
+    renderToken(name, n, label ?? `${iconLabel(name, lang)}: ${n}`);
   let t = translator(lang);
   const events = new AbortController();
   const listener = { signal: events.signal };
@@ -59,7 +68,12 @@ export function mountGame(target, options = {}) {
   const working = () =>
     legal().filter((m) => !["treasure", "beg"].includes(m.type));
   const actMoves = () =>
-    working().filter((m) => m.type === "act" && m.action === action);
+    working().filter(
+      (m) =>
+        m.type === "act" &&
+        m.action === action &&
+        (action !== "sail" || m.path.at(-1) !== own()?.boat),
+    );
   const actualTargets = () =>
     action === "sail"
       ? unique(actMoves().map((m) => m.path.at(-1)))
@@ -170,7 +184,7 @@ export function mountGame(target, options = {}) {
           )
           .join("");
         return btn(
-          `<span class="action-symbol">${icon(a)}</span><span class="action-label">${t(a)}</span><span class="action-stacks">${stacks}${s.neutral[a] ? `<span class="marker-stack neutral">${s.neutral[a]}</span>` : ""}${countDraft ? `<span class="draft-marker">+${countDraft}</span>` : ""}</span>`,
+          `<span class="action-symbol">${icon(a)}</span><span class="action-content"><span class="action-label">${t(a)}</span><span class="action-stacks">${stacks}${s.neutral[a] ? `<span class="marker-stack neutral" title="${lang === "fr" ? "Pions neutres" : "Neutral markers"}">${s.neutral[a]}</span>` : ""}${countDraft ? `<span class="draft-marker" title="${lang === "fr" ? "Pions en cours de placement" : "Markers being placed"}">+${countDraft}</span>` : ""}</span></span>`,
           `data-action="${a}" ${allowed ? "" : "disabled"} aria-pressed="${action === a}"`,
           `${action === a ? "chosen" : ""} ${allowed ? "available" : ""}`,
         );
@@ -229,6 +243,8 @@ export function mountGame(target, options = {}) {
     const targets = actualTargets();
     if (targets.length)
       opts = opts.filter((m) => (m.cell ?? m.path?.at(-1)) === selected);
+    // Only the destination and cost matter: longer routes have no added effect.
+    if (action === "sail") opts = opts.slice(0, 1);
     const discard = moves.find(
       (m) => m.type === "discard" && m.action === action,
     );
@@ -257,8 +273,8 @@ export function mountGame(target, options = {}) {
             .filter((m) => m.type === "place" && m.tile === tile)
             .map((m) => m.cell)
         : actualTargets();
-    play.innerHTML = `<header class="game-header"><div class="brand">${btn("Vanuatu", "data-boardgame", "wordmark")}<span>Alain Epron · Quined Games</span></div><div class="round-track" aria-label="${t("round")} ${s.round}/8">${Array.from({ length: 8 }, (_, i) => `<span class="${i + 1 === s.round ? "current" : i + 1 < s.round ? "past" : ""}">${i + 1}</span>`).join("")}</div><nav class="header-tools">${analysis || !options.chat ? "" : titled(t("chat"), `${icon("chat")}<span class="unread-badge" hidden></span>`, 'data-activity="chat"', "icon-button")}${titled(t("journal"), icon("journal"), 'data-activity="journal"', "icon-button")}${titled(t("help"), icon("help"), "data-help", "icon-button")}${titled(t("full"), icon("fullscreen"), "data-fullscreen", "icon-button")}</nav></header>
-  <div class="table">${dock()}<section class="sea-board" style="--ocean:url('${assets.ocean}')"><div class="sea-dashboard"><div class="market-info"><span title="${t("market")}">${icon("fish")} = ${token("coin", s.market)}</span><span title="${t("tourist")}">${token("tourist", s.tourists)}</span>${s.waterCountdown !== null ? `<span title="${t("waterLeft")}">${token("water", s.waterCountdown)}</span>` : ""}</div><div class="demand-ships" aria-label="${t("demand")}">${s.demands.map((d, i) => `<div class="demand-ship" title="${t("demand")} ${i + 1} · +2 ${t("point")}"><small>${i + 1}</small>${d.goods.map((g, j) => `<span class="${d.filled[j] ? "filled" : ""}">${icon(g)}${d.filled[j] ? icon("check") : ""}</span>`).join("")}${icon("buy")}</div>`).join("")}</div></div><div class="map-scroll ${zoom ? "zoomed" : ""}">${boardSvg(s, { player, colorBlind, selected, targets, hoverTile: s.phase === "expand" ? tile : null, t })}</div><div class="map-tools">${titled(zoom ? t("fit") : t("zoom"), icon(zoom ? "eye" : "zoom"), "data-zoom", "icon-button")}</div>${s.upcoming.length && s.phase !== "expand" ? `<div class="upcoming" title="${t("next")}">${s.upcoming.map((id) => `<img src="${assets[TILES[id].art]}" alt="${t(TILES[id].type === "island" ? "island" : "sea")}">`).join("")}</div>` : ""}${trayHtml}</section></div><section class="players">${s.players.map(playerCard).join("")}</section><footer class="play-footer"><span title="${lang === "fr" ? "Conversion automatique" : "Automatic conversion"}">${token("coin", 10)} → ${token("point", 5)}</span>${btn(t("help"), "data-help", "text-button")}</footer>`;
+    play.innerHTML = `<header class="game-header"><div class="brand">${btn("🏝️ Vanuatu", "data-boardgame", "wordmark")}<span>Alain Epron · Quined Games</span></div><div class="round-track" aria-label="${t("round")} ${s.round}/8">${Array.from({ length: 8 }, (_, i) => `<span title="${t("round")} ${i + 1}/8" class="${i + 1 === s.round ? "current" : i + 1 < s.round ? "past" : ""}">${i + 1}</span>`).join("")}</div><nav class="header-tools">${analysis || !options.chat ? "" : titled(t("chat"), `${icon("chat")}<span class="unread-badge" hidden></span>`, 'data-activity="chat"', "icon-button")}${titled(t("journal"), icon("journal"), 'data-activity="journal"', "icon-button")}${titled(t("help"), icon("help"), "data-help", "icon-button")}${titled(t("full"), icon("fullscreen"), "data-fullscreen", "icon-button")}</nav></header>
+  <div class="table">${dock()}<section class="sea-board" style="--ocean:url('${assets.ocean}')"><div class="sea-dashboard"><div class="market-info"><span title="${t("market")}">${icon("fish", t("market"))} = ${token("coin", s.market, `${t("market")}: ${s.market} ${lang === "fr" ? "vatus par valeur de poisson" : "vatus per fish value"}`)}</span><span title="${t("tourist")}">${token("tourist", s.tourists, `${lang === "fr" ? "Touristes disponibles ce tour" : "Tourists available this round"}: ${s.tourists}`)}</span>${s.waterCountdown !== null ? `<span title="${t("waterLeft")}">${token("water", s.waterCountdown, `${t("waterLeft")}: ${s.waterCountdown}`)}</span>` : ""}</div><div class="demand-ships" aria-label="${t("demand")}">${s.demands.map((d, i) => `<div class="demand-ship" title="${t("demand")} ${i + 1} · +2 ${t("point")}"><small>${i + 1}</small>${d.goods.map((g, j) => `<span title="${esc(`${iconLabel(g, lang)} · ${d.filled[j] ? (lang === "fr" ? "déjà livré" : "already delivered") : lang === "fr" ? "à livrer" : "still needed"}`)}" class="${d.filled[j] ? "filled" : ""}">${icon(g)}${d.filled[j] ? icon("check") : ""}</span>`).join("")}${icon("buy")}</div>`).join("")}</div></div><div class="map-scroll ${zoom ? "zoomed" : ""}">${boardSvg(s, { player, colorBlind, language: lang, selected, targets, hoverTile: s.phase === "expand" ? tile : null, t })}</div><div class="map-tools">${titled(zoom ? t("fit") : t("zoom"), icon(zoom ? "eye" : "zoom"), "data-zoom", "icon-button")}</div>${s.upcoming.length && s.phase !== "expand" ? `<div class="upcoming" title="${t("next")}">${s.upcoming.map((id) => `<img src="${assets[TILES[id].art]}" alt="${t(TILES[id].type === "island" ? "island" : "sea")}">`).join("")}</div>` : ""}${trayHtml}</section></div><section class="players">${s.players.map(playerCard).join("")}</section><footer class="play-footer"><span title="${lang === "fr" ? "Conversion automatique" : "Automatic conversion"}">${token("coin", 10)} → ${token("point", 5)}</span>${btn(t("help"), "data-help", "text-button")}</footer>`;
     const newScroll = play.querySelector(".map-scroll");
     if (newScroll) {
       newScroll.scrollLeft = sx;

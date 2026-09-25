@@ -29,7 +29,7 @@ if (existing?.public)
 const defaults = {
   public: false,
   meta: { botsPublic: true },
-  label: "Vanuatu",
+  label: "🏝️ Vanuatu",
   players: [2, 3, 4, 5],
   description:
     "Compete for prosperity in a growing Pacific archipelago. Plan actions, sail, trade and welcome tourists. Includes all eleven characters, the official two-player variant and Rising Waters.",

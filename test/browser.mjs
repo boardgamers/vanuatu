@@ -44,6 +44,50 @@ const page = await browser.newPage({
 page.on("pageerror", (e) => errors.push(e.message));
 await page.goto(base + "/?new&hotseat");
 await page.waitForSelector("[data-character-choice]");
+// Empty action stacks do not leave labels above their icons or shift columns.
+const actionLayout = await page
+  .locator(".action-dock > button")
+  .evaluateAll((buttons) =>
+    buttons.map((button) => {
+      const icon = button
+        .querySelector(".action-symbol")
+        .getBoundingClientRect();
+      const label = button
+        .querySelector(".action-label")
+        .getBoundingClientRect();
+      return {
+        x: label.left,
+        delta: Math.abs(
+          icon.top + icon.height / 2 - label.top - label.height / 2,
+        ),
+      };
+    }),
+  );
+assert.ok(
+  actionLayout.every(
+    (b) => b.delta < 1 && Math.abs(b.x - actionLayout[0].x) < 1,
+  ),
+);
+assert.ok(
+  await page
+    .locator(".resource-badge")
+    .evaluateAll((badges) =>
+      badges.every((badge) =>
+        [...badge.querySelectorAll("g")].every(
+          (g) =>
+            g.querySelector("svg").getBoundingClientRect().right <
+            g.querySelector("text").getBoundingClientRect().left,
+        ),
+      ),
+    ),
+);
+assert.match(
+  await page
+    .locator(".resource-badge title")
+    .allTextContents()
+    .then((t) => t.join(" ")),
+  /island capacity/,
+);
 // Browser language does not override the English default; an explicit choice persists.
 assert.equal(
   await page.locator("[data-back] span").textContent(),
@@ -101,6 +145,27 @@ function actionState() {
   s.players[0].treasures = [1];
   return s;
 }
+// A neighbouring destination has 1- and 3-step legal paths, but only needs one UI choice.
+const sailing = actionState();
+assert.deepEqual(
+  [
+    ...new Set(
+      E.sailOptions(sailing, 0)
+        .filter((m) => m.path.at(-1) === "1,1")
+        .map((m) => m.path.length),
+    ),
+  ].sort(),
+  [1, 3],
+);
+await page.evaluate((s) => window.vanuatuDemo.setState(s), sailing);
+await page.locator('[data-action="sail"]').click();
+await page.locator('[data-cell="1,1"]').click();
+assert.equal(await page.locator(".turn-tray .primary[data-move]").count(), 1);
+await page.locator(".turn-tray .primary[data-move]").click();
+assert.equal(
+  await page.evaluate(() => window.vanuatuDemo.state.players[0].money),
+  8,
+);
 for (const width of [1440, 390]) {
   await page.setViewportSize({ width, height: width === 390 ? 844 : 1000 });
   for (const action of E.ACTIONS) {

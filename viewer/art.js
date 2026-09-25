@@ -49,11 +49,53 @@ const paths = {
   sound:
     '<path d="M3 12h7l8-7v22l-8-7H3zM23 10q8 6 0 12" fill="none" stroke="currentColor" stroke-width="2"/>',
 };
-export function icon(name, label = "") {
-  return `<svg class="icon icon-${esc(name)}" viewBox="0 0 32 32" ${label ? `role="img" aria-label="${esc(label)}"` : 'aria-hidden="true"'}>${paths[name] ?? paths.point}</svg>`;
+const meanings = {
+  sail: ["Sailing / boat", "Navigation / bateau"],
+  fish: ["Fish value", "Valeur du poisson"],
+  sell: ["Sell fish", "Vendre du poisson"],
+  explore: ["Treasure value", "Valeur du trésor"],
+  build: ["Huts", "Cabanes"],
+  draw: ["Sand drawings", "Dessins de sable"],
+  tourist: ["Tourists", "Touristes"],
+  rest: ["Rest bonus", "Bonus de repos"],
+  coin: ["Vatus (money)", "Vatus (argent)"],
+  point: ["Prosperity points", "Points de prospérité"],
+  first: ["First player", "Premier joueur"],
+  water: ["Rising Waters", "Montée des eaux"],
+  dike: [
+    "Dike — protects this coast from flooding",
+    "Digue — protège cette côte des inondations",
+  ],
+  kava: ["Kava — costs 1 vatu", "Kava — coûte 1 vatu"],
+  copra: ["Copra — costs 2 vatus", "Coprah — coûte 2 vatus"],
+  beef: ["Beef — costs 3 vatus", "Bœuf — coûte 3 vatus"],
+  buy: ["Export goods", "Exporter des marchandises"],
+  marker: ["Action marker", "Pion d’action"],
+  chat: ["Chat", "Discussion"],
+  journal: ["Journal", "Journal"],
+  help: ["Rules & help", "Règles et aide"],
+  fullscreen: ["Full screen", "Plein écran"],
+  close: ["Close", "Fermer"],
+  undo: ["Undo", "Annuler"],
+  check: ["Complete", "Terminé"],
+  eye: ["Overview", "Vue d’ensemble"],
+  zoom: ["Zoom board", "Agrandir le plateau"],
+  sound: ["Game sounds", "Sons du jeu"],
+};
+export const iconLabel = (name, language = "en") =>
+  meanings[name]?.[language === "fr" ? 1 : 0] ?? name;
+export function icon(name, label = iconLabel(name)) {
+  return `<svg class="icon icon-${esc(name)}" viewBox="0 0 32 32" aria-hidden="true"><title>${esc(label)}</title>${paths[name] ?? paths.point}</svg>`;
 }
-export function svgIcon(name, x, y, size = 26, color = "currentColor") {
-  return `<svg x="${x}" y="${y}" width="${size}" height="${size}" viewBox="0 0 32 32" style="color:${color}" aria-hidden="true">${paths[name] ?? paths.point}</svg>`;
+export function svgIcon(
+  name,
+  x,
+  y,
+  size = 26,
+  color = "currentColor",
+  label = iconLabel(name),
+) {
+  return `<svg x="${x}" y="${y}" width="${size}" height="${size}" viewBox="0 0 32 32" style="color:${color}" aria-hidden="true"><title>${esc(label)}</title>${paths[name] ?? paths.point}</svg>`;
 }
-export const token = (name, n) =>
-  `<span class="token" role="img" aria-label="${esc(name)}: ${esc(n)}">${icon(name)}<b>${esc(n)}</b></span>`;
+export const token = (name, n, label = `${iconLabel(name)}: ${n}`) =>
+  `<span class="token" role="img" aria-label="${esc(label)}" title="${esc(label)}">${icon(name, label)}<b>${esc(n)}</b></span>`;
