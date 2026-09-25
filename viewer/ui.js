@@ -17,6 +17,7 @@ import { translator, characterHelp } from "./labels.js";
 import { mountActivity } from "./activity.js";
 import { rulesHtml } from "./rules.js";
 import { createMoveSound } from "./sound.js";
+import { languages, resolveLocale } from "./localization/index.js";
 const total = (a) => a.reduce((a, b) => a + b, 0);
 const unique = (a) => [...new Set(a)];
 function coastArrow(cell, edge) {
@@ -46,7 +47,8 @@ export function mountGame(target, options = {}) {
     tile = null,
     bonus = true,
     zoom = false,
-    lang = options.language ?? "en",
+    lang = resolveLocale(options.language ?? "en"),
+    hostedLocale = false,
     colorBlind = false,
     sound = false,
     revision,
@@ -475,7 +477,18 @@ export function mountGame(target, options = {}) {
       }
       if ("help" in d) {
         showDialog(
-          `<h2>${t("help")}</h2><div class="preferences"><label><input type="checkbox" data-pref="colorBlind" ${colorBlind ? "checked" : ""}>${t("colorBlind")}</label><label><input type="checkbox" data-pref="sound" ${sound ? "checked" : ""}>${t("sound")}</label><select data-language aria-label="Language"><option value="en" ${lang === "en" ? "selected" : ""}>English</option><option value="fr" ${lang === "fr" ? "selected" : ""}>Français</option></select></div>${rulesHtml(lang)}<hr><h3>${t("credit")}</h3><p>Alain Epron · <a href="https://www.quined.nl/featured_item/vanuatu-2nd-edition/" target="_blank" rel="noopener">Quined Games</a><br>Art: Konstantin Vohwinkel · Rafaël Theunis</p><p><a href="https://codeberg.org/boardgamers/vanuatu" target="_blank" rel="noopener">${t("source")}</a></p>`,
+          `<h2>${t("help")}</h2><div class="preferences"><label><input type="checkbox" data-pref="colorBlind" ${colorBlind ? "checked" : ""}>${t("colorBlind")}</label><label><input type="checkbox" data-pref="sound" ${sound ? "checked" : ""}>${t("sound")}</label>${
+            hostedLocale
+              ? ""
+              : `<select data-language aria-label="Language">${Object.entries(
+                  languages,
+                )
+                  .map(
+                    ([locale, name]) =>
+                      `<option value="${locale}" ${lang === locale ? "selected" : ""}>${name}</option>`,
+                  )
+                  .join("")}</select>`
+          }</div>${rulesHtml(lang)}<hr><h3>${t("credit")}</h3><p>Alain Epron · <a href="https://www.quined.nl/featured_item/vanuatu-2nd-edition/" target="_blank" rel="noopener">Quined Games</a><br>Art: Konstantin Vohwinkel · Rafaël Theunis</p><p><a href="https://codeberg.org/boardgamers/vanuatu" target="_blank" rel="noopener">${t("source")}</a></p>`,
         );
         return;
       }
@@ -604,8 +617,9 @@ export function mountGame(target, options = {}) {
         const checkbox = dialog.querySelector(`[data-pref="${name}"]`);
         if (checkbox) checkbox.checked = value;
       }
-      if (["en", "fr"].includes(p.language)) {
-        lang = p.language;
+      hostedLocale = typeof p.locale === "string";
+      if (hostedLocale || typeof p.language === "string") {
+        lang = resolveLocale(p.locale ?? p.language);
         t = translator(lang);
         activity.setLanguage(lang);
       }

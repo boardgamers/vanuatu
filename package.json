@@ -12,7 +12,8 @@
     "test": "node --test test/*.test.js",
     "dev": "node scripts/dev.mjs",
     "test:browser": "node test/browser.mjs",
-    "check": "pnpm build && pnpm test && pnpm test:browser"
+    "check": "pnpm test:locales && pnpm build && pnpm test && pnpm test:browser",
+    "test:locales": "node scripts/check-locales.mjs viewer/localization && node --test scripts/localization.test.mjs"
   },
   "dependencies": {
     "@boardgamers/protocol": "0.6.0",

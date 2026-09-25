@@ -1,3 +1,4 @@
+import { mountLocalization, localizeTutorial } from "./localization/index.js";
 import { mountLesson } from "./tutorial-mount.js";
 import "./style.css";
 import { registerViewer } from "@boardgamers/protocol/viewer";
@@ -10,6 +11,7 @@ import {
 registerViewer(
   "vanuatu",
   (ctx) => {
+    const localization = mountLocalization(ctx.target);
     const chat = new ChatController();
     let live,
       replaying = false,
@@ -54,6 +56,7 @@ registerViewer(
     return {
       chat,
       onState(state) {
+        localization.setState(state);
         live = state;
         if (!replaying) {
           position = state.historyLength;
@@ -70,7 +73,10 @@ registerViewer(
       onPlayer(p) {
         ui.setPlayer(p.index);
       },
-      onPreferences: (p) => ui.setPreferences(p),
+      onPreferences(p) {
+        localization.setLocale(p.locale ?? p.language);
+        ui.setPreferences(p);
+      },
       onAvatars() {},
       onError(e) {
         clearTimeout(timeout);
@@ -111,6 +117,7 @@ registerViewer(
           "#8bcbd4",
         ),
       destroy() {
+        localization.destroy();
         clearTimeout(timeout);
         pending?.resolve();
         removeCards();
@@ -119,5 +126,5 @@ registerViewer(
       },
     };
   },
-  { tutorial: mountLesson },
+  { tutorial: localizeTutorial(mountLesson) },
 );

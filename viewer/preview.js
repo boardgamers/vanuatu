@@ -1,13 +1,19 @@
+import { mountLocalization } from "./localization/index.js";
 import { mountLesson } from "./tutorial-mount.js";
 import "./style.css";
 import * as engine from "../engine/index.js";
 import { mountGame } from "./ui.js";
 const params = new URLSearchParams(location.search);
+const localization = mountLocalization(
+  document.body,
+  params.get("locale") ?? "en",
+);
 if (params.has("lesson")) {
   const names = ["planning", "fishing", "islands"];
   const chapter = params.get("lesson");
   const next = names[names.indexOf(chapter) + 1];
   await mountLesson(document.querySelector("#game"), {
+    locale: params.get("locale") ?? "en",
     chapter,
     nextChapter: next
       ? {
@@ -56,6 +62,7 @@ if (params.has("lesson")) {
     onPreference: (name, value) => {
       preferences[name] = value;
       localStorage.setItem("vanuatu-preferences", JSON.stringify(preferences));
+      localization.setLocale(preferences.language);
       ui.setPreferences(preferences);
     },
   });
@@ -63,6 +70,8 @@ if (params.has("lesson")) {
   try {
     preferences = JSON.parse(localStorage.getItem("vanuatu-preferences")) ?? {};
   } catch {}
+  if (params.has("locale")) preferences.language = params.get("locale");
+  localization.setLocale(preferences.language ?? "en");
   ui.setPreferences(preferences);
   function save() {
     try {
@@ -70,6 +79,7 @@ if (params.has("lesson")) {
     } catch {}
   }
   function show() {
+    localization.setState(state);
     const p = hotseat ? state.actor : 0;
     ui.setPlayer(p);
     ui.render(engine.stripSecret(state, p));
