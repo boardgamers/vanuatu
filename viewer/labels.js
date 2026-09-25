@@ -55,7 +55,7 @@ const entries = {
   full: ["Full screen", "Plein écran"],
   fit: ["Fit board", "Ajuster le plateau"],
   zoom: ["Zoom board", "Agrandir le plateau"],
-  colorBlind: ["Color symbols", "Symboles de couleur"],
+  colorBlind: ["Color-blind mode", "Mode daltonien"],
   sound: ["Game sounds", "Sons du jeu"],
   credit: ["Credits", "Crédits"],
   rules: ["Simplified rules", "Règles simplifiées"],

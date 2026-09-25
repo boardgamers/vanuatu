@@ -86,7 +86,7 @@ assert.match(
     .locator(".resource-badge title")
     .allTextContents()
     .then((t) => t.join(" ")),
-  /island capacity/,
+  /Tourists: 0\/5/,
 );
 // Browser language does not override the English default; an explicit choice persists.
 assert.equal(
@@ -203,6 +203,11 @@ for (const width of [1440, 390]) {
   await page.locator('[data-pref="colorBlind"]').check();
   await page.locator("[data-close]").click();
   assert.ok(await page.locator(".color-symbol").count());
+  assert.deepEqual(
+    await page.locator('[data-cell="0,0"] .resource-symbol').allTextContents(),
+    ["K", "C", "B"],
+  );
+  assert.ok(await page.locator(".demand-ships .resource-symbol").count());
 }
 // Extension placement and optional expansion remain usable.
 let expansion = E.init(3, [], {}, "expand");
@@ -232,6 +237,7 @@ await page.evaluate(() => {
     "boardgame:clicked",
     "replay:info",
     "thumbnail:ready",
+    "update:preference",
   ])
     window.emitter.on(kind, (v) => window.hostEvents.push({ kind, v }));
 });
@@ -244,6 +250,50 @@ await page.evaluate(
   E.stripSecret(final, 0),
 );
 assert.equal(await page.locator('[data-activity="chat"]').count(), 0);
+// BGS owns both shared settings; changes apply live without echoing incoming preferences.
+assert.equal(
+  await page.evaluate(
+    () => hostEvents.filter((e) => e.kind === "update:preference").length,
+  ),
+  0,
+);
+await page.locator("[data-help]").first().click();
+assert.equal(await page.locator('[data-pref="colorBlind"]').isChecked(), true);
+await page.evaluate(() =>
+  emitter.receive("preferences", {
+    analysis: true,
+    colorBlind: false,
+    sound: true,
+  }),
+);
+assert.equal(await page.locator('[data-pref="colorBlind"]').isChecked(), false);
+assert.equal(await page.locator('[data-pref="sound"]').isChecked(), true);
+assert.equal(await page.locator(".resource-symbol").count(), 0);
+await page.locator('[data-pref="colorBlind"]').check();
+await page.locator('[data-pref="sound"]').uncheck();
+assert.deepEqual(
+  await page.evaluate(() =>
+    hostEvents.filter((e) => e.kind === "update:preference").map((e) => e.v),
+  ),
+  [
+    { name: "colorBlind", value: true },
+    { name: "sound", value: false },
+  ],
+);
+await page.locator("[data-close]").click();
+await page.evaluate(() =>
+  emitter.receive("preferences", {
+    analysis: true,
+    colorBlind: true,
+    sound: false,
+  }),
+);
+assert.equal(
+  await page.evaluate(
+    () => hostEvents.filter((e) => e.kind === "update:preference").length,
+  ),
+  2,
+);
 await page.evaluate(
   (s) => {
     emitter.receive("replay:start");

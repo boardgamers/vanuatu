@@ -93,6 +93,7 @@ export function boardSvg(
               29,
               "currentColor",
               `${label(good)} · ${fr ? "disponible à l’export" : "available to export"}`,
+              colorBlind,
             );
         const huts = tile.huts;
         for (let i = 0; i < spec.huts; i++) {
@@ -117,12 +118,12 @@ export function boardSvg(
           {
             kind: "tourist",
             value: `${tile.tourists}/${spec.tourists}`,
-            help: `${label("tourist")}: ${tile.tourists}/${spec.tourists} — ${fr ? "présents / capacité de l’île" : "present / island capacity"}`,
+            help: `${label("tourist")}: ${tile.tourists}/${spec.tourists}`,
           },
           {
             kind: "draw",
             value: tile.drawings,
-            help: `${label("draw")}: ${tile.drawings}/${spec.drawings} — ${fr ? "réalisés / emplacements" : "completed / spaces"}`,
+            help: `${label("draw")}: ${tile.drawings}/${spec.drawings}`,
           },
         ]);
         if (tile.water)

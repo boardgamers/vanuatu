@@ -84,8 +84,19 @@ const meanings = {
 };
 export const iconLabel = (name, language = "en") =>
   meanings[name]?.[language === "fr" ? 1 : 0] ?? name;
-export function icon(name, label = iconLabel(name), accessible = false) {
-  return `<svg class="icon icon-${esc(name)}" viewBox="0 0 32 32" ${accessible ? `role="img" aria-label="${esc(label)}"` : 'aria-hidden="true"'}><title>${esc(label)}</title>${paths[name] ?? paths.point}</svg>`;
+function resourceSymbol(name, colorBlind) {
+  const mark = { kava: "K", copra: "C", beef: "B" }[name];
+  return colorBlind && mark
+    ? `<text class="resource-symbol" x="19" y="24" text-anchor="middle" font-size="15" font-weight="800" fill="#173d49" stroke="#fffce8" stroke-width="2" paint-order="stroke">${mark}</text>`
+    : "";
+}
+export function icon(
+  name,
+  label = iconLabel(name),
+  accessible = false,
+  colorBlind = false,
+) {
+  return `<svg class="icon icon-${esc(name)}" viewBox="0 0 32 32" ${accessible ? `role="img" aria-label="${esc(label)}"` : 'aria-hidden="true"'}><title>${esc(label)}</title>${paths[name] ?? paths.point}${resourceSymbol(name, colorBlind)}</svg>`;
 }
 export function svgIcon(
   name,
@@ -94,8 +105,14 @@ export function svgIcon(
   size = 26,
   color = "currentColor",
   label = iconLabel(name),
+  colorBlind = false,
 ) {
-  return `<svg x="${x}" y="${y}" width="${size}" height="${size}" viewBox="0 0 32 32" style="color:${color}" aria-hidden="true"><title>${esc(label)}</title>${paths[name] ?? paths.point}</svg>`;
+  return `<svg x="${x}" y="${y}" width="${size}" height="${size}" viewBox="0 0 32 32" style="color:${color}" aria-hidden="true"><title>${esc(label)}</title>${paths[name] ?? paths.point}${resourceSymbol(name, colorBlind)}</svg>`;
 }
-export const token = (name, n, label = `${iconLabel(name)}: ${n}`) =>
-  `<span class="token" role="img" aria-label="${esc(label)}" title="${esc(label)}">${icon(name, label)}<b>${esc(n)}</b></span>`;
+export const token = (
+  name,
+  n,
+  label = `${iconLabel(name)}: ${n}`,
+  colorBlind = false,
+) =>
+  `<span class="token" role="img" aria-label="${esc(label)}" title="${esc(label)}">${icon(name, label, false, colorBlind)}<b>${esc(n)}</b></span>`;

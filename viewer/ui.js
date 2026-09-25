@@ -16,6 +16,7 @@ import { boardSvg, center } from "./board.js";
 import { translator, characterHelp } from "./labels.js";
 import { mountActivity } from "./activity.js";
 import { rulesHtml } from "./rules.js";
+import { createMoveSound } from "./sound.js";
 const total = (a) => a.reduce((a, b) => a + b, 0);
 const unique = (a) => [...new Set(a)];
 function coastArrow(cell, edge) {
@@ -51,10 +52,16 @@ export function mountGame(target, options = {}) {
     revision,
     focusReturn;
   const icon = (name, label) =>
-    renderIcon(name, label ?? iconLabel(name, lang), label !== undefined);
+    renderIcon(
+      name,
+      label ?? iconLabel(name, lang),
+      label !== undefined,
+      colorBlind,
+    );
   const token = (name, n, label) =>
-    renderToken(name, n, label ?? `${iconLabel(name, lang)}: ${n}`);
+    renderToken(name, n, label ?? `${iconLabel(name, lang)}: ${n}`, colorBlind);
   let t = translator(lang);
+  const moveSound = createMoveSound();
   const events = new AbortController();
   const listener = { signal: events.signal };
   const activity = mountActivity(root.querySelector(".activity-root"), {
@@ -258,8 +265,8 @@ export function mountGame(target, options = {}) {
   function tradeShips() {
     const help =
       lang === "fr"
-        ? "Commerce extérieur\nVert : kava · Blanc : coprah · Rouge : bœuf.\nChaque export remplit le premier navire (1 → 3) qui demande encore cette marchandise. ✓ = déjà livré.\nCompléter un navire ajoute 2 points de prospérité."
-        : "Foreign trade\nGreen: kava · White: copra · Red: beef.\nEach export fills the first ship (1 → 3) still needing that good. ✓ = already delivered.\nCompleting a ship adds 2 prosperity points.";
+        ? `Commerce extérieur\n${colorBlind ? "K : kava · C : coprah · B : bœuf." : "Vert : kava · Blanc : coprah · Rouge : bœuf."}\nChaque export remplit le premier navire (1 → 3) qui demande encore cette marchandise. ✓ = déjà livré.\nCompléter un navire ajoute 2 points de prospérité.`
+        : `Foreign trade\n${colorBlind ? "K: kava · C: copra · B: beef." : "Green: kava · White: copra · Red: beef."}\nEach export fills the first ship (1 → 3) still needing that good. ✓ = already delivered.\nCompleting a ship adds 2 prosperity points.`;
     return `<div class="demand-ships" title="${esc(help)}" aria-label="${esc(help)}">${s.demands.map((d, i) => `<div class="demand-ship"><small>${i + 1}</small>${d.goods.map((g, j) => `<span class="${d.filled[j] ? "filled" : ""}">${icon(g)}${d.filled[j] ? icon("check") : ""}</span>`).join("")}${icon("buy")}</div>`).join("")}</div>`;
   }
   function render() {
@@ -291,7 +298,7 @@ export function mountGame(target, options = {}) {
       play
         .querySelector(`[data-action="${focus}"]`)
         ?.focus({ preventScroll: true });
-    activity.update(s, analysis);
+    activity.update(s, analysis, colorBlind);
     updateUnread();
   }
   function updateUnread() {
@@ -315,28 +322,13 @@ export function mountGame(target, options = {}) {
   }
   async function send(m) {
     if (!m || pending || !enabled) return;
+    moveSound.unlock();
     pending = true;
     feedback.hidden = true;
     render();
     try {
       await options.onMove?.(m);
-      if (sound) {
-        try {
-          const context = new AudioContext();
-          const oscillator = context.createOscillator(),
-            gain = context.createGain();
-          gain.gain.setValueAtTime(0.025, context.currentTime);
-          gain.gain.exponentialRampToValueAtTime(
-            0.001,
-            context.currentTime + 0.13,
-          );
-          oscillator.frequency.value = 540;
-          oscillator.connect(gain).connect(context.destination);
-          oscillator.start();
-          oscillator.stop(context.currentTime + 0.13);
-          oscillator.onended = () => context.close();
-        } catch {}
-      }
+      void moveSound.play();
       selected = null;
       action = null;
       draft = [];
@@ -522,7 +514,11 @@ export function mountGame(target, options = {}) {
         const key = e.target.dataset.pref,
           value = e.target.checked;
         if (key === "colorBlind") colorBlind = value;
-        if (key === "sound") sound = value;
+        if (key === "sound") {
+          sound = value;
+          moveSound.setEnabled(value);
+          moveSound.unlock();
+        }
         options.onPreference?.(key, value);
         render();
       }
@@ -594,6 +590,11 @@ export function mountGame(target, options = {}) {
       analysis = p.analysis === true;
       colorBlind = p.colorBlind === true;
       sound = p.sound === true;
+      moveSound.setEnabled(sound);
+      for (const [name, value] of Object.entries({ colorBlind, sound })) {
+        const checkbox = dialog.querySelector(`[data-pref="${name}"]`);
+        if (checkbox) checkbox.checked = value;
+      }
       if (["en", "fr"].includes(p.language)) {
         lang = p.language;
         t = translator(lang);
@@ -603,6 +604,7 @@ export function mountGame(target, options = {}) {
     },
     destroy() {
       events.abort();
+      moveSound.destroy();
       offChat?.();
       activity.destroy();
       root.remove();

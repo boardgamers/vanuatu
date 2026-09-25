@@ -1,11 +1,14 @@
 import { mountChat } from "@boardgamers/protocol/chat/dom";
-import { icon, token, esc } from "./art.js";
+import { icon as renderIcon, token as renderToken, esc } from "./art.js";
 import { translator } from "./labels.js";
 import { CHARACTERS } from "../engine/catalog.js";
 export function mountActivity(
   target,
   { chat, openPlayer, onBack, language = "en" } = {},
 ) {
+  let colorBlind = false;
+  const icon = (name) => renderIcon(name, undefined, false, colorBlind);
+  const token = (name, n) => renderToken(name, n, undefined, colorBlind);
   const root = document.createElement("section");
   root.className = "activity";
   root.innerHTML = `<header><div role="tablist"><button type="button" role="tab" data-tab="journal">${icon("journal")} <span>Journal</span></button><button type="button" role="tab" data-tab="chat" ${chat ? "" : "hidden"}>${icon("chat")} <span>Chat</span> <b class="unread" hidden></b></button></div><button type="button" class="text-button" data-back>↑ <span>Board</span></button></header><div class="journal-panel" role="tabpanel"><ol class="event-list" tabindex="0"></ol></div><div class="chat-panel" role="tabpanel" hidden></div>`;
@@ -117,7 +120,10 @@ export function mountActivity(
   }
   function refresh() {
     if (!state) return;
-    const next = JSON.stringify(state.events ?? state.lastEvents ?? []) + lang;
+    const next =
+      JSON.stringify(state.events ?? state.lastEvents ?? []) +
+      lang +
+      colorBlind;
     if (next === key) return;
     key = next;
     list.innerHTML = (state.events ?? state.lastEvents ?? [])
@@ -141,7 +147,8 @@ export function mountActivity(
   select("journal");
   return {
     open,
-    update(s, isAnalysis) {
+    update(s, isAnalysis, isColorBlind = false) {
+      colorBlind = isColorBlind;
       state = s;
       analysis = isAnalysis;
       root.querySelector('[data-tab="chat"]').hidden = !chat || analysis;

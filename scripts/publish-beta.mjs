@@ -59,7 +59,7 @@ const defaults = {
       type: "checkbox",
       default: false,
     },
-    { name: "sound", label: "Game sounds", type: "checkbox", default: false },
+    { name: "sound", label: "Game sounds", type: "checkbox", default: true },
     {
       name: "language",
       label: "Language",

@@ -8,6 +8,8 @@ The repository is public; the game is listed on BGS as a beta. Supplied artwork 
 
 Node 24+, pnpm. `pnpm install`, `pnpm build`, `pnpm dev` (port 5246). `pnpm test` runs rules tests; install the browser once with `pnpm exec playwright install chromium`; `pnpm test:browser` checks the viewer.
 
+BGS supplies the shared `colorBlind` and `sound` preferences. Color-blind mode adds player symbols and K/C/B resource labels; game sounds give a quiet confirmation after successful moves. The toggles in Rules & help update the same BGS account settings. Standalone practice stores its own preferences locally.
+
 Supported scope: 2–5 players, all eleven characters, the official two-player variant, optional Rising Waters, replay and finished-game analysis, bots, BGS chat, player hover cards and board thumbnails.
 
 ## References
