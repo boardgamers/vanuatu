@@ -794,5 +794,7 @@
   "Choose a character, then place your 5 markers in three passes: 2, 2, 1. On your turn, take an action where you have the most markers. Ties follow turn order from the first player {p0}. Retrieve all your markers from that action. If you have no majority on any action, retrieve one stack without acting. You may also choose an impossible action where you hold the majority and retrieve its markers without acting.": "選擇角色，再分三次放置自己的 5 個標記：2、2、1。輪到你時，選擇一個自己的標記數比其他每位玩家都多的行動。平手時，按起始玩家 {p0} 起算的順序決定。執行後收回自己在該行動上的所有標記。 若所有行動都沒有優先權，收回自己的一堆標記，但不執行行動。也可以選擇一個自己有優先權、但目前無法執行的行動，直接收回該處的標記。",
   "Retrieve without acting": "收回標記，不執行行動",
   "Not enough vatus.": "瓦圖不足。",
-  "If you cannot afford Build yet, you can choose another action where you have the majority and keep Build for later. Resolving Build now means retrieving its markers without building. If you have no majority anywhere, you must retrieve one stack without acting. When resolving an action you can perform, you must perform it.": "若目前付不起建造費用，可以先選擇另一個自己有優先權的行動，把建造留到之後。現在選擇處理建造，就只能收回標記，不建造。若所有行動都沒有優先權，就必須收回自己的一堆標記而不執行行動。若選擇處理的行動可以執行，就必須執行。"
+  "If you cannot afford Build yet, you can choose another action where you have the majority and keep Build for later. Resolving Build now means retrieving its markers without building. If you have no majority anywhere, you must retrieve one stack without acting. When resolving an action you can perform, you must perform it.": "若目前付不起建造費用，可以先選擇另一個自己有優先權的行動，把建造留到之後。現在選擇處理建造，就只能收回標記，不建造。若所有行動都沒有優先權，就必須收回自己的一堆標記而不執行行動。若選擇處理的行動可以執行，就必須執行。",
+  "Designed by {p0}": "設計：{p0}",
+  "Published by {p0}": "出版：{p0}"
 }

@@ -48,8 +48,8 @@ The fixed starting island is additional to this table. Two tiles of each letter 
 
 ## Validation
 
-- 33 focused engine/tutorial tests: majorities, prerequisites, optional powers, money conversion, two-player blocking, illegal-move immutability, hidden information, dropped players, deterministic replay, legacy saves, the 4/5/6/1 footprint, floods and complete tutorials.
-- 80 full simulated games (14,622 moves in the latest sweep), across 2/3/4/5 players with and without Rising Waters. Both purposeful bots and varied legal choices exercise all nine actions and the Governor. These check termination, resource invariants and deterministic reconstruction; they do not establish strategic bot strength or resolve component discrepancies.
+- 34 focused engine/tutorial tests: majorities, prerequisites, optional powers, export resource selection, money conversion, two-player blocking, illegal-move immutability, hidden information, dropped players, deterministic replay, legacy saves, the 4/5/6/1 footprint, floods and complete tutorials.
+- 80 full simulated games (14,564 moves in the latest sweep), across 2/3/4/5 players with and without Rising Waters. Both purposeful bots and varied legal choices exercise all nine actions and the Governor. These check termination, resource invariants and deterministic reconstruction; they do not establish strategic bot strength or resolve component discrepancies.
 - Browser checks at **1440 px** and **390 px**: all nine actions, planning, tile placement, final scores, no page-width overflow, color symbols, replay, analysis chat hiding, player hover, board thumbnails, chat scroll-to-bottom, translation controls and ↑ editing.
 - The installed production engine completed an eight-round bot game and reconstructed its history. The uploaded viewer is checked through a protocol harness. A real multi-account online session remains a useful beta playtest.
 

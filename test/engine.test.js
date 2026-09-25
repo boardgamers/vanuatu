@@ -88,6 +88,32 @@ test("buyer exports to first demand and completion gives +2", () => {
   assert.deepEqual(s.demands[1].filled, [false]);
   assert.equal(s.players[0].score, 4);
 });
+test("exports preserve the selected resource, cost and reward", () => {
+  for (const good of E.GOODS) {
+    const s = actionState();
+    s.players[0].markers.buy = 1;
+    s.players[0].money = 9;
+    s.demands = [{ id: 1, goods: [...E.GOODS], filled: [false, false, false] }];
+    const chosen = act(s, 0, "buy", { cell: "0,0", good });
+    const next = E.move(s, chosen, 0);
+    assert.equal(next._history.at(-1).move.good, good);
+    assert.equal(next.players[0].money, 9 - E.PRICES[good]);
+    assert.equal(next.players[0].score, E.VALUES[good]);
+    for (const [i, resource] of E.GOODS.entries()) {
+      assert.equal(
+        next.board["0,0"].goods[resource],
+        resource === good ? 0 : 1,
+      );
+      assert.equal(next.demands[0].filled[i], resource === good);
+    }
+    assert.throws(
+      () => E.move(s, { ...chosen, good: "unknown" }, 0),
+      /not available/,
+    );
+    const { good: ignored, ...missing } = chosen;
+    assert.throws(() => E.move(s, missing, 0), /not available/);
+  }
+});
 test("character is optional and a bonus is usable only once", () => {
   let s = actionState();
   s.players[0].character = "fisherman";

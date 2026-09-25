@@ -2,6 +2,9 @@ import assert from "node:assert/strict";
 import { createServer } from "node:http";
 import { readFile, mkdir } from "node:fs/promises";
 import { chromium } from "playwright";
+import { createTutorial } from "@boardgamers/protocol/tutorial";
+import { chapters } from "../viewer/tutorials.js";
+import { availableMoves } from "../engine/index.js";
 const server = createServer(async (req, res) => {
   try {
     if (req.url === "/") {
@@ -137,8 +140,75 @@ try {
     });
     await page.close();
   }
+  const saved = new Map();
+  const lesson = await createTutorial({
+    ...chapters.planning,
+    storage: {
+      getItem: (key) => saved.get(key) ?? null,
+      setItem: (key, value) => saved.set(key, value),
+      removeItem: (key) => saved.delete(key),
+    },
+  });
+  await lesson.continue();
+  for (const actions of [["sail", "buy"], ["fish", "draw"], ["build"]]) {
+    const move = availableMoves(lesson.snapshot.state, 0).find(
+      (m) =>
+        m.type === "plan" &&
+        JSON.stringify(m.actions) === JSON.stringify(actions),
+    );
+    assert.equal(await lesson.play(move), true);
+  }
+  while (lesson.snapshot.canContinue) await lesson.continue();
+  const sail = availableMoves(lesson.snapshot.state, 0).find(
+    (m) => m.action === "sail" && m.path.length === 1 && m.path[0] === "1,0",
+  );
+  assert.equal(await lesson.play(sail), true);
+  while (lesson.snapshot.canContinue) await lesson.continue();
+  lesson.destroy();
+  const page = await browser.newPage({
+    viewport: { width: 1440, height: 1000 },
+  });
+  await page.goto(`http://127.0.0.1:${server.address().port}/`);
+  await page.evaluate(
+    async (entries) => {
+      for (const [key, value] of entries) localStorage.setItem(key, value);
+      await window.vanuatu.launchTutorial("#game", {
+        chapter: "planning",
+        locale: "en",
+      });
+    },
+    [...saved],
+  );
+  await page.locator('[data-action="buy"]').click();
+  const exports = page.locator(".turn-tray .primary[data-move]");
+  assert.equal(await exports.count(), 2);
+  assert.match(await exports.nth(1).innerHTML(), /Copra/);
+  await page
+    .locator(".sea-board")
+    .screenshot({ path: ".local/qa/tutorial-export-outline.png" });
+  await exports.nth(1).click();
+  await page.waitForFunction(
+    () =>
+      document.querySelector(".player-card.own .score b")?.textContent === "3",
+  );
+  assert.equal(
+    await page
+      .locator(".player-card.own .player-supplies > .token")
+      .first()
+      .locator("b")
+      .innerText(),
+    "0",
+  );
+  assert.ok(
+    !(
+      await page
+        .locator('[data-cell="0,0"] .island-goods title')
+        .allTextContents()
+    ).some((text) => text.includes("Copra")),
+  );
+  await page.close();
   console.log(
-    "Nine tutorial steps, completion controls, mobile/desktop layout and French/Dutch locale forwarding passed.",
+    "Nine tutorial steps, completion controls, mobile/desktop layout, French/Dutch locale forwarding and white-resource export passed.",
   );
 } finally {
   await browser.close();

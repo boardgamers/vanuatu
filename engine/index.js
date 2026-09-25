@@ -647,6 +647,7 @@ function normalizeMove(m) {
     "character",
     "tile",
     "cell",
+    "good",
     "token",
     "from",
     "to",

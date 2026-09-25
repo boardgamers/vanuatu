@@ -199,6 +199,13 @@ export function boardSvg(
     }
     svg += "</g>";
   }
+  if (!preview)
+    svg += `<g class="board-highlights" pointer-events="none" aria-hidden="true">${all
+      .map(
+        (c) =>
+          `<path class="cell-highlight ${targetSet.has(c.id) ? "legal" : ""} ${selected === c.id ? "selected" : ""}" data-highlight-cell="${c.id}" d="${tilePath(c.x, c.y)}"/>`,
+      )
+      .join("")}</g>`;
   return svg + "</svg>";
 }
 

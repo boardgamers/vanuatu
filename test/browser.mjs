@@ -204,6 +204,33 @@ assert.equal(
 );
 for (const width of [1440, 390]) {
   await page.setViewportSize({ width, height: width === 390 ? 844 : 1000 });
+  for (const [index, good] of E.GOODS.entries()) {
+    const s = actionState();
+    s.demands = [{ id: 1, goods: [...E.GOODS], filled: [false, false, false] }];
+    await page.evaluate((s) => window.vanuatuDemo.setState(s), s);
+    await page.locator('[data-action="buy"]').click();
+    assert.equal(
+      await page
+        .locator(".cell-highlight.selected")
+        .getAttribute("data-highlight-cell"),
+      "0,0",
+    );
+    assert.ok(
+      await page
+        .locator(".board-highlights")
+        .evaluate((el) => el === el.parentElement.lastElementChild),
+    );
+    assert.equal(
+      await page.locator(".turn-tray .primary[data-move]").count(),
+      3,
+    );
+    await page.locator(".turn-tray .primary[data-move]").nth(index).click();
+    const exported = await page.evaluate(() => window.vanuatuDemo.state);
+    assert.equal(exported._history.at(-1).move.good, good);
+    assert.equal(exported.players[0].money, 9 - E.PRICES[good]);
+    assert.equal(exported.players[0].score, E.VALUES[good]);
+    assert.equal(exported.board["0,0"].goods[good], 0);
+  }
   // Resolving an unaffordable majority is retrieval only, and selecting actions
   // must preserve the board's SVG/images (including its current zoom and scroll).
   const poor = actionState();
