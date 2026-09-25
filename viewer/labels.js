@@ -1,6 +1,7 @@
 const entries = {
   sail: ["Sail", "Naviguer"],
   fish: ["Fish", "Pêcher"],
+  fishStock: ["Fish in hold", "Poissons en cale"],
   sell: ["Sell fish", "Vendre"],
   explore: ["Explore", "Explorer"],
   build: ["Build", "Construire"],
@@ -91,7 +92,7 @@ const entries = {
   preferences: ["Preferences", "Préférences"],
 };
 export function translator(lang) {
-  return (key) => entries[key]?.[lang === "fr" ? 1 : 0] ?? key;
+  return (key) => entries[key]?.[0] ?? key;
 }
 export const characterHelp = {
   navigator: [

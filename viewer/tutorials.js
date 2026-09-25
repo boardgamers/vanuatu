@@ -107,12 +107,12 @@ export const chapters = {
       {
         id: "sail",
         title: "Find a fishing ground",
-        text: "Choose Sail and move onto the ocean with 2 fish. Each space costs 1 vatu.",
+        text: "Choose Sail and move to the ocean space with fish value 2. Each space costs 1 vatu.",
         complete: (s) => s.players[0].boat === "1,0",
         validateMove: (s, m) =>
           m.action === "sail" && m.path.at(-1) === "1,0"
             ? undefined
-            : "Sail to the ocean with 2 fish.",
+            : "Sail to the ocean space with fish value 2.",
       },
       {
         id: "fish",
@@ -124,7 +124,7 @@ export const chapters = {
       {
         id: "sell",
         title: "Sell your catch",
-        text: "Your boat is beside your orange hut. Sell the catch: 2 fish × a market price of 3 = 6 vatus.",
+        text: "Your boat is beside your orange hut. Sell the catch: fish value 2 × market price 3 = 6 vatus.",
         complete: (s) => s._history.some((h) => h.move.action === "sell"),
         validateMove: only("sell"),
       },

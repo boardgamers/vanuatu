@@ -85,8 +85,7 @@ const meanings = {
   zoom: ["Zoom board", "Agrandir le plateau"],
   sound: ["Game sounds", "Sons du jeu"],
 };
-export const iconLabel = (name, language = "en") =>
-  meanings[name]?.[language === "fr" ? 1 : 0] ?? name;
+export const iconLabel = (name, language = "en") => meanings[name]?.[0] ?? name;
 function resourceSymbol(name, colorBlind) {
   const mark = { kava: "K", copra: "C", beef: "B" }[name];
   return colorBlind && mark

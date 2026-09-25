@@ -33,16 +33,7 @@ export function mountActivity(
         chat,
         openPlayer,
         styles: true,
-        labels:
-          language === "fr"
-            ? {
-                send: "Envoyer",
-                sending: "Envoi…",
-                empty: "Aucun message",
-                message: "Message",
-                edited: "modifié",
-              }
-            : undefined,
+        labels: undefined,
       })
     : null;
   const observer = new IntersectionObserver(
@@ -80,12 +71,12 @@ export function mountActivity(
       : "";
     switch (e.type) {
       case "action":
-        return `${actor} ${icon(e.action)}${e.good ? icon(e.good) : ""}${e.fish ? e.fish.map((n) => token("fish", n)).join("") : ""}${e.path ? ` ${e.path.length} ${icon("sail")}` : ""}${e.bonus ? ` <small>${esc(CHARACTERS[state.players[e.p]?.character]?.[lang === "fr" ? "fr" : "name"] ?? "")}</small>` : ""}`;
+        return `${actor} ${icon(e.action)}${e.good ? icon(e.good) : ""}${e.fish ? e.fish.map((n) => token("fish", n)).join("") : ""}${e.path ? ` ${e.path.length} ${icon("sail")}` : ""}${e.bonus ? ` <small>${esc(CHARACTERS[state.players[e.p]?.character]?.["name"] ?? "")}</small>` : ""}`;
       case "plan":
       case "neutral":
         return `${actor} ${e.actions.map((a) => icon(a)).join("")}${e.type === "neutral" ? ` <span class="neutral-key">●</span>` : ""}`;
       case "character":
-        return `${actor} <span>${esc(CHARACTERS[e.character]?.[lang === "fr" ? "fr" : "name"] ?? e.character)}</span>`;
+        return `${actor} <span>${esc(CHARACTERS[e.character]?.["name"] ?? e.character)}</span>`;
       case "conversion":
         return `${actor} ${token("coin", e.points * 2)} → ${token("point", e.points)}`;
       case "treasure":

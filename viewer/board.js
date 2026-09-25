@@ -36,7 +36,6 @@ export function boardSvg(
     t,
   } = {},
 ) {
-  const fr = language === "fr";
   const label = (name) => iconLabel(name, language);
   const targetSet = new Set(targets);
   const all = CELLS.map((c) => ({ ...c, ...center(c.id) }));
@@ -57,7 +56,7 @@ export function boardSvg(
       legal = targetSet.has(c.id),
       spec = tile ? TILES[tile.id] : null;
     svg += `<g class="map-cell ${tile ? "occupied" : ""} ${legal ? "legal" : ""} ${selected === c.id ? "selected" : ""}" data-cell="${c.id}" ${legal ? `role="button" tabindex="0" aria-label="${esc(t(tile?.type === "island" ? "island" : "sea"))} ${c.id}"` : ""}>`;
-    svg += `<title>${esc(tile ? `${t(tile.type === "island" ? "island" : "sea")} · ${c.id}${tile.submerged ? ` · ${fr ? "Submergé" : "Submerged"}` : ""}` : fr ? "Emplacement de tuile" : "Tile space")}</title><polygon class="cell-surface" points="${hex(c.x, c.y)}"/>`;
+    svg += `<title>${esc(tile ? `${t(tile.type === "island" ? "island" : "sea")} · ${c.id}${tile.submerged ? ` · ${"Submerged"}` : ""}` : "Tile space")}</title><polygon class="cell-surface" points="${hex(c.x, c.y)}"/>`;
     if (tile) {
       svg += `<image href="${boardArt(spec)}" x="${c.x - 111}" y="${c.y - 111}" width="222" height="222" clip-path="url(#cell-${c.q + 2}-${c.r})"/>`;
       if (tile.submerged) {
@@ -75,8 +74,8 @@ export function boardSvg(
               kind,
               value,
               help: value
-                ? `${label(kind)}: ${value} — ${fr ? "prochaine prise sur cette tuile" : "next catch on this tile"}`
-                : `${label(kind)}: 0 — ${fr ? "épuisé" : "depleted"}`,
+                ? `${label(kind)}: ${value} — ${"next catch on this tile"}`
+                : `${label(kind)}: 0 — ${"depleted"}`,
             })),
           );
       } else {
@@ -92,7 +91,7 @@ export function boardSvg(
               c.y + 48,
               29,
               "currentColor",
-              `${label(good)} · ${fr ? "disponible à l’export" : "available to export"}`,
+              `${label(good)} · ${"available to export"}`,
               colorBlind,
             );
         const huts = tile.huts;
@@ -102,9 +101,7 @@ export function boardSvg(
           const help =
             huts[i] !== undefined
               ? `${label("build")} · ${s.players[huts[i]].name}`
-              : fr
-                ? "Emplacement de cabane libre"
-                : "Empty hut space";
+              : "Empty hut space";
           svg += `<g><title>${esc(help)}</title>`;
           svg +=
             huts[i] !== undefined
@@ -151,7 +148,7 @@ export function boardSvg(
       const rowSize = Math.min(3, boats.length - row * 3);
       const x = c.x + ((i % 3) - (rowSize - 1) / 2) * 39,
         y = c.y + (boats.length > 3 ? row * 32 : 11);
-      const help = `${fr ? "Bateau" : "Boat"} · ${p.name}`;
+      const help = `${"Boat"} · ${p.name}`;
       svg += `<g class="boat ${pi === player ? "own" : ""}" transform="translate(${x - 24} ${y - 24})" style="color:${p.color}" filter="url(#boat-shadow)"><title>${esc(help)}</title>${svgIcon("sail", 0, 0, 48, p.color, help)}${colorBlind ? `<text x="25" y="40" class="color-symbol">${symbols[pi]}</text>` : ""}</g>`;
     }
     svg += "</g>";
