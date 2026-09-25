@@ -184,6 +184,22 @@ export function mountGame(target, options = {}) {
               (m) =>
                 (m.type === "act" || m.type === "discard") && m.action === a,
             );
+        const explain =
+          planning &&
+          s.phase === "plan" &&
+          !allowed &&
+          draft.length < (s.planningPass === 2 ? 1 : 2);
+        const hint = explain
+          ? ({
+              fish: "Fishing requires fish on your boat's space. Plan Sail first if needed.",
+              explore:
+                "Exploring requires treasure on your boat's space. Plan Sail first if needed.",
+              sell: own()?.fish.length
+                ? undefined
+                : "Selling requires fish. Plan Fish first if your hold is empty.",
+            }[a] ??
+            "This action is not possible with your current resources and planned actions. Plan its prerequisites first.")
+          : "";
         const stacks = s.players
           .map((p, i) =>
             p.markers[a]
@@ -193,7 +209,7 @@ export function mountGame(target, options = {}) {
           .join("");
         return btn(
           `<span class="action-symbol">${icon(a)}</span><span class="action-content"><span class="action-label">${t(a)}</span><span class="action-stacks">${stacks}${s.neutral[a] ? `<span class="marker-stack neutral" title="${"Neutral markers"}">${s.neutral[a]}</span>` : ""}${countDraft ? `<span class="draft-marker" title="${"Markers being placed"}">+${countDraft}</span>` : ""}</span></span>`,
-          `data-action="${a}" ${allowed ? "" : "disabled"} aria-pressed="${action === a}"`,
+          `data-action="${a}" ${allowed ? "" : explain ? `aria-disabled="true" data-unavailable="${esc(hint)}" title="${esc(hint)}"` : "disabled"} aria-pressed="${action === a}"`,
           `${action === a ? "chosen" : ""} ${allowed ? "available" : ""}`,
         );
       },
@@ -264,6 +280,15 @@ export function mountGame(target, options = {}) {
   function tradeShips() {
     const help = `Foreign trade\n${colorBlind ? "K: kava · C: copra · B: beef." : "Green: kava · White: copra · Red: beef."}\nEach export fills the first ship (1 → 3) still needing that good. ✓ = already delivered.\nCompleting a ship adds 2 prosperity points.`;
     return `<div class="demand-ships" title="${esc(help)}" aria-label="${esc(help)}">${s.demands.map((d, i) => `<div class="demand-ship"><small>${i + 1}</small>${d.goods.map((g, j) => `<span class="${d.filled[j] ? "filled" : ""}">${icon(g)}${d.filled[j] ? icon("check") : ""}</span>`).join("")}${icon("buy")}</div>`).join("")}</div>`;
+  }
+  function renderDraft() {
+    const focus = document.activeElement?.getAttribute("data-action");
+    play.querySelector(".action-dock").outerHTML = dock();
+    play.querySelector(".turn-tray").outerHTML = tray();
+    if (focus)
+      play
+        .querySelector(`[data-action="${focus}"]`)
+        ?.focus({ preventScroll: true });
   }
   function render() {
     if (!s) {
@@ -366,6 +391,10 @@ export function mountGame(target, options = {}) {
       }
       if (!button || button.disabled) return;
       const d = button.dataset;
+      if ("unavailable" in d) {
+        showDialog(`<h2>${t(d.action)}</h2><p>${esc(d.unavailable)}</p>`);
+        return;
+      }
       if ("move" in d) {
         send(s.legal[Number(d.move)]);
         return;
@@ -387,6 +416,8 @@ export function mountGame(target, options = {}) {
           draft.push(d.action);
           if (s.phase === "neutral")
             draft.sort((a, b) => ACTIONS.indexOf(a) - ACTIONS.indexOf(b));
+          renderDraft();
+          return;
         } else {
           action = d.action;
           selected = null;
@@ -398,7 +429,7 @@ export function mountGame(target, options = {}) {
       }
       if ("undo" in d) {
         draft.pop();
-        render();
+        renderDraft();
         return;
       }
       if ("tile" in d) {

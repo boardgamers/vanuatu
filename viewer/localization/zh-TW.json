@@ -772,5 +772,9 @@
   "— next catch on this tile": "— 此板塊下次捕魚的價值",
   "— prochaine prise sur cette tuile": "— 此板塊的下次漁獲",
   "🏝️ Vanuatu": "🏝️ Vanuatu",
-  "Fish in hold": "船艙中的魚"
+  "Fish in hold": "船艙中的魚",
+  "Fishing requires fish on your boat's space. Plan Sail first if needed.": "捕魚時，船必須位於有魚的格子。必要時請先規劃航行。",
+  "Exploring requires treasure on your boat's space. Plan Sail first if needed.": "探索時，船必須位於有寶藏的格子。必要時請先規劃航行。",
+  "This action is not possible with your current resources and planned actions. Plan its prerequisites first.": "以目前的資源和已規劃的行動，無法執行此行動。請先規劃必要的前置行動。",
+  "Selling requires fish. Plan Fish first if your hold is empty.": "賣魚需要持有魚。如果貨艙是空的，請先規劃捕魚。"
 }

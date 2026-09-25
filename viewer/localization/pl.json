@@ -772,5 +772,9 @@
   "— next catch on this tile": "— następny połów na tym kafelku",
   "— prochaine prise sur cette tuile": "— prochaine prise sur cette tuile",
   "🏝️ Vanuatu": "🏝️ Vanuatu",
-  "Fish in hold": "Ryby w ładowni"
+  "Fish in hold": "Ryby w ładowni",
+  "Fishing requires fish on your boat's space. Plan Sail first if needed.": "Aby łowić, twoja łódź musi znajdować się na polu z rybami. W razie potrzeby najpierw zaplanuj żeglugę.",
+  "Exploring requires treasure on your boat's space. Plan Sail first if needed.": "Aby eksplorować, twoja łódź musi znajdować się na polu ze skarbami. W razie potrzeby najpierw zaplanuj żeglugę.",
+  "This action is not possible with your current resources and planned actions. Plan its prerequisites first.": "Ta akcja jest niemożliwa przy obecnych zasobach i zaplanowanych akcjach. Najpierw zaplanuj wymagane akcje.",
+  "Selling requires fish. Plan Fish first if your hold is empty.": "Sprzedaż wymaga ryb. Jeśli ładownia jest pusta, najpierw zaplanuj łowienie."
 }

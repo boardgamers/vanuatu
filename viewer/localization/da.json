@@ -772,5 +772,9 @@
   "— next catch on this tile": "— næste fangst på denne brik",
   "— prochaine prise sur cette tuile": "— næste fangst på denne brik",
   "🏝️ Vanuatu": "🏝️ Vanuatu",
-  "Fish in hold": "Fisk i lastrummet"
+  "Fish in hold": "Fisk i lastrummet",
+  "Fishing requires fish on your boat's space. Plan Sail first if needed.": "For at fiske skal din båd stå på et felt med fisk. Planlæg om nødvendigt Sejl først.",
+  "Exploring requires treasure on your boat's space. Plan Sail first if needed.": "For at udforske skal din båd stå på et felt med skatte. Planlæg om nødvendigt Sejl først.",
+  "This action is not possible with your current resources and planned actions. Plan its prerequisites first.": "Denne handling er ikke mulig med dine ressourcer og planlagte handlinger. Planlæg de nødvendige forberedelser først.",
+  "Selling requires fish. Plan Fish first if your hold is empty.": "Du skal have fisk for at sælge. Planlæg Fisk først, hvis dit lastrum er tomt."
 }

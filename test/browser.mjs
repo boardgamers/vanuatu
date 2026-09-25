@@ -119,7 +119,33 @@ for (let n = 0; n < 2; n++) {
   await page.locator("[data-character-choice]").first().click();
   await page.locator("dialog [data-move]").click();
 }
+// Unavailable planning actions explain prerequisites without placing a marker.
+const blockedFish = page.locator('[data-action="fish"]');
+assert.equal(await blockedFish.getAttribute("aria-disabled"), "true");
+assert.ok((await blockedFish.getAttribute("title")).length > 20);
+await blockedFish.dispatchEvent("click");
+assert.equal(await page.locator("dialog[open]").count(), 1);
+assert.ok((await page.locator("dialog p").innerText()).length > 20);
+await page.locator("dialog [data-close]").click();
+await page.evaluate(() => {
+  window.originalMap = document.querySelector(".map-scroll");
+});
 await page.locator('[data-action="sail"]').click();
+assert.equal(
+  await page.evaluate(
+    () => window.originalMap === document.querySelector(".map-scroll"),
+  ),
+  true,
+);
+await page.locator("[data-undo]").click();
+assert.equal(
+  await page.evaluate(
+    () => window.originalMap === document.querySelector(".map-scroll"),
+  ),
+  true,
+);
+await page.locator('[data-action="sail"]').click();
+
 await page.locator('[data-action="fish"]').click();
 await page.locator(".turn-tray [data-move]").click();
 const after = await page.evaluate(() => window.vanuatuDemo.state);

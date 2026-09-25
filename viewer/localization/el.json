@@ -772,5 +772,9 @@
   "— next catch on this tile": "— επόμενη ψαριά σε αυτό το πλακίδιο",
   "— prochaine prise sur cette tuile": "— επόμενη ψαριά σε αυτό το πλακίδιο",
   "🏝️ Vanuatu": "🏝️ Vanuatu",
-  "Fish in hold": "Ψάρια στο αμπάρι"
+  "Fish in hold": "Ψάρια στο αμπάρι",
+  "Fishing requires fish on your boat's space. Plan Sail first if needed.": "Για να ψαρέψεις, το σκάφος σου πρέπει να βρίσκεται σε θέση με ψάρια. Αν χρειάζεται, προγραμμάτισε πρώτα πλεύση.",
+  "Exploring requires treasure on your boat's space. Plan Sail first if needed.": "Για να εξερευνήσεις, το σκάφος σου πρέπει να βρίσκεται σε θέση με θησαυρούς. Αν χρειάζεται, προγραμμάτισε πρώτα πλεύση.",
+  "This action is not possible with your current resources and planned actions. Plan its prerequisites first.": "Αυτή η ενέργεια δεν είναι δυνατή με τους πόρους και τις προγραμματισμένες ενέργειές σου. Προγραμμάτισε πρώτα όσα χρειάζονται.",
+  "Selling requires fish. Plan Fish first if your hold is empty.": "Για να πουλήσεις, χρειάζεσαι ψάρια. Αν το αμπάρι σου είναι άδειο, προγραμμάτισε πρώτα ψάρεμα."
 }

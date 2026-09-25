@@ -772,5 +772,9 @@
   "— next catch on this tile": "— 이 타일에서 다음에 잡을 물고기의 가치",
   "— prochaine prise sur cette tuile": "— 이 타일의 다음 어획량",
   "🏝️ Vanuatu": "🏝️ 바누아투",
-  "Fish in hold": "화물칸의 물고기"
+  "Fish in hold": "화물칸의 물고기",
+  "Fishing requires fish on your boat's space. Plan Sail first if needed.": "낚시하려면 배가 물고기가 있는 칸에 있어야 합니다. 필요하면 먼저 항해를 계획하세요.",
+  "Exploring requires treasure on your boat's space. Plan Sail first if needed.": "탐험하려면 배가 보물이 있는 칸에 있어야 합니다. 필요하면 먼저 항해를 계획하세요.",
+  "This action is not possible with your current resources and planned actions. Plan its prerequisites first.": "현재 자원과 계획한 행동으로는 이 행동을 할 수 없습니다. 필요한 선행 행동을 먼저 계획하세요.",
+  "Selling requires fish. Plan Fish first if your hold is empty.": "판매하려면 물고기가 필요합니다. 적재함이 비어 있다면 먼저 낚시를 계획하세요."
 }

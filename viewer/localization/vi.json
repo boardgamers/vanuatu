@@ -772,5 +772,9 @@
   "— next catch on this tile": "— giá trị mẻ cá tiếp theo trên ô này",
   "— prochaine prise sur cette tuile": "— mẻ cá tiếp theo trên ô này",
   "🏝️ Vanuatu": "🏝️ Vanuatu",
-  "Fish in hold": "Cá trong khoang hàng"
+  "Fish in hold": "Cá trong khoang hàng",
+  "Fishing requires fish on your boat's space. Plan Sail first if needed.": "Để đánh cá, thuyền của bạn phải ở ô có cá. Hãy lên kế hoạch đi thuyền trước nếu cần.",
+  "Exploring requires treasure on your boat's space. Plan Sail first if needed.": "Để khám phá, thuyền của bạn phải ở ô có kho báu. Hãy lên kế hoạch đi thuyền trước nếu cần.",
+  "This action is not possible with your current resources and planned actions. Plan its prerequisites first.": "Không thể thực hiện hành động này với tài nguyên và các hành động đã lên kế hoạch. Hãy lên kế hoạch cho các hành động tiên quyết trước.",
+  "Selling requires fish. Plan Fish first if your hold is empty.": "Cần có cá để bán. Nếu khoang hàng trống, hãy lên kế hoạch đánh cá trước."
 }

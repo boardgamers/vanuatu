@@ -772,5 +772,9 @@
   "— next catch on this tile": "— próxima captura neste tile",
   "— prochaine prise sur cette tuile": "— próxima pesca nesta peça",
   "🏝️ Vanuatu": "🏝️ Vanuatu",
-  "Fish in hold": "Peixes no porão"
+  "Fish in hold": "Peixes no porão",
+  "Fishing requires fish on your boat's space. Plan Sail first if needed.": "Para pescar, seu barco deve estar em um espaço com peixes. Se necessário, planeje Navegar primeiro.",
+  "Exploring requires treasure on your boat's space. Plan Sail first if needed.": "Para explorar, seu barco deve estar em um espaço com tesouros. Se necessário, planeje Navegar primeiro.",
+  "This action is not possible with your current resources and planned actions. Plan its prerequisites first.": "Esta ação não é possível com seus recursos e ações planejadas. Planeje primeiro as ações necessárias.",
+  "Selling requires fish. Plan Fish first if your hold is empty.": "Para vender, você precisa de peixes. Planeje Pescar primeiro se o porão estiver vazio."
 }

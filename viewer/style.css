@@ -234,7 +234,8 @@
   gap: 3px;
   align-items: center;
 }
-.vanuatu .action-dock > button:disabled {
+.vanuatu .action-dock > button:disabled,
+.vanuatu .action-dock > button[aria-disabled="true"] {
   opacity: 0.66;
 }
 .vanuatu .action-dock .available {

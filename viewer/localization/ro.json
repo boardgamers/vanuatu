@@ -772,5 +772,9 @@
   "— next catch on this tile": "— următoarea captură pe această piesă",
   "— prochaine prise sur cette tuile": "— următoarea captură pe această piesă",
   "🏝️ Vanuatu": "🏝️ Vanuatu",
-  "Fish in hold": "Pește în cală"
+  "Fish in hold": "Pește în cală",
+  "Fishing requires fish on your boat's space. Plan Sail first if needed.": "Pentru a pescui, barca ta trebuie să fie pe un spațiu cu pește. Planifică mai întâi navigarea, dacă este necesar.",
+  "Exploring requires treasure on your boat's space. Plan Sail first if needed.": "Pentru a explora, barca ta trebuie să fie pe un spațiu cu comori. Planifică mai întâi navigarea, dacă este necesar.",
+  "This action is not possible with your current resources and planned actions. Plan its prerequisites first.": "Această acțiune nu este posibilă cu resursele și acțiunile planificate. Planifică mai întâi acțiunile necesare.",
+  "Selling requires fish. Plan Fish first if your hold is empty.": "Pentru a vinde ai nevoie de pește. Planifică mai întâi pescuitul dacă magazia este goală."
 }

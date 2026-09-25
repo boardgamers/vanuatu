@@ -772,5 +772,9 @@
   "— next catch on this tile": "— prossima pesca su questa tessera",
   "— prochaine prise sur cette tuile": "— prossima pesca su questa tessera",
   "🏝️ Vanuatu": "🏝️ Vanuatu",
-  "Fish in hold": "Pesci nella stiva"
+  "Fish in hold": "Pesci nella stiva",
+  "Fishing requires fish on your boat's space. Plan Sail first if needed.": "Per pescare, la tua barca deve trovarsi su una casella con pesce. Se necessario, programma prima Navigare.",
+  "Exploring requires treasure on your boat's space. Plan Sail first if needed.": "Per esplorare, la tua barca deve trovarsi su una casella con tesori. Se necessario, programma prima Navigare.",
+  "This action is not possible with your current resources and planned actions. Plan its prerequisites first.": "Questa azione non è possibile con le risorse e le azioni già programmate. Programma prima le azioni necessarie.",
+  "Selling requires fish. Plan Fish first if your hold is empty.": "Per vendere serve pesce. Programma prima Pescare se la stiva è vuota."
 }

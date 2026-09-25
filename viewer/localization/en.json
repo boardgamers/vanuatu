@@ -772,5 +772,9 @@
   "— next catch on this tile": "— next catch on this tile",
   "— prochaine prise sur cette tuile": "— prochaine prise sur cette tuile",
   "🏝️ Vanuatu": "🏝️ Vanuatu",
-  "Fish in hold": "Fish in hold"
+  "Fish in hold": "Fish in hold",
+  "Fishing requires fish on your boat's space. Plan Sail first if needed.": "Fishing requires fish on your boat's space. Plan Sail first if needed.",
+  "Exploring requires treasure on your boat's space. Plan Sail first if needed.": "Exploring requires treasure on your boat's space. Plan Sail first if needed.",
+  "This action is not possible with your current resources and planned actions. Plan its prerequisites first.": "This action is not possible with your current resources and planned actions. Plan its prerequisites first.",
+  "Selling requires fish. Plan Fish first if your hold is empty.": "Selling requires fish. Plan Fish first if your hold is empty."
 }

@@ -772,5 +772,9 @@
   "— next catch on this tile": "— इस टाइल पर अगली पकड़",
   "— prochaine prise sur cette tuile": "— इस टाइल पर अगली पकड़",
   "🏝️ Vanuatu": "🏝️ Vanuatu",
-  "Fish in hold": "नाव में रखी मछलियाँ"
+  "Fish in hold": "नाव में रखी मछलियाँ",
+  "Fishing requires fish on your boat's space. Plan Sail first if needed.": "मछली पकड़ने के लिए आपकी नाव मछली वाले खाने पर होनी चाहिए। ज़रूरत हो तो पहले नौकायन की योजना बनाएँ।",
+  "Exploring requires treasure on your boat's space. Plan Sail first if needed.": "खोज करने के लिए आपकी नाव खज़ाने वाले खाने पर होनी चाहिए। ज़रूरत हो तो पहले नौकायन की योजना बनाएँ।",
+  "This action is not possible with your current resources and planned actions. Plan its prerequisites first.": "आपके मौजूदा संसाधनों और नियोजित कार्रवाइयों से यह कार्रवाई संभव नहीं है। पहले आवश्यक कार्रवाइयों की योजना बनाएँ।",
+  "Selling requires fish. Plan Fish first if your hold is empty.": "बेचने के लिए मछली चाहिए। अगर आपकी नाव का भंडार खाली है, तो पहले मछली पकड़ने की योजना बनाएँ।"
 }

@@ -772,5 +772,9 @@
   "— next catch on this tile": "— prochaine prise sur cette tuile",
   "— prochaine prise sur cette tuile": "— prochaine prise sur cette tuile",
   "🏝️ Vanuatu": "🏝️ Vanuatu",
-  "Fish in hold": "Poissons en cale"
+  "Fish in hold": "Poissons en cale",
+  "Fishing requires fish on your boat's space. Plan Sail first if needed.": "Pour pêcher, ton bateau doit être sur une case avec du poisson. Programme d’abord Naviguer si nécessaire.",
+  "Exploring requires treasure on your boat's space. Plan Sail first if needed.": "Pour explorer, ton bateau doit être sur une case avec un trésor. Programme d’abord Naviguer si nécessaire.",
+  "This action is not possible with your current resources and planned actions. Plan its prerequisites first.": "Tes ressources et les actions déjà programmées ne permettent pas cette action. Programme d’abord ses prérequis.",
+  "Selling requires fish. Plan Fish first if your hold is empty.": "Pour vendre, il faut du poisson. Programme d’abord Pêcher si ta cale est vide."
 }
