@@ -84,8 +84,8 @@ const meanings = {
 };
 export const iconLabel = (name, language = "en") =>
   meanings[name]?.[language === "fr" ? 1 : 0] ?? name;
-export function icon(name, label = iconLabel(name)) {
-  return `<svg class="icon icon-${esc(name)}" viewBox="0 0 32 32" aria-hidden="true"><title>${esc(label)}</title>${paths[name] ?? paths.point}</svg>`;
+export function icon(name, label = iconLabel(name), accessible = false) {
+  return `<svg class="icon icon-${esc(name)}" viewBox="0 0 32 32" ${accessible ? `role="img" aria-label="${esc(label)}"` : 'aria-hidden="true"'}><title>${esc(label)}</title>${paths[name] ?? paths.point}</svg>`;
 }
 export function svgIcon(
   name,

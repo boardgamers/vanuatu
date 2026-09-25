@@ -51,7 +51,7 @@ export function mountGame(target, options = {}) {
     revision,
     focusReturn;
   const icon = (name, label) =>
-    renderIcon(name, label ?? iconLabel(name, lang));
+    renderIcon(name, label ?? iconLabel(name, lang), label !== undefined);
   const token = (name, n, label) =>
     renderToken(name, n, label ?? `${iconLabel(name, lang)}: ${n}`);
   let t = translator(lang);
