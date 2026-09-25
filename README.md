@@ -6,7 +6,7 @@ This repository and the BGS listing remain **private**. Supplied artwork and gam
 
 ## Development
 
-Node 24+, pnpm. `pnpm install`, `pnpm build`, `pnpm dev` (port 5238). `pnpm test` runs rules tests; `pnpm test:browser` checks the viewer.
+Node 24+, pnpm. `pnpm install`, `pnpm build`, `pnpm dev` (port 5246). `pnpm test` runs rules tests; install the browser once with `pnpm exec playwright install chromium`; `pnpm test:browser` checks the viewer.
 
 Supported scope: 2–5 players, all eleven characters, the official two-player variant, optional Rising Waters, replay and finished-game analysis, bots, BGS chat, player hover cards and board thumbnails.
 
@@ -18,3 +18,11 @@ Supported scope: 2–5 players, all eleven characters, the official two-player v
 - [BoardGameGeek](https://boardgamegeek.com/boardgame/193927/vanuatu-second-edition)
 
 Component uncertainties and implementation validation are recorded in the beta report.
+
+## Beta review
+
+Read [the beta report](docs/BETA-REPORT.md) before public release: the supplied ocean values and one outer board location still need confirmation. Bots are suitable for practice and automated coverage, not a claim of strong competitive play.
+
+Guided lessons are available locally at `/?lesson=planning`, `/?lesson=fishing` and `/?lesson=islands`. Add `?players=2&new`, `?water&new` or `?hotseat&new` for practice variants. Practice progress stays in this browser.
+
+Release: `pnpm build && pnpm test && pnpm test:browser`, then `node scripts/publish-private.mjs`. The publisher reads the admin token from `~/.bgs`, keeps the version private and checks the unlisted flag. It refuses to overwrite a public version. `node test/simulations.mjs` runs the longer complete-game sweep.

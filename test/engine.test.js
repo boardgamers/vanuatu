@@ -177,3 +177,71 @@ test("Rising Waters floods after its action countdown and dikes protect edges", 
   assert.equal(s.board["0,0"].water, 2);
   assert.equal(s.waterTriggered, true);
 });
+test("rest choices stay secret in replay events as well as state", () => {
+  let s = actionState();
+  s.phase = "rest";
+  s.actor = 0;
+  s._restAvailable = ["first", "coin"];
+  s = E.move(s, { type: "rest", token: "first" }, 0);
+  const last = E.logSlice(s, { player: 1, start: E.logLength(s) - 1 })
+    .frames[0];
+  assert.equal(last.players[0].rest, "hidden");
+  assert.equal(last.lastEvents.find((e) => e.type === "rest").token, "hidden");
+  assert.equal(
+    E.stripSecret(s, 0).lastEvents.find((e) => e.type === "rest").token,
+    "first",
+  );
+});
+test("dropped players are automated on future turns and replay boundaries remain valid", () => {
+  let s = E.init(3, [], {}, "drop");
+  const dropped = (s.actor + 1) % 3;
+  s = E.dropPlayer(s, dropped);
+  for (let n = 0; n < 22 && !s.finished; n++) {
+    assert.notEqual(s.actor, dropped);
+    s = E.moveAI(s, s.actor);
+  }
+  assert.ok(s._history.some((h) => h.p === dropped));
+  for (let n = 1; n <= E.logLength(s); n++)
+    assert.deepEqual(
+      E.createAnalysis(s, { to: n }).board,
+      s._frames[n - 1].board,
+    );
+});
+test("batched planning accounts for the first new marker as a prerequisite", () => {
+  const s = actionState();
+  s.phase = "plan";
+  s.planningPass = 0;
+  s.players[0].markers = Object.fromEntries(E.ACTIONS.map((a) => [a, 0]));
+  s.board["0,0"].huts = [0];
+  s.players[0].fish = [];
+  assert.ok(
+    E.availableMoves(s).some(
+      (m) =>
+        m.type === "plan" && m.actions[0] === "fish" && m.actions[1] === "sell",
+    ),
+  );
+});
+test("an optional treasure sale is not skipped by automatic marker retrieval", () => {
+  let s = actionState();
+  s.actor = 0;
+  s.players[0].markers = { ...s.players[0].markers, fish: 1 };
+  s.players[1].markers = Object.fromEntries(
+    E.ACTIONS.map((a) => [a, a === "sail" ? 1 : 0]),
+  );
+  s.players[1].money = 0;
+  s.players[1].treasures = [2];
+  s = E.move(s, act(s, 0, "fish"), 0);
+  assert.equal(s.actor, 1);
+  assert.ok(E.availableMoves(s, 1).some((m) => m.type === "treasure"));
+  s = E.move(s, { type: "treasure", values: [2] }, 1);
+  assert.ok(E.availableMoves(s, 1).some((m) => m.action === "sail"));
+});
+test("Governor marker movement does not perform an action or advance the flood die", () => {
+  let s = actionState();
+  s.players[0].character = "governor";
+  s.options.risingWaters = true;
+  s.waterCountdown = 1;
+  s = E.move(s, { type: "governor", from: "fish", to: "explore" }, 0);
+  assert.equal(s.waterCountdown, 1);
+  assert.equal(s.waterTriggered, false);
+});

@@ -18,7 +18,9 @@ for n in range(1,11):save('demand-'+str(n),root/'Demand'/f'Demand{n}.jpg',(400,2
 for n in range(1,5):save('rest-'+str(n),root/'rest_tokens'/f'REST{n}.jpg',(220,220))
 board=root/'Game Board/Game_Board_Vanuatu_RGB.jpg'
 save('efate',board,(480,480),(3030,2450,4280,3700))
-save('ocean',root/'archipelagos/archipelago03.jpg',(600,600),(150,150,1070,1070))
+ocean=root/'archipelagos/archipelago03.jpg'
+w,h=Image.open(ocean).size
+save('ocean',ocean,(480,480),(int(w*.3),int(h*.3),int(w*.7),int(h*.7)))
 save('sand',root/'Demand/BACKSIDE_Demand.jpg',(500,280))
 save('cover',root/'Game Box/Vanuatu_box_FRONT_NEW_small.jpg',(1100,1100))
 for i,action in enumerate(['buy','explore','sail','build','rest','tourist','fish','sell','draw']):

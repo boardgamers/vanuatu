@@ -445,7 +445,50 @@ function freeVariants(s, p) {
       }
   return out;
 }
+const planningCache = new WeakMap();
 export function canPlan(s, p, target, markers = s.players[p].markers) {
+  return canPlanUncached(s, p, target, markers);
+}
+function cachedCanPlan(s, p, target, markers = s.players[p].markers) {
+  const cacheKey = `${p}:${target}:${ACTIONS.map((a) => (markers[a] > 0 ? 1 : 0)).join("")}`;
+  let cache = planningCache.get(s);
+  if (!cache) {
+    cache = new Map();
+    planningCache.set(s, cache);
+  }
+  if (cache.has(cacheKey)) return cache.get(cacheKey);
+  const result = canPlanUncached(s, p, target, markers);
+  cache.set(cacheKey, result);
+  return result;
+}
+function canPlanUncached(s, p, target, markers) {
+  const islands = Object.values(s.board).filter(
+    (t) => t.type === "island" && !t.submerged,
+  );
+  if (target === "fish" && !Object.values(s.board).some((t) => t.fish > 0))
+    return false;
+  if (
+    target === "explore" &&
+    !Object.values(s.board).some((t) => t.treasure > 0)
+  )
+    return false;
+  if (
+    target === "draw" &&
+    !islands.some((t) => t.drawings < TILES[t.id].drawings)
+  )
+    return false;
+  if (
+    target === "tourist" &&
+    (!s.tourists || !islands.some((t) => t.tourists < TILES[t.id].tourists))
+  )
+    return false;
+  if (
+    target === "buy" &&
+    !islands.some((t) => Object.values(t.goods).some((n) => n > 0))
+  )
+    return false;
+  if (target === "sell" && !s.players[p].fish.length && !markers.fish)
+    return false;
   const actions = ACTIONS.filter(
     (a) => markers[a] > 0 && a !== target && a !== "rest",
   );
@@ -541,16 +584,17 @@ export function availableMoves(s, p = s.actor) {
       }));
       break;
     case "plan": {
+      planningCache.delete(s);
       const count = s.planningPass === 2 ? 1 : 2;
       for (const action of ACTIONS) {
-        if (!canPlan(s, p, action)) continue;
+        if (!cachedCanPlan(s, p, action)) continue;
         if (count === 1) {
           moves.push({ type: "plan", actions: [action] });
           continue;
         }
         const markers = { ...a.markers, [action]: a.markers[action] + 1 };
         for (const next of ACTIONS)
-          if (canPlan(s, p, next, markers))
+          if (cachedCanPlan(s, p, next, markers))
             moves.push({ type: "plan", actions: [action, next] });
       }
       break;
@@ -824,7 +868,7 @@ function execute(s, m, p) {
       a.markers[m.from] = 0;
       a.used = true;
       a.governorAction = m.to;
-      actionDone(s, p);
+      actionDone(s, p, false);
       return;
     case "rest":
       a.rest = m.token;
@@ -854,7 +898,11 @@ function automate(s) {
     const moves = availableMoves(s).filter(
       (m) => !["beg", "treasure"].includes(m.type),
     );
-    if (moves.length === 1 && moves[0].type === "discard") {
+    if (
+      moves.length === 1 &&
+      moves[0].type === "discard" &&
+      freeMoves(s, s.actor).length === 0
+    ) {
       execute(s, moves[0], s.actor);
       continue;
     }
@@ -862,7 +910,7 @@ function automate(s) {
   }
   check(guard < 100, "Automatic turn limit");
 }
-export function move(data, input, p) {
+function applyMove(data, input, p) {
   check(!data.finished, "The game has ended");
   check(
     Number.isInteger(p) && p >= 0 && p < data.players.length,
@@ -883,6 +931,17 @@ export function move(data, input, p) {
   s._history.push({ p, move: copy(legal) });
   saveFrame(s);
   return s;
+}
+function playDropped(data) {
+  let s = data,
+    n = 0;
+  while (!s.finished && s.players[s.actor]?.dropped && n++ < 1000)
+    s = applyMove(s, chooseAI(s, s.actor), s.actor);
+  check(n < 1000, "Dropped player automation limit");
+  return s;
+}
+export function move(data, input, p) {
+  return playDropped(applyMove(data, input, p));
 }
 export const ended = (s) => s.finished;
 export const scores = (s) => s.players.map((p) => p.score);
@@ -922,6 +981,9 @@ function publicFrame(frame, p, finished = false) {
     if (q !== p && !finished) a.rest = a.rest ? "hidden" : null;
   if (!(out.phase === "rest" && out.actor === p) && !finished)
     delete out.restAvailable;
+  out.lastEvents = (out.lastEvents ?? []).map((e) =>
+    e.type === "rest" && e.p !== p && !finished ? { ...e, token: "hidden" } : e,
+  );
   return out;
 }
 export function stripSecret(s, p) {
@@ -958,7 +1020,7 @@ export function replay(s, { to = logLength(s) } = {}) {
   );
   const b = s._setup;
   let r = init(b.count, b.expansions, b.options, b.seed);
-  for (const h of s._history.slice(0, to - 1)) r = move(r, h.move, h.p);
+  for (const h of s._history.slice(0, to - 1)) r = applyMove(r, h.move, h.p);
   s.players.forEach((p, i) => {
     r.players[i].name = p.name;
     r.players[i].dropped = p.dropped;
@@ -970,7 +1032,7 @@ export function createAnalysis(s, { to }) {
   r.players.forEach((p) => (p.dropped = false));
   return r;
 }
-export function moveAI(s, p) {
+function chooseAI(s, p) {
   check(p === s.actor);
   const moves = availableMoves(s, p);
   check(moves.length, "No legal bot move");
@@ -994,11 +1056,6 @@ export function moveAI(s, p) {
           (({ sail: 4, sell: 3, fish: 2, rest: 1 }[action] ?? 0) -
             s.neutral[action]),
         0,
-      );
-    if (false)
-      return (
-        ({ sail: 4, sell: 3, fish: 2, rest: 1 }[m.action] ?? 0) -
-        s.neutral[m.action]
       );
     if (m.type === "character")
       return (
@@ -1086,16 +1143,14 @@ export function moveAI(s, p) {
   const ranked = moves
     .map((m, i) => ({ m, i, value: value(m) }))
     .sort((a, b) => b.value - a.value || a.i - b.i);
-  return move(s, ranked[0].m, p);
+  return ranked[0].m;
+}
+export function moveAI(s, p) {
+  return move(s, chooseAI(s, p), p);
 }
 export function dropPlayer(s, p) {
+  check(Number.isInteger(p) && !!s.players[p], "Unknown player");
   const out = copy(s);
   out.players[p].dropped = true;
-  let n = 0;
-  while (!out.finished && out.players[out.actor]?.dropped && n++ < 1000) {
-    const next = moveAI(out, out.actor);
-    Object.assign(out, next);
-  }
-  check(n < 1000, "Dropped player automation limit");
-  return out;
+  return playDropped(out);
 }

@@ -11,7 +11,8 @@
     "build": "node scripts/build.mjs",
     "test": "node --test test/*.test.js",
     "dev": "node scripts/dev.mjs",
-    "test:browser": "node test/browser.mjs"
+    "test:browser": "node test/browser.mjs",
+    "check": "pnpm build && pnpm test && pnpm test:browser"
   },
   "dependencies": {
     "@boardgamers/protocol": "0.6.0",

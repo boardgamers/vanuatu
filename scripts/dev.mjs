@@ -2,7 +2,7 @@ import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
 import { resolve, extname } from "node:path";
 const root = resolve("dist");
-const port = Number(process.env.PORT ?? 5238);
+const port = Number(process.env.PORT ?? 5246);
 createServer(async (req, res) => {
   try {
     const url = new URL(req.url, "http://local");
