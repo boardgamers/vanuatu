@@ -791,5 +791,6 @@
   "Resolve your remaining stacks. Watch which actions become available when opponents remove theirs. Planning an action does not guarantee it: someone may take the last fish or use the last space first.": "अपने बचे हुए ढेर निपटाएँ। देखें कि विरोधियों के मार्कर हटने से कौन-सी क्रियाएँ उपलब्ध होती हैं। क्रिया की योजना बना लेना उसकी गारंटी नहीं है: कोई पहले ही आखिरी मछली ले सकता है या आखिरी जगह भर सकता है।",
   "Spread your markers for more actions, or stack them for priority. Plan prerequisites first, then choose your action order as the round unfolds.": "अधिक क्रियाओं के लिए मार्कर फैलाएँ, या प्राथमिकता के लिए ढेर बनाएँ। आवश्यक शर्तों की योजना बनाएँ, फिर दौर की स्थिति के अनुसार क्रियाओं का क्रम चुनें।",
   "Show full board": "पूरा बोर्ड दिखाएँ",
-  "Focus on placed tiles": "रखी हुई टाइलों पर केंद्रित करें"
+  "Focus on placed tiles": "रखी हुई टाइलों पर केंद्रित करें",
+  "Upcoming tiles": "आने वाली टाइलें"
 }

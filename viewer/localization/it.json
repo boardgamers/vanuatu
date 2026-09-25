@@ -791,5 +791,6 @@
   "Resolve your remaining stacks. Watch which actions become available when opponents remove theirs. Planning an action does not guarantee it: someone may take the last fish or use the last space first.": "Risolvi le pile rimaste. Osserva quali azioni diventano disponibili quando gli avversari rimuovono i loro segnalini. Pianificare un’azione non la garantisce: qualcuno potrebbe prendere prima l’ultimo pesce o l’ultimo posto.",
   "Spread your markers for more actions, or stack them for priority. Plan prerequisites first, then choose your action order as the round unfolds.": "Distribuisci i segnalini per più azioni o impilali per la priorità. Pianifica i prerequisiti, poi scegli l’ordine delle azioni durante il round.",
   "Show full board": "Mostra tutto il tabellone",
-  "Focus on placed tiles": "Centra sulle tessere piazzate"
+  "Focus on placed tiles": "Centra sulle tessere piazzate",
+  "Upcoming tiles": "Prossime tessere"
 }

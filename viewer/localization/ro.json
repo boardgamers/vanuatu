@@ -791,5 +791,6 @@
   "Resolve your remaining stacks. Watch which actions become available when opponents remove theirs. Planning an action does not guarantee it: someone may take the last fish or use the last space first.": "Rezolvă teancurile rămase. Urmărește ce acțiuni devin disponibile când adversarii își retrag marcatorii. Planificarea unei acțiuni nu o garantează: cineva poate lua ultimul pește sau ocupa ultimul loc înaintea ta.",
   "Spread your markers for more actions, or stack them for priority. Plan prerequisites first, then choose your action order as the round unfolds.": "Împarte marcatorii pentru mai multe acțiuni sau suprapune-i pentru prioritate. Planifică cerințele prealabile, apoi alege ordinea acțiunilor pe parcursul rundei.",
   "Show full board": "Arată întreaga tablă",
-  "Focus on placed tiles": "Centrează pe piesele plasate"
+  "Focus on placed tiles": "Centrează pe piesele plasate",
+  "Upcoming tiles": "Următoarele piese"
 }

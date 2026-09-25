@@ -791,5 +791,6 @@
   "Resolve your remaining stacks. Watch which actions become available when opponents remove theirs. Planning an action does not guarantee it: someone may take the last fish or use the last space first.": "Επίλυσε τις υπόλοιπες στοίβες σου. Πρόσεχε ποιες ενέργειες γίνονται διαθέσιμες όταν οι αντίπαλοι αφαιρούν τους δείκτες τους. Ο προγραμματισμός δεν εγγυάται την ενέργεια: κάποιος μπορεί να πάρει το τελευταίο ψάρι ή την τελευταία θέση πρώτος.",
   "Spread your markers for more actions, or stack them for priority. Plan prerequisites first, then choose your action order as the round unfolds.": "Μοίρασε τους δείκτες για περισσότερες ενέργειες ή στοίβαξέ τους για προτεραιότητα. Σχεδίασε τις προϋποθέσεις και διάλεξε τη σειρά των ενεργειών καθώς εξελίσσεται ο γύρος.",
   "Show full board": "Εμφάνιση ολόκληρου του ταμπλό",
-  "Focus on placed tiles": "Εστίαση στα τοποθετημένα πλακίδια"
+  "Focus on placed tiles": "Εστίαση στα τοποθετημένα πλακίδια",
+  "Upcoming tiles": "Επόμενα πλακίδια"
 }

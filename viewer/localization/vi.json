@@ -791,5 +791,6 @@
   "Resolve your remaining stacks. Watch which actions become available when opponents remove theirs. Planning an action does not guarantee it: someone may take the last fish or use the last space first.": "Giải quyết các chồng quân còn lại. Theo dõi hành động nào trở nên khả thi khi đối thủ thu quân. Lên kế hoạch không bảo đảm sẽ thực hiện được: ai đó có thể lấy con cá cuối cùng hoặc chiếm chỗ trống cuối cùng trước bạn.",
   "Spread your markers for more actions, or stack them for priority. Plan prerequisites first, then choose your action order as the round unfolds.": "Phân tán quân để có thêm hành động, hoặc chồng quân để giành ưu tiên. Tính trước các điều kiện cần, rồi chọn thứ tự hành động theo diễn biến của vòng.",
   "Show full board": "Xem toàn bộ bàn chơi",
-  "Focus on placed tiles": "Tập trung vào các ô đã đặt"
+  "Focus on placed tiles": "Tập trung vào các ô đã đặt",
+  "Upcoming tiles": "Các ô sắp tới"
 }

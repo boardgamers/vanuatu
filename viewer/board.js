@@ -1,4 +1,4 @@
-import { boardCells, TILES, COLORS } from "../engine/catalog.js";
+import { boardCells, tileState, TILES, COLORS } from "../engine/catalog.js";
 import { esc, svgIcon, iconLabel } from "./art.js";
 import { boardArt } from "./board-assets.js";
 const tilt = (20 * Math.PI) / 180;
@@ -38,8 +38,8 @@ function tilePath(x, y) {
   return path + "Z";
 }
 const symbols = ["●", "◆", "▲", "■", "✦"];
-function tileImage(spec, c, ghost = false) {
-  const clip = `url(#cell-${c.q + 2}-${c.r})`;
+function tileImage(spec, c, ghost = false, prefix = "board") {
+  const clip = `url(#${prefix}-cell-${c.q + 2}-${c.r})`;
   const ocean = `<image href="${boardArt({ type: "sea" })}" x="${c.x - 111}" y="${c.y - 111}" width="222" height="222"/>`;
   const art =
     spec.type === "island"
@@ -68,13 +68,17 @@ export function boardSvg(
     player,
     colorBlind = false,
     overview = false,
+    preview = false,
+    prefix = "board",
     language = "en",
     t,
   } = {},
 ) {
   const label = (name) => iconLabel(name, language);
   const targetSet = new Set(targets);
-  const all = boardCells(s).map((c) => ({ ...c, ...center(c.id) }));
+  const all = boardCells(s)
+    .filter((c) => !preview || s.board[c.id])
+    .map((c) => ({ ...c, ...center(c.id) }));
   const visible = overview
     ? all
     : all.filter((c) => s.board[c.id] || targetSet.has(c.id));
@@ -85,18 +89,18 @@ export function boardSvg(
   const defs = all
     .map(
       (c) =>
-        `<clipPath id="cell-${c.q + 2}-${c.r}"><path d="${tilePath(c.x, c.y)}"/></clipPath>`,
+        `<clipPath id="${prefix}-cell-${c.q + 2}-${c.r}"><path d="${tilePath(c.x, c.y)}"/></clipPath>`,
     )
     .join("");
-  let svg = `<svg class="archipelago${overview ? " overview" : ""}" viewBox="${x0} ${y0} ${x1 - x0} ${y1 - y0}" role="group" aria-label="Vanuatu"><defs>${defs}<filter id="boat-shadow" x="-25%" y="-25%" width="150%" height="150%"><feDropShadow dx="0" dy="0" stdDeviation=".9" flood-color="#fff9df" flood-opacity="1"/><feDropShadow dx="0" dy="2" stdDeviation="1.5" flood-opacity=".45"/></filter></defs>`;
+  let svg = `<svg class="${preview ? "tile-art" : "archipelago"}${overview ? " overview" : ""}" viewBox="${x0} ${y0} ${x1 - x0} ${y1 - y0}" role="group" aria-label="${preview ? esc(t(s.board["0,0"].type === "island" ? "island" : "sea")) : "Vanuatu"}"><defs>${defs}<filter id="${prefix}-boat-shadow" x="-25%" y="-25%" width="150%" height="150%"><feDropShadow dx="0" dy="0" stdDeviation=".9" flood-color="#fff9df" flood-opacity="1"/><feDropShadow dx="0" dy="2" stdDeviation="1.5" flood-opacity=".45"/></filter></defs>`;
   for (const c of all) {
     const tile = s.board[c.id],
       legal = targetSet.has(c.id),
       spec = tile ? TILES[tile.id] : null;
-    svg += `<g class="map-cell ${tile ? "occupied" : ""} ${legal ? "legal" : ""} ${selected === c.id ? "selected" : ""}" data-cell="${c.id}" ${legal ? `role="button" tabindex="0" aria-label="${esc(t(tile?.type === "island" ? "island" : "sea"))} ${c.id}"` : ""}>`;
+    svg += `<g class="map-cell ${tile ? "occupied" : ""} ${legal ? "legal" : ""} ${selected === c.id ? "selected" : ""}" ${preview ? "" : `data-cell="${c.id}"`} ${legal ? `role="button" tabindex="0" aria-label="${esc(t(tile?.type === "island" ? "island" : "sea"))} ${c.id}"` : ""}>`;
     svg += `<title>${esc(tile ? `${t(tile.type === "island" ? "island" : "sea")} · ${c.id}${tile.submerged ? ` · ${"Submerged"}` : ""}` : "Tile space")}</title><path class="cell-surface" d="${tilePath(c.x, c.y)}"/>`;
     if (tile) {
-      svg += tileImage(spec, c);
+      svg += tileImage(spec, c, false, prefix);
       if (tile.submerged) {
         svg += `<path d="${tilePath(c.x, c.y)}" fill="#1c708ca6"/>${svgIcon("water", c.x - 25, c.y - 25, 50)}`;
       } else if (tile.type === "sea") {
@@ -159,7 +163,9 @@ export function boardSvg(
           },
           {
             kind: "draw",
-            value: tile.drawings,
+            value: preview
+              ? `${tile.drawings}/${spec.drawings}`
+              : tile.drawings,
             help: `${label("draw")}: ${tile.drawings}/${spec.drawings}`,
           },
         ]);
@@ -175,7 +181,8 @@ export function boardSvg(
           svg += `<g><title>${esc(label("dike"))}</title><line x1="${mx - (dy / l) * 22}" y1="${my + (dx / l) * 22}" x2="${mx + (dy / l) * 22}" y2="${my - (dx / l) * 22}" stroke="#654429" stroke-width="9" stroke-linecap="round"/><line x1="${mx - (dy / l) * 22}" y1="${my + (dx / l) * 22}" x2="${mx + (dy / l) * 22}" y2="${my - (dx / l) * 22}" stroke="#d1aa67" stroke-width="5" stroke-linecap="round"/></g>`;
         }
       }
-    } else if (hoverTile && legal) svg += tileImage(TILES[hoverTile], c, true);
+    } else if (hoverTile && legal)
+      svg += tileImage(TILES[hoverTile], c, true, prefix);
     if (!tile)
       svg += `<text x="${c.x}" y="${c.y + 7}" class="empty-label">${legal ? "+" : "·"}</text>`;
     svg += `<path class="cell-ring" d="${tilePath(c.x, c.y)}"/>`;
@@ -188,9 +195,16 @@ export function boardSvg(
       const x = c.x + ((i % 3) - (rowSize - 1) / 2) * 39,
         y = c.y + (boats.length > 3 ? row * 32 : 11);
       const help = `${"Boat"} · ${p.name}`;
-      svg += `<g class="boat ${pi === player ? "own" : ""}" transform="translate(${x - 24} ${y - 24})" style="color:${p.color}" filter="url(#boat-shadow)"><title>${esc(help)}</title>${svgIcon("sail", 0, 0, 48, p.color, help)}${colorBlind ? `<text x="25" y="40" class="color-symbol">${symbols[pi]}</text>` : ""}</g>`;
+      svg += `<g class="boat ${pi === player ? "own" : ""}" transform="translate(${x - 24} ${y - 24})" style="color:${p.color}" filter="url(#${prefix}-boat-shadow)"><title>${esc(help)}</title>${svgIcon("sail", 0, 0, 48, p.color, help)}${colorBlind ? `<text x="25" y="40" class="color-symbol">${symbols[pi]}</text>` : ""}</g>`;
     }
     svg += "</g>";
   }
   return svg + "</svg>";
+}
+
+export function tilePreviewSvg(id, options) {
+  return boardSvg(
+    { boardLayout: 2, board: { "0,0": tileState(id) }, players: [] },
+    { ...options, preview: true, prefix: `preview-${id}` },
+  );
 }

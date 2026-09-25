@@ -259,7 +259,22 @@ for (const width of [1440, 390]) {
     }),
     "Overview must include every empty space",
   );
-  assert.equal(await page.locator(".map-cell").count(), 16);
+  assert.equal(await page.locator(".map-scroll .map-cell").count(), 16);
+  assert.ok(
+    await page.locator(".sea-board").evaluate((board) => {
+      const upcoming = board.querySelector(".upcoming").getBoundingClientRect();
+      return [...board.querySelectorAll(".cell-surface")].every((path) => {
+        const cell = path.getBoundingClientRect();
+        return (
+          cell.bottom <= upcoming.top ||
+          cell.right <= upcoming.left ||
+          cell.top >= upcoming.bottom ||
+          cell.left >= upcoming.right
+        );
+      });
+    }),
+    "Overview spaces must stay clear of the upcoming tiles",
+  );
   assert.equal(
     await page.evaluate(() => JSON.stringify(window.vanuatuDemo.state)),
     position,
@@ -277,6 +292,43 @@ for (const width of [1440, 390]) {
   await page.locator("[data-overview]").click();
   assert.equal(await page.locator(".map-scroll.zoomed").count(), 0);
   await page.locator("[data-overview]").click();
+  // Upcoming tiles open with the same starting resources and capacities as the board.
+  await page.locator("[data-upcoming]").click();
+  const upcoming = await page.evaluate(() => window.vanuatuDemo.state.upcoming);
+  assert.equal(
+    await page.locator("dialog[open] .tile-preview").count(),
+    upcoming.length,
+  );
+  for (const [i, id] of upcoming.entries()) {
+    const spec = E.TILES[id];
+    const expected =
+      spec.type === "island"
+        ? [`0/${spec.tourists}`, `0/${spec.drawings}`]
+        : [spec.fish, spec.treasure].filter(Boolean).map(String);
+    assert.deepEqual(
+      await page
+        .locator("dialog .tile-preview")
+        .nth(i)
+        .locator(".resource-n")
+        .allTextContents(),
+      expected,
+    );
+  }
+  await page.screenshot({
+    path: `.local/qa/upcoming-${width}.png`,
+    fullPage: true,
+  });
+  assert.ok(
+    await page
+      .locator("dialog")
+      .evaluate((el) => el.scrollWidth <= el.clientWidth + 1),
+    "Tile preview must fit on mobile",
+  );
+  await page.locator("[data-close]").click();
+  assert.equal(
+    await page.evaluate(() => JSON.stringify(window.vanuatuDemo.state)),
+    position,
+  );
   await page.locator("[data-help]").first().click();
   await page.locator('[data-pref="colorBlind"]').check();
   await page.locator("[data-close]").click();

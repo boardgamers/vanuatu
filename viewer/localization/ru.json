@@ -791,5 +791,6 @@
   "Resolve your remaining stacks. Watch which actions become available when opponents remove theirs. Planning an action does not guarantee it: someone may take the last fish or use the last space first.": "Разыграйте оставшиеся стопки. Следите, какие действия становятся доступны после того, как соперники убирают свои маркеры. План не гарантирует действие: кто-то может раньше забрать последнюю рыбу или занять последнее место.",
   "Spread your markers for more actions, or stack them for priority. Plan prerequisites first, then choose your action order as the round unfolds.": "Распределяйте маркеры ради большего числа действий или собирайте стопки ради приоритета. Учитывайте необходимые условия, а порядок действий выбирайте по ходу раунда.",
   "Show full board": "Показать всё поле",
-  "Focus on placed tiles": "Сосредоточиться на выложенных тайлах"
+  "Focus on placed tiles": "Сосредоточиться на выложенных тайлах",
+  "Upcoming tiles": "Следующие тайлы"
 }

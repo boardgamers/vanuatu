@@ -791,5 +791,6 @@
   "Resolve your remaining stacks. Watch which actions become available when opponents remove theirs. Planning an action does not guarantee it: someone may take the last fish or use the last space first.": "남은 더미를 처리하세요. 상대가 마커를 회수할 때 어떤 행동에 우선권이 생기는지 살펴보세요. 계획했다고 실행이 보장되지는 않습니다. 누군가 마지막 물고기를 잡거나 마지막 자리를 먼저 차지할 수 있습니다.",
   "Spread your markers for more actions, or stack them for priority. Plan prerequisites first, then choose your action order as the round unfolds.": "더 많은 행동을 하려면 마커를 나누고, 우선권을 원하면 쌓으세요. 필요한 조건을 미리 계획한 뒤 라운드 상황에 따라 행동 순서를 정하세요.",
   "Show full board": "전체 보드 보기",
-  "Focus on placed tiles": "놓인 타일에 맞추기"
+  "Focus on placed tiles": "놓인 타일에 맞추기",
+  "Upcoming tiles": "다음 타일"
 }

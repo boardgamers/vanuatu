@@ -50,7 +50,7 @@ const entries = {
   dike: ["Dike", "Digue"],
   market: ["Fish price", "Prix du poisson"],
   demand: ["Foreign trade", "Commerce extérieur"],
-  next: ["Next islands", "Prochaines tuiles"],
+  next: ["Upcoming tiles", "Prochaines tuiles"],
   stock: ["Available", "Disponible"],
   board: ["Back to board", "Retour au plateau"],
   full: ["Full screen", "Plein écran"],

@@ -466,11 +466,44 @@
   pointer-events: auto;
 }
 .vanuatu .upcoming {
+  padding: 0;
+  border: 0;
+  background: transparent;
   position: absolute;
   right: 13px;
   bottom: calc(var(--tray-height, 73px) + 14px);
   display: flex;
   gap: 0;
+}
+.vanuatu .upcoming > .icon {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 18px;
+  height: 18px;
+  padding: 2px;
+  background: #fff8df;
+  border-radius: 50%;
+}
+.vanuatu .upcoming-details {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  width: 540px;
+  max-width: 100%;
+}
+.vanuatu .tile-preview {
+  flex: 0 1 260px;
+  max-width: 100%;
+  background: #dcebea;
+  border-radius: 12px;
+}
+.vanuatu .tile-preview .tile-art {
+  display: block;
+  width: 100%;
+  height: 260px;
+  min-height: 0;
 }
 .vanuatu .upcoming img {
   width: 57px;
@@ -1274,6 +1307,9 @@ body {
 }
 .vanuatu .map-cell:not(.legal) .cell-surface {
   stroke: #e2fff830;
+}
+.vanuatu .archipelago.overview {
+  transform: translateY(-28px);
 }
 .vanuatu .archipelago.overview .map-cell:not(.occupied) .cell-surface {
   stroke: #28697388;

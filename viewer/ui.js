@@ -12,7 +12,7 @@ import {
   iconLabel,
   esc,
 } from "./art.js";
-import { boardSvg, center } from "./board.js";
+import { boardSvg, center, tilePreviewSvg } from "./board.js";
 import { translator, characterHelp } from "./labels.js";
 import { mountActivity } from "./activity.js";
 import { rulesHtml } from "./rules.js";
@@ -322,7 +322,7 @@ export function mountGame(target, options = {}) {
             .map((m) => m.cell)
         : actualTargets();
     play.innerHTML = `<header class="game-header"><div class="brand">${btn("🏝️ Vanuatu", "data-boardgame", "wordmark")}<span>Alain Epron · Quined Games</span></div><div class="round-track" aria-label="${t("round")} ${s.round}/8">${Array.from({ length: 8 }, (_, i) => `<span title="${t("round")} ${i + 1}/8" class="${i + 1 === s.round ? "current" : i + 1 < s.round ? "past" : ""}">${i + 1}</span>`).join("")}</div><nav class="header-tools">${analysis || !options.chat ? "" : titled(t("chat"), `${icon("chat")}<span class="unread-badge" hidden></span>`, 'data-activity="chat"', "icon-button")}${titled(t("journal"), icon("journal"), 'data-activity="journal"', "icon-button")}${titled(t("colorBlind"), icon("colorBlind"), `data-color-blind aria-pressed="${colorBlind}"`, "icon-button")}${titled(t("help"), icon("help"), "data-help", "icon-button")}${titled(t("full"), icon("fullscreen"), "data-fullscreen", "icon-button")}</nav></header>
-  <div class="table">${dock()}<section class="sea-board" style="--ocean:url('${assets.ocean}')"><div class="sea-dashboard"><div class="market-info"><span title="${t("market")}">${icon("fish", t("market"))} = ${token("coin", s.market, `${t("market")}: ${s.market} ${"vatus per fish value"}`)}</span><span title="${t("tourist")}">${token("tourist", s.tourists, `${"Tourists available this round"}: ${s.tourists}`)}</span>${s.waterCountdown !== null ? `<span title="${t("waterLeft")}">${token("water", s.waterCountdown, `${t("waterLeft")}: ${s.waterCountdown}`)}</span>` : ""}</div>${tradeShips()}</div><div class="map-scroll ${zoom ? "zoomed" : ""}">${boardSvg(s, { player, colorBlind, overview, language: lang, selected, targets, hoverTile: s.phase === "expand" ? tile : null, t })}</div><div class="map-tools">${titled(overview ? "Focus on placed tiles" : "Show full board", icon("overview"), `data-overview aria-pressed="${overview}"`, "icon-button")}${titled(zoom ? t("fit") : t("zoom"), icon(zoom ? "eye" : "zoom"), "data-zoom", "icon-button")}</div>${s.upcoming.length && s.phase !== "expand" ? `<div class="upcoming" title="${t("next")}">${s.upcoming.map((id) => `<img src="${assets[TILES[id].art]}" alt="${t(TILES[id].type === "island" ? "island" : "sea")}">`).join("")}</div>` : ""}${trayHtml}</section></div><section class="players">${s.players.map(playerCard).join("")}</section><footer class="play-footer"><span title="${"Automatic conversion"}">${token("coin", 10)} → ${token("point", 5)}</span>${btn(t("help"), "data-help", "text-button")}</footer>`;
+  <div class="table">${dock()}<section class="sea-board" style="--ocean:url('${assets.ocean}')"><div class="sea-dashboard"><div class="market-info"><span title="${t("market")}">${icon("fish", t("market"))} = ${token("coin", s.market, `${t("market")}: ${s.market} ${"vatus per fish value"}`)}</span><span title="${t("tourist")}">${token("tourist", s.tourists, `${"Tourists available this round"}: ${s.tourists}`)}</span>${s.waterCountdown !== null ? `<span title="${t("waterLeft")}">${token("water", s.waterCountdown, `${t("waterLeft")}: ${s.waterCountdown}`)}</span>` : ""}</div>${tradeShips()}</div><div class="map-scroll ${zoom ? "zoomed" : ""}">${boardSvg(s, { player, colorBlind, overview, language: lang, selected, targets, hoverTile: s.phase === "expand" ? tile : null, t })}</div><div class="map-tools">${titled(overview ? "Focus on placed tiles" : "Show full board", icon("overview"), `data-overview aria-pressed="${overview}"`, "icon-button")}${titled(zoom ? t("fit") : t("zoom"), icon(zoom ? "eye" : "zoom"), "data-zoom", "icon-button")}</div>${s.upcoming.length && s.phase !== "expand" ? titled(t("next"), `${s.upcoming.map((id) => `<img src="${assets[TILES[id].art]}" alt="">`).join("")}${icon("zoom", t("next"))}`, "data-upcoming", "upcoming") : ""}${trayHtml}</section></div><section class="players">${s.players.map(playerCard).join("")}</section><footer class="play-footer"><span title="${"Automatic conversion"}">${token("coin", 10)} → ${token("point", 5)}</span>${btn(t("help"), "data-help", "text-button")}</footer>`;
     observeTray();
     const newScroll = play.querySelector(".map-scroll");
     if (newScroll) {
@@ -405,6 +405,17 @@ export function mountGame(target, options = {}) {
       }
       if (!button || button.disabled) return;
       const d = button.dataset;
+      if ("upcoming" in d) {
+        showDialog(
+          `<h2>${t("next")}</h2><div class="upcoming-details">${s.upcoming
+            .map(
+              (id) =>
+                `<div class="tile-preview">${tilePreviewSvg(id, { t, colorBlind, language: lang })}</div>`,
+            )
+            .join("")}</div>`,
+        );
+        return;
+      }
       if ("unavailable" in d) {
         showDialog(`<h2>${t(d.action)}</h2><p>${esc(d.unavailable)}</p>`);
         return;

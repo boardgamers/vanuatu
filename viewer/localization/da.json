@@ -791,5 +791,6 @@
   "Resolve your remaining stacks. Watch which actions become available when opponents remove theirs. Planning an action does not guarantee it: someone may take the last fish or use the last space first.": "Afvikl dine resterende stakke. Hold øje med, hvilke handlinger der bliver tilgængelige, når modstanderne fjerner deres markører. En planlagt handling er ikke garanteret: nogen kan tage den sidste fisk eller den sidste plads før dig.",
   "Spread your markers for more actions, or stack them for priority. Plan prerequisites first, then choose your action order as the round unfolds.": "Spred markørerne for flere handlinger, eller saml dem i stakke for prioritet. Planlæg forudsætningerne, og vælg så rækkefølgen af dine handlinger undervejs i runden.",
   "Show full board": "Vis hele brættet",
-  "Focus on placed tiles": "Fokusér på lagte brikker"
+  "Focus on placed tiles": "Fokusér på lagte brikker",
+  "Upcoming tiles": "Kommende brikker"
 }
