@@ -709,6 +709,12 @@
   min-width: 0;
   max-width: 160px;
 }
+.vanuatu .player-card .profile {
+  color: color-mix(in srgb, var(--player) 60%, black);
+}
+.vanuatu .player-supplies .icon-build {
+  color: var(--player);
+}
 .vanuatu .score {
   margin-left: auto;
   font-size: 17px;
