@@ -1,7 +1,7 @@
 import { mountChat } from "@boardgamers/protocol/chat/dom";
 import { icon as renderIcon, token as renderToken, esc } from "./art.js";
 import { translator } from "./labels.js";
-import { CHARACTERS } from "../engine/catalog.js";
+import { CHARACTERS, COLORS } from "../engine/catalog.js";
 export function mountActivity(
   target,
   { chat, openPlayer, avatarForPlayer, onBack, language = "en" } = {},
@@ -42,6 +42,8 @@ export function mountActivity(
           );
           author.className = "chat-author";
           author.dataset.bgsPlayer = index;
+          const color = state?.players[index]?.color ?? COLORS[index];
+          if (color) author.style.setProperty("--chat-player-color", color);
           const avatar = avatarForPlayer?.(index);
           if (avatar) {
             const img = document.createElement("img");

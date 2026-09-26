@@ -724,6 +724,10 @@
   object-fit: cover;
   border-radius: 50%;
 }
+.vanuatu .chat-panel .chat-author[data-bgs-player] {
+  /* Darken the player palette for readable names on the cream chat surface. */
+  color: color-mix(in srgb, var(--chat-player-color, #244e53) 60%, black);
+}
 .vanuatu .chat-panel .chat-author {
   display: inline-flex;
   align-items: baseline;
