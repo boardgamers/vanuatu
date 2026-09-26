@@ -40,7 +40,7 @@ registerViewer(
     const thumbnail = createBoardThumbnail(ctx.target),
       removeCards = installPlayerCards(ctx.target, ctx);
     function info() {
-      if (live)
+      if (live && replaying)
         ctx.setReplayInfo({
           start: 1,
           current: position,
@@ -84,7 +84,10 @@ registerViewer(
         pending = undefined;
       },
       onLog(log) {
-        if (!replaying) return;
+        if (!replaying) {
+          ctx.fetchState();
+          return;
+        }
         const data = log.data;
         if (data?.frames?.length && log.start === position - 1) {
           ui.render({ ...data.frames[0], legal: [], historyLength: position });
@@ -106,7 +109,6 @@ registerViewer(
         if (live) {
           position = live.historyLength;
           ui.render(live);
-          info();
         }
         ctx.fetchState();
       },

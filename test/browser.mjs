@@ -459,11 +459,55 @@ await page.evaluate(() => {
     "player:hovered",
     "boardgame:clicked",
     "replay:info",
+    "fetchState",
+    "fetchLog",
+    "move",
     "thumbnail:ready",
     "update:preference",
   ])
     window.emitter.on(kind, (v) => window.hostEvents.push({ kind, v }));
 });
+// Production acknowledges a move with a log, not a replacement state.
+const hostedInitial = E.init(3, [], {}, "hosted-builder");
+const hostedPlayer = hostedInitial.actor;
+await page.evaluate(
+  ({ state, player }) => {
+    emitter.receive("player", { index: player });
+    emitter.receive("state", state);
+  },
+  { state: E.stripSecret(hostedInitial, hostedPlayer), player: hostedPlayer },
+);
+await page.waitForSelector('[data-character-choice="builder"]');
+assert.deepEqual(
+  await page.evaluate(() => hostEvents.filter((e) => e.kind === "replay:info")),
+  [],
+);
+await page.locator('[data-character-choice="builder"]').click();
+await page.locator("dialog [data-move]").click();
+const builderMove = await page.evaluate(
+  () => hostEvents.find((e) => e.kind === "move").v,
+);
+const hostedAfter = E.move(hostedInitial, builderMove, hostedPlayer);
+assert.equal(hostedAfter.players[hostedPlayer].character, "builder");
+await page.evaluate((log) => emitter.receive("gamelog", log), {
+  start: E.logLength(hostedInitial),
+  data: E.logSlice(hostedAfter, {
+    player: hostedPlayer,
+    start: E.logLength(hostedInitial),
+  }),
+});
+await page.waitForFunction(() =>
+  hostEvents.some((e) => e.kind === "fetchState"),
+);
+await page.evaluate(
+  (state) => emitter.receive("state", state),
+  E.stripSecret(hostedAfter, hostedPlayer),
+);
+await page.waitForFunction(() => !document.querySelector("dialog").open);
+assert.deepEqual(
+  await page.evaluate(() => hostEvents.filter((e) => e.kind === "replay:info")),
+  [],
+);
 await page.evaluate(
   (s) => {
     emitter.receive("player", { index: 0 });
@@ -526,6 +570,12 @@ await page.evaluate(
   E.logSlice(final, { player: 0, start: 0, end: 0 }),
 );
 assert.equal(await page.locator("[data-scores]").count(), 0);
+assert.deepEqual(
+  await page.evaluate(
+    () => hostEvents.filter((e) => e.kind === "replay:info").at(-1).v,
+  ),
+  { start: 1, current: 1, end: E.logLength(final) },
+);
 await page.locator('[data-bgs-player="0"]').hover();
 assert.ok(
   await page.evaluate(() =>
@@ -533,6 +583,7 @@ assert.ok(
   ),
 );
 await page.evaluate(() => {
+  window.hostEvents = [];
   emitter.receive("replay:end");
   emitter.receive("preferences", { analysis: false });
   emitter.receive("chat:state", {
@@ -554,6 +605,15 @@ await page.evaluate(() => {
     })),
   );
 });
+await page.evaluate(
+  (state) => emitter.receive("state", state),
+  E.stripSecret(final, 0),
+);
+await page.waitForSelector("[data-scores]");
+assert.deepEqual(
+  await page.evaluate(() => hostEvents.filter((e) => e.kind === "replay:info")),
+  [],
+);
 await page.locator('[data-tab="chat"]').click();
 const messageList = page.locator(".chat-messages");
 await messageList.scrollIntoViewIfNeeded();
