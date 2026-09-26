@@ -640,6 +640,23 @@ assert.deepEqual(
   await page.evaluate(() => hostEvents.filter((e) => e.kind === "replay:info")),
   [],
 );
+// Hosted avatars can arrive after the roster/messages and update both surfaces.
+await page.evaluate(() => {
+  window.avatarUrls = ["#e8832e", "#80398d", "#209b9a"].map(
+    (color) =>
+      "data:image/svg+xml," +
+      encodeURIComponent(
+        `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"><rect width="32" height="32" rx="16" fill="${color}"/><circle cx="16" cy="12" r="6" fill="white"/></svg>`,
+      ),
+  );
+  emitter.receive("avatars", avatarUrls);
+});
+assert.equal(await page.locator(".player-card .player-avatar").count(), 3);
+assert.equal(await page.locator(".chat-author .player-avatar").count(), 80);
+assert.equal(
+  await page.locator(".player-card .player-avatar").first().getAttribute("src"),
+  await page.evaluate(() => avatarUrls[0]),
+);
 // Incoming messages from other players show on both entry points while unread.
 await page.evaluate(() => {
   window.scrollTo(0, 0);
@@ -733,6 +750,56 @@ assert.ok(
     (el) => Math.abs(el.scrollHeight - el.scrollTop - el.clientHeight) < 2,
   ),
 );
+// In the tabbed layout, a visible Journal must not read the hidden Chat.
+await page.locator('[data-tab="journal"]').click();
+await page.evaluate(() => scrollTo(0, document.body.scrollHeight));
+await page.waitForTimeout(600);
+await page.evaluate(() => {
+  hostEvents = [];
+  emitter.receive("chat:appended", [
+    {
+      _id: "000000000000000000000052",
+      type: "text",
+      author: "Maya",
+      playerIndex: 1,
+      createdAt: new Date().toISOString(),
+      text: "Still unread in Journal",
+    },
+  ]);
+});
+await page.waitForTimeout(750);
+assert.equal(await page.locator(".chat-panel").isHidden(), true);
+assert.equal(
+  await page.locator('[data-tab="chat"] .unread').textContent(),
+  "1",
+);
+assert.deepEqual(
+  await page.evaluate(() => hostEvents.filter((e) => e.kind === "chat:read")),
+  [],
+);
+// Large screens show both panels, so visible chat messages can now be read.
+await page.setViewportSize({ width: 1440, height: 1000 });
+await page.evaluate(() => scrollTo(0, document.body.scrollHeight));
+await page.waitForFunction(
+  () => document.querySelector(".unread-badge").hidden,
+);
+const journalBox = await page.locator(".journal-panel").boundingBox();
+const chatBox = await page.locator(".chat-panel").boundingBox();
+assert.equal(journalBox.y, chatBox.y);
+assert.equal(journalBox.height, chatBox.height);
+assert.ok(journalBox.x + journalBox.width <= chatBox.x + 1);
+await page.screenshot({
+  path: ".local/qa/chat-journal-desktop.png",
+  fullPage: true,
+});
+await page.locator('.chat-author[data-bgs-player="1"]').last().hover();
+assert.ok(
+  await page.evaluate(() =>
+    hostEvents.some((e) => e.kind === "player:hovered"),
+  ),
+);
+await page.setViewportSize({ width: 390, height: 1000 });
+await page.locator('[data-tab="chat"]').click();
 await page.locator(".chat-composer input").focus();
 await page.locator(".chat-composer input").press("ArrowUp");
 await page.waitForFunction(

@@ -705,12 +705,34 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  display: block;
-  max-width: 140px;
+  display: inline-flex;
+  min-width: 0;
+  max-width: 160px;
 }
 .vanuatu .score {
   margin-left: auto;
   font-size: 17px;
+}
+.vanuatu .profile > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.vanuatu .player-avatar {
+  width: 24px;
+  height: 24px;
+  flex: 0 0 auto;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.vanuatu .chat-panel .chat-author {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  vertical-align: middle;
+}
+.vanuatu .chat-panel .player-avatar {
+  width: 20px;
+  height: 20px;
 }
 .vanuatu .score .icon {
   height: 24px;
@@ -910,11 +932,35 @@
   padding: 8px 15px;
   border-bottom: 1px solid var(--line);
 }
-.vanuatu .activity [role="tablist"] {
+.vanuatu .activity.split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+.vanuatu .activity.split > header {
+  grid-column: 1 / -1;
+  position: relative;
+}
+.vanuatu .activity.split .activity-tabs {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+.vanuatu .activity.split [data-tab] {
+  justify-self: start;
+}
+.vanuatu .activity.split [data-back] {
+  position: absolute;
+  right: 15px;
+}
+.vanuatu .activity.split .journal-panel {
+  border-right: 1px solid var(--line);
+}
+.vanuatu .activity .activity-tabs {
   display: flex;
   gap: 15px;
 }
-.vanuatu .activity [role="tab"] {
+.vanuatu .activity [data-tab] {
   border: 0;
   background: none;
   padding: 6px 1px;
@@ -925,7 +971,7 @@
 .vanuatu .activity [aria-selected="true"] {
   border-bottom-color: #377a78;
 }
-.vanuatu .activity [role="tab"] .icon {
+.vanuatu .activity [data-tab] .icon {
   height: 20px;
   width: 20px;
 }

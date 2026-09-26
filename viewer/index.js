@@ -77,7 +77,9 @@ registerViewer(
         localization.setLocale(p.locale ?? p.language);
         ui.setPreferences(p);
       },
-      onAvatars() {},
+      onAvatars(avatars) {
+        ui.setAvatars(avatars);
+      },
       onError(e) {
         clearTimeout(timeout);
         pending?.reject(e);

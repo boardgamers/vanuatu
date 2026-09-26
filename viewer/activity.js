@@ -4,14 +4,14 @@ import { translator } from "./labels.js";
 import { CHARACTERS } from "../engine/catalog.js";
 export function mountActivity(
   target,
-  { chat, openPlayer, onBack, language = "en" } = {},
+  { chat, openPlayer, avatarForPlayer, onBack, language = "en" } = {},
 ) {
   let colorBlind = false;
   const icon = (name) => renderIcon(name, undefined, false, colorBlind);
   const token = (name, n) => renderToken(name, n, undefined, colorBlind);
   const root = document.createElement("section");
   root.className = "activity";
-  root.innerHTML = `<header><div role="tablist"><button type="button" role="tab" data-tab="journal">${icon("journal")} <span>Journal</span></button><button type="button" role="tab" data-tab="chat" ${chat ? "" : "hidden"}>${icon("chat")} <span>Chat</span> <b class="unread" hidden></b></button></div><button type="button" class="text-button" data-back>↑ <span>Board</span></button></header><div class="journal-panel" role="tabpanel"><ol class="event-list" tabindex="0"></ol></div><div class="chat-panel" role="tabpanel" hidden></div>`;
+  root.innerHTML = `<header><div class="activity-tabs" role="tablist"><button type="button" role="tab" data-tab="journal">${icon("journal")} <span>Journal</span></button><button type="button" role="tab" data-tab="chat" ${chat ? "" : "hidden"}>${icon("chat")} <span>Chat</span> <b class="unread" hidden></b></button></div><button type="button" class="text-button" data-back>↑ <span>Board</span></button></header><div class="journal-panel" role="tabpanel"><ol class="event-list" tabindex="0"></ol></div><div class="chat-panel" role="tabpanel" hidden></div>`;
   const shortcut = document.createElement("button");
   shortcut.className = "chat-shortcut";
   shortcut.hidden = true;
@@ -20,6 +20,7 @@ export function mountActivity(
   const list = root.querySelector("ol"),
     journal = root.querySelector(".journal-panel"),
     panel = root.querySelector(".chat-panel");
+  const wide = window.matchMedia("(min-width: 1100px)");
   let mode = "journal",
     analysis = false,
     state,
@@ -33,6 +34,33 @@ export function mountActivity(
         openPlayer,
         styles: true,
         labels: undefined,
+        renderAuthor(message) {
+          const index = message.playerIndex;
+          if (index === undefined) return undefined;
+          const author = document.createElement(
+            openPlayer ? "button" : "strong",
+          );
+          author.className = "chat-author";
+          author.dataset.bgsPlayer = index;
+          const avatar = avatarForPlayer?.(index);
+          if (avatar) {
+            const img = document.createElement("img");
+            img.className = "player-avatar";
+            img.src = avatar;
+            img.alt = "";
+            author.append(img);
+          }
+          author.append(
+            document.createTextNode(
+              message.author ?? state?.players[index]?.name ?? "",
+            ),
+          );
+          if (openPlayer) {
+            author.type = "button";
+            author.onclick = () => openPlayer(index);
+          }
+          return author;
+        },
       })
     : null;
   if (view) {
@@ -46,17 +74,28 @@ export function mountActivity(
   }
   function select(kind) {
     mode = kind === "chat" && chat && !analysis ? "chat" : "journal";
-    journal.hidden = mode !== "journal";
-    panel.hidden = mode !== "chat";
+    const split = wide.matches && !!chat && !analysis;
+    root.classList.toggle("split", split);
+    root
+      .querySelector(".activity-tabs")
+      .setAttribute("role", split ? "group" : "tablist");
+    journal.hidden = !split && mode !== "journal";
+    panel.hidden = !split && mode !== "chat";
+    for (const p of [journal, panel])
+      p.setAttribute("role", split ? "region" : "tabpanel");
     for (const b of root.querySelectorAll("[data-tab]")) {
-      b.setAttribute("aria-selected", String(b.dataset.tab === mode));
-      b.tabIndex = b.dataset.tab === mode ? 0 : -1;
+      b.setAttribute("role", split ? "button" : "tab");
+      if (split) b.removeAttribute("aria-selected");
+      else b.setAttribute("aria-selected", String(b.dataset.tab === mode));
+      b.tabIndex = split || b.dataset.tab === mode ? 0 : -1;
     }
     // The shared feed tracks which messages are actually visible. Closing its
     // details when offscreen would collapse the panel and move the page.
-    chat?.setOpen(mode === "chat" && !analysis);
+    chat?.setOpen(split || (mode === "chat" && !analysis));
     view?.refresh();
   }
+  const resize = () => select(mode);
+  wide.addEventListener("change", resize);
   function open(kind) {
     select(kind);
     root.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -139,10 +178,14 @@ export function mountActivity(
     update(s, isAnalysis, isColorBlind = false) {
       colorBlind = isColorBlind;
       state = s;
+      const changed = analysis !== isAnalysis;
       analysis = isAnalysis;
       root.querySelector('[data-tab="chat"]').hidden = !chat || analysis;
-      if (analysis && mode === "chat") select("journal");
+      if (changed) select(mode);
       refresh();
+    },
+    refreshAvatars() {
+      view?.refresh();
     },
     setUnread(n) {
       const badge = root.querySelector(".unread");
@@ -157,9 +200,12 @@ export function mountActivity(
       t = translator(l);
       root.querySelector("[data-back] span").textContent = t("board");
       root.querySelector('[data-tab="chat"] span').textContent = t("chat");
+      journal.setAttribute("aria-label", t("journal"));
+      panel.setAttribute("aria-label", t("chat"));
       refresh();
     },
     destroy() {
+      wide.removeEventListener("change", resize);
       view?.destroy();
       root.remove();
       shortcut.remove();
