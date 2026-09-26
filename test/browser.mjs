@@ -464,6 +464,7 @@ await page.evaluate(() => {
     "move",
     "thumbnail:ready",
     "update:preference",
+    "chat:read",
   ])
     window.emitter.on(kind, (v) => window.hostEvents.push({ kind, v }));
 });
@@ -548,6 +549,31 @@ assert.deepEqual(
   ],
 );
 await page.locator("[data-close]").click();
+// Updating colors must preserve the SVG images (including their clip paths).
+await page.evaluate(() => {
+  window.tileImages = [...document.querySelectorAll(".archipelago image")];
+  window.boardElement = document.querySelector(".archipelago");
+});
+await page.locator("[data-color-blind]").click();
+assert.equal(await page.locator(".resource-symbol").count(), 0);
+await page.locator("[data-color-blind]").click();
+assert.ok(await page.locator(".resource-symbol").count());
+assert.ok(
+  await page.evaluate(
+    () =>
+      boardElement === document.querySelector(".archipelago") &&
+      tileImages.every(
+        (image) => image.isConnected && boardElement.contains(image),
+      ),
+  ),
+);
+await page.evaluate(() => {
+  // The two local toggles were checked above; keep the earlier preference assertions.
+  let preferences = 0;
+  hostEvents = hostEvents.filter(
+    (e) => e.kind !== "update:preference" || preferences++ < 2,
+  );
+});
 await page.evaluate(() =>
   emitter.receive("preferences", {
     analysis: true,
@@ -614,7 +640,87 @@ assert.deepEqual(
   await page.evaluate(() => hostEvents.filter((e) => e.kind === "replay:info")),
   [],
 );
-await page.locator('[data-tab="chat"]').click();
+// Incoming messages from other players show on both entry points while unread.
+await page.evaluate(() => {
+  window.scrollTo(0, 0);
+  emitter.receive("chat:appended", [
+    {
+      _id: "000000000000000000000050",
+      type: "text",
+      author: "Maya",
+      playerIndex: 1,
+      createdAt: new Date().toISOString(),
+      text: "Your turn!",
+    },
+  ]);
+});
+assert.equal(await page.locator(".unread-badge").textContent(), "1");
+assert.equal(
+  await page.locator('[data-tab="chat"] .unread').textContent(),
+  "1",
+);
+assert.ok(await page.locator(".unread-badge").isVisible());
+for (const width of [1440, 390]) {
+  await page.setViewportSize({ width, height: 1000 });
+  await page.locator('[data-tab="journal"]').click();
+  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+  const before = await page.evaluate(() => ({
+    scroll: window.scrollY,
+    height: document.documentElement.scrollHeight,
+    panel: document.querySelector(".activity").getBoundingClientRect().height,
+  }));
+  await page.locator('[data-tab="chat"]').click();
+  await page.waitForTimeout(300);
+  const after = await page.evaluate(() => ({
+    scroll: window.scrollY,
+    height: document.documentElement.scrollHeight,
+    panel: document.querySelector(".activity").getBoundingClientRect().height,
+  }));
+  assert.deepEqual(after, before, `Chat tab must not jump at ${width}px`);
+  assert.ok(await page.locator(".chat-composer input").isVisible());
+}
+await page.waitForFunction(
+  () => document.querySelector(".unread-badge").hidden,
+);
+await page.waitForFunction(() =>
+  hostEvents.some(
+    (e) =>
+      e.kind === "chat:read" && e.v.messageId === "000000000000000000000050",
+  ),
+);
+assert.equal(
+  await page.evaluate(
+    () =>
+      getComputedStyle(document.documentElement).backgroundColor ===
+        getComputedStyle(document.querySelector(".vanuatu")).backgroundColor &&
+      getComputedStyle(document.body).backgroundColor ===
+        getComputedStyle(document.querySelector(".vanuatu")).backgroundColor,
+  ),
+  true,
+);
+// Leaving an open chat offscreen must not collapse it or mark new messages read.
+await page.evaluate(() => {
+  window.scrollTo(0, 0);
+});
+await page.waitForTimeout(100);
+await page.evaluate(() =>
+  emitter.receive("chat:appended", [
+    {
+      _id: "000000000000000000000051",
+      type: "text",
+      author: "Maya",
+      playerIndex: 1,
+      createdAt: new Date().toISOString(),
+      text: "Good luck!",
+    },
+  ]),
+);
+await page.waitForTimeout(100);
+assert.equal(await page.locator(".unread-badge").textContent(), "1");
+assert.ok(
+  (await page.locator(".chat-panel details").getAttribute("open")) !== null,
+);
+await page.locator('[data-activity="chat"]').click();
 const messageList = page.locator(".chat-messages");
 await messageList.scrollIntoViewIfNeeded();
 await page.waitForTimeout(250);

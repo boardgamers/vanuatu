@@ -14,7 +14,7 @@
     sans-serif;
   min-height: 100%;
   isolation: isolate;
-  padding: 0 16px;
+  padding: 0 16px 20px;
   box-sizing: border-box;
 }
 .vanuatu * {
@@ -895,8 +895,9 @@
   z-index: 100;
 }
 .vanuatu .activity {
+  --activity-height: 280px;
   max-width: 1500px;
-  margin: 0 auto 20px;
+  margin: 0 auto;
   border: 1px solid #d4d8c5;
   border-radius: 11px;
   background: #faf7ec;
@@ -931,7 +932,7 @@
 .vanuatu .event-list {
   margin: 0;
   padding: 12px 20px;
-  height: 230px;
+  height: 100%;
   overflow: auto;
   overscroll-behavior: contain;
   scrollbar-width: thin;
@@ -955,11 +956,14 @@
   height: 23px;
   width: 23px;
 }
+.vanuatu .journal-panel,
+.vanuatu .chat-panel {
+  height: var(--activity-height);
+}
 .vanuatu .chat-panel {
   --chat-background: #faf7ec;
   --chat-color: #244e53;
   --chat-border: #d4d8c5;
-  padding: 0 15px 10px;
 }
 .vanuatu .chat-panel details {
   border: 0;
@@ -968,14 +972,24 @@
   margin: 0;
   max-width: none;
   width: 100%;
+  height: 100%;
+  padding: 0;
   color: var(--ink);
 }
 .vanuatu .chat-panel summary {
   display: none;
 }
+.vanuatu .chat-body {
+  display: flex;
+  flex-direction: column;
+  height: var(--activity-height);
+  padding: 8px 15px 10px;
+  min-height: 0;
+}
 .vanuatu .chat-panel .chat-messages {
-  max-height: 300px;
-  min-height: 180px;
+  flex: 1;
+  max-height: none;
+  min-height: 0;
   overscroll-behavior: contain;
 }
 .vanuatu .chat-panel input {
@@ -1027,6 +1041,10 @@
 }
 body {
   margin: 0;
+}
+html:has(.vanuatu),
+body:has(.vanuatu) {
+  background: #f2f0e4;
 }
 @media (min-width: 1550px) {
   .vanuatu .map-scroll {
@@ -1106,7 +1124,7 @@ body {
 }
 @media (max-width: 700px) {
   .vanuatu {
-    padding: 0 8px;
+    padding: 0 8px 20px;
   }
   .vanuatu .game-header {
     min-height: 65px;
@@ -1279,6 +1297,7 @@ body {
     margin: 6px auto 12px;
   }
   .vanuatu .activity {
+    --activity-height: 260px;
     border-radius: 8px;
   }
   .vanuatu .activity > header {
@@ -1286,7 +1305,6 @@ body {
   }
   .vanuatu .event-list {
     padding: 9px 12px;
-    height: 200px;
   }
   .vanuatu .help-dialog {
     padding: 20px 17px;

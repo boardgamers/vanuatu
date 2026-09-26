@@ -26,8 +26,7 @@ export function mountActivity(
     lang = language,
     t = translator(lang),
     following = true,
-    key = "",
-    visible = false;
+    key = "";
   const view = chat
     ? mountChat(panel, {
         chat,
@@ -36,16 +35,14 @@ export function mountActivity(
         labels: undefined,
       })
     : null;
-  const observer = new IntersectionObserver(
-    (entries) => {
-      visible = entries[0]?.isIntersecting ?? false;
-      syncVisibility();
-    },
-    { threshold: 0.15 },
-  );
-  observer.observe(panel);
-  function syncVisibility() {
-    chat?.setOpen(mode === "chat" && !analysis && visible);
+  if (view) {
+    // Keep the composer outside the scrolling feed, within the fixed tab height.
+    const body = document.createElement("div");
+    body.className = "chat-body";
+    for (const child of [...view.element.children]) {
+      if (!child.matches("summary, style")) body.append(child);
+    }
+    view.element.append(body);
   }
   function select(kind) {
     mode = kind === "chat" && chat && !analysis ? "chat" : "journal";
@@ -55,9 +52,10 @@ export function mountActivity(
       b.setAttribute("aria-selected", String(b.dataset.tab === mode));
       b.tabIndex = b.dataset.tab === mode ? 0 : -1;
     }
-    if (mode === "chat") view?.open();
-    else if (view) view.element.open = false;
-    syncVisibility();
+    // The shared feed tracks which messages are actually visible. Closing its
+    // details when offscreen would collapse the panel and move the page.
+    chat?.setOpen(mode === "chat" && !analysis);
+    view?.refresh();
   }
   function open(kind) {
     select(kind);
@@ -128,7 +126,7 @@ export function mountActivity(
   root.addEventListener("click", (e) => {
     const b = e.target.closest("button");
     if (!b) return;
-    if (b.dataset.tab) open(b.dataset.tab);
+    if (b.dataset.tab) select(b.dataset.tab);
     if ("back" in b.dataset) onBack?.();
   });
   shortcut.onclick = () => open("chat");
@@ -162,7 +160,6 @@ export function mountActivity(
       refresh();
     },
     destroy() {
-      observer.disconnect();
       view?.destroy();
       root.remove();
       shortcut.remove();
