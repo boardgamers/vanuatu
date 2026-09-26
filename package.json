@@ -17,7 +17,7 @@
     "test:tutorial:browser": "node test/tutorial-browser.mjs"
   },
   "dependencies": {
-    "@boardgamers/protocol": "0.6.0",
+    "@boardgamers/protocol": "0.6.1",
     "@noble/hashes": "2.0.1",
     "morphdom": "2.7.8"
   },

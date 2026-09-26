@@ -813,6 +813,43 @@ assert.equal(
 );
 assert.ok(await page.locator(".chat-translate").count());
 await page.screenshot({ path: ".local/qa/chat-mobile.png", fullPage: true });
+// A restored BGS read watermark counts saved messages without opening Chat.
+await page.locator('[data-tab="journal"]').click();
+await page.waitForTimeout(600);
+await page.evaluate(() => {
+  hostEvents = [];
+  const message = (seconds, authorId, type = "text") => ({
+    _id: seconds.toString(16).padStart(8, "0") + "b".repeat(16),
+    type,
+    authorId,
+    author: authorId === "self" ? "You" : "Maya",
+    text: "Saved chat " + seconds,
+  });
+  emitter.receive("chat:messages", [
+    message(1, "maya"),
+    message(2, "maya"),
+    message(3, "self"),
+    message(4, "system", "system"),
+  ]);
+  emitter.receive("chat:state", {
+    canSend: true,
+    readState: { userId: "self", lastReadAt: 1000 },
+  });
+});
+await page.waitForTimeout(750);
+assert.equal(
+  await page.locator('[data-tab="chat"] .unread').textContent(),
+  "1",
+);
+assert.deepEqual(
+  await page.evaluate(() => hostEvents.filter((e) => e.kind === "chat:read")),
+  [],
+);
+await page.locator('[data-tab="chat"]').click();
+await page.evaluate(() => scrollTo(0, document.body.scrollHeight));
+await page.waitForFunction(
+  () => document.querySelector(".unread-badge").hidden,
+);
 await page.evaluate(() =>
   emitter.receive("thumbnail:render", { width: 1000, height: 600 }),
 );

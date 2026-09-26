@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@boardgamers/protocol':
-        specifier: 0.6.0
-        version: 0.6.0
+        specifier: 0.6.1
+        version: 0.6.1
       '@noble/hashes':
         specifier: 2.0.1
         version: 2.0.1
@@ -30,8 +30,8 @@ importers:
 
 packages:
 
-  '@boardgamers/protocol@0.6.0':
-    resolution: {integrity: sha512-byHV2eOOFpnQCnhLaM0LPUpT30ew1aAOuTIYxwztkVjg4NgeTyPwjU8Efmc/xi+DGCrfIjo2LTb7YlNUhmzy0g==}
+  '@boardgamers/protocol@0.6.1':
+    resolution: {integrity: sha512-/SdqqYrRUNizjGqQygR4kxTZqCOqWfj190Uj/YHI8i0pD4eNXGofZJd2QhkB63n0iSRHMvJJRJReadof151wBg==}
 
   '@esbuild/aix-ppc64@0.25.12':
     resolution: {integrity: sha512-Hhmwd6CInZ3dwpuGTF8fJG6yoWmsToE+vYgD4nytZVxcu1ulHpUQRAB1UJ8+N1Am3Mz4+xOByoQoSZf4D+CpkA==}
@@ -226,7 +226,7 @@ packages:
 
 snapshots:
 
-  '@boardgamers/protocol@0.6.0':
+  '@boardgamers/protocol@0.6.1':
     dependencies:
       zod: 4.6.5
 
