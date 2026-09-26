@@ -1,0 +1,30 @@
+/* Physical board positions and printed tracks never reverse with the locale. */
+.vanuatu:lang(fa),
+.vanuatu svg:lang(fa),
+.round-track:lang(fa),
+.demand-ships:lang(fa),
+.map-scroll:lang(fa) {
+  direction: ltr;
+}
+
+.bgs-tutorial-guide:lang(fa),
+.vanuatu dialog:lang(fa),
+.vanuatu p:lang(fa),
+.vanuatu h2:lang(fa),
+.vanuatu h3:lang(fa),
+.action-label:lang(fa),
+.tray-title:lang(fa),
+.turn-tray.waiting:lang(fa),
+.pick-hint:lang(fa),
+.character-owned span:lang(fa),
+.event-explanation:lang(fa),
+.vanuatu .text-button:lang(fa) {
+  direction: rtl;
+  text-align: start;
+}
+
+.bgs-tutorial-body p:lang(fa),
+.retrieval-help:lang(fa),
+.event-explanation:lang(fa) {
+  unicode-bidi: plaintext;
+}

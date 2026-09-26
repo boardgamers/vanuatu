@@ -67,3 +67,30 @@ test("decorative arrows and attached currency values keep their meaning", () => 
   assert.equal(t.translate("Draw →"), "Tekenen →");
   assert.equal(t.translate("Your cash: $20"), "Je geld: $20");
 });
+
+test("Persian regional tags and game terminology preserve dynamic values", async () => {
+  assert.equal(resolveLocale("fa-IR"), "fa");
+  assert.equal(resolveLocale("FA_IR"), "fa");
+  const fa = JSON.parse(
+    await readFile(
+      new URL("../viewer/localization/fa.json", import.meta.url),
+      "utf8",
+    ),
+  );
+  const t = createTranslator({ fa }, "fa-IR");
+  t.setNames(["Draw"]);
+  assert.equal(t.translate("Sail"), "قایقرانی");
+  assert.equal(t.translate("Draw"), "Draw");
+  assert.equal(t.translate("Round 3/8"), "دور 3/8");
+  assert.equal(fa['[data-action="{p0}"]'], '[data-action="{p0}"]');
+  assert.equal(
+    t.translate("Fish price: 3 vatus per fish value"),
+    "قیمت ماهی: 3 واتو به‌ازای هر واحد ارزش ماهی",
+  );
+  assert.equal(
+    t.translate("Choose Draw for this step."),
+    "برای این گام Draw را انتخاب کنید.",
+  );
+  t.setLocale("en");
+  assert.equal(t.translate("Sail"), "Sail");
+});
