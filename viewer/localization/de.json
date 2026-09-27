@@ -856,8 +856,8 @@
   "Rest bonuses": "Ruheboni",
   "Place markers": "Steine einsetzen",
   "Planned": "Geplant",
-  "Ship {p0} completed (+2 included)": "Schiff {p0} vollständig (+2 enthalten)",
   "Rest token chosen": "Ruheplättchen gewählt",
   "Free": "Kostenlos",
-  "Location": "Ort"
+  "Location": "Ort",
+  "Ship completed (+2 included)": "Schiff vollständig (+2 enthalten)"
 }

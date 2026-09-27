@@ -856,8 +856,8 @@
   "Rest bonuses": "Rustbonussen",
   "Place markers": "Plaatst markers",
   "Planned": "Gepland",
-  "Ship {p0} completed (+2 included)": "Schip {p0} voltooid (+2 inbegrepen)",
   "Rest token chosen": "Rustfiche gekozen",
   "Free": "Gratis",
-  "Location": "Locatie"
+  "Location": "Locatie",
+  "Ship completed (+2 included)": "Schip voltooid (+2 inbegrepen)"
 }

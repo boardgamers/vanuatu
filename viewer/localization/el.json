@@ -856,8 +856,8 @@
   "Rest bonuses": "Μπόνους ανάπαυσης",
   "Place markers": "Τοποθετεί δείκτες",
   "Planned": "Προγραμματισμένα",
-  "Ship {p0} completed (+2 included)": "Πλοίο {p0} ολοκληρώθηκε (περιλαμβάνει +2)",
   "Rest token chosen": "Επιλέχθηκε πλακίδιο ανάπαυσης",
   "Free": "Δωρεάν",
-  "Location": "Θέση"
+  "Location": "Θέση",
+  "Ship completed (+2 included)": "Πλοίο ολοκληρώθηκε (περιλαμβάνει +2)"
 }

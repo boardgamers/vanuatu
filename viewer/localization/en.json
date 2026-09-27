@@ -856,8 +856,8 @@
   "Rest bonuses": "Rest bonuses",
   "Place markers": "Place markers",
   "Planned": "Planned",
-  "Ship {p0} completed (+2 included)": "Ship {p0} completed (+2 included)",
   "Rest token chosen": "Rest token chosen",
   "Free": "Free",
-  "Location": "Location"
+  "Location": "Location",
+  "Ship completed (+2 included)": "Ship completed (+2 included)"
 }

@@ -856,8 +856,8 @@
   "Rest bonuses": "Bonusuri de odihnă",
   "Place markers": "Plasează jetoane",
   "Planned": "Planificate",
-  "Ship {p0} completed (+2 included)": "Nava {p0} completată (+2 incluse)",
   "Rest token chosen": "Jeton de odihnă ales",
   "Free": "Gratuit",
-  "Location": "Loc"
+  "Location": "Loc",
+  "Ship completed (+2 included)": "Nava completată (+2 incluse)"
 }

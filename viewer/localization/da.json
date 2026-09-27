@@ -856,8 +856,8 @@
   "Rest bonuses": "Hvilebonusser",
   "Place markers": "Placerer markører",
   "Planned": "Planlagt",
-  "Ship {p0} completed (+2 included)": "Skib {p0} fyldt (+2 inkluderet)",
   "Rest token chosen": "Hvilebrik valgt",
   "Free": "Gratis",
-  "Location": "Placering"
+  "Location": "Placering",
+  "Ship completed (+2 included)": "Skib fyldt (+2 inkluderet)"
 }

@@ -856,8 +856,8 @@
   "Rest bonuses": "Thưởng nghỉ ngơi",
   "Place markers": "Đặt dấu hành động",
   "Planned": "Đã lên kế hoạch",
-  "Ship {p0} completed (+2 included)": "Tàu {p0} đã đầy (đã tính +2)",
   "Rest token chosen": "Đã chọn thẻ nghỉ ngơi",
   "Free": "Miễn phí",
-  "Location": "Vị trí"
+  "Location": "Vị trí",
+  "Ship completed (+2 included)": "Tàu đã đầy (đã tính +2)"
 }

@@ -856,8 +856,8 @@
   "Rest bonuses": "Бонусы отдыха",
   "Place markers": "Размещает маркеры",
   "Planned": "Запланировано",
-  "Ship {p0} completed (+2 included)": "Корабль {p0} заполнен (+2 учтены)",
   "Rest token chosen": "Выбран жетон отдыха",
   "Free": "Бесплатно",
-  "Location": "Место"
+  "Location": "Место",
+  "Ship completed (+2 included)": "Корабль заполнен (+2 учтены)"
 }

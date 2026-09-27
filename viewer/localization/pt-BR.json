@@ -856,8 +856,8 @@
   "Rest bonuses": "Bônus de descanso",
   "Place markers": "Coloca marcadores",
   "Planned": "Planejado",
-  "Ship {p0} completed (+2 included)": "Navio {p0} completo (+2 incluídos)",
   "Rest token chosen": "Ficha de descanso escolhida",
   "Free": "Grátis",
-  "Location": "Local"
+  "Location": "Local",
+  "Ship completed (+2 included)": "Navio completo (+2 incluídos)"
 }

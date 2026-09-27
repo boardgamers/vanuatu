@@ -856,8 +856,8 @@
   "Rest bonuses": "Bonus de repos",
   "Place markers": "Place des pions",
   "Planned": "Programmation",
-  "Ship {p0} completed (+2 included)": "Bateau {p0} complété (+2 inclus)",
   "Rest token chosen": "Jeton Repos choisi",
   "Free": "Gratuit",
-  "Location": "Emplacement"
+  "Location": "Emplacement",
+  "Ship completed (+2 included)": "Bateau complété (+2 inclus)"
 }

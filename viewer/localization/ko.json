@@ -856,8 +856,8 @@
   "Rest bonuses": "휴식 보너스",
   "Place markers": "마커 배치",
   "Planned": "계획",
-  "Ship {p0} completed (+2 included)": "배 {p0} 완성 (+2 포함)",
   "Rest token chosen": "휴식 토큰 선택",
   "Free": "무료",
-  "Location": "위치"
+  "Location": "위치",
+  "Ship completed (+2 included)": "배 완성 (+2 포함)"
 }

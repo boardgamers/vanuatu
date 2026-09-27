@@ -856,8 +856,8 @@
   "Rest bonuses": "Bonus riposo",
   "Place markers": "Piazza segnalini",
   "Planned": "Pianificato",
-  "Ship {p0} completed (+2 included)": "Nave {p0} completata (+2 inclusi)",
   "Rest token chosen": "Gettone riposo scelto",
   "Free": "Gratis",
-  "Location": "Posizione"
+  "Location": "Posizione",
+  "Ship completed (+2 included)": "Nave completata (+2 inclusi)"
 }

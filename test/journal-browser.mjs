@@ -137,7 +137,7 @@ try {
       .filter({ hasText: "Export" });
     assert.match(
       await exportRow.innerText(),
-      /Ship 1 completed \(\+2 included\)/,
+      /Ship completed \(\+2 included\)/,
     );
     assert.ok(await exportRow.locator(".event-character").count());
     assert.equal(
@@ -190,9 +190,7 @@ try {
         c["Marker placement"],
       );
       assert.ok(
-        (await list.innerText()).includes(
-          c["Ship {p0} completed (+2 included)"].replace("{p0}", "1"),
-        ),
+        (await list.innerText()).includes(c["Ship completed (+2 included)"]),
       );
       assert.equal(
         await list.locator(".event-action .resource-symbol").count(),

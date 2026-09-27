@@ -856,8 +856,8 @@
   "Rest bonuses": "休息獎勵",
   "Place markers": "放置標記",
   "Planned": "已規劃",
-  "Ship {p0} completed (+2 included)": "船隻 {p0} 已裝滿（含 +2）",
   "Rest token chosen": "已選擇休息標記",
   "Free": "免費",
-  "Location": "位置"
+  "Location": "位置",
+  "Ship completed (+2 included)": "船隻 已裝滿（含 +2）"
 }

@@ -128,7 +128,6 @@ export function mountActivity(
     if (kind === "journal") list.focus({ preventScroll: true });
   }
   const text = (source) => esc(translateText(source, lang));
-  const message = (source, value) => text(source).replace("{p0}", esc(value));
   const playerName = (p) =>
     state?.players[p]
       ? `<strong class="event-player" translate="no" style="color:${esc(state.players[p].color)}">${esc(state.players[p].name)}</strong>`
@@ -193,9 +192,7 @@ export function mountActivity(
           d.shipments
             ?.filter((s) => s.complete)
             .map((s) =>
-              chip(
-                `${icon("check")}${message("Ship {p0} completed (+2 included)", s.ship)}`,
-              ),
+              chip(`${icon("check")}${text("Ship completed (+2 included)")}`),
             )
             .join("") ?? "";
         const role =

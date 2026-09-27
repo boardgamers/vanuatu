@@ -856,8 +856,8 @@
   "Rest bonuses": "Premie odpoczynku",
   "Place markers": "Umieszcza znaczniki",
   "Planned": "Zaplanowane",
-  "Ship {p0} completed (+2 included)": "Statek {p0} zapełniony (+2 wliczone)",
   "Rest token chosen": "Wybrano żeton odpoczynku",
   "Free": "Za darmo",
-  "Location": "Miejsce"
+  "Location": "Miejsce",
+  "Ship completed (+2 included)": "Statek zapełniony (+2 wliczone)"
 }
