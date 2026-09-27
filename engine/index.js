@@ -1149,15 +1149,61 @@ export function createAnalysisScenario(s, { player, seed }) {
   const knownRest = r.players[player]?.rest;
   const visibleAvailable =
     s.phase === "rest" && s.actor === player ? [...s._restAvailable] : null;
-  const pool = shuffle(
-    r,
-    REST.filter((t) => t !== knownRest && !visibleAvailable?.includes(t)),
-  );
-  for (const p of r.players) {
-    p.dropped = false;
-    if (p.rest === "hidden") p.rest = pool.pop();
+  const restKnowledge =
+    s._analysisRestKnowledge?.round === s.round
+      ? copy(s._analysisRestKnowledge.allowed)
+      : r.players.map(() => [...REST]);
+  for (const frame of s._frames) {
+    if (
+      frame.round !== s.round ||
+      frame.phase !== "rest" ||
+      frame.actor !== player
+    )
+      continue;
+    for (const [q, p] of frame.players.entries()) {
+      restKnowledge[q] = restKnowledge[q].filter((token) =>
+        p.rest
+          ? !frame.restAvailable.includes(token)
+          : frame.restAvailable.includes(token),
+      );
+    }
   }
-  r._restAvailable = visibleAvailable ?? pool;
+  if (knownRest) restKnowledge[player] = [knownRest];
+  const seats = r.players.flatMap((p, q) => (p.rest ? [q] : []));
+  const allocations = [];
+  function allocate(index, remaining, assigned) {
+    if (index === seats.length) {
+      if (
+        visibleAvailable &&
+        (remaining.length !== visibleAvailable.length ||
+          remaining.some((token) => !visibleAvailable.includes(token)))
+      )
+        return;
+      allocations.push({ remaining, assigned });
+      return;
+    }
+    const seat = seats[index];
+    for (const token of remaining) {
+      if (!restKnowledge[seat].includes(token)) continue;
+      allocate(
+        index + 1,
+        remaining.filter((t) => t !== token),
+        { ...assigned, [seat]: token },
+      );
+    }
+  }
+  allocate(0, [...REST], {});
+  check(
+    allocations.length,
+    "No rest-token allocation matches the known information",
+  );
+  const allocation = shuffle(r, allocations)[0];
+  for (const [q, p] of r.players.entries()) {
+    p.dropped = false;
+    if (p.rest) p.rest = allocation.assigned[q];
+  }
+  r._restAvailable = allocation.remaining;
+  r._analysisRestKnowledge = { round: s.round, allowed: restKnowledge };
   saveFrame(r);
   return r;
 }

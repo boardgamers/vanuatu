@@ -53,3 +53,23 @@ test("observer rest tokens and re-sampling remain independent", () => {
     4,
   );
 });
+
+test("rest tokens seen on an earlier personal turn constrain later scenarios and rerolls", () => {
+  const s = E.init(3, [], {}, "known-rest");
+  s.players[0].rest = "coin";
+  s.players[1].rest = "point";
+  s.players[2].rest = "both";
+  s._restAvailable = ["first"];
+  const observed = structuredClone(s._frames[0]);
+  observed.phase = "rest";
+  observed.actor = 0;
+  observed.players[1].rest = "point";
+  observed.restAvailable = ["coin", "both", "first"];
+  s._frames.push(observed);
+  for (const seed of ["one", "two", "three"]) {
+    const a = E.createAnalysisScenario(s, { player: 0, seed });
+    assert.equal(a.players[1].rest, "point");
+    const b = E.createAnalysisScenario(a, { player: 0, seed: "reroll" });
+    assert.equal(b.players[1].rest, "point");
+  }
+});
