@@ -850,5 +850,14 @@
   "épuisé": "تمام شده",
   "— next catch on this tile": "؛ صید بعدی در این کاشی",
   "— prochaine prise sur cette tuile": "؛ صید بعدی در این کاشی",
-  "🏝️ Vanuatu": "🏝️ Vanuatu"
+  "🏝️ Vanuatu": "🏝️ Vanuatu",
+  "Marker placement": "قرار دادن نشانگرها",
+  "Actions": "اقدام‌ها",
+  "Rest bonuses": "پاداش‌های استراحت",
+  "Place markers": "نشانگر می‌گذارد",
+  "Planned": "برنامه‌ریزی‌شده",
+  "Ship {p0} completed (+2 included)": "کشتی {p0} تکمیل شد (شامل ۲+ امتیاز)",
+  "Rest token chosen": "نشان استراحت انتخاب شد",
+  "Free": "رایگان",
+  "Location": "مکان"
 }

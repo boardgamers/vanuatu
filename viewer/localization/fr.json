@@ -850,5 +850,14 @@
   "épuisé": "épuisé",
   "— next catch on this tile": "— prochaine prise sur cette tuile",
   "— prochaine prise sur cette tuile": "— prochaine prise sur cette tuile",
-  "🏝️ Vanuatu": "🏝️ Vanuatu"
+  "🏝️ Vanuatu": "🏝️ Vanuatu",
+  "Marker placement": "Placement des pions",
+  "Actions": "Actions",
+  "Rest bonuses": "Bonus de repos",
+  "Place markers": "Place des pions",
+  "Planned": "Programmation",
+  "Ship {p0} completed (+2 included)": "Bateau {p0} complété (+2 inclus)",
+  "Rest token chosen": "Jeton Repos choisi",
+  "Free": "Gratuit",
+  "Location": "Emplacement"
 }

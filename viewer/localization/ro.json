@@ -850,5 +850,14 @@
   "épuisé": "epuizat",
   "— next catch on this tile": "— următoarea captură pe această piesă",
   "— prochaine prise sur cette tuile": "— următoarea captură pe această piesă",
-  "🏝️ Vanuatu": "🏝️ Vanuatu"
+  "🏝️ Vanuatu": "🏝️ Vanuatu",
+  "Marker placement": "Plasarea jetoanelor",
+  "Actions": "Acțiuni",
+  "Rest bonuses": "Bonusuri de odihnă",
+  "Place markers": "Plasează jetoane",
+  "Planned": "Planificate",
+  "Ship {p0} completed (+2 included)": "Nava {p0} completată (+2 incluse)",
+  "Rest token chosen": "Jeton de odihnă ales",
+  "Free": "Gratuit",
+  "Location": "Loc"
 }

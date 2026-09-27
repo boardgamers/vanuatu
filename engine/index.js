@@ -1,3 +1,4 @@
+import { actionDetails } from "./event-details.js";
 import { markerBlockers } from "./marker-blockers.js";
 import { sha256 } from "@noble/hashes/sha2.js";
 import {
@@ -39,7 +40,9 @@ const turnOrder = (s) =>
 const remaining = (s, p) => sum(Object.values(s.players[p].markers));
 const has = (s, p, c) => s.players[p].character === c && !s.players[p].used;
 function say(s, type, data = {}) {
-  s.events.push({ ...data, type, round: s.round, step: s._history.length + 1 });
+  const event = { ...data, type, round: s.round, step: s._history.length + 1 };
+  s.events.push(event);
+  return event;
 }
 function earn(s, p, n) {
   const a = s.players[p];
@@ -349,8 +352,9 @@ function exportGood(s, p, good) {
     if (i < 0) continue;
     d.filled[i] = true;
     s.players[p].score += VALUES[good];
-    if (d.filled.every(Boolean)) s.players[p].score += 2;
-    return;
+    const complete = d.filled.every(Boolean);
+    if (complete) s.players[p].score += 2;
+    return { ship: d.id, complete };
   }
 }
 function takeFrom(a, values) {
@@ -396,12 +400,14 @@ function effect(s, p, m) {
         s.dikesLeft--;
       }
       break;
-    case "buy":
+    case "buy": {
       pay(s, p, PRICES[m.good]);
       t.goods[m.good]--;
-      exportGood(s, p, m.good);
-      if (m.bonus && goodsAvailable(s, m.good) > 0) exportGood(s, p, m.good);
-      break;
+      const shipments = [exportGood(s, p, m.good)];
+      if (m.bonus && goodsAvailable(s, m.good) > 0)
+        shipments.push(exportGood(s, p, m.good));
+      return shipments.filter(Boolean);
+    }
     case "draw":
       t.drawings++;
       a.score += m.bonus ? 5 : 3;
@@ -800,7 +806,7 @@ function endRound(s) {
   s.planningPass = 0;
   s.neutral = emptyMarkers();
   s.neutralPlaced = 0;
-  say(s, "round", { round: s.round });
+  say(s, "round", { round: s.round, first: s.first });
 }
 function finish(s) {
   for (const [p, a] of s.players.entries()) {
@@ -829,9 +835,12 @@ function finish(s) {
 }
 function execute(s, m, p) {
   const a = s.players[p];
-  say(s, m.type === "act" ? "action" : m.type, {
+  const event = say(s, m.type === "act" ? "action" : m.type, {
     p,
     ...m,
+    ...(m.type === "act" ? { details: actionDetails(s, p, m) } : {}),
+    ...(m.type === "plan" ? { pass: s.planningPass + 1 } : {}),
+    ...(m.type === "governor" ? { markers: a.markers[m.from] } : {}),
     ...(m.type === "discard"
       ? {
           blockers: markerBlockers(s, p, m.action),
@@ -860,6 +869,7 @@ function execute(s, m, p) {
       return;
     case "neutral":
       for (const action of m.actions) s.neutral[action]++;
+      event.totals = { ...s.neutral };
       s.neutralPlaced += m.actions.length;
       s.increments[p]++;
       if (s.neutralPlaced === 2) nextActor(s);
@@ -878,6 +888,7 @@ function execute(s, m, p) {
       return;
     case "plan":
       for (const action of m.actions) a.markers[action]++;
+      event.totals = { ...a.markers };
       s.increments[p]++;
       if (nextActor(s)) {
         s.planningPass++;
@@ -902,7 +913,15 @@ function execute(s, m, p) {
       return;
     case "act":
       a.markers[m.action] = 0;
-      effect(s, p, m);
+      const shipments = effect(s, p, m);
+      if (m.action === "buy") {
+        event.details.shipments = shipments;
+        event.details.points = shipments.reduce(
+          (points, delivery) =>
+            points + VALUES[m.good] + (delivery.complete ? 2 : 0),
+          0,
+        );
+      }
       if (m.preach) a.used = true;
       if (s.phase !== "rest") actionDone(s, p);
       else if (s._restAvailable.length === 1) {

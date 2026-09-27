@@ -3,16 +3,37 @@ import { tilePreviewSvg } from "./board.js";
 import { blockingHtml } from "./blocking.js";
 import { translateText } from "./localization/index.js";
 import { mountChat } from "@boardgamers/protocol/chat/dom";
-import { icon as renderIcon, token as renderToken, esc } from "./art.js";
+import {
+  icon as renderIcon,
+  token as renderToken,
+  iconLabel,
+  esc,
+} from "./art.js";
 import { translator } from "./labels.js";
-import { CHARACTERS, COLORS } from "../engine/catalog.js";
+import { journalRows } from "./journal.js";
+import { ACTIONS, CHARACTERS, COLORS } from "../engine/catalog.js";
 export function mountActivity(
   target,
   { chat, openPlayer, avatarForPlayer, onBack, language = "en" } = {},
 ) {
-  let colorBlind = false;
-  const icon = (name) => renderIcon(name, undefined, false, colorBlind);
-  const token = (name, n) => renderToken(name, n, undefined, colorBlind);
+  let colorBlind = false,
+    lang = language;
+  const icon = (name) =>
+    renderIcon(name, translateText(iconLabel(name), lang), false, colorBlind);
+  const token = (name, n) =>
+    renderToken(
+      name,
+      n,
+      `${translateText(iconLabel(name), lang)}: ${n}`,
+      colorBlind,
+    );
+  const markerToken = (action, n) =>
+    renderToken(
+      action,
+      n,
+      `${translateText("Markers", lang)}: ${n} · ${translateText(translator(lang)(action), lang)}`,
+      colorBlind,
+    );
   const root = document.createElement("section");
   root.className = "activity";
   root.innerHTML = `<header><div class="activity-tabs" role="tablist"><button type="button" role="tab" data-tab="journal">${icon("journal")} <span>Journal</span></button><button type="button" role="tab" data-tab="chat" ${chat ? "" : "hidden"}>${icon("chat")} <span>Chat</span> <b class="unread" hidden></b></button></div><button type="button" class="text-button" data-back>↑ <span>Board</span></button></header><div class="journal-panel" role="tabpanel"><ol class="event-list" tabindex="0"></ol></div><div class="chat-panel" role="tabpanel" hidden></div>`;
@@ -28,7 +49,6 @@ export function mountActivity(
   let mode = "journal",
     analysis = false,
     state,
-    lang = language,
     t = translator(lang),
     following = true,
     key = "";
@@ -107,67 +127,248 @@ export function mountActivity(
     root.scrollIntoView({ behavior: "smooth", block: "start" });
     if (kind === "journal") list.focus({ preventScroll: true });
   }
-  function eventHtml(e) {
-    const name = state?.players[e.p]?.name ?? "";
-    const actor = name
-      ? `<strong style="color:${state.players[e.p].color}">${esc(name)}</strong>`
+  const text = (source) => esc(translateText(source, lang));
+  const message = (source, value) => text(source).replace("{p0}", esc(value));
+  const playerName = (p) =>
+    state?.players[p]
+      ? `<strong class="event-player" translate="no" style="color:${esc(state.players[p].color)}">${esc(state.players[p].name)}</strong>`
       : "";
+  const chip = (html, kind = "") =>
+    `<span class="event-chip ${kind}">${html}</span>`;
+  const gain = (name, n) => chip(token(name, `+${n}`), "event-gain");
+  const cost = (n) =>
+    chip(n ? token("coin", `−${n}`) : text("Free"), "event-cost");
+  const location = (cell) =>
+    cell
+      ? `<span class="event-coordinate" title="${text("Location")}" translate="no">${esc(cell)}</span>`
+      : "";
+  function portrait(character) {
+    const c = CHARACTERS[character];
+    return c
+      ? `<span class="event-role" title="${text(c.name)}"><img class="event-character" src="${assets["character-" + c.art]}" alt="${text(c.name)}"></span>`
+      : "";
+  }
+  function heading(e, label, symbol, character) {
+    return `<span class="event-main">${playerName(e.p)}${portrait(character)} <span class="event-verb">${symbol ? icon(symbol) : ""}${label}</span></span>`;
+  }
+  const details = (html) =>
+    html ? `<span class="event-details">${html}</span>` : "";
+  function eventHtml(e) {
+    const d = e.details ?? {};
     switch (e.type) {
-      case "action":
-        return `${actor} ${icon(e.action)}${e.good ? icon(e.good) : ""}${e.fish ? e.fish.map((n) => token("fish", n)).join("") : ""}${e.path ? ` ${e.path.length} ${icon("sail")}` : ""}${e.bonus ? ` <small>${esc(CHARACTERS[state.players[e.p]?.character]?.["name"] ?? "")}</small>` : ""}`;
+      case "action": {
+        const parts = [];
+        if (d.cost !== undefined) parts.push(cost(d.cost));
+        if (e.path) parts.push(chip(token("sail", e.path.length)));
+        if (e.action === "sell") {
+          const fish = token(
+            "fish",
+            e.fish.reduce((a, b) => a + b, 0),
+          );
+          parts.push(
+            chip(
+              d.price === undefined
+                ? fish
+                : `${fish} × ${token("coin", d.price)} → ${token("coin", `+${d.income}`)}`,
+              "event-gain",
+            ),
+          );
+        }
+        if (d.fish !== undefined) parts.push(gain("fish", d.fish));
+        if (d.treasure !== undefined) parts.push(gain("explore", d.treasure));
+        if (e.good) parts.push(chip(token(e.good, d.shipments?.length ?? 1)));
+        if (e.hut) parts.push(chip(token("build", 1)));
+        if (e.dike) parts.push(chip(token("dike", 1)));
+        if (e.action === "tourist") parts.push(chip(token("tourist", 1)));
+        if (
+          d.income !== undefined &&
+          !(e.action === "sell" && d.price !== undefined)
+        )
+          parts.push(gain("coin", d.income));
+        if (d.points !== undefined) parts.push(gain("point", d.points));
+        const route = e.path
+          ? `${location(d.from)} → ${location(e.path.at(-1))}`
+          : location(d.cell ?? e.cell);
+        const completions =
+          d.shipments
+            ?.filter((s) => s.complete)
+            .map((s) =>
+              chip(
+                `${icon("check")}${message("Ship {p0} completed (+2 included)", s.ship)}`,
+              ),
+            )
+            .join("") ?? "";
+        const role =
+          d.character ??
+          (e.preach
+            ? "preacher"
+            : e.bonus
+              ? Object.keys(CHARACTERS).find(
+                  (c) => CHARACTERS[c].action === e.action,
+                )
+              : null);
+        const rest =
+          e.action === "rest" && e.restToken && e.restToken !== "hidden"
+            ? restReward(e.restToken, false)
+            : "";
+        return (
+          heading(
+            e,
+            text(
+              e.action === "rest" && e.restToken
+                ? "Rest token chosen"
+                : t(e.action),
+            ),
+            e.action,
+            role,
+          ) +
+          details(parts.join("") + rest) +
+          (route || completions
+            ? `<span class="event-context">${route}${completions}</span>`
+            : "")
+        );
+      }
       case "plan":
-      case "neutral":
-        return `${actor} ${e.actions.map((a) => icon(a)).join("")}${e.type === "neutral" ? ` <span class="neutral-key">●</span>` : ""}`;
+      case "neutral": {
+        const counts = Object.fromEntries(
+          ACTIONS.map((a) => [a, e.actions.filter((v) => v === a).length]),
+        );
+        const added = ACTIONS.filter((a) => counts[a])
+          .map((a) => chip(markerToken(a, `+${counts[a]}`)))
+          .join("");
+        const totals = e.totals
+          ? `<span class="event-totals"><span>${text("Planned")}</span>${ACTIONS.filter(
+              (a) => e.totals[a],
+            )
+              .map((a) => markerToken(a, e.totals[a]))
+              .join("")}</span>`
+          : "";
+        return (
+          heading(
+            e,
+            text(e.type === "neutral" ? t("neutral") : "Place markers"),
+            "marker",
+          ) +
+          details(added) +
+          totals
+        );
+      }
       case "character":
-        return `${actor} <img class="event-character" src="${assets["character-" + CHARACTERS[e.character]?.art]}" alt=""><span>${esc(translateText(CHARACTERS[e.character]?.name ?? e.character, lang))}</span>`;
+        return heading(
+          e,
+          `${portrait(e.character)}${text(CHARACTERS[e.character]?.name ?? e.character)}`,
+        );
       case "conversion":
-        return `${actor} ${token("coin", e.points * 2)} → ${token("point", e.points)}`;
-      case "treasure":
-        return `${actor} ${token(
-          "explore",
-          e.values.reduce((a, b) => a + b, 0),
-        )} → ${token(
-          "coin",
-          e.values.reduce((a, b) => a + b, 0),
-        )}`;
+        return (
+          heading(e, "") +
+          details(
+            chip(
+              `${token("coin", `−${e.points * 2}`)} → ${token("point", `+${e.points}`)}`,
+            ),
+          )
+        );
+      case "treasure": {
+        const n = e.values.reduce((a, b) => a + b, 0);
+        return (
+          heading(e, text(t("treasure")), "explore") +
+          details(chip(`${token("explore", n)} → ${token("coin", `+${n}`)}`))
+        );
+      }
       case "beg":
-        return `${actor} ${token("point", e.amount)} → ${token("coin", e.amount)}`;
+        return (
+          heading(e, text(t("beg"))) +
+          details(
+            chip(
+              `${token("point", `−${e.amount}`)} → ${token("coin", `+${e.amount}`)}`,
+            ) + portrait("beggar"),
+          )
+        );
       case "discard":
-        return `${actor} ${renderIcon("warning", translateText("Retrieve without acting", lang))} ${icon(e.action)}${e.markers ? ` ×${e.markers}` : ""}${e.blockers ? `<span class="event-explanation">${blockingHtml(state, e.p, e.action, lang, e.blockers)}</span>` : ""}`;
+        return (
+          heading(e, text("Retrieve without acting"), "warning") +
+          details(chip(markerToken(e.action, e.markers ?? ""), "event-cost")) +
+          (e.blockers
+            ? `<span class="event-explanation">${blockingHtml(state, e.p, e.action, lang, e.blockers)}</span>`
+            : "")
+        );
       case "governor":
-        return `${actor} ${icon(e.from)} → ${icon(e.to)}`;
+        return (
+          heading(e, text(t("governor"))) +
+          details(
+            chip(
+              `${markerToken(e.from, e.markers ?? "")} → ${markerToken(e.to, e.markers ?? "")}`,
+            ) + portrait("governor"),
+          )
+        );
       case "rest":
-        return `${actor} ${icon("rest")}`;
+        return (
+          heading(e, text("Rest token chosen"), "rest") +
+          details(e.token !== "hidden" ? restReward(e.token, false) : "")
+        );
       case "restBonus":
-        return `${actor} ${e.token === "first" ? icon("first") : e.token === "both" ? token("coin", 1) + token("point", 1) : token(e.token, 1)}`;
-      case "round":
-        return `<b>${t("round")} ${e.round}/8</b>`;
+        return (
+          heading(e, text(t("rest")), "rest") + details(restReward(e.token))
+        );
       case "place":
-        return `${actor} <span class="event-tile" role="img" aria-label="${esc(t("expand") + " " + e.cell)}">${tilePreviewSvg(e.tile, { colorBlind, t, language: lang, prefix: "event-" + e.cell })}</span><span class="event-coordinate">${esc(e.cell)}</span>`;
+        return (
+          heading(e, "") +
+          `<span class="event-tile" role="img" aria-label="${esc(t("expand") + " " + e.cell)}">${tilePreviewSvg(e.tile, { colorBlind, t, language: lang, prefix: "event-" + e.cell })}</span>${location(e.cell)}`
+        );
       case "flood":
-        return `${icon("water")} ${t("water")}`;
+        return heading(e, text(t("water")), "water");
+      case "submerged":
+        return heading(e, text("Submerged"), "water") + location(e.cell);
+      case "lost":
+        return `<b>${text(t("lost"))}</b>`;
       case "end":
-        return `<b>${t("finished")}</b>`;
+        return `<b>${text(t("finished"))}</b>${details((e.scores ?? []).map((score, p) => chip(`${playerName(p)} ${token("point", score)}`)).join(""))}`;
       default:
         return "";
     }
+  }
+  function restReward(value, awarded = true) {
+    const reward = (name) => (awarded ? gain(name, 1) : chip(token(name, 1)));
+    if (value === "first") return chip(`${icon("first")}${text(t("first"))}`);
+    if (value === "both") return reward("coin") + reward("point");
+    return ["coin", "point"].includes(value) ? reward(value) : "";
+  }
+  function rowHtml(row) {
+    if (row.kind === "round")
+      return `<li class="round-divider"><b>${text(t("round"))} ${row.round}/8</b>${row.first !== undefined ? `<span class="event-first">${icon("first")}${playerName(row.first)}</span>` : ""}</li>`;
+    if (row.kind === "phase") {
+      const label =
+        {
+          plan: "Marker placement",
+          actions: "Actions",
+          restBonus: "Rest bonuses",
+        }[row.phase] ?? t(row.phase);
+      const symbol = {
+        plan: "marker",
+        actions: "check",
+        restBonus: "rest",
+        character: "eye",
+        expand: "overview",
+        neutral: "marker",
+        ended: "point",
+      }[row.phase];
+      return `<li class="phase-divider">${symbol ? icon(symbol) : ""}<b>${text(label)}</b>${row.pass ? `<span>${row.pass}/3</span>` : ""}</li>`;
+    }
+    const html = eventHtml(row.event);
+    return html
+      ? `<li class="journal-event event-${esc(row.event.type === "character" ? "select-character" : row.event.type)}">${html}</li>`
+      : "";
   }
   function refresh() {
     if (!state) return;
     const next =
       JSON.stringify(state.events ?? state.lastEvents ?? []) +
       lang +
-      colorBlind;
+      colorBlind +
+      JSON.stringify(state.players.map(({ name, color }) => [name, color])) +
+      state.boardLayout;
     if (next === key) return;
     key = next;
-    list.innerHTML = (state.events ?? state.lastEvents ?? [])
-      .map((e) => ({ e, html: eventHtml(e) }))
-      .filter((x) => x.html)
-      .map(
-        ({ e, html }) =>
-          `<li class="${e.type === "round" ? "round-divider" : ""}">${html}</li>`,
-      )
-      .join("");
+    list.innerHTML = journalRows(state).map(rowHtml).join("");
     if (following)
       requestAnimationFrame(() => (list.scrollTop = list.scrollHeight));
   }

@@ -850,5 +850,14 @@
   "épuisé": "erschöpft",
   "— next catch on this tile": "— nächster Fang auf diesem Feld",
   "— prochaine prise sur cette tuile": "— nächster Fang auf diesem Feld",
-  "🏝️ Vanuatu": "🏝️ Vanuatu"
+  "🏝️ Vanuatu": "🏝️ Vanuatu",
+  "Marker placement": "Aktionssteine einsetzen",
+  "Actions": "Aktionen",
+  "Rest bonuses": "Ruheboni",
+  "Place markers": "Steine einsetzen",
+  "Planned": "Geplant",
+  "Ship {p0} completed (+2 included)": "Schiff {p0} vollständig (+2 enthalten)",
+  "Rest token chosen": "Ruheplättchen gewählt",
+  "Free": "Kostenlos",
+  "Location": "Ort"
 }

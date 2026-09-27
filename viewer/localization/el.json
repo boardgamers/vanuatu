@@ -850,5 +850,14 @@
   "épuisé": "εξαντλημένο",
   "— next catch on this tile": "— επόμενη ψαριά σε αυτό το πλακίδιο",
   "— prochaine prise sur cette tuile": "— επόμενη ψαριά σε αυτό το πλακίδιο",
-  "🏝️ Vanuatu": "🏝️ Vanuatu"
+  "🏝️ Vanuatu": "🏝️ Vanuatu",
+  "Marker placement": "Τοποθέτηση δεικτών",
+  "Actions": "Ενέργειες",
+  "Rest bonuses": "Μπόνους ανάπαυσης",
+  "Place markers": "Τοποθετεί δείκτες",
+  "Planned": "Προγραμματισμένα",
+  "Ship {p0} completed (+2 included)": "Πλοίο {p0} ολοκληρώθηκε (περιλαμβάνει +2)",
+  "Rest token chosen": "Επιλέχθηκε πλακίδιο ανάπαυσης",
+  "Free": "Δωρεάν",
+  "Location": "Θέση"
 }

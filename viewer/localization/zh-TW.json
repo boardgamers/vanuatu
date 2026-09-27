@@ -850,5 +850,14 @@
   "épuisé": "已枯竭",
   "— next catch on this tile": "— 此板塊下次捕魚的價值",
   "— prochaine prise sur cette tuile": "— 此板塊的下次漁獲",
-  "🏝️ Vanuatu": "🏝️ Vanuatu"
+  "🏝️ Vanuatu": "🏝️ Vanuatu",
+  "Marker placement": "放置標記",
+  "Actions": "行動",
+  "Rest bonuses": "休息獎勵",
+  "Place markers": "放置標記",
+  "Planned": "已規劃",
+  "Ship {p0} completed (+2 included)": "船隻 {p0} 已裝滿（含 +2）",
+  "Rest token chosen": "已選擇休息標記",
+  "Free": "免費",
+  "Location": "位置"
 }

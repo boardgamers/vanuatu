@@ -850,5 +850,14 @@
   "épuisé": "wyczerpany",
   "— next catch on this tile": "— następny połów na tym kafelku",
   "— prochaine prise sur cette tuile": "— prochaine prise sur cette tuile",
-  "🏝️ Vanuatu": "🏝️ Vanuatu"
+  "🏝️ Vanuatu": "🏝️ Vanuatu",
+  "Marker placement": "Rozmieszczanie znaczników",
+  "Actions": "Akcje",
+  "Rest bonuses": "Premie odpoczynku",
+  "Place markers": "Umieszcza znaczniki",
+  "Planned": "Zaplanowane",
+  "Ship {p0} completed (+2 included)": "Statek {p0} zapełniony (+2 wliczone)",
+  "Rest token chosen": "Wybrano żeton odpoczynku",
+  "Free": "Za darmo",
+  "Location": "Miejsce"
 }

@@ -28,3 +28,10 @@
 .event-explanation:lang(fa) {
   unicode-bidi: plaintext;
 }
+
+.vanuatu .event-verb:lang(fa),
+.vanuatu .phase-divider:lang(fa),
+.vanuatu .event-totals > span:lang(fa) {
+  direction: rtl;
+  unicode-bidi: plaintext;
+}

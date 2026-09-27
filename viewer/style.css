@@ -1625,3 +1625,96 @@ body:has(.vanuatu) {
   border-radius: 999px;
   background: #f0eddd;
 }
+
+/* The journal separates intentions (markers) from the actions they pay for. */
+.vanuatu .event-list .phase-divider {
+  padding: 6px 8px;
+  margin-top: 8px;
+  background: #e5ece2;
+  border-left: 3px solid #568d88;
+  border-bottom: 0;
+  border-radius: 3px;
+  font-size: 11px;
+  gap: 7px;
+}
+.vanuatu .phase-divider > span {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+}
+.vanuatu .event-list .journal-event {
+  padding: 6px 0;
+  gap: 5px 8px;
+}
+.vanuatu .event-main,
+.vanuatu .event-verb,
+.vanuatu .event-details,
+.vanuatu .event-context,
+.vanuatu .event-totals,
+.vanuatu .event-first {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.vanuatu .event-main {
+  flex-basis: auto;
+  gap: 4px 8px;
+}
+.vanuatu .event-player {
+  overflow-wrap: anywhere;
+}
+.vanuatu .event-verb {
+  font-weight: 500;
+}
+.vanuatu .event-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 5px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: var(--paper);
+  line-height: 1.4;
+}
+.vanuatu .event-gain {
+  color: #356a43;
+}
+.vanuatu .event-cost {
+  color: #97502d;
+}
+.vanuatu .event-context {
+  color: var(--muted);
+  font-size: 10px;
+}
+.vanuatu .event-totals {
+  flex-basis: 100%;
+  color: var(--muted);
+  font-size: 10px;
+  gap: 4px 8px;
+}
+.vanuatu .event-totals .icon {
+  width: 19px;
+  height: 19px;
+}
+.vanuatu .event-coordinate {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.vanuatu .event-role {
+  display: inline-flex;
+}
+.vanuatu .event-role .event-character {
+  width: 22px;
+  height: 28px;
+}
+.vanuatu .event-select-character .event-role .event-character {
+  width: 32px;
+  height: 40px;
+}
+.vanuatu .event-first {
+  margin-left: auto;
+  font-size: 11px;
+}
+.vanuatu .event-list .round-divider {
+  background: var(--paper);
+}
