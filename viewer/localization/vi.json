@@ -859,5 +859,10 @@
   "Rest token chosen": "Đã chọn thẻ nghỉ ngơi",
   "Free": "Miễn phí",
   "Location": "Vị trí",
-  "Ship completed (+2 included)": "Tàu đã đầy (đã tính +2)"
+  "Ship completed (+2 included)": "Tàu đã đầy (đã tính +2)",
+  "Buy one good from an island beside your boat and send it straight to the first ship that needs it. Pay vatus; gain prosperity. No hut or cargo space is needed.": "Mua một hàng hóa từ hòn đảo cạnh thuyền của bạn và chuyển thẳng đến con tàu đầu tiên cần nó. Trả vatu để nhận thịnh vượng. Không cần túp lều hay chỗ trong khoang hàng.",
+  "Sell fish beside one of your huts {p0}: fish values × the market price. The price falls after each sale.": "Bán cá cạnh một túp lều của bạn {p0}: giá trị cá × giá thị trường. Giá giảm sau mỗi lần bán.",
+  "Completing a ship adds {p0} to the good's reward.": "Lấp đầy một tàu được thêm {p0} ngoài phần thưởng của hàng hóa.",
+  "Vatus paid: {p0}. Prosperity gained: {p1}.": "Vatu đã trả: {p0}. Thịnh vượng nhận được: {p1}.",
+  "Includes {p0} prosperity for completing ships.": "Bao gồm {p0} thịnh vượng từ việc lấp đầy tàu."
 }

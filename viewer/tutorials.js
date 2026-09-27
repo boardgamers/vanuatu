@@ -1,5 +1,5 @@
 import { LESSON } from "./tutorial-copy.js";
-import { FIRST_HELP } from "./learning.js";
+import { FIRST_HELP, EXPORT_RULE } from "./learning.js";
 import {
   EXTEND_TITLE,
   EXTEND_WHO,
@@ -27,7 +27,7 @@ export const chapterMetadata = [
     title: "An island economy",
     description: "Build a hut, draw in the sand and welcome a tourist.",
   },
-  { id: "trade", version: 2, title: "Trade", description: LESSON.tradeStart },
+  { id: "trade", version: 3, title: "Trade", description: LESSON.tradeStart },
   { id: "rest", version: 1, title: "Rest", description: LESSON.restStart },
   { id: "expansion", version: 2, title: EXTEND_TITLE, description: EXTEND_WHO },
   {
@@ -328,7 +328,7 @@ export const chapters = {
   trade: {
     game: "vanuatu",
     id: "trade",
-    version: 2,
+    version: 3,
     initialState: () => {
       const s = prepared();
       s.players[0].boat = "0,1";
@@ -365,6 +365,7 @@ export const chapters = {
         validateMove: (s, m) =>
           m.type === "treasure" ? undefined : LESSON.sellTreasure,
       },
+      { id: "buy-and-ship", title: "Export", text: EXPORT_RULE },
       { id: "compare", title: "Export", text: LESSON.tradeCompare },
       {
         id: "export",

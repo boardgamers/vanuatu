@@ -859,5 +859,10 @@
   "Rest token chosen": "Jeton Repos choisi",
   "Free": "Gratuit",
   "Location": "Emplacement",
-  "Ship completed (+2 included)": "Bateau complété (+2 inclus)"
+  "Ship completed (+2 included)": "Bateau complété (+2 inclus)",
+  "Buy one good from an island beside your boat and send it straight to the first ship that needs it. Pay vatus; gain prosperity. No hut or cargo space is needed.": "Achetez une marchandise sur une île voisine de votre bateau et livrez-la directement au premier navire qui en a besoin. Payez en vatus ; gagnez de la prospérité. Aucune cabane ni place en cale n’est nécessaire.",
+  "Sell fish beside one of your huts {p0}: fish values × the market price. The price falls after each sale.": "Vendez du poisson près d’une de vos cabanes {p0} : valeur des poissons × cours du marché. Le cours baisse après chaque vente.",
+  "Completing a ship adds {p0} to the good's reward.": "Compléter un navire ajoute {p0} au gain de la marchandise.",
+  "Vatus paid: {p0}. Prosperity gained: {p1}.": "Vatus payés : {p0}. Prospérité gagnée : {p1}.",
+  "Includes {p0} prosperity for completing ships.": "Dont {p0} de prospérité pour les navires complétés."
 }

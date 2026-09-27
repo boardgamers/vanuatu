@@ -859,5 +859,10 @@
   "Rest token chosen": "Hvilebrik valgt",
   "Free": "Gratis",
   "Location": "Placering",
-  "Ship completed (+2 included)": "Skib fyldt (+2 inkluderet)"
+  "Ship completed (+2 included)": "Skib fyldt (+2 inkluderet)",
+  "Buy one good from an island beside your boat and send it straight to the first ship that needs it. Pay vatus; gain prosperity. No hut or cargo space is needed.": "Køb en vare fra en ø ved siden af din båd, og send den direkte til det første skib, der mangler den. Betal vatu, og få velstand. Du behøver hverken en hytte eller plads i lasten.",
+  "Sell fish beside one of your huts {p0}: fish values × the market price. The price falls after each sale.": "Sælg fisk ved siden af en af dine hytter {p0}: fiskenes værdi × markedsprisen. Prisen falder efter hvert salg.",
+  "Completing a ship adds {p0} to the good's reward.": "Når et skib fyldes, får du {p0} ud over varens belønning.",
+  "Vatus paid: {p0}. Prosperity gained: {p1}.": "Betalte vatu: {p0}. Optjent velstand: {p1}.",
+  "Includes {p0} prosperity for completing ships.": "Inklusive {p0} velstand for at fylde skibe."
 }

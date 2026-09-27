@@ -859,5 +859,10 @@
   "Rest token chosen": "휴식 토큰 선택",
   "Free": "무료",
   "Location": "위치",
-  "Ship completed (+2 included)": "배 완성 (+2 포함)"
+  "Ship completed (+2 included)": "배 완성 (+2 포함)",
+  "Buy one good from an island beside your boat and send it straight to the first ship that needs it. Pay vatus; gain prosperity. No hut or cargo space is needed.": "자신의 배에 인접한 섬에서 상품 하나를 사서 그 상품이 필요한 첫 번째 무역선으로 바로 보냅니다. 바투를 지불하고 번영을 얻습니다. 오두막이나 화물칸은 필요하지 않습니다.",
+  "Sell fish beside one of your huts {p0}: fish values × the market price. The price falls after each sale.": "자신의 오두막 {p0} 옆에서 물고기를 팝니다: 물고기 가치 × 시장 가격. 판매할 때마다 가격이 내려갑니다.",
+  "Completing a ship adds {p0} to the good's reward.": "무역선을 가득 채우면 상품 보상에 {p0}을 추가로 받습니다.",
+  "Vatus paid: {p0}. Prosperity gained: {p1}.": "지불한 바투: {p0}. 얻은 번영: {p1}.",
+  "Includes {p0} prosperity for completing ships.": "무역선을 가득 채운 보상으로 받은 번영 {p0}이 포함됩니다."
 }

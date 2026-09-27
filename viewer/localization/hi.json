@@ -859,5 +859,10 @@
   "Rest token chosen": "विश्राम टोकन चुना",
   "Free": "मुफ़्त",
   "Location": "स्थान",
-  "Ship completed (+2 included)": "जहाज़ पूरा हुआ (+2 शामिल)"
+  "Ship completed (+2 included)": "जहाज़ पूरा हुआ (+2 शामिल)",
+  "Buy one good from an island beside your boat and send it straight to the first ship that needs it. Pay vatus; gain prosperity. No hut or cargo space is needed.": "अपनी नाव के पास के द्वीप से एक वस्तु खरीदें और उसे सीधे उस पहले जहाज़ पर भेजें जिसे उसकी ज़रूरत है। वातु चुकाएँ और समृद्धि पाएँ। झोपड़ी या माल रखने की जगह की ज़रूरत नहीं है।",
+  "Sell fish beside one of your huts {p0}: fish values × the market price. The price falls after each sale.": "अपनी किसी झोपड़ी {p0} के पास मछली बेचें: मछलियों का मूल्य × बाज़ार का भाव। हर बिक्री के बाद भाव घटता है।",
+  "Completing a ship adds {p0} to the good's reward.": "जहाज़ पूरा भरने पर वस्तु के पुरस्कार के अलावा {p0} मिलता है।",
+  "Vatus paid: {p0}. Prosperity gained: {p1}.": "चुकाए गए वातु: {p0}। मिली समृद्धि: {p1}।",
+  "Includes {p0} prosperity for completing ships.": "इसमें जहाज़ पूरे भरने के लिए {p0} समृद्धि शामिल है।"
 }

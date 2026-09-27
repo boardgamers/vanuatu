@@ -859,5 +859,10 @@
   "Rest token chosen": "Επιλέχθηκε πλακίδιο ανάπαυσης",
   "Free": "Δωρεάν",
   "Location": "Θέση",
-  "Ship completed (+2 included)": "Πλοίο ολοκληρώθηκε (περιλαμβάνει +2)"
+  "Ship completed (+2 included)": "Πλοίο ολοκληρώθηκε (περιλαμβάνει +2)",
+  "Buy one good from an island beside your boat and send it straight to the first ship that needs it. Pay vatus; gain prosperity. No hut or cargo space is needed.": "Αγόρασε ένα αγαθό από ένα νησί δίπλα στο σκάφος σου και στείλε το απευθείας στο πρώτο πλοίο που το χρειάζεται. Πληρώνεις βατού και κερδίζεις ευημερία. Δεν χρειάζεσαι καλύβα ή χώρο στο αμπάρι.",
+  "Sell fish beside one of your huts {p0}: fish values × the market price. The price falls after each sale.": "Πούλησε ψάρια δίπλα σε μία από τις καλύβες σου {p0}: αξία ψαριών × τιμή αγοράς. Η τιμή πέφτει μετά από κάθε πώληση.",
+  "Completing a ship adds {p0} to the good's reward.": "Η συμπλήρωση ενός πλοίου προσθέτει {p0} στην ανταμοιβή του αγαθού.",
+  "Vatus paid: {p0}. Prosperity gained: {p1}.": "Βατού που πληρώθηκαν: {p0}. Ευημερία που κερδήθηκε: {p1}.",
+  "Includes {p0} prosperity for completing ships.": "Περιλαμβάνει {p0} ευημερία για τη συμπλήρωση πλοίων."
 }

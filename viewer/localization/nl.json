@@ -859,5 +859,10 @@
   "Rest token chosen": "Rustfiche gekozen",
   "Free": "Gratis",
   "Location": "Locatie",
-  "Ship completed (+2 included)": "Schip voltooid (+2 inbegrepen)"
+  "Ship completed (+2 included)": "Schip voltooid (+2 inbegrepen)",
+  "Buy one good from an island beside your boat and send it straight to the first ship that needs it. Pay vatus; gain prosperity. No hut or cargo space is needed.": "Koop één goed van een eiland naast je boot en stuur het rechtstreeks naar het eerste schip dat het nodig heeft. Betaal vatu en ontvang welvaart. Je hebt geen hut of ruimte in je laadruim nodig.",
+  "Sell fish beside one of your huts {p0}: fish values × the market price. The price falls after each sale.": "Verkoop vis naast een van je hutten {p0}: viswaarde × marktprijs. De prijs daalt na elke verkoop.",
+  "Completing a ship adds {p0} to the good's reward.": "Een schip vullen levert {p0} extra op bovenop de beloning voor het goed.",
+  "Vatus paid: {p0}. Prosperity gained: {p1}.": "Betaalde vatu: {p0}. Verdiende welvaart: {p1}.",
+  "Includes {p0} prosperity for completing ships.": "Inclusief {p0} welvaart voor het vullen van schepen."
 }

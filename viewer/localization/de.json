@@ -859,5 +859,10 @@
   "Rest token chosen": "Ruheplättchen gewählt",
   "Free": "Kostenlos",
   "Location": "Ort",
-  "Ship completed (+2 included)": "Schiff vollständig (+2 enthalten)"
+  "Ship completed (+2 included)": "Schiff vollständig (+2 enthalten)",
+  "Buy one good from an island beside your boat and send it straight to the first ship that needs it. Pay vatus; gain prosperity. No hut or cargo space is needed.": "Kaufe eine Ware von einer Insel neben deinem Boot und liefere sie direkt an das erste Schiff, das sie benötigt. Zahle Vatu und erhalte Wohlstand. Du brauchst weder eine Hütte noch Platz im Laderaum.",
+  "Sell fish beside one of your huts {p0}: fish values × the market price. The price falls after each sale.": "Verkaufe Fisch neben einer deiner Hütten {p0}: Fischwerte × Marktpreis. Der Preis sinkt nach jedem Verkauf.",
+  "Completing a ship adds {p0} to the good's reward.": "Ein vollständig beladenes Schiff bringt zusätzlich {p0} zum Ertrag der Ware.",
+  "Vatus paid: {p0}. Prosperity gained: {p1}.": "Gezahlte Vatu: {p0}. Gewonnener Wohlstand: {p1}.",
+  "Includes {p0} prosperity for completing ships.": "Enthält {p0} Wohlstand für vollständig beladene Schiffe."
 }

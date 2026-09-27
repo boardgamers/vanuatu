@@ -859,5 +859,10 @@
   "Rest token chosen": "Выбран жетон отдыха",
   "Free": "Бесплатно",
   "Location": "Место",
-  "Ship completed (+2 included)": "Корабль заполнен (+2 учтены)"
+  "Ship completed (+2 included)": "Корабль заполнен (+2 учтены)",
+  "Buy one good from an island beside your boat and send it straight to the first ship that needs it. Pay vatus; gain prosperity. No hut or cargo space is needed.": "Купите один товар на острове рядом с вашей лодкой и сразу отправьте его на первый корабль, которому он нужен. Платите вату и получайте процветание. Ни хижина, ни место в трюме не нужны.",
+  "Sell fish beside one of your huts {p0}: fish values × the market price. The price falls after each sale.": "Продайте рыбу рядом с одной из своих хижин {p0}: ценность рыбы × рыночная цена. После каждой продажи цена падает.",
+  "Completing a ship adds {p0} to the good's reward.": "Полная загрузка корабля добавляет {p0} к награде за товар.",
+  "Vatus paid: {p0}. Prosperity gained: {p1}.": "Уплачено вату: {p0}. Получено процветания: {p1}.",
+  "Includes {p0} prosperity for completing ships.": "Включает {p0} процветания за полную загрузку кораблей."
 }

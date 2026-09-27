@@ -859,5 +859,10 @@
   "Rest token chosen": "Ficha de descanso escolhida",
   "Free": "Grátis",
   "Location": "Local",
-  "Ship completed (+2 included)": "Navio completo (+2 incluídos)"
+  "Ship completed (+2 included)": "Navio completo (+2 incluídos)",
+  "Buy one good from an island beside your boat and send it straight to the first ship that needs it. Pay vatus; gain prosperity. No hut or cargo space is needed.": "Compre uma mercadoria de uma ilha ao lado do seu barco e envie-a diretamente ao primeiro navio que precisa dela. Pague vatus e ganhe prosperidade. Não é preciso ter cabana nem espaço no porão.",
+  "Sell fish beside one of your huts {p0}: fish values × the market price. The price falls after each sale.": "Venda peixe ao lado de uma das suas cabanas {p0}: valor dos peixes × preço de mercado. O preço cai após cada venda.",
+  "Completing a ship adds {p0} to the good's reward.": "Completar um navio acrescenta {p0} à recompensa da mercadoria.",
+  "Vatus paid: {p0}. Prosperity gained: {p1}.": "Vatus pagos: {p0}. Prosperidade obtida: {p1}.",
+  "Includes {p0} prosperity for completing ships.": "Inclui {p0} de prosperidade por completar navios."
 }

@@ -859,5 +859,10 @@
   "Rest token chosen": "已選擇休息標記",
   "Free": "免費",
   "Location": "位置",
-  "Ship completed (+2 included)": "船隻 已裝滿（含 +2）"
+  "Ship completed (+2 included)": "船隻 已裝滿（含 +2）",
+  "Buy one good from an island beside your boat and send it straight to the first ship that needs it. Pay vatus; gain prosperity. No hut or cargo space is needed.": "從船隻相鄰的島嶼購買一件貨物，直接送到第一艘需要它的商船。支付瓦圖，獲得繁榮。不需要小屋或貨艙空間。",
+  "Sell fish beside one of your huts {p0}: fish values × the market price. The price falls after each sale.": "在自己的一間小屋 {p0} 旁出售魚：魚的價值 × 市價。每次出售後市價都會下降。",
+  "Completing a ship adds {p0} to the good's reward.": "裝滿一艘商船可在貨物獎勵之外額外獲得 {p0}。",
+  "Vatus paid: {p0}. Prosperity gained: {p1}.": "支付瓦圖：{p0}。獲得繁榮：{p1}。",
+  "Includes {p0} prosperity for completing ships.": "包含裝滿商船獲得的 {p0} 繁榮。"
 }

@@ -1,4 +1,5 @@
 import {
+  EXPORT_RULE,
   EXTEND_TITLE,
   EXTEND_RULE,
   ROUND_TITLE,
@@ -12,6 +13,7 @@ import {
   iconLabel,
   esc,
 } from "./art.js";
+import { PRICES, VALUES } from "../engine/catalog.js";
 import { translateText } from "./localization/index.js";
 export function rulesHtml(lang = "en", colorBlind = false) {
   const t = (text) => translateText(text, lang);
@@ -67,19 +69,26 @@ export function rulesHtml(lang = "en", colorBlind = false) {
       ),
     ],
     [
-      "Trade",
+      "Sell fish",
       message(
-        "Sell fish beside one of your huts {p0}: fish values × the market price. The price falls after each sale. Pay {p4} to export {p1} / {p2} / {p3}, earning {p5} when a ship needs them. Completing a ship earns {p6}.",
-        [
-          icon("build"),
-          icon("kava"),
-          icon("copra"),
-          icon("beef"),
-          token("coin", "1 / 2 / 3"),
-          token("point", "1 / 3 / 5"),
-          token("point", 2),
-        ],
+        "Sell fish beside one of your huts {p0}: fish values × the market price. The price falls after each sale.",
+        [icon("build")],
       ),
+    ],
+    [
+      "Export",
+      esc(t(EXPORT_RULE)) +
+        '<span class="export-prices" role="list">' +
+        Object.keys(PRICES)
+          .map(
+            (good) =>
+              `<span role="listitem"><strong>${icon(good)} ${esc(t({ kava: "Kava", copra: "Copra", beef: "Beef" }[good]))}</strong><span>${esc(t("Cost"))} ${token("coin", `−${PRICES[good]}`)} → ${token("point", `+${VALUES[good]}`)}</span></span>`,
+          )
+          .join("") +
+        "</span>" +
+        message("Completing a ship adds {p0} to the good's reward.", [
+          token("point", "+2"),
+        ]),
     ],
     [
       "Develop the islands",
@@ -163,7 +172,8 @@ export function rulesHtml(lang = "en", colorBlind = false) {
     "Five markers, up to five actions": "marker",
     "Retrieve markers": "undo",
     "Be in the right place": "sail",
-    Trade: "sell",
+    "Sell fish": "sell",
+    Export: "buy",
     "Develop the islands": "build",
     Rest: "rest",
     "Final scoring": "point",

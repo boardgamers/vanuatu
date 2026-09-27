@@ -9,6 +9,7 @@ import {
   PRICES,
   VALUES,
 } from "../engine/catalog.js";
+import { goodsAvailable } from "../engine/index.js";
 import { assets } from "./assets.js";
 import {
   icon as renderIcon,
@@ -159,18 +160,8 @@ export function mountGame(target, options = {}) {
     if (m.action === "build")
       return `${m.hut ? token("build", 1) : ""}${m.dike ? token("dike", 1) : ""} · ${token("coin", (m.hut ? (m.bonus ? 1 : 3) : 0) + (m.dike ? 1 : 0))}${m.dike ? ` <small>${coastArrow(m.cell, m.dike)}</small>` : ""}`;
     if (m.action === "buy") {
-      let gain = 0;
-      const ships = s.demands.map((d) => ({ ...d, filled: [...d.filled] }));
-      for (let n = 0; n < (m.bonus ? 2 : 1); n++) {
-        const d = ships.find((d) =>
-          d.goods.some((g, i) => g === m.good && !d.filled[i]),
-        );
-        if (!d) continue;
-        d.filled[d.goods.findIndex((g, i) => g === m.good && !d.filled[i])] =
-          true;
-        gain += VALUES[m.good] + (d.filled.every(Boolean) ? 2 : 0);
-      }
-      return `${token(m.good, m.bonus ? 2 : 1)} · ${token("coin", PRICES[m.good])} → ${token("point", gain)}`;
+      const { gain, count } = exportPreview(m);
+      return `${token(m.good, count)} · ${esc(translateText("Cost", lang))} ${token("coin", `−${PRICES[m.good]}`)} → ${token("point", `+${gain}`)}`;
     }
     if (m.action === "draw")
       return `${icon("draw")} → ${token("point", m.bonus ? 5 : 3)}`;
@@ -178,11 +169,42 @@ export function mountGame(target, options = {}) {
       return `${icon("tourist")} → ${token("coin", s.board[m.cell].huts.length)}${m.bonus ? " + " + token("point", s.board[m.cell].drawings * 2) : ""}`;
     return `${icon(m.action)} ${t(m.action)}`;
   }
+  function exportPreview(m) {
+    let gain = 0,
+      count = 0,
+      completed = 0;
+    const ships = s.demands.map((d) => ({ ...d, filled: [...d.filled] }));
+    const quantity = m.bonus && goodsAvailable(s, m.good) > 0 ? 2 : 1;
+    for (let n = 0; n < quantity; n++) {
+      const d = ships.find((d) =>
+        d.goods.some((g, i) => g === m.good && !d.filled[i]),
+      );
+      if (!d) break;
+      d.filled[d.goods.findIndex((g, i) => g === m.good && !d.filled[i])] =
+        true;
+      count++;
+      gain += VALUES[m.good] + (d.filled.every(Boolean) ? 2 : 0);
+      if (d.filled.every(Boolean)) completed++;
+    }
+    return { gain, count, completed };
+  }
+  function exportHelp(m) {
+    const { gain, completed } = exportPreview(m);
+    const help = translateText(
+      "Vatus paid: {p0}. Prosperity gained: {p1}.",
+      lang,
+    )
+      .replace("{p0}", PRICES[m.good])
+      .replace("{p1}", gain);
+    return `${translateText(iconLabel(m.good), lang)}. ${help}${completed ? " " + translateText("Includes {p0} prosperity for completing ships.", lang).replace("{p0}", completed * 2) : ""}`;
+  }
   function moveButton(m, primary = false) {
     const idx = (s.legal ?? []).indexOf(m);
+    const exportLabel =
+      m.action === "buy" && m.type === "act" ? exportHelp(m) : "";
     return btn(
       actionDetail(m),
-      `title="${esc(m.type === "discard" ? translateText("Retrieve without acting", lang) : m.action ? translateText(actionHelp[m.action], lang) : t(m.type === "plan" || m.type === "neutral" ? "plan" : m.type))}" data-move="${idx}" ${m.type === "discard" ? `aria-label="${esc(translateText("Retrieve without acting", lang))} — ${esc(translateText(t(m.action), lang))}"` : ""} ${pending ? "disabled" : ""}`,
+      `title="${esc(exportLabel || (m.type === "discard" ? translateText("Retrieve without acting", lang) : m.action ? translateText(actionHelp[m.action], lang) : t(m.type === "plan" || m.type === "neutral" ? "plan" : m.type)))}" ${exportLabel ? `aria-label="${esc(exportLabel)}"` : ""} data-move="${idx}" ${m.type === "discard" ? `aria-label="${esc(translateText("Retrieve without acting", lang))} — ${esc(translateText(t(m.action), lang))}"` : ""} ${pending ? "disabled" : ""}`,
       m.type === "discard"
         ? "move-option retrieve-warning"
         : primary

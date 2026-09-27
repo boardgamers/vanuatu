@@ -859,5 +859,10 @@
   "Rest token chosen": "نشان استراحت انتخاب شد",
   "Free": "رایگان",
   "Location": "مکان",
-  "Ship completed (+2 included)": "کشتی تکمیل شد (شامل ۲+ امتیاز)"
+  "Ship completed (+2 included)": "کشتی تکمیل شد (شامل ۲+ امتیاز)",
+  "Buy one good from an island beside your boat and send it straight to the first ship that needs it. Pay vatus; gain prosperity. No hut or cargo space is needed.": "یک کالا از جزیرهٔ کنار قایقتان بخرید و آن را مستقیماً به نخستین کشتی‌ای بفرستید که به آن نیاز دارد. واتو می‌پردازید و رفاه می‌گیرید. به کلبه یا فضای بار نیاز ندارید.",
+  "Sell fish beside one of your huts {p0}: fish values × the market price. The price falls after each sale.": "کنار یکی از کلبه‌هایتان {p0} ماهی بفروشید: ارزش ماهی‌ها × قیمت بازار. قیمت پس از هر فروش کاهش می‌یابد.",
+  "Completing a ship adds {p0} to the good's reward.": "پر کردن یک کشتی، {p0} به پاداش کالا اضافه می‌کند.",
+  "Vatus paid: {p0}. Prosperity gained: {p1}.": "واتوی پرداخت‌شده: {p0}. رفاه به‌دست‌آمده: {p1}.",
+  "Includes {p0} prosperity for completing ships.": "شامل {p0} رفاه بابت پر کردن کشتی‌هاست."
 }

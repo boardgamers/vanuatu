@@ -859,5 +859,10 @@
   "Rest token chosen": "Wybrano żeton odpoczynku",
   "Free": "Za darmo",
   "Location": "Miejsce",
-  "Ship completed (+2 included)": "Statek zapełniony (+2 wliczone)"
+  "Ship completed (+2 included)": "Statek zapełniony (+2 wliczone)",
+  "Buy one good from an island beside your boat and send it straight to the first ship that needs it. Pay vatus; gain prosperity. No hut or cargo space is needed.": "Kup jeden towar z wyspy obok swojej łodzi i dostarcz go bezpośrednio na pierwszy statek, który go potrzebuje. Płacisz vatu, zyskujesz dobrobyt. Nie potrzebujesz chaty ani miejsca w ładowni.",
+  "Sell fish beside one of your huts {p0}: fish values × the market price. The price falls after each sale.": "Sprzedaj ryby obok jednej ze swoich chat {p0}: wartość ryb × cena rynkowa. Cena spada po każdej sprzedaży.",
+  "Completing a ship adds {p0} to the good's reward.": "Zapełnienie statku dodaje {p0} do nagrody za towar.",
+  "Vatus paid: {p0}. Prosperity gained: {p1}.": "Zapłacone vatu: {p0}. Zdobyty dobrobyt: {p1}.",
+  "Includes {p0} prosperity for completing ships.": "W tym {p0} dobrobytu za zapełnienie statków."
 }

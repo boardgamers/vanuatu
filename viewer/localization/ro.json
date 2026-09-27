@@ -859,5 +859,10 @@
   "Rest token chosen": "Jeton de odihnă ales",
   "Free": "Gratuit",
   "Location": "Loc",
-  "Ship completed (+2 included)": "Nava completată (+2 incluse)"
+  "Ship completed (+2 included)": "Nava completată (+2 incluse)",
+  "Buy one good from an island beside your boat and send it straight to the first ship that needs it. Pay vatus; gain prosperity. No hut or cargo space is needed.": "Cumpără o marfă de pe o insulă de lângă barca ta și trimite-o direct primei nave care are nevoie de ea. Plătești vatu; câștigi prosperitate. Nu ai nevoie de colibă sau de loc în cală.",
+  "Sell fish beside one of your huts {p0}: fish values × the market price. The price falls after each sale.": "Vinde pește lângă una dintre colibele tale {p0}: valoarea peștilor × prețul pieței. Prețul scade după fiecare vânzare.",
+  "Completing a ship adds {p0} to the good's reward.": "Completarea unei nave adaugă {p0} la recompensa mărfii.",
+  "Vatus paid: {p0}. Prosperity gained: {p1}.": "Vatu plătiți: {p0}. Prosperitate câștigată: {p1}.",
+  "Includes {p0} prosperity for completing ships.": "Include {p0} prosperitate pentru completarea navelor."
 }

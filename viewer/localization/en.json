@@ -859,5 +859,10 @@
   "Rest token chosen": "Rest token chosen",
   "Free": "Free",
   "Location": "Location",
-  "Ship completed (+2 included)": "Ship completed (+2 included)"
+  "Ship completed (+2 included)": "Ship completed (+2 included)",
+  "Buy one good from an island beside your boat and send it straight to the first ship that needs it. Pay vatus; gain prosperity. No hut or cargo space is needed.": "Buy one good from an island beside your boat and send it straight to the first ship that needs it. Pay vatus; gain prosperity. No hut or cargo space is needed.",
+  "Sell fish beside one of your huts {p0}: fish values × the market price. The price falls after each sale.": "Sell fish beside one of your huts {p0}: fish values × the market price. The price falls after each sale.",
+  "Completing a ship adds {p0} to the good's reward.": "Completing a ship adds {p0} to the good's reward.",
+  "Vatus paid: {p0}. Prosperity gained: {p1}.": "Vatus paid: {p0}. Prosperity gained: {p1}.",
+  "Includes {p0} prosperity for completing ships.": "Includes {p0} prosperity for completing ships."
 }
