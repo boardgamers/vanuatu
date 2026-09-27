@@ -75,6 +75,13 @@ function capture(s) {
   return frame;
 }
 function saveFrame(s) {
+  if (s._analysisPublicDraws) {
+    s._analysisPublicDraws = {
+      tourists: [...s._touristDeck].sort((a, b) => a - b),
+      unseen: s._demandDeck.map((d) => d.id).sort((a, b) => a - b),
+      discarded: s._demandDiscards.map((d) => d.id).sort((a, b) => a - b),
+    };
+  }
   s._frames.push(capture(s));
 }
 export function init(count, expansions = [], options = {}, seed = "vanuatu") {
@@ -1054,6 +1061,104 @@ export function replay(s, { to = logLength(s) } = {}) {
 export function createAnalysis(s, { to }) {
   const r = replay(s, { to });
   r.players.forEach((p) => (p.dropped = false));
+  return r;
+}
+export function createAnalysisScenario(s, { player, seed }) {
+  const r = publicFrame(capture(s), player, false);
+  delete r.restAvailable;
+  delete r.lastEvents;
+  r.events = [];
+  r._seed = String(seed);
+  r._rng = 0;
+  r._history = [];
+  r._frames = [];
+  r._setup = {
+    count: r.players.length,
+    expansions: [],
+    options: copy(r.options),
+    seed: String(seed),
+  };
+  const visibleTiles = new Set([
+    ...Object.values(r.board).map((t) => t.id),
+    ...r.upcoming,
+  ]);
+  const halves = [[], []];
+  for (const letter of ["a", "b", "c", "d", "e", "f"]) {
+    const pair = shuffle(r, [`${letter}1`, `${letter}2`]);
+    const known = pair.find((id) => visibleTiles.has(id));
+    if (known) {
+      halves[1].push(...pair.filter((id) => !visibleTiles.has(id)));
+    } else {
+      halves[0].push(pair[0]);
+      halves[1].push(pair[1]);
+    }
+  }
+  r._tileDeck = halves.flat();
+  const tourists = [0, 1, 1, 2, 2, 2, 3, 3, 4];
+  tourists.splice(
+    tourists.indexOf(
+      r.players.length <= 3 ? 4 : r.players.length === 4 ? 2 : 0,
+    ),
+    1,
+  );
+  const rounds = new Set();
+  for (const frame of s._frames) {
+    if (rounds.has(frame.round)) continue;
+    rounds.add(frame.round);
+    const i = tourists.indexOf(frame.tourists);
+    if (i >= 0) tourists.splice(i, 1);
+  }
+  r._touristDeck = shuffle(
+    r,
+    s._analysisPublicDraws?.tourists
+      ? copy(s._analysisPublicDraws.tourists)
+      : tourists,
+  );
+  const demand = (id) => ({
+    id,
+    goods: copy(DEMANDS[id - 1]),
+    filled: DEMANDS[id - 1].map(() => false),
+  });
+  let unseen = new Set(DEMANDS.map((_, i) => i + 1));
+  let discarded = new Set();
+  let previous = [];
+  for (const frame of s._frames) {
+    const ids = frame.demands.map((d) => d.id);
+    for (const id of previous) if (!ids.includes(id)) discarded.add(id);
+    for (const id of ids) {
+      if (previous.includes(id)) continue;
+      if (!unseen.size) {
+        unseen = discarded;
+        discarded = new Set();
+      }
+      unseen.delete(id);
+    }
+    previous = ids;
+  }
+  if (s._analysisPublicDraws) {
+    unseen = new Set(s._analysisPublicDraws.unseen);
+    discarded = new Set(s._analysisPublicDraws.discarded);
+  }
+  r._demandDeck = shuffle(r, [...unseen].sort((a, b) => a - b).map(demand));
+  r._demandDiscards = [...discarded].sort((a, b) => a - b).map(demand);
+  r._analysisPublicDraws = {
+    tourists: [...r._touristDeck].sort((a, b) => a - b),
+    unseen: [...unseen].sort((a, b) => a - b),
+    discarded: [...discarded].sort((a, b) => a - b),
+  };
+  const knownRest = r.players[player]?.rest;
+  const visibleAvailable =
+    s.phase === "rest" && s.actor === player ? [...s._restAvailable] : null;
+  const pool = shuffle(
+    r,
+    REST.filter((t) => t !== knownRest && !visibleAvailable?.includes(t)),
+  );
+  for (const p of r.players) {
+    p.dropped = false;
+    if (p.rest === "hidden") p.rest = pool.pop();
+  }
+  r._restAvailable = visibleAvailable ?? pool;
+  saveFrame(r);
   return r;
 }
 function chooseAI(s, p) {
