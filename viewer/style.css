@@ -247,13 +247,13 @@
   box-shadow: inset 3px 0 #ae793f;
 }
 .vanuatu .action-dock .retrieve-only {
-  background: #eeece1;
-  box-shadow: inset 3px 0 #8c9890;
+  background: #fff0d8;
+  box-shadow: inset 3px 0 #ad5d16;
 }
 .vanuatu .retrieve-only-icon .icon {
-  width: 14px;
-  height: 14px;
-  color: #697e74;
+  width: 17px;
+  height: 17px;
+  color: #ad5d16;
 }
 .vanuatu .action-dock .chosen {
   background: #f5d99f;
@@ -310,7 +310,7 @@
   position: relative;
   width: 100%;
   overflow: auto;
-  overscroll-behavior: contain;
+  overscroll-behavior: auto;
   scrollbar-width: thin;
   min-height: 490px;
   height: min(69vh, 740px);
@@ -991,7 +991,7 @@
   padding: 12px 20px;
   height: 100%;
   overflow: auto;
-  overscroll-behavior: contain;
+  overscroll-behavior: auto;
   scrollbar-width: thin;
   list-style: none;
 }
@@ -1047,7 +1047,7 @@
   flex: 1;
   max-height: none;
   min-height: 0;
-  overscroll-behavior: contain;
+  overscroll-behavior: auto;
 }
 .vanuatu .chat-panel input {
   background: #fffdf5;
@@ -1249,7 +1249,7 @@ body:has(.vanuatu) {
     box-shadow: inset 0 3px #ae793f;
   }
   .vanuatu .action-dock .retrieve-only {
-    box-shadow: inset 0 3px #8c9890;
+    box-shadow: inset 0 3px #ad5d16;
   }
   .vanuatu .action-dock .chosen {
     box-shadow:
@@ -1547,4 +1547,81 @@ body:has(.vanuatu) {
   .vanuatu-tutorial button {
     min-height: 40px;
   }
+}
+
+.vanuatu .expand-help {
+  flex-basis: 100%;
+  margin: 4px 0;
+  font-size: 12px;
+  line-height: 1.45;
+}
+.vanuatu .expand-help summary {
+  cursor: pointer;
+  padding: 6px 0;
+}
+.vanuatu .retrieval-help {
+  flex-basis: 100%;
+  margin: 4px 0;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.vanuatu .event-list .round-divider {
+  margin-top: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line);
+  border-top: 1px solid var(--line);
+}
+.vanuatu .event-character {
+  width: 32px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+.vanuatu .event-tile {
+  width: 82px;
+  display: inline-flex;
+}
+.vanuatu .event-tile svg {
+  width: 100%;
+  height: 72px;
+}
+.vanuatu .event-explanation {
+  flex-basis: 100%;
+  font-size: 11px;
+  line-height: 1.4;
+}
+.vanuatu .event-list li {
+  flex-wrap: wrap;
+}
+
+.vanuatu .retrieve-warning {
+  background: #fff0d8;
+  border: 2px solid #ad5d16;
+  color: #743d0d;
+  font-weight: 700;
+}
+.vanuatu .retrieve-warning:hover:not(:disabled) {
+  background: #ffe0ac;
+}
+.vanuatu .retrieval-tray {
+  border-left: 4px solid #ad5d16;
+}
+.vanuatu .retrieval-tray .tray-title {
+  color: #743d0d;
+}
+
+.vanuatu .rest-bonuses {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+.vanuatu .rest-bonuses > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #f0eddd;
 }

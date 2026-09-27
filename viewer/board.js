@@ -93,14 +93,16 @@ export function boardSvg(
     )
     .join("");
   let svg = `<svg class="${preview ? "tile-art" : "archipelago"}${overview ? " overview" : ""}" viewBox="${x0} ${y0} ${x1 - x0} ${y1 - y0}" role="group" aria-label="${preview ? esc(t(s.board["0,0"].type === "island" ? "island" : "sea")) : "Vanuatu"}"><defs>${defs}<filter id="${prefix}-boat-shadow" x="-25%" y="-25%" width="150%" height="150%"><feDropShadow dx="0" dy="0" stdDeviation=".9" flood-color="#fff9df" flood-opacity="1"/><feDropShadow dx="0" dy="2" stdDeviation="1.5" flood-opacity=".45"/></filter></defs>`;
+  let dikes = "";
   for (const c of all) {
-    const tile = s.board[c.id],
-      legal = targetSet.has(c.id),
+    const legal = targetSet.has(c.id),
+      ghost = !s.board[c.id] && !!hoverTile && legal,
+      tile = s.board[c.id] ?? (ghost ? tileState(hoverTile) : null),
       spec = tile ? TILES[tile.id] : null;
-    svg += `<g class="map-cell ${tile ? "occupied" : ""} ${legal ? "legal" : ""} ${selected === c.id ? "selected" : ""}" ${preview ? "" : `data-cell="${c.id}"`} ${legal ? `role="button" tabindex="0" aria-label="${esc(t(tile?.type === "island" ? "island" : "sea"))} ${c.id}"` : ""}>`;
+    svg += `<g class="map-cell ${s.board[c.id] ? "occupied" : ""} ${ghost ? "placement-preview" : ""} ${legal ? "legal" : ""} ${selected === c.id ? "selected" : ""}" ${preview ? "" : `data-cell="${c.id}"`} ${legal ? `role="button" tabindex="0" aria-label="${esc(t(tile?.type === "island" ? "island" : "sea"))} ${c.id}"` : ""}>`;
     svg += `<title>${esc(tile ? `${t(tile.type === "island" ? "island" : "sea")} · ${c.id}${tile.submerged ? ` · ${"Submerged"}` : ""}` : "Tile space")}</title><path class="cell-surface" d="${tilePath(c.x, c.y)}"/>`;
     if (tile) {
-      svg += tileImage(spec, c, false, prefix);
+      svg += tileImage(spec, c, ghost, prefix);
       if (tile.submerged) {
         svg += `<path d="${tilePath(c.x, c.y)}" fill="#1c708ca6"/>${svgIcon("water", c.x - 25, c.y - 25, 50)}`;
       } else if (tile.type === "sea") {
@@ -163,9 +165,10 @@ export function boardSvg(
           },
           {
             kind: "draw",
-            value: preview
-              ? `${tile.drawings}/${spec.drawings}`
-              : tile.drawings,
+            value:
+              preview || ghost
+                ? `${tile.drawings}/${spec.drawings}`
+                : tile.drawings,
             help: `${label("draw")}: ${tile.drawings}/${spec.drawings}`,
           },
         ]);
@@ -178,11 +181,10 @@ export function boardSvg(
           const mx = c.x + dx * 0.48,
             my = c.y + dy * 0.48,
             l = Math.hypot(dx, dy);
-          svg += `<g><title>${esc(label("dike"))}</title><line x1="${mx - (dy / l) * 22}" y1="${my + (dx / l) * 22}" x2="${mx + (dy / l) * 22}" y2="${my - (dx / l) * 22}" stroke="#654429" stroke-width="9" stroke-linecap="round"/><line x1="${mx - (dy / l) * 22}" y1="${my + (dx / l) * 22}" x2="${mx + (dy / l) * 22}" y2="${my - (dx / l) * 22}" stroke="#d1aa67" stroke-width="5" stroke-linecap="round"/></g>`;
+          dikes += `<g><title>${esc(label("dike"))}</title><line x1="${mx - (dy / l) * 22}" y1="${my + (dx / l) * 22}" x2="${mx + (dy / l) * 22}" y2="${my - (dx / l) * 22}" stroke="#654429" stroke-width="9" stroke-linecap="round"/><line x1="${mx - (dy / l) * 22}" y1="${my + (dx / l) * 22}" x2="${mx + (dy / l) * 22}" y2="${my - (dx / l) * 22}" stroke="#d1aa67" stroke-width="5" stroke-linecap="round"/></g>`;
         }
       }
-    } else if (hoverTile && legal)
-      svg += tileImage(TILES[hoverTile], c, true, prefix);
+    }
     if (!tile)
       svg += `<text x="${c.x}" y="${c.y + 7}" class="empty-label">${legal ? "+" : "·"}</text>`;
     svg += `<path class="cell-ring" d="${tilePath(c.x, c.y)}"/>`;
@@ -206,12 +208,15 @@ export function boardSvg(
           `<path class="cell-highlight ${targetSet.has(c.id) ? "legal" : ""} ${selected === c.id ? "selected" : ""}" data-highlight-cell="${c.id}" d="${tilePath(c.x, c.y)}"/>`,
       )
       .join("")}</g>`;
-  return svg + "</svg>";
+  // Coastal pieces must be painted after both neighbouring tiles and outlines.
+  return (
+    svg + `<g class="board-dikes" pointer-events="none">${dikes}</g></svg>`
+  );
 }
 
 export function tilePreviewSvg(id, options) {
   return boardSvg(
     { boardLayout: 2, board: { "0,0": tileState(id) }, players: [] },
-    { ...options, preview: true, prefix: `preview-${id}` },
+    { ...options, preview: true, prefix: options?.prefix ?? `preview-${id}` },
   );
 }

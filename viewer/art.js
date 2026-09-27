@@ -7,6 +7,8 @@ export const esc = (x) =>
       ],
   );
 const paths = {
+  warning:
+    '<path d="M16 3 31 29H1Z" fill="currentColor" stroke="#754817" stroke-width="1.5" stroke-linejoin="round"/><path d="M16 10v10" stroke="#fff9df" stroke-width="3" stroke-linecap="round"/><circle cx="16" cy="24.5" r="1.6" fill="#fff9df"/>',
   sail: '<path d="M12 3Q24 6 28 19L12 21Z" fill="currentColor" stroke="#244e53" stroke-width=".8"/><path d="M11 2v21M11 5v14" fill="none" stroke="#244e53" stroke-width="1.4"/><path d="m3 24 27-5-7 10H10Z" fill="currentColor" stroke="#244e53" stroke-width=".8"/><path d="m5 24 23-4" fill="none" stroke="#fff5d5" stroke-width="1.2"/>',
   fish: '<path d="M4 16C10 4 21 5 26 12l5-5v18l-5-5C18 28 10 27 4 16Z" fill="#df83a4" stroke="#a6426a"/><circle cx="10" cy="14" r="1.5" fill="#713847"/>',
   sell: '<path d="M3 10h26l-2 17H5z" fill="#d3a163" stroke="#754627"/><path d="M8 5h16l4 6H4z" fill="#f4bc65"/><path d="M8 16h16M8 21h16" stroke="#805938"/>',

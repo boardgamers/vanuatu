@@ -50,7 +50,7 @@ try {
         },
       });
     });
-    await page.waitForFunction(() => window.progress?.total === 9);
+    await page.waitForFunction(() => window.progress?.total === 10);
     const seen = new Set();
     for (let i = 0; i < 70; i++) {
       const progress = await page.evaluate(() => window.progress);
@@ -60,6 +60,10 @@ try {
         '.bgs-tutorial-playback button[title="Continue"]',
       );
       if ((await next.count()) && (await next.isEnabled())) await next.click();
+      else if (await page.locator("dialog[open] [data-move]").count())
+        await page.locator("dialog[open] [data-move]").first().click();
+      else if (await page.locator(".character-choice").count())
+        await page.locator(".character-choice").first().click();
       else {
         const move = page
           .locator(".turn-tray [data-move]:not(:disabled)")
@@ -76,7 +80,7 @@ try {
       await page.waitForTimeout(40);
     }
     assert.equal(await page.evaluate(() => window.progress.completed), true);
-    assert.equal(seen.size, 10);
+    assert.equal(seen.size, 11);
     assert.equal(
       await page.evaluate(
         () => document.documentElement.scrollWidth <= innerWidth,
@@ -168,6 +172,8 @@ try {
     await launch();
     assert.equal(await page.locator(".fish-price b").innerText(), "3");
     for (const action of ["sail", "fish", "sell"]) {
+      const next = page.locator(".bgs-tutorial-playback button").nth(3);
+      if (await next.isEnabled()) await next.click();
       await page.locator(`[data-action="${action}"]`).click();
       if (action === "sail")
         await page.locator('.map-cell[data-cell="1,0"]').click();
@@ -216,6 +222,11 @@ try {
       removeItem: (key) => saved.delete(key),
     },
   });
+  await lesson.play(
+    availableMoves(lesson.snapshot.state, 0).find(
+      (m) => m.type === "character" && m.character === "builder",
+    ),
+  );
   await lesson.continue();
   for (const actions of [["sail", "buy"], ["fish", "draw"], ["build"]]) {
     const move = availableMoves(lesson.snapshot.state, 0).find(
@@ -275,7 +286,7 @@ try {
   );
   await page.close();
   console.log(
-    "Nine tutorial steps, completion controls, mobile/desktop layout, French/Dutch locale forwarding, fishing price and restored progress, and white-resource export passed.",
+    "Ten planning steps, completion controls, mobile/desktop layout, French/Dutch locale forwarding, fishing price and restored progress, and white-resource export passed.",
   );
 } finally {
   await browser.close();

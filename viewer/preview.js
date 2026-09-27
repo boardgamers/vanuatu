@@ -1,3 +1,4 @@
+import { chapterMetadata } from "./tutorials.js";
 import { mountLocalization } from "./localization/index.js";
 import { mountLesson } from "./tutorial-mount.js";
 import "./style.css";
@@ -9,7 +10,7 @@ const localization = mountLocalization(
   params.get("locale") ?? "en",
 );
 if (params.has("lesson")) {
-  const names = ["planning", "fishing", "islands"];
+  const names = chapterMetadata.map((chapter) => chapter.id);
   const chapter = params.get("lesson");
   const next = names[names.indexOf(chapter) + 1];
   await mountLesson(document.querySelector("#game"), {
@@ -17,9 +18,10 @@ if (params.has("lesson")) {
     chapter,
     nextChapter: next
       ? {
-          title: next,
+          title: chapterMetadata.find((chapter) => chapter.id === next).title,
           open: () => {
-            location.search = "?lesson=" + next;
+            location.search =
+              "?lesson=" + next + "&locale=" + (params.get("locale") ?? "en");
           },
         }
       : undefined,

@@ -224,7 +224,7 @@
   "Exporter des marchandises": "Eksportuj towary",
   "Exporter gratuitement un second cube identique de la réserve.": "Wyeksportuj za darmo drugi identyczny sześcian z rezerwy.",
   "Extend at the start of rounds 2–7, before choosing characters. The next pair is a preview for the following round. There are no tiles to place in round 8.": "Rozbuduj archipelag na początku rund 2–7, przed wyborem postaci. Kolejna para zapowiada następną rundę. W rundzie 8 nie układa się kafelków.",
-  "Extend the archipelago": "Powiększ archipelag",
+  "Extend the archipelago": "Rozbudowa archipelagu",
   "Faire du commerce": "Handluj",
   "Fermer": "Zamknij",
   "Fin de partie": "Koniec gry",
@@ -850,7 +850,5 @@
   "épuisé": "wyczerpany",
   "— next catch on this tile": "— następny połów na tym kafelku",
   "— prochaine prise sur cette tuile": "— prochaine prise sur cette tuile",
-  "🏝️ Vanuatu": "🏝️ Vanuatu",
-  "A hut {p0} costs {p1}. A drawing {p2} earns {p3}. Transporting a tourist {p4} earns {p5} for every hut on that island, of any colour. Rest {p6} lets you choose a secret bonus, resolved at the end of the round.": "Chata {p0} kosztuje {p1}. Rysunek {p2} daje {p3}. Przewiezienie turysty {p4} daje {p5} za każdą chatę na tej wyspie, dowolnego koloru. Odpoczynek {p6} pozwala wybrać tajny bonus, rozpatrywany na koniec rundy.",
-  "On even rounds, the die gives the number of actions before flooding. Every adjacent ocean coast without a dike adds 1 water. Build a dike {p0} for {p1} with the Build action. At 5 waters an island sinks; if 3 islands sink, everyone loses. Each hut on an island with 1 / 2 / 3 / 4 waters loses 1 / 3 / 5 / 7 prosperity at game end.": "W parzystych rundach kość wskazuje liczbę akcji przed powodzią. Każde sąsiadujące wybrzeże oceanu bez wału dodaje 1 wodę. Zbuduj wał {p0} za {p1} akcją Budowy. Przy 5 wodach wyspa tonie; jeśli zatoną 3 wyspy, wszyscy przegrywają. Każda chata na wyspie z 1 / 2 / 3 / 4 wodami traci 1 / 3 / 5 / 7 dobrobytu na koniec gry."
+  "🏝️ Vanuatu": "🏝️ Vanuatu"
 }

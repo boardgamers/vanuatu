@@ -1,3 +1,6 @@
+import { blockingHtml, blockingText } from "./blocking.js";
+import { FIRST_HELP, RETRIEVE_HELP } from "./learning.js";
+import { EXTEND_WHO, EXTEND_HOW, REMAINING_TILES } from "./learning.js";
 import morphdom from "morphdom";
 import {
   ACTIONS,
@@ -18,7 +21,11 @@ import { translator, characterHelp } from "./labels.js";
 import { mountActivity } from "./activity.js";
 import { rulesHtml } from "./rules.js";
 import { createMoveSound } from "./sound.js";
-import { languages, resolveLocale } from "./localization/index.js";
+import {
+  languages,
+  resolveLocale,
+  translateText,
+} from "./localization/index.js";
 const total = (a) => a.reduce((a, b) => a + b, 0);
 const unique = (a) => [...new Set(a)];
 function coastArrow(cell, edge) {
@@ -27,6 +34,20 @@ function coastArrow(cell, edge) {
     angle = (Math.atan2(b.y - a.y, b.x - a.x) * 180) / Math.PI;
   return `<svg class="icon" viewBox="0 0 32 32" role="img" aria-label="Coast"><path d="M6 16h20m-8-8 8 8-8 8" fill="none" stroke="currentColor" stroke-width="2.5" transform="rotate(${angle} 16 16)"/></svg>`;
 }
+const actionHelp = {
+  sail: "Sail 1–3 ocean spaces, paying 1 vatu per space.",
+  fish: "Take a fish tile from your ocean space. Its value equals the fish remaining there.",
+  explore:
+    "Take a treasure tile from your ocean space. Treasures can be sold for vatus or kept for final scoring.",
+  sell: "Sell fish beside one of your huts at the current market price. The price then falls by 1.",
+  build:
+    "Build a hut on an adjacent island for 3 vatus. Each hut scores 2 prosperity per tourist at game end.",
+  buy: "Export a good from an adjacent island to a ship that needs it. Pay 1/2/3 vatus for kava/copra/beef and earn 1/3/5 prosperity.",
+  draw: "Make a sand drawing on an adjacent island to earn 3 prosperity.",
+  tourist:
+    "Bring a tourist to an adjacent island and earn 1 vatu for every hut there, of any colour.",
+  rest: "Choose a rest token. Its bonus is resolved at the end of the round.",
+};
 const symbols = ["●", "◆", "▲", "■", "✦"];
 export function mountGame(target, options = {}) {
   const root = document.createElement("div");
@@ -120,7 +141,7 @@ export function mountGame(target, options = {}) {
     if (m.type === "plan" || m.type === "neutral")
       return m.actions.map((a) => icon(a)).join("");
     if (m.type === "discard")
-      return `${icon("undo")} ${"Retrieve without acting"} ${icon(m.action)}`;
+      return `${icon("warning", "Retrieve without acting")} ${icon(m.action)}`;
     if (m.type === "rest") return restContent(m.token);
     if (m.type === "governor") return `${icon(m.from)} → ${icon(m.to)}`;
     if (m.type === "treasure")
@@ -161,8 +182,12 @@ export function mountGame(target, options = {}) {
     const idx = (s.legal ?? []).indexOf(m);
     return btn(
       actionDetail(m),
-      `data-move="${idx}" ${pending ? "disabled" : ""}`,
-      primary ? "primary move-option" : "move-option",
+      `title="${esc(m.type === "discard" ? translateText("Retrieve without acting", lang) : m.action ? translateText(actionHelp[m.action], lang) : t(m.type === "plan" || m.type === "neutral" ? "plan" : m.type))}" data-move="${idx}" ${m.type === "discard" ? `aria-label="${esc(translateText("Retrieve without acting", lang))} — ${esc(translateText(t(m.action), lang))}"` : ""} ${pending ? "disabled" : ""}`,
+      m.type === "discard"
+        ? "move-option retrieve-warning"
+        : primary
+          ? "primary move-option"
+          : "move-option",
     );
   }
   function restContent(key) {
@@ -174,7 +199,7 @@ export function mountGame(target, options = {}) {
   }
   function playerCard(p, i) {
     const c = CHARACTERS[p.character];
-    return `<section class="player-card ${i === s.actor && !s.finished ? "active" : ""} ${i === player ? "own" : ""}" style="--player:${p.color}"><div class="player-name">${btn(`${avatars[i] ? `<img class="player-avatar" src="${esc(avatars[i])}" alt="">` : ""}<span>${colorBlind ? symbols[i] + " " : ""}${esc(p.name)}</span>`, `data-bgs-player="${i}"`, "profile")} ${s.first === i ? icon("first", t("first")) : ""}<strong class="score">${token("point", p.score)}</strong></div><div class="player-supplies">${token("coin", p.money)}<span class="hand" title="${t("fishStock")}">${p.fish.length ? p.fish.map((n) => token("fish", n)).join("") : token("fish", 0)}</span><span class="hand" title="${t("treasure")}">${p.treasures.length ? p.treasures.map((n) => token("explore", n)).join("") : token("explore", 0)}</span>${token("build", p.hutsLeft)}</div>${c ? `<button type="button" class="character-owned ${p.used ? "used" : ""}" data-character="${p.character}"><img src="${assets["character-" + c.art]}" alt=""><span>${charName(p.character)}</span>${p.used ? icon("check") : icon(c.action ?? "point")}</button>` : ""}${i === player ? `<div class="free-actions">${legal().some((m) => m.type === "treasure") ? btn(`${icon("explore")} → ${icon("coin")}`, `data-free="treasure" title="${t("treasure")}"`) : ""}${legal().some((m) => m.type === "beg") ? btn(`${icon("point")} → ${icon("coin")}`, `data-free="beg" title="${t("beg")}"`) : ""}</div>` : ""}</section>`;
+    return `<section class="player-card ${i === s.actor && !s.finished ? "active" : ""} ${i === player ? "own" : ""}" style="--player:${p.color}"><div class="player-name">${btn(`${avatars[i] ? `<img class="player-avatar" src="${esc(avatars[i])}" alt="">` : ""}<span>${colorBlind ? symbols[i] + " " : ""}${esc(p.name)}</span>`, `data-bgs-player="${i}"`, "profile")} ${s.first === i ? btn(icon("first", translateText(FIRST_HELP, lang)), `data-first-help aria-label="${t("first")}"`, "icon-button") : ""}<strong class="score">${token("point", p.score)}</strong></div><div class="player-supplies">${token("coin", p.money)}<span class="hand" title="${t("fishStock")}">${p.fish.length ? p.fish.map((n) => token("fish", n)).join("") : token("fish", 0)}</span><span class="hand" title="${t("treasure")}">${p.treasures.length ? p.treasures.map((n) => token("explore", n)).join("") : token("explore", 0)}</span>${token("build", p.hutsLeft)}</div>${c ? `<button type="button" class="character-owned ${p.used ? "used" : ""}" data-character="${p.character}"><img src="${assets["character-" + c.art]}" alt=""><span>${charName(p.character)}</span>${p.used ? icon("check") : icon(c.action ?? "point")}</button>` : ""}${i === player ? `<div class="free-actions">${legal().some((m) => m.type === "treasure") ? btn(`${icon("explore")} → ${icon("coin")}`, `data-free="treasure" title="${t("treasure")}"`) : ""}${legal().some((m) => m.type === "beg") ? btn(`${icon("point")} → ${icon("coin")}`, `data-free="beg" title="${t("beg")}"`) : ""}</div>` : ""}</section>`;
   }
   function dock() {
     const planning = ["plan", "neutral"].includes(s.phase) && working().length;
@@ -205,21 +230,25 @@ export function mountGame(target, options = {}) {
           working().some((m) => m.type === "discard" && m.action === a) &&
           !working().some((m) => m.type === "act" && m.action === a);
         const explain =
-          planning &&
-          s.phase === "plan" &&
-          !allowed &&
-          draft.length < (s.planningPass === 2 ? 1 : 2);
-        const hint = explain
-          ? ({
-              fish: "Fishing requires fish on your boat's space. Plan Sail first if needed.",
-              explore:
-                "Exploring requires treasure on your boat's space. Plan Sail first if needed.",
-              sell: own()?.fish.length
-                ? undefined
-                : "Selling requires fish. Plan Fish first if your hold is empty.",
-            }[a] ??
-            "This action is not possible with your current resources and planned actions. Plan its prerequisites first.")
-          : "";
+          (s.phase === "actions" && own()?.markers[a] > 0 && !allowed) ||
+          (planning &&
+            s.phase === "plan" &&
+            !allowed &&
+            draft.length < (s.planningPass === 2 ? 1 : 2));
+        const hint =
+          explain && s.phase === "actions"
+            ? blockingText(s, player, a, lang)
+            : explain
+              ? ({
+                  fish: "Fishing requires fish on your boat's space. Plan Sail first if needed.",
+                  explore:
+                    "Exploring requires treasure on your boat's space. Plan Sail first if needed.",
+                  sell: own()?.fish.length
+                    ? undefined
+                    : "Selling requires fish. Plan Fish first if your hold is empty.",
+                }[a] ??
+                "This action is not possible with your current resources and planned actions. Plan its prerequisites first.")
+              : "";
         const stacks = s.players
           .map((p, i) =>
             p.markers[a]
@@ -228,8 +257,8 @@ export function mountGame(target, options = {}) {
           )
           .join("");
         return btn(
-          `<span class="action-symbol">${icon(a)}</span><span class="action-content"><span class="action-label">${t(a)}</span><span class="action-stacks">${stacks}${retrieveOnly ? `<span class="retrieve-only-icon">${icon("undo", "Retrieve without acting")}</span>` : ""}${s.neutral[a] ? `<span class="marker-stack neutral" title="${"Neutral markers"}">${s.neutral[a]}</span>` : ""}${countDraft ? `<span class="draft-marker" title="${"Markers being placed"}">+${countDraft}</span>` : ""}</span></span>`,
-          `data-action="${a}" ${retrieveOnly ? `title="${"Retrieve without acting"}"` : ""} ${allowed ? "" : explain ? `aria-disabled="true" data-unavailable="${esc(hint)}" title="${esc(hint)}"` : "disabled"} aria-pressed="${action === a}"`,
+          `<span class="action-symbol">${icon(a)}</span><span class="action-content"><span class="action-label">${t(a)}</span><span class="action-stacks">${stacks}${retrieveOnly ? `<span class="retrieve-only-icon">${icon("warning", "Retrieve without acting")}</span>` : ""}${s.neutral[a] ? `<span class="marker-stack neutral" title="${"Neutral markers"}">${s.neutral[a]}</span>` : ""}${countDraft ? `<span class="draft-marker" title="${"Markers being placed"}">+${countDraft}</span>` : ""}</span></span>`,
+          `data-action="${a}" title="${esc(translateText(actionHelp[a], lang) + (retrieveOnly ? "\n" + translateText("Retrieve without acting", lang) + "\n" + blockingText(s, player, a, lang) : hint ? "\n" + translateText(hint, lang) : ""))}" ${allowed ? "" : explain ? `aria-disabled="true" data-unavailable="${esc(hint)}"` : "disabled"} aria-pressed="${action === a}"`,
           `${action === a ? "chosen" : ""} ${allowed ? "available" : ""} ${retrieveOnly ? "retrieve-only" : ""}`,
         );
       },
@@ -270,7 +299,7 @@ export function mountGame(target, options = {}) {
       const m = moves.find(
         (m) => m.type === "place" && m.tile === tile && m.cell === selected,
       );
-      return `<div class="turn-tray"><div class="tray-title">${t("expand")}</div><div class="tile-choices">${tileChoices.map((id) => btn(`<img src="${assets[TILES[id].art]}" alt="${TILES[id].type === "island" ? t("island") : t("sea")}">`, `data-tile="${id}" aria-pressed="${tile === id}"`)).join("")}</div>${m ? moveButton(m, true) : ""}</div>`;
+      return `<div class="turn-tray"><div class="tray-title">${t("expand")} <small>${esc(translateText(REMAINING_TILES, lang))}: ${s.upcoming.length}</small></div><details class="expand-help"><summary>${t("help")}</summary><p>${esc(t(EXTEND_WHO))}</p><p>${esc(t(EXTEND_HOW))}</p></details><div class="tile-choices">${tileChoices.map((id) => btn(`<img src="${assets[TILES[id].art]}" alt="${TILES[id].type === "island" ? t("island") : t("sea")}">`, `data-tile="${id}" aria-pressed="${tile === id}"`)).join("")}</div>${m ? moveButton(m, true) : ""}</div>`;
     }
     if (s.phase === "rest")
       return `<div class="turn-tray"><strong>${t("restChoice")}</strong>${moves
@@ -303,7 +332,7 @@ export function mountGame(target, options = {}) {
         : targets.length && !selected
           ? `${icon("sail")} ${"Choose a space"}`
           : "";
-    return `<div class="turn-tray"><div class="tray-title">${selectedAction ? `${icon(action)} ${t(action)}` : t("actions")}</div>${hasBonus && hasNormal ? `<label class="bonus-switch" title="${charHelp(own()?.character)}"><input type="checkbox" data-bonus ${bonus ? "checked" : ""}>${charName(own()?.character)}</label>` : ""}<span class="pick-hint">${pickText}</span><div class="move-options">${opts.map((m) => moveButton(m, true)).join("")}${discard ? moveButton(discard) : ""}</div>${governor ? btn(`${icon("marker")} ↔`, `data-governor title="${t("governor")}"`) : ""}${selectedAction ? titled(t("cancel"), icon("close"), "data-cancel", "icon-button") : ""}</div>`;
+    return `<div class="turn-tray ${discard ? "retrieval-tray" : ""}"><div class="tray-title">${selectedAction ? `${icon(action)} ${t(action)}` : t("actions")}</div>${discard ? `<p class="retrieval-help">${blockingHtml(s, player, action, lang)}<br>${esc(translateText(RETRIEVE_HELP, lang))}</p>` : !selectedAction && moves.some((m) => m.type === "discard") ? `<p class="retrieval-help">${esc(translateText(RETRIEVE_HELP, lang))}</p>` : ""}${hasBonus && hasNormal ? `<label class="bonus-switch" title="${charHelp(own()?.character)}"><input type="checkbox" data-bonus ${bonus ? "checked" : ""}>${charName(own()?.character)}</label>` : ""}<span class="pick-hint">${pickText}</span><div class="move-options">${opts.map((m) => moveButton(m, true)).join("")}${discard ? moveButton(discard) : ""}</div>${governor ? btn(`${icon("marker")} ↔`, `data-governor title="${t("governor")}"`) : ""}${selectedAction ? titled(t("cancel"), icon("close"), "data-cancel", "icon-button") : ""}</div>`;
   }
   function tradeShips() {
     const help = `Foreign trade\n${colorBlind ? "K: kava · C: copra · B: beef." : "Green: kava · White: copra · Red: beef."}\nEach export fills the first ship (1 → 3) still needing that good. ✓ = already delivered.\nCompleting a ship adds 2 prosperity points.`;
@@ -473,12 +502,29 @@ export function mountGame(target, options = {}) {
         );
         return;
       }
+      if ("firstHelp" in d) {
+        showDialog(
+          `<h2>${t("first")}</h2><p>${esc(translateText(FIRST_HELP, lang))}</p>`,
+        );
+        return;
+      }
       if ("unavailable" in d) {
         showDialog(`<h2>${t(d.action)}</h2><p>${esc(d.unavailable)}</p>`);
         return;
       }
       if ("move" in d) {
-        send(s.legal[Number(d.move)]);
+        const move = s.legal[Number(d.move)];
+        if (
+          move?.type === "discard" &&
+          !("confirmedRetrieval" in d) &&
+          legal().some((m) => m.type !== "discard")
+        ) {
+          showDialog(
+            `<h2>${icon("warning", "Retrieve without acting")} ${esc(translateText("Retrieve without acting", lang))} — ${esc(translateText(t(move.action), lang))}</h2><p>${esc(translateText("You can still take another action. Retrieve this stack without acting?", lang))}</p><div class="move-options">${btn(t("cancel"), "data-close")}${btn(icon("warning", "Retrieve without acting") + " " + t("confirm"), `data-move="${d.move}" data-confirmed-retrieval`, "retrieve-warning")}</div>`,
+          );
+          return;
+        }
+        send(move);
         return;
       }
       if ("bgsPlayer" in d) {
@@ -593,7 +639,7 @@ export function mountGame(target, options = {}) {
       }
       if ("help" in d) {
         showDialog(
-          `<h2>${t("help")}</h2><div class="preferences"><label><input type="checkbox" data-pref="colorBlind" ${colorBlind ? "checked" : ""}>${t("colorBlind")}</label><label><input type="checkbox" data-pref="sound" ${sound ? "checked" : ""}>${t("sound")}</label>${
+          `<h2>${t("help")}</h2><div class="preferences"><label><input type="checkbox" data-pref="sound" ${sound ? "checked" : ""}>${t("sound")}</label>${
             hostedLocale
               ? ""
               : `<select data-language aria-label="Language">${Object.entries(

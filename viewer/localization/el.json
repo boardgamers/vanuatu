@@ -224,7 +224,7 @@
   "Exporter des marchandises": "Εξαγωγή αγαθών",
   "Exporter gratuitement un second cube identique de la réserve.": "Εξήγαγε δωρεάν έναν δεύτερο ίδιο κύβο από το απόθεμα.",
   "Extend at the start of rounds 2–7, before choosing characters. The next pair is a preview for the following round. There are no tiles to place in round 8.": "Επέκτεινε στην αρχή των γύρων 2–7, πριν επιλέξετε χαρακτήρες. Το επόμενο ζευγάρι προορίζεται για τον επόμενο γύρο. Στον γύρο 8 δεν τοποθετούνται πλακίδια.",
-  "Extend the archipelago": "Επέκτεινε το αρχιπέλαγος",
+  "Extend the archipelago": "Επέκταση του αρχιπελάγους",
   "Faire du commerce": "Εμπόριο",
   "Fermer": "Κλείσιμο",
   "Fin de partie": "Τέλος παιχνιδιού",
@@ -850,7 +850,5 @@
   "épuisé": "εξαντλημένο",
   "— next catch on this tile": "— επόμενη ψαριά σε αυτό το πλακίδιο",
   "— prochaine prise sur cette tuile": "— επόμενη ψαριά σε αυτό το πλακίδιο",
-  "🏝️ Vanuatu": "🏝️ Vanuatu",
-  "A hut {p0} costs {p1}. A drawing {p2} earns {p3}. Transporting a tourist {p4} earns {p5} for every hut on that island, of any colour. Rest {p6} lets you choose a secret bonus, resolved at the end of the round.": "Μια καλύβα {p0} κοστίζει {p1}. Ένα σχέδιο {p2} κερδίζει {p3}. Η μεταφορά ενός τουρίστα {p4} κερδίζει {p5} για κάθε καλύβα σε αυτό το νησί, οποιουδήποτε χρώματος. Η ανάπαυση {p6} σου επιτρέπει να επιλέξεις ένα μυστικό μπόνους, που επιλύεται στο τέλος του γύρου.",
-  "On even rounds, the die gives the number of actions before flooding. Every adjacent ocean coast without a dike adds 1 water. Build a dike {p0} for {p1} with the Build action. At 5 waters an island sinks; if 3 islands sink, everyone loses. Each hut on an island with 1 / 2 / 3 / 4 waters loses 1 / 3 / 5 / 7 prosperity at game end.": "Σε ζυγούς γύρους, το ζάρι δίνει τον αριθμό των ενεργειών πριν την πλημμύρα. Κάθε γειτονική ωκεάνια ακτή χωρίς ανάχωμα προσθέτει 1 νερό. Χτίσε ένα ανάχωμα {p0} για {p1} με την ενέργεια Χτίσιμο. Στα 5 νερά ένα νησί βυθίζεται· αν βυθιστούν 3 νησιά, όλοι χάνουν. Κάθε καλύβα σε νησί με 1 / 2 / 3 / 4 νερά χάνει 1 / 3 / 5 / 7 ευημερία στο τέλος του παιχνιδιού."
+  "🏝️ Vanuatu": "🏝️ Vanuatu"
 }

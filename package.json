@@ -1,6 +1,6 @@
 {
   "name": "@boardgamers/vanuatu",
-  "version": "0.1.2",
+  "version": "0.1.4",
   "private": true,
   "type": "module",
   "main": "dist/engine.js",
@@ -14,7 +14,7 @@
     "test:browser": "node test/browser.mjs",
     "check": "pnpm test:locales && pnpm build && pnpm test && pnpm test:browser && pnpm test:tutorial:browser",
     "test:locales": "node scripts/check-locales.mjs viewer/localization && node --test scripts/localization.test.mjs",
-    "test:tutorial:browser": "node test/tutorial-browser.mjs"
+    "test:tutorial:browser": "node test/tutorial-browser.mjs && node test/tutorial-walkthrough-browser.mjs"
   },
   "dependencies": {
     "@boardgamers/protocol": "0.6.1",

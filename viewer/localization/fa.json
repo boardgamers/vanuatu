@@ -850,7 +850,5 @@
   "épuisé": "تمام شده",
   "— next catch on this tile": "؛ صید بعدی در این کاشی",
   "— prochaine prise sur cette tuile": "؛ صید بعدی در این کاشی",
-  "🏝️ Vanuatu": "🏝️ Vanuatu",
-  "A hut {p0} costs {p1}. A drawing {p2} earns {p3}. Transporting a tourist {p4} earns {p5} for every hut on that island, of any colour. Rest {p6} lets you choose a secret bonus, resolved at the end of the round.": "یک کلبه {p0} هزینهٔ {p1} دارد. یک نقاشی {p2} مقدار {p3} می‌دهد. آوردن گردشگر {p4} به‌ازای هر کلبه در آن جزیره، با هر رنگی، {p5} می‌دهد. استراحت {p6} به شما اجازه می‌دهد یک پاداش پنهان انتخاب کنید که در پایان دور اعمال می‌شود.",
-  "On even rounds, the die gives the number of actions before flooding. Every adjacent ocean coast without a dike adds 1 water. Build a dike {p0} for {p1} with the Build action. At 5 waters an island sinks; if 3 islands sink, everyone loses. Each hut on an island with 1 / 2 / 3 / 4 waters loses 1 / 3 / 5 / 7 prosperity at game end.": "در دورهای زوج، تاس تعداد اقدام‌های باقی‌مانده تا بالا آمدن آب را تعیین می‌کند. هر ساحل مجاور اقیانوس که سیل‌بند ندارد، ۱ آب اضافه می‌کند. با اقدام ساخت، یک سیل‌بند {p0} با هزینهٔ {p1} بسازید. با ۵ آب، جزیره غرق می‌شود؛ اگر ۳ جزیره غرق شوند، همه می‌بازند. هر کلبه در جزیره‌ای با ۱ / ۲ / ۳ / ۴ آب، در پایان بازی ۱ / ۳ / ۵ / ۷ شکوفایی از دست می‌دهد."
+  "🏝️ Vanuatu": "🏝️ Vanuatu"
 }

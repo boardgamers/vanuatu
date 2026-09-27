@@ -224,7 +224,7 @@
   "Exporter des marchandises": "Exportar mercadorias",
   "Exporter gratuitement un second cube identique de la réserve.": "Exportar gratuitamente um segundo cubo idêntico da reserva.",
   "Extend at the start of rounds 2–7, before choosing characters. The next pair is a preview for the following round. There are no tiles to place in round 8.": "Expanda no início das rodadas 2–7, antes de escolher personagens. O próximo par é uma prévia da rodada seguinte. Não há peças para colocar na rodada 8.",
-  "Extend the archipelago": "Estender o arquipélago",
+  "Extend the archipelago": "Expandir o arquipélago",
   "Faire du commerce": "Comerciar",
   "Fermer": "Fechar",
   "Fin de partie": "Fim de jogo",
@@ -850,7 +850,5 @@
   "épuisé": "esgotado",
   "— next catch on this tile": "— próxima captura neste tile",
   "— prochaine prise sur cette tuile": "— próxima pesca nesta peça",
-  "🏝️ Vanuatu": "🏝️ Vanuatu",
-  "A hut {p0} costs {p1}. A drawing {p2} earns {p3}. Transporting a tourist {p4} earns {p5} for every hut on that island, of any colour. Rest {p6} lets you choose a secret bonus, resolved at the end of the round.": "Uma cabana {p0} custa {p1}. Um desenho {p2} rende {p3}. Transportar um turista {p4} rende {p5} por cada cabana naquela ilha, de qualquer cor. Descansar {p6} permite escolher um bônus secreto, resolvido no fim da rodada.",
-  "On even rounds, the die gives the number of actions before flooding. Every adjacent ocean coast without a dike adds 1 water. Build a dike {p0} for {p1} with the Build action. At 5 waters an island sinks; if 3 islands sink, everyone loses. Each hut on an island with 1 / 2 / 3 / 4 waters loses 1 / 3 / 5 / 7 prosperity at game end.": "Em rodadas pares, o dado determina o número de ações antes da inundação. Cada costa oceânica adjacente sem dique adiciona 1 água. Construa um dique {p0} por {p1} com a ação Construir. Com 5 águas uma ilha afunda; se 3 ilhas afundarem, todos perdem. Cada cabana em uma ilha com 1 / 2 / 3 / 4 águas perde 1 / 3 / 5 / 7 de prosperidade no fim do jogo."
+  "🏝️ Vanuatu": "🏝️ Vanuatu"
 }

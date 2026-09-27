@@ -850,7 +850,5 @@
   "épuisé": "uitgeput",
   "— next catch on this tile": "— volgende vangst op deze tegel",
   "— prochaine prise sur cette tuile": "— volgende vangst op deze tegel",
-  "🏝️ Vanuatu": "🏝️ Vanuatu",
-  "A hut {p0} costs {p1}. A drawing {p2} earns {p3}. Transporting a tourist {p4} earns {p5} for every hut on that island, of any colour. Rest {p6} lets you choose a secret bonus, resolved at the end of the round.": "Een hut {p0} kost {p1}. Een tekening {p2} levert {p3} op. Een toerist vervoeren {p4} levert {p5} op voor elke hut op dat eiland, ongeacht de kleur. Rusten {p6} laat je een geheime bonus kiezen, afgehandeld aan het einde van de ronde.",
-  "On even rounds, the die gives the number of actions before flooding. Every adjacent ocean coast without a dike adds 1 water. Build a dike {p0} for {p1} with the Build action. At 5 waters an island sinks; if 3 islands sink, everyone loses. Each hut on an island with 1 / 2 / 3 / 4 waters loses 1 / 3 / 5 / 7 prosperity at game end.": "Op even rondes geeft de dobbelsteen het aantal acties vóór de overstroming. Elke aangrenzende oceaankust zonder dijk voegt 1 water toe. Bouw een dijk {p0} voor {p1} met de actie Bouwen. Bij 5 water zinkt een eiland; als 3 eilanden zinken, verliest iedereen. Elke hut op een eiland met 1 / 2 / 3 / 4 water verliest 1 / 3 / 5 / 7 welvaart aan het einde van het spel."
+  "🏝️ Vanuatu": "🏝️ Vanuatu"
 }

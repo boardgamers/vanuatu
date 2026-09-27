@@ -224,7 +224,7 @@
   "Exporter des marchandises": "Esportare merci",
   "Exporter gratuitement un second cube identique de la réserve.": "Esporta gratuitamente un secondo cubo identico dalla riserva.",
   "Extend at the start of rounds 2–7, before choosing characters. The next pair is a preview for the following round. There are no tiles to place in round 8.": "Espandi all’inizio dei round 2–7, prima di scegliere i personaggi. La coppia successiva anticipa il prossimo round. Nel round 8 non si piazzano tessere.",
-  "Extend the archipelago": "Estendi l'arcipelago",
+  "Extend the archipelago": "Espandere l’arcipelago",
   "Faire du commerce": "Commerciare",
   "Fermer": "Chiudi",
   "Fin de partie": "Fine partita",
@@ -850,7 +850,5 @@
   "épuisé": "esaurito",
   "— next catch on this tile": "— prossima pesca su questa tessera",
   "— prochaine prise sur cette tuile": "— prossima pesca su questa tessera",
-  "🏝️ Vanuatu": "🏝️ Vanuatu",
-  "A hut {p0} costs {p1}. A drawing {p2} earns {p3}. Transporting a tourist {p4} earns {p5} for every hut on that island, of any colour. Rest {p6} lets you choose a secret bonus, resolved at the end of the round.": "Una capanna {p0} costa {p1}. Un disegno {p2} guadagna {p3}. Trasportare un turista {p4} guadagna {p5} per ogni capanna su quell'isola, di qualsiasi colore. Riposare {p6} ti permette di scegliere un bonus segreto, risolto alla fine del round.",
-  "On even rounds, the die gives the number of actions before flooding. Every adjacent ocean coast without a dike adds 1 water. Build a dike {p0} for {p1} with the Build action. At 5 waters an island sinks; if 3 islands sink, everyone loses. Each hut on an island with 1 / 2 / 3 / 4 waters loses 1 / 3 / 5 / 7 prosperity at game end.": "Nei round pari, il dado indica il numero di azioni prima dell'inondazione. Ogni costa oceanica adiacente senza diga aggiunge 1 acqua. Costruisci una diga {p0} per {p1} con l'azione Costruisci. A 5 acque un'isola affonda; se affondano 3 isole, tutti perdono. Ogni capanna su un'isola con 1 / 2 / 3 / 4 acque perde 1 / 3 / 5 / 7 prosperità a fine partita."
+  "🏝️ Vanuatu": "🏝️ Vanuatu"
 }

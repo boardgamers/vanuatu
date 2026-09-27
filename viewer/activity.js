@@ -1,3 +1,7 @@
+import { assets } from "./assets.js";
+import { tilePreviewSvg } from "./board.js";
+import { blockingHtml } from "./blocking.js";
+import { translateText } from "./localization/index.js";
 import { mountChat } from "@boardgamers/protocol/chat/dom";
 import { icon as renderIcon, token as renderToken, esc } from "./art.js";
 import { translator } from "./labels.js";
@@ -115,7 +119,7 @@ export function mountActivity(
       case "neutral":
         return `${actor} ${e.actions.map((a) => icon(a)).join("")}${e.type === "neutral" ? ` <span class="neutral-key">●</span>` : ""}`;
       case "character":
-        return `${actor} <span>${esc(CHARACTERS[e.character]?.["name"] ?? e.character)}</span>`;
+        return `${actor} <img class="event-character" src="${assets["character-" + CHARACTERS[e.character]?.art]}" alt=""><span>${esc(translateText(CHARACTERS[e.character]?.name ?? e.character, lang))}</span>`;
       case "conversion":
         return `${actor} ${token("coin", e.points * 2)} → ${token("point", e.points)}`;
       case "treasure":
@@ -129,7 +133,7 @@ export function mountActivity(
       case "beg":
         return `${actor} ${token("point", e.amount)} → ${token("coin", e.amount)}`;
       case "discard":
-        return `${actor} ${icon("undo")} ${icon(e.action)}`;
+        return `${actor} ${renderIcon("warning", translateText("Retrieve without acting", lang))} ${icon(e.action)}${e.markers ? ` ×${e.markers}` : ""}${e.blockers ? `<span class="event-explanation">${blockingHtml(state, e.p, e.action, lang, e.blockers)}</span>` : ""}`;
       case "governor":
         return `${actor} ${icon(e.from)} → ${icon(e.to)}`;
       case "rest":
@@ -139,7 +143,7 @@ export function mountActivity(
       case "round":
         return `<b>${t("round")} ${e.round}/8</b>`;
       case "place":
-        return `${actor} ${t("expand")}`;
+        return `${actor} <span class="event-tile" role="img" aria-label="${esc(t("expand") + " " + e.cell)}">${tilePreviewSvg(e.tile, { colorBlind, t, language: lang, prefix: "event-" + e.cell })}</span><span class="event-coordinate">${esc(e.cell)}</span>`;
       case "flood":
         return `${icon("water")} ${t("water")}`;
       case "end":
@@ -159,7 +163,10 @@ export function mountActivity(
     list.innerHTML = (state.events ?? state.lastEvents ?? [])
       .map((e) => ({ e, html: eventHtml(e) }))
       .filter((x) => x.html)
-      .map(({ e, html }) => `<li><small>${e.round}</small>${html}</li>`)
+      .map(
+        ({ e, html }) =>
+          `<li class="${e.type === "round" ? "round-divider" : ""}">${html}</li>`,
+      )
       .join("");
     if (following)
       requestAnimationFrame(() => (list.scrollTop = list.scrollHeight));

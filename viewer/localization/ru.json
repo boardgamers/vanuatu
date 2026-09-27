@@ -224,7 +224,7 @@
   "Exporter des marchandises": "Экспортировать товары",
   "Exporter gratuitement un second cube identique de la réserve.": "Бесплатно экспортируйте второй такой же куб из резерва.",
   "Extend at the start of rounds 2–7, before choosing characters. The next pair is a preview for the following round. There are no tiles to place in round 8.": "Расширяйте архипелаг в начале раундов 2–7, до выбора персонажей. Следующая пара предназначена для будущего раунда. В раунде 8 плитки не размещаются.",
-  "Extend the archipelago": "Расширить архипелаг",
+  "Extend the archipelago": "Расширение архипелага",
   "Faire du commerce": "Торговать",
   "Fermer": "Закрыть",
   "Fin de partie": "Конец партии",
@@ -850,7 +850,5 @@
   "épuisé": "исчерпано",
   "— next catch on this tile": "— следующий улов на этом тайле",
   "— prochaine prise sur cette tuile": "— следующий улов на этой клетке",
-  "🏝️ Vanuatu": "🏝️ Вануату",
-  "A hut {p0} costs {p1}. A drawing {p2} earns {p3}. Transporting a tourist {p4} earns {p5} for every hut on that island, of any colour. Rest {p6} lets you choose a secret bonus, resolved at the end of the round.": "Хижина {p0} стоит {p1}. Рисунок {p2} приносит {p3}. Перевозка туриста {p4} приносит {p5} за каждую хижину на этом острове, любого цвета. Отдых {p6} позволяет выбрать секретный бонус, который разыгрывается в конце раунда.",
-  "On even rounds, the die gives the number of actions before flooding. Every adjacent ocean coast without a dike adds 1 water. Build a dike {p0} for {p1} with the Build action. At 5 waters an island sinks; if 3 islands sink, everyone loses. Each hut on an island with 1 / 2 / 3 / 4 waters loses 1 / 3 / 5 / 7 prosperity at game end.": "В чётных раундах кубик указывает количество действий до наводнения. Каждое прилегающее к океану побережье без дамбы добавляет 1 воду. Построй дамбу {p0} за {p1} действием «Строительство». При 5 водах остров тонет; если затонут 3 острова, все проигрывают. Каждая хижина на острове с 1 / 2 / 3 / 4 водами теряет 1 / 3 / 5 / 7 процветания в конце игры."
+  "🏝️ Vanuatu": "🏝️ Вануату"
 }

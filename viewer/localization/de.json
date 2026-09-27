@@ -224,7 +224,7 @@
   "Exporter des marchandises": "Waren exportieren",
   "Exporter gratuitement un second cube identique de la réserve.": "Exportiere kostenlos einen zweiten gleichen Würfel aus dem Vorrat.",
   "Extend at the start of rounds 2–7, before choosing characters. The next pair is a preview for the following round. There are no tiles to place in round 8.": "Erweitere zu Beginn der Runden 2–7 vor der Charakterwahl. Das nächste Paar zeigt die Plättchen der folgenden Runde. In Runde 8 werden keine Plättchen gelegt.",
-  "Extend the archipelago": "Den Archipel erweitern",
+  "Extend the archipelago": "Das Archipel erweitern",
   "Faire du commerce": "Handeln",
   "Fermer": "Schließen",
   "Fin de partie": "Spielende",
@@ -850,7 +850,5 @@
   "épuisé": "erschöpft",
   "— next catch on this tile": "— nächster Fang auf diesem Feld",
   "— prochaine prise sur cette tuile": "— nächster Fang auf diesem Feld",
-  "🏝️ Vanuatu": "🏝️ Vanuatu",
-  "A hut {p0} costs {p1}. A drawing {p2} earns {p3}. Transporting a tourist {p4} earns {p5} for every hut on that island, of any colour. Rest {p6} lets you choose a secret bonus, resolved at the end of the round.": "Eine Hütte {p0} kostet {p1}. Eine Zeichnung {p2} bringt {p3}. Einen Touristen zu befördern {p4} bringt {p5} für jede Hütte auf dieser Insel, egal welcher Farbe. Ausruhen {p6} lässt dich einen geheimen Bonus wählen, der am Ende der Runde ausgewertet wird.",
-  "On even rounds, the die gives the number of actions before flooding. Every adjacent ocean coast without a dike adds 1 water. Build a dike {p0} for {p1} with the Build action. At 5 waters an island sinks; if 3 islands sink, everyone loses. Each hut on an island with 1 / 2 / 3 / 4 waters loses 1 / 3 / 5 / 7 prosperity at game end.": "In geraden Runden gibt der Würfel an, wie viele Aktionen vor der Flut stattfinden. Jede angrenzende Ozeanküste ohne Deich fügt 1 Wasser hinzu. Baue einen Deich {p0} für {p1} mit der Aktion Bauen. Bei 5 Wassern versinkt eine Insel; wenn 3 Inseln versinken, verlieren alle. Jede Hütte auf einer Insel mit 1 / 2 / 3 / 4 Wassern verliert 1 / 3 / 5 / 7 Wohlstand am Spielende."
+  "🏝️ Vanuatu": "🏝️ Vanuatu"
 }

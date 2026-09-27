@@ -850,7 +850,5 @@
   "épuisé": "已枯竭",
   "— next catch on this tile": "— 此板塊下次捕魚的價值",
   "— prochaine prise sur cette tuile": "— 此板塊的下次漁獲",
-  "🏝️ Vanuatu": "🏝️ Vanuatu",
-  "A hut {p0} costs {p1}. A drawing {p2} earns {p3}. Transporting a tourist {p4} earns {p5} for every hut on that island, of any colour. Rest {p6} lets you choose a secret bonus, resolved at the end of the round.": "一間小屋 {p0} 花費 {p1}。一幅沙畫 {p2} 獲得 {p3}。運送一位遊客 {p4} 為該島上每間小屋（任何顏色）獲得 {p5}。休息 {p6} 讓你選擇一個秘密獎勵，在回合結束時結算。",
-  "On even rounds, the die gives the number of actions before flooding. Every adjacent ocean coast without a dike adds 1 water. Build a dike {p0} for {p1} with the Build action. At 5 waters an island sinks; if 3 islands sink, everyone loses. Each hut on an island with 1 / 2 / 3 / 4 waters loses 1 / 3 / 5 / 7 prosperity at game end.": "在偶數回合，骰子決定洪水前的行動次數。每個沒有堤防的相鄰海岸加1點水量。使用建造行動建造堤防 {p0}，花費 {p1}。水量達5時島嶼沉沒；若有3座島嶼沉沒，所有人落敗。遊戲結束時，水量為1 / 2 / 3 / 4的島嶼上每間小屋損失1 / 3 / 5 / 7點繁榮。"
+  "🏝️ Vanuatu": "🏝️ Vanuatu"
 }

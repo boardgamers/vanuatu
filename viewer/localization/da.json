@@ -850,7 +850,5 @@
   "épuisé": "opbrugt",
   "— next catch on this tile": "— næste fangst på denne brik",
   "— prochaine prise sur cette tuile": "— næste fangst på denne brik",
-  "🏝️ Vanuatu": "🏝️ Vanuatu",
-  "A hut {p0} costs {p1}. A drawing {p2} earns {p3}. Transporting a tourist {p4} earns {p5} for every hut on that island, of any colour. Rest {p6} lets you choose a secret bonus, resolved at the end of the round.": "En hytte {p0} koster {p1}. En tegning {p2} giver {p3}. At transportere en turist {p4} giver {p5} for hver hytte på den ø, uanset farve. Hvile {p6} lader dig vælge en hemmelig bonus, der afgøres i slutningen af runden.",
-  "On even rounds, the die gives the number of actions before flooding. Every adjacent ocean coast without a dike adds 1 water. Build a dike {p0} for {p1} with the Build action. At 5 waters an island sinks; if 3 islands sink, everyone loses. Each hut on an island with 1 / 2 / 3 / 4 waters loses 1 / 3 / 5 / 7 prosperity at game end.": "På lige runder angiver terningen antallet af handlinger før oversvømmelsen. Hver tilstødende havkyst uden dige tilføjer 1 vand. Byg et dige {p0} for {p1} med Byg-handlingen. Ved 5 vande synker en ø; hvis 3 øer synker, taber alle. Hver hytte på en ø med 1 / 2 / 3 / 4 vande mister 1 / 3 / 5 / 7 velstand ved spillets afslutning."
+  "🏝️ Vanuatu": "🏝️ Vanuatu"
 }

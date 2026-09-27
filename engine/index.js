@@ -1,3 +1,4 @@
+import { markerBlockers } from "./marker-blockers.js";
 import { sha256 } from "@noble/hashes/sha2.js";
 import {
   ACTIONS,
@@ -821,7 +822,16 @@ function finish(s) {
 }
 function execute(s, m, p) {
   const a = s.players[p];
-  say(s, m.type === "act" ? "action" : m.type, { p, ...m });
+  say(s, m.type === "act" ? "action" : m.type, {
+    p,
+    ...m,
+    ...(m.type === "discard"
+      ? {
+          blockers: markerBlockers(s, p, m.action),
+          markers: a.markers[m.action],
+        }
+      : {}),
+  });
   switch (m.type) {
     case "treasure":
       takeFrom(a.treasures, m.values);
@@ -1051,6 +1061,43 @@ function chooseAI(s, p) {
   const moves = availableMoves(s, p);
   check(moves.length, "No legal bot move");
   const a = s.players[p];
+  function planValue(actions) {
+    const markers = { ...a.markers };
+    for (const action of actions) markers[action]++;
+    const planned = {
+      ...s,
+      players: s.players.map((player, q) =>
+        q === p ? { ...player, markers } : player,
+      ),
+    };
+    return ACTIONS.reduce((total, action) => {
+      if (!markers[action]) return total;
+      const useful =
+        {
+          fish: a.fish.length ? 2 : 5,
+          sell: a.fish.length ? 6 : 3,
+          explore: 6,
+          build: a.hutsLeft > 5 ? 6 : 3,
+          buy: 5,
+          draw: 5,
+          tourist: 4,
+          sail: 3,
+          rest: 1,
+        }[action] + (CHARACTERS[a.character]?.action === action ? 2 : 0);
+      // Value each action once, including both markers in this placement.
+      // Existing majorities gain nothing from extra markers. A blocked stack
+      // may become available later, but neutral markers never leave the board.
+      const neutralBlocked = markerBlockers(planned, p, action).some(
+        (blocker) => blocker.neutral,
+      );
+      const availability = majority(planned, p, action)
+        ? 1
+        : neutralBlocked
+          ? 0
+          : 0.4;
+      return total + useful * availability;
+    }, 0);
+  }
   function value(m) {
     if (m.type === "treasure")
       return a.money < 3 ? sum(m.values) * 0.5 - 1 : -30;
@@ -1087,36 +1134,7 @@ function chooseAI(s, p) {
           ? 3
           : 0)
       );
-    if (m.type === "plan") {
-      return m.actions.reduce(
-        (v, action, i) =>
-          v +
-          value({ type: "plan-single", action }) -
-          (i && action === m.actions[0] ? 0.1 : 0),
-        0,
-      );
-    }
-    if (m.type === "plan-single") {
-      const n = a.markers[m.action];
-      const need =
-        Math.max(0, ...s.players.map((x) => x.markers[m.action])) + 1;
-      const useful = {
-        fish: a.fish.length ? 2 : 5,
-        sell: a.fish.length ? 6 : 3,
-        explore: 6,
-        build: a.hutsLeft > 5 ? 6 : 3,
-        buy: 5,
-        draw: 5,
-        tourist: 4,
-        sail: 3,
-        rest: 1,
-      }[m.action];
-      return (
-        useful -
-        (n >= need ? 8 : n ? 0 : 1) +
-        (CHARACTERS[a.character]?.action === m.action ? 2 : 0)
-      );
-    }
+    if (m.type === "plan") return planValue(m.actions);
     if (m.type === "discard") return -15;
     if (m.type === "governor") return -10;
     if (m.type === "rest")

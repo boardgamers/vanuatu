@@ -224,7 +224,7 @@
   "Exporter des marchandises": "माल निर्यात करो",
   "Exporter gratuitement un second cube identique de la réserve.": "रिज़र्व से दूसरा समान घन मुफ़्त में निर्यात करो।",
   "Extend at the start of rounds 2–7, before choosing characters. The next pair is a preview for the following round. There are no tiles to place in round 8.": "दौर 2–7 की शुरुआत में पात्र चुनने से पहले विस्तार करें। अगली जोड़ी अगले दौर की झलक है। दौर 8 में टाइलें नहीं रखी जातीं।",
-  "Extend the archipelago": "द्वीपसमूह बढ़ाएँ",
+  "Extend the archipelago": "द्वीपसमूह का विस्तार",
   "Faire du commerce": "व्यापार करो",
   "Fermer": "बंद करें",
   "Fin de partie": "खेल समाप्त",
@@ -850,7 +850,5 @@
   "épuisé": "समाप्त",
   "— next catch on this tile": "— इस टाइल पर अगली पकड़",
   "— prochaine prise sur cette tuile": "— इस टाइल पर अगली पकड़",
-  "🏝️ Vanuatu": "🏝️ Vanuatu",
-  "A hut {p0} costs {p1}. A drawing {p2} earns {p3}. Transporting a tourist {p4} earns {p5} for every hut on that island, of any colour. Rest {p6} lets you choose a secret bonus, resolved at the end of the round.": "झोपड़ी {p0} का खर्च {p1} है। रेत का चित्र {p2} बनाने पर {p3} मिलता है। पर्यटक {p4} को द्वीप पर ले जाने से वहाँ की हर झोपड़ी के लिए {p5} मिलता है, चाहे झोपड़ी किसी भी रंग की हो। आराम {p6} से एक गुप्त बोनस चुनें, जो दौर के अंत में मिलता है।",
-  "On even rounds, the die gives the number of actions before flooding. Every adjacent ocean coast without a dike adds 1 water. Build a dike {p0} for {p1} with the Build action. At 5 waters an island sinks; if 3 islands sink, everyone loses. Each hut on an island with 1 / 2 / 3 / 4 waters loses 1 / 3 / 5 / 7 prosperity at game end.": "सम दौरों में, पासा बताता है कि बाढ़ से पहले कितनी क्रियाएँ होंगी। बिना बाँध वाला हर समुद्र-तट 1 पानी जोड़ता है। निर्माण क्रिया से {p1} में एक बाँध {p0} बनाएँ। 5 पानी पर द्वीप डूब जाता है; 3 द्वीप डूबने पर सब हार जाते हैं। खेल के अंत में 1 / 2 / 3 / 4 पानी वाले द्वीप की हर झोपड़ी 1 / 3 / 5 / 7 समृद्धि खोती है।"
+  "🏝️ Vanuatu": "🏝️ Vanuatu"
 }

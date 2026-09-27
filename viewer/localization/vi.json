@@ -850,7 +850,5 @@
   "épuisé": "đã cạn kiệt",
   "— next catch on this tile": "— giá trị mẻ cá tiếp theo trên ô này",
   "— prochaine prise sur cette tuile": "— mẻ cá tiếp theo trên ô này",
-  "🏝️ Vanuatu": "🏝️ Vanuatu",
-  "A hut {p0} costs {p1}. A drawing {p2} earns {p3}. Transporting a tourist {p4} earns {p5} for every hut on that island, of any colour. Rest {p6} lets you choose a secret bonus, resolved at the end of the round.": "Một cái chòi {p0} tốn {p1}. Một bức vẽ {p2} kiếm được {p3}. Vận chuyển một du khách {p4} kiếm được {p5} cho mỗi chòi trên đảo đó, bất kể màu nào. Nghỉ ngơi {p6} cho phép bạn chọn một phần thưởng bí mật, được giải quyết vào cuối vòng.",
-  "On even rounds, the die gives the number of actions before flooding. Every adjacent ocean coast without a dike adds 1 water. Build a dike {p0} for {p1} with the Build action. At 5 waters an island sinks; if 3 islands sink, everyone loses. Each hut on an island with 1 / 2 / 3 / 4 waters loses 1 / 3 / 5 / 7 prosperity at game end.": "Ở các vòng chẵn, xúc xắc cho biết số hành động trước khi ngập lụt. Mỗi bờ biển liền kề đại dương không có đê sẽ thêm 1 nước. Hãy xây đê {p0} với giá {p1} bằng hành động Xây dựng. Khi đạt 5 nước, một hòn đảo bị chìm; nếu 3 hòn đảo bị chìm, mọi người đều thua. Mỗi túp lều trên đảo có 1 / 2 / 3 / 4 nước sẽ mất 1 / 3 / 5 / 7 thịnh vượng khi kết thúc ván."
+  "🏝️ Vanuatu": "🏝️ Vanuatu"
 }

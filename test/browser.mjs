@@ -44,6 +44,97 @@ const page = await browser.newPage({
 page.on("pageerror", (e) => errors.push(e.message));
 await page.goto(base + "/?new&hotseat");
 await page.waitForSelector("[data-character-choice]");
+// Every supported locale must render translated action tooltips, not English fallbacks.
+const tooltipSource = "Sail 1–3 ocean spaces, paying 1 vatu per space.";
+for (const locale of [
+  "en",
+  "fr",
+  "de",
+  "da",
+  "el",
+  "hi",
+  "it",
+  "ko",
+  "nl",
+  "pl",
+  "pt-BR",
+  "ro",
+  "ru",
+  "vi",
+  "zh-TW",
+]) {
+  const catalog = JSON.parse(
+    await readFile(
+      new URL(`../viewer/localization/${locale}.json`, import.meta.url),
+      "utf8",
+    ),
+  );
+  await page.goto(`${base}/?new&hotseat&locale=${locale}`);
+  await page.waitForFunction(
+    (expected) =>
+      document.querySelector('[data-action="sail"]')?.title === expected,
+    catalog[tooltipSource],
+  );
+  const titles = await page
+    .locator(".action-dock [data-action]")
+    .evaluateAll((buttons) => buttons.map((button) => button.title));
+  assert.equal(titles.length, 9);
+  for (const title of titles) {
+    assert.ok(
+      Object.values(catalog).includes(title),
+      `${locale}: tooltip must come from its catalogue`,
+    );
+    if (locale !== "en")
+      assert.ok(
+        !Object.hasOwn(catalog, title),
+        `${locale}: English tooltip fallback`,
+      );
+  }
+}
+await page.goto(base + "/?new&hotseat");
+await page.waitForSelector("[data-character-choice]");
+// Action descriptions remain available even before an action can be selected.
+for (const action of E.ACTIONS) {
+  assert.ok(
+    (await page.locator(`[data-action="${action}"]`).getAttribute("title"))
+      .length > 30,
+  );
+}
+// A swipe over the board must continue scrolling the mobile page at its boundary.
+await page.setViewportSize({ width: 390, height: 600 });
+await page.evaluate(() => scrollTo(0, 0));
+const boardScroll = page.locator(".map-scroll");
+await boardScroll.scrollIntoViewIfNeeded();
+await boardScroll.evaluate((el) => {
+  el.scrollTop = el.scrollHeight;
+});
+const boardRect = await boardScroll.boundingBox();
+const beforeSwipe = await page.evaluate(() => scrollY);
+const cdp = await page.context().newCDPSession(page);
+await cdp.send("Emulation.setTouchEmulationEnabled", { enabled: true });
+const touchX = Math.round(boardRect.x + boardRect.width / 2);
+const touchY = Math.round(
+  Math.max(150, Math.min(350, boardRect.y + boardRect.height / 2)),
+);
+await cdp.send("Input.dispatchTouchEvent", {
+  type: "touchStart",
+  touchPoints: [{ x: touchX, y: touchY }],
+});
+for (let dy = 20; dy <= 140; dy += 20) {
+  await cdp.send("Input.dispatchTouchEvent", {
+    type: "touchMove",
+    touchPoints: [{ x: touchX, y: touchY - dy }],
+  });
+  await page.waitForTimeout(30);
+}
+await cdp.send("Input.dispatchTouchEvent", {
+  type: "touchEnd",
+  touchPoints: [],
+});
+await page.waitForFunction((before) => scrollY > before + 20, beforeSwipe);
+await cdp.send("Emulation.setTouchEmulationEnabled", { enabled: false });
+await cdp.detach();
+await page.evaluate(() => scrollTo(0, 0));
 // The overview remains reachable above the taller character-selection tray.
 for (const width of [390, 1440]) {
   await page.setViewportSize({ width, height: 1000 });
@@ -218,7 +309,13 @@ for (const width of [1440, 390]) {
     assert.ok(
       await page
         .locator(".board-highlights")
-        .evaluate((el) => el === el.parentElement.lastElementChild),
+        .evaluate((el) =>
+          [...el.parentElement.querySelectorAll(".map-cell")].every(
+            (cell) =>
+              cell.compareDocumentPosition(el) &
+              Node.DOCUMENT_POSITION_FOLLOWING,
+          ),
+        ),
     );
     assert.equal(
       await page.locator(".turn-tray .primary[data-move]").count(),
@@ -260,9 +357,16 @@ for (const width of [1440, 390]) {
     /Not enough vatus/,
   );
   assert.match(
-    await page.locator(".turn-tray [data-move]").innerText(),
+    await page.locator(".turn-tray [data-move]").getAttribute("aria-label"),
     /Retrieve without acting/,
   );
+  await page.locator(".turn-tray .retrieve-warning").click();
+  assert.equal(
+    await page.locator("dialog[open] [data-confirmed-retrieval]").count(),
+    1,
+  );
+  assert.match(await page.locator("dialog p").innerText(), /another action/);
+  await page.locator("dialog [data-close]").last().click();
   await page.screenshot({
     path: `.local/qa/unaffordable-build-${width}.png`,
     fullPage: true,
@@ -422,9 +526,11 @@ for (const width of [1440, 390]) {
     await page.evaluate(() => JSON.stringify(window.vanuatuDemo.state)),
     position,
   );
-  await page.locator("[data-help]").first().click();
-  await page.locator('[data-pref="colorBlind"]').check();
-  await page.locator("[data-close]").click();
+  if (
+    (await page.locator("[data-color-blind]").getAttribute("aria-pressed")) !==
+    "true"
+  )
+    await page.locator("[data-color-blind]").click();
   assert.ok(await page.locator(".color-symbol").count());
   assert.deepEqual(
     await page.locator('[data-cell="0,0"] .resource-symbol').allTextContents(),
@@ -526,7 +632,11 @@ assert.equal(
   0,
 );
 await page.locator("[data-help]").first().click();
-assert.equal(await page.locator('[data-pref="colorBlind"]').isChecked(), true);
+assert.equal(await page.locator('[data-pref="colorBlind"]').count(), 0);
+assert.equal(
+  await page.locator("[data-color-blind]").getAttribute("aria-pressed"),
+  "true",
+);
 await page.evaluate(() =>
   emitter.receive("preferences", {
     analysis: true,
@@ -534,10 +644,15 @@ await page.evaluate(() =>
     sound: true,
   }),
 );
-assert.equal(await page.locator('[data-pref="colorBlind"]').isChecked(), false);
+assert.equal(
+  await page.locator("[data-color-blind]").getAttribute("aria-pressed"),
+  "false",
+);
 assert.equal(await page.locator('[data-pref="sound"]').isChecked(), true);
 assert.equal(await page.locator(".resource-symbol").count(), 0);
-await page.locator('[data-pref="colorBlind"]').check();
+await page.locator("[data-close]").click();
+await page.locator("[data-color-blind]").click();
+await page.locator("[data-help]").first().click();
 await page.locator('[data-pref="sound"]').uncheck();
 assert.deepEqual(
   await page.evaluate(() =>

@@ -224,7 +224,7 @@
   "Exporter des marchandises": "Exportă bunuri",
   "Exporter gratuitement un second cube identique de la réserve.": "Exportă gratuit un al doilea cub identic din rezervă.",
   "Extend at the start of rounds 2–7, before choosing characters. The next pair is a preview for the following round. There are no tiles to place in round 8.": "Extinde la începutul rundelor 2–7, înainte de alegerea personajelor. Perechea următoare anunță runda viitoare. În runda 8 nu se plasează plăci.",
-  "Extend the archipelago": "Extinde arhipelagul",
+  "Extend the archipelago": "Extinderea arhipelagului",
   "Faire du commerce": "Fă comerț",
   "Fermer": "Închide",
   "Fin de partie": "Sfârșitul partidei",
@@ -850,7 +850,5 @@
   "épuisé": "epuizat",
   "— next catch on this tile": "— următoarea captură pe această piesă",
   "— prochaine prise sur cette tuile": "— următoarea captură pe această piesă",
-  "🏝️ Vanuatu": "🏝️ Vanuatu",
-  "A hut {p0} costs {p1}. A drawing {p2} earns {p3}. Transporting a tourist {p4} earns {p5} for every hut on that island, of any colour. Rest {p6} lets you choose a secret bonus, resolved at the end of the round.": "O colibă {p0} costă {p1}. Un desen {p2} aduce {p3}. Transportarea unui turist {p4} aduce {p5} pentru fiecare colibă de pe acea insulă, de orice culoare. Odihna {p6} îți permite să alegi un bonus secret, rezolvat la sfârșitul rundei.",
-  "On even rounds, the die gives the number of actions before flooding. Every adjacent ocean coast without a dike adds 1 water. Build a dike {p0} for {p1} with the Build action. At 5 waters an island sinks; if 3 islands sink, everyone loses. Each hut on an island with 1 / 2 / 3 / 4 waters loses 1 / 3 / 5 / 7 prosperity at game end.": "În rundele pare, zarul indică numărul de acțiuni înainte de inundație. Fiecare coastă adiacentă unui ocean și fără dig adaugă 1 apă. Construiește un dig {p0} pentru {p1} cu acțiunea Construire. La 5 ape, o insulă se scufundă; dacă 3 insule se scufundă, toată lumea pierde. Fiecare colibă de pe o insulă cu 1 / 2 / 3 / 4 ape pierde 1 / 3 / 5 / 7 prosperitate la sfârșitul jocului."
+  "🏝️ Vanuatu": "🏝️ Vanuatu"
 }
