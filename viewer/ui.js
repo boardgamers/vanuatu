@@ -406,6 +406,12 @@ export function mountGame(target, options = {}) {
       play
         .querySelector(`[data-action="${focus}"]`)
         ?.focus({ preventScroll: true });
+    const rules = dialog.querySelector("[data-rules-content]");
+    const rulesKey = `${lang}:${colorBlind}`;
+    if (rules && rules.dataset.presentation !== rulesKey) {
+      rules.innerHTML = rulesHtml(lang, colorBlind);
+      rules.dataset.presentation = rulesKey;
+    }
     activity.update(s, analysis, colorBlind);
     updateUnread();
   }
@@ -639,7 +645,7 @@ export function mountGame(target, options = {}) {
       }
       if ("help" in d) {
         showDialog(
-          `<h2>${t("help")}</h2><div class="preferences"><label><input type="checkbox" data-pref="sound" ${sound ? "checked" : ""}>${t("sound")}</label>${
+          `<h2>${t("help")}</h2><div class="preferences"><label><input type="checkbox" data-pref="colorBlind" ${colorBlind ? "checked" : ""}>${t("colorBlind")}</label><label><input type="checkbox" data-pref="sound" ${sound ? "checked" : ""}>${t("sound")}</label>${
             hostedLocale
               ? ""
               : `<select data-language aria-label="Language">${Object.entries(
@@ -650,7 +656,7 @@ export function mountGame(target, options = {}) {
                       `<option value="${locale}" ${lang === locale ? "selected" : ""}>${name}</option>`,
                   )
                   .join("")}</select>`
-          }</div>${rulesHtml(lang)}<hr><h3>${t("credit")}</h3><p>Alain Epron · <a href="https://www.quined.nl/featured_item/vanuatu-2nd-edition/" target="_blank" rel="noopener">Quined Games</a><br>Art: Konstantin Vohwinkel · Rafaël Theunis</p><p><a href="https://codeberg.org/boardgamers/vanuatu" target="_blank" rel="noopener">${t("source")}</a></p>`,
+          }</div><div data-rules-content>${rulesHtml(lang, colorBlind)}</div><hr><h3>${t("credit")}</h3><p>Alain Epron · <a href="https://www.quined.nl/featured_item/vanuatu-2nd-edition/" target="_blank" rel="noopener">Quined Games</a><br>Art: Konstantin Vohwinkel · Rafaël Theunis</p><p><a href="https://codeberg.org/boardgamers/vanuatu" target="_blank" rel="noopener">${t("source")}</a></p>`,
         );
         return;
       }
@@ -697,7 +703,9 @@ export function mountGame(target, options = {}) {
       if (e.target.matches("[data-pref]")) {
         const key = e.target.dataset.pref,
           value = e.target.checked;
-        if (key === "colorBlind") colorBlind = value;
+        if (key === "colorBlind") {
+          colorBlind = value;
+        }
         if (key === "sound") {
           sound = value;
           moveSound.setEnabled(value);

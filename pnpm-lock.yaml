@@ -4,13 +4,16 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  '@boardgamers/protocol@0.6.1': 4ec4a210cf846eebd6d902b2952c029dbcde5ed288f88dba1f9362a8a9caa953
+
 importers:
 
   .:
     dependencies:
       '@boardgamers/protocol':
         specifier: 0.6.1
-        version: 0.6.1
+        version: 0.6.1(patch_hash=4ec4a210cf846eebd6d902b2952c029dbcde5ed288f88dba1f9362a8a9caa953)
       '@noble/hashes':
         specifier: 2.0.1
         version: 2.0.1
@@ -226,7 +229,7 @@ packages:
 
 snapshots:
 
-  '@boardgamers/protocol@0.6.1':
+  '@boardgamers/protocol@0.6.1(patch_hash=4ec4a210cf846eebd6d902b2952c029dbcde5ed288f88dba1f9362a8a9caa953)':
     dependencies:
       zod: 4.6.5
 

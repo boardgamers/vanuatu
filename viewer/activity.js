@@ -179,7 +179,7 @@ export function mountActivity(
   });
   shortcut.onclick = () => open("chat");
   list.addEventListener("scroll", () => {
-    following = list.scrollHeight - list.scrollTop - list.clientHeight < 40;
+    following = list.scrollHeight - list.scrollTop - list.clientHeight <= 1;
   });
   select("journal");
   return {

@@ -13,11 +13,12 @@ import {
   esc,
 } from "./art.js";
 import { translateText } from "./localization/index.js";
-export function rulesHtml(lang = "en") {
+export function rulesHtml(lang = "en", colorBlind = false) {
   const t = (text) => translateText(text, lang);
-  const icon = (name) => renderIcon(name, t(iconLabel(name)));
+  const icon = (name) =>
+    renderIcon(name, t(iconLabel(name)), false, colorBlind);
   const token = (name, value) =>
-    renderToken(name, value, `${t(iconLabel(name))}: ${value}`);
+    renderToken(name, value, `${t(iconLabel(name))}: ${value}`, colorBlind);
   const message = (text, icons) =>
     esc(t(text)).replace(/\{p(\d+)\}/g, (_, i) => icons[Number(i)]);
   const paragraphs = [

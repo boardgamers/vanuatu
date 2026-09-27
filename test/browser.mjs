@@ -632,7 +632,8 @@ assert.equal(
   0,
 );
 await page.locator("[data-help]").first().click();
-assert.equal(await page.locator('[data-pref="colorBlind"]').count(), 0);
+assert.equal(await page.locator('[data-pref="colorBlind"]').isChecked(), true);
+assert.equal(await page.locator(".rules .resource-symbol").count(), 3);
 assert.equal(
   await page.locator("[data-color-blind]").getAttribute("aria-pressed"),
   "true",
@@ -663,6 +664,10 @@ assert.deepEqual(
     { name: "sound", value: false },
   ],
 );
+await page.locator('[data-pref="colorBlind"]').uncheck();
+assert.equal(await page.locator(".rules .resource-symbol").count(), 0);
+await page.locator('[data-pref="colorBlind"]').check();
+assert.equal(await page.locator(".rules .resource-symbol").count(), 3);
 await page.locator("[data-close]").click();
 // Updating colors must preserve the SVG images (including their clip paths).
 await page.evaluate(() => {
