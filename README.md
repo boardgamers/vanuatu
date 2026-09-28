@@ -4,6 +4,10 @@ A board-first adaptation of Alain Epron's **Vanuatu**, second edition (Quined Ga
 
 The repository is public; the game is listed on BGS as a beta. Supplied artwork and game materials remain the property of their respective rights holders; permission to use them for this adaptation is not a general redistribution license.
 
+## Play online at
+
+[boardgamers.space](https://boardgamers.space)
+
 ## Development
 
 Node 24+, pnpm. `pnpm install`, `pnpm build`, `pnpm dev` (port 5246). `pnpm test` runs rules tests; install the browser once with `pnpm exec playwright install chromium`; `pnpm test:browser` checks the viewer.
