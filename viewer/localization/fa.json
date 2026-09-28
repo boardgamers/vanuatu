@@ -270,7 +270,7 @@
   "Illegal move": "حرکت غیرمجاز",
   "In rounds 2, 4, 6 and 8, a die rolled at the start of the round sets a countdown. During the action phase, each performed action reduces it by 1. At 0, the waters rise immediately after that action, before the next player acts.": "در دورهای ۲، ۴، ۶ و ۸، تاسی که ابتدای دور ریخته می‌شود شمارش معکوس را تعیین می‌کند. در مرحلهٔ اقدام، هر اقدام انجام‌شده آن را ۱ واحد کم می‌کند. در صفر، آب بلافاصله پس از همان اقدام و پیش از اقدام بازیکن بعدی بالا می‌آید.",
   "Income": "درآمد",
-  "Instead of taking an action, move all your markers from one chosen action space to another. Your markers on other spaces stay put.": "به‌جای انجام یک اقدام، همهٔ نشانگرهای خود را از یک خانهٔ اقدامِ انتخابی به خانهٔ اقدام دیگری منتقل کنید. نشانگرهای شما در خانه‌های دیگر سر جای خود می‌مانند.",
+  "Instead of acting, move all your markers from one action space to another.": "به‌جای انجام اقدام، همهٔ نشانگرهای خود را از یک خانهٔ اقدام به خانهٔ دیگری منتقل کنید.",
   "Invalid replay position": "وضعیت بازپخش نامعتبر است",
   "Island": "جزیره",
   "Jeu automatique": "بازی خودکار",

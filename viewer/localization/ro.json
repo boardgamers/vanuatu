@@ -270,7 +270,7 @@
   "Illegal move": "Mutare ilegală",
   "In rounds 2, 4, 6 and 8, a die rolled at the start of the round sets a countdown. During the action phase, each performed action reduces it by 1. At 0, the waters rise immediately after that action, before the next player acts.": "În rundele 2, 4, 6 și 8, un zar aruncat la începutul rundei stabilește o numărătoare inversă. În faza de acțiuni, fiecare acțiune efectuată o reduce cu 1. La 0, apele cresc imediat după acea acțiune, înainte să acționeze următorul jucător.",
   "Income": "Venit",
-  "Instead of taking an action, move all your markers from one chosen action space to another. Your markers on other spaces stay put.": "În loc să efectuezi o acțiune, mută toți marcatorii tăi de pe un singur spațiu de acțiune ales pe altul. Marcatorii tăi de pe celelalte spații rămân pe loc.",
+  "Instead of acting, move all your markers from one action space to another.": "În loc să acționezi, mută toți marcatorii tăi de pe un spațiu de acțiune pe altul.",
   "Invalid replay position": "Poziție de reluare invalidă",
   "Island": "Insulă",
   "Jeu automatique": "Joc automat",

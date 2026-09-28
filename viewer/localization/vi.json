@@ -270,7 +270,7 @@
   "Illegal move": "Nước đi không hợp lệ",
   "In rounds 2, 4, 6 and 8, a die rolled at the start of the round sets a countdown. During the action phase, each performed action reduces it by 1. At 0, the waters rise immediately after that action, before the next player acts.": "Ở các vòng 2, 4, 6 và 8, gieo xúc xắc đầu vòng để đặt số đếm ngược. Trong giai đoạn hành động, mỗi hành động được thực hiện giảm số đó đi 1. Khi về 0, nước dâng ngay sau hành động đó, trước khi người tiếp theo hành động.",
   "Income": "Thu nhập",
-  "Instead of taking an action, move all your markers from one chosen action space to another. Your markers on other spaces stay put.": "Thay vì thực hiện hành động, chuyển tất cả dấu đánh của bạn từ một ô hành động đã chọn sang ô hành động khác. Dấu đánh của bạn ở các ô khác giữ nguyên vị trí.",
+  "Instead of acting, move all your markers from one action space to another.": "Thay vì hành động, chuyển tất cả dấu đánh của bạn từ một ô hành động sang ô khác.",
   "Invalid replay position": "Vị trí phát lại không hợp lệ",
   "Island": "Đảo",
   "Jeu automatique": "Chơi tự động",

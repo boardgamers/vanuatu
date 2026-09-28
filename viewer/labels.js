@@ -136,7 +136,7 @@ export const characterHelp = {
     "Sans aucune majorité, effectuer tout de même une action programmée.",
   ],
   governor: [
-    "Instead of taking an action, move all your markers from one chosen action space to another. Your markers on other spaces stay put.",
-    "Au lieu d’effectuer une action, déplacez tous vos marqueurs d’une case Action choisie vers une autre. Vos marqueurs sur les autres cases restent en place.",
+    "Instead of acting, move all your markers from one action space to another.",
+    "Au lieu d’agir, déplacez tous vos marqueurs d’une case Action vers une autre.",
   ],
 };

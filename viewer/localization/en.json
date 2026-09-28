@@ -270,7 +270,7 @@
   "Illegal move": "Illegal move",
   "In rounds 2, 4, 6 and 8, a die rolled at the start of the round sets a countdown. During the action phase, each performed action reduces it by 1. At 0, the waters rise immediately after that action, before the next player acts.": "In rounds 2, 4, 6 and 8, a die rolled at the start of the round sets a countdown. During the action phase, each performed action reduces it by 1. At 0, the waters rise immediately after that action, before the next player acts.",
   "Income": "Income",
-  "Instead of taking an action, move all your markers from one chosen action space to another. Your markers on other spaces stay put.": "Instead of taking an action, move all your markers from one chosen action space to another. Your markers on other spaces stay put.",
+  "Instead of acting, move all your markers from one action space to another.": "Instead of acting, move all your markers from one action space to another.",
   "Invalid replay position": "Invalid replay position",
   "Island": "Island",
   "Jeu automatique": "Jeu automatique",

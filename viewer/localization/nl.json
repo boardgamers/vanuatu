@@ -270,7 +270,7 @@
   "Illegal move": "Ongeldige zet",
   "In rounds 2, 4, 6 and 8, a die rolled at the start of the round sets a countdown. During the action phase, each performed action reduces it by 1. At 0, the waters rise immediately after that action, before the next player acts.": "In rondes 2, 4, 6 en 8 bepaalt een dobbelsteenworp aan het begin van de ronde een aftelling. Tijdens de actiefase verlaagt elke uitgevoerde actie die met 1. Bij 0 stijgt het water direct na die actie, voordat de volgende speler handelt.",
   "Income": "Inkomen",
-  "Instead of taking an action, move all your markers from one chosen action space to another. Your markers on other spaces stay put.": "Verplaats in plaats van een actie uit te voeren al je markers van één gekozen actieveld naar een ander. Je markers op de andere velden blijven liggen.",
+  "Instead of acting, move all your markers from one action space to another.": "Verplaats in plaats van een actie al je markers van één actieveld naar een ander.",
   "Invalid replay position": "Ongeldige herhalingspositie",
   "Island": "Eiland",
   "Jeu automatique": "Automatisch spel",

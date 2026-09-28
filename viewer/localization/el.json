@@ -270,7 +270,7 @@
   "Illegal move": "Παράνομη κίνηση",
   "In rounds 2, 4, 6 and 8, a die rolled at the start of the round sets a countdown. During the action phase, each performed action reduces it by 1. At 0, the waters rise immediately after that action, before the next player acts.": "Στους γύρους 2, 4, 6 και 8, μια ζαριά στην αρχή του γύρου ορίζει την αντίστροφη μέτρηση. Στη φάση ενεργειών, κάθε ενέργεια που εκτελείται τη μειώνει κατά 1. Στο 0, τα νερά ανεβαίνουν αμέσως μετά από αυτή την ενέργεια, πριν παίξει ο επόμενος παίκτης.",
   "Income": "Εισόδημα",
-  "Instead of taking an action, move all your markers from one chosen action space to another. Your markers on other spaces stay put.": "Αντί να εκτελέσεις ενέργεια, μετακίνησε όλους τους δείκτες σου από μία επιλεγμένη θέση ενέργειας σε μία άλλη. Οι δείκτες σου στις υπόλοιπες θέσεις μένουν εκεί.",
+  "Instead of acting, move all your markers from one action space to another.": "Αντί για ενέργεια, μετακίνησε όλους τους δείκτες σου από μία θέση ενέργειας σε άλλη.",
   "Invalid replay position": "Μη έγκυρη θέση επανάληψης",
   "Island": "Νησί",
   "Jeu automatique": "Αυτόματο παιχνίδι",

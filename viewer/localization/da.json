@@ -270,7 +270,7 @@
   "Illegal move": "Ulovligt træk",
   "In rounds 2, 4, 6 and 8, a die rolled at the start of the round sets a countdown. During the action phase, each performed action reduces it by 1. At 0, the waters rise immediately after that action, before the next player acts.": "I runde 2, 4, 6 og 8 fastsætter et terningkast ved rundens start en nedtælling. I handlingsfasen reducerer hver udført handling den med 1. Ved 0 stiger vandet straks efter den handling, før næste spiller handler.",
   "Income": "Indkomst",
-  "Instead of taking an action, move all your markers from one chosen action space to another. Your markers on other spaces stay put.": "I stedet for at udføre en handling flytter du alle dine markører fra ét valgt handlingsfelt til et andet. Dine markører på de andre felter bliver stående.",
+  "Instead of acting, move all your markers from one action space to another.": "I stedet for en handling flytter du alle dine markører fra ét handlingsfelt til et andet.",
   "Invalid replay position": "Ugyldig replay-position",
   "Island": "Ø",
   "Jeu automatique": "Automatisk spil",
