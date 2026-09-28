@@ -9,7 +9,7 @@ import {
   PRICES,
   VALUES,
 } from "../engine/catalog.js";
-import { goodsAvailable } from "../engine/index.js";
+import { goodsAvailable, actionsAfterExchanges } from "../engine/index.js";
 import { assets } from "./assets.js";
 import {
   icon as renderIcon,
@@ -456,6 +456,35 @@ export function mountGame(target, options = {}) {
     dialog.close();
     focusReturn?.isConnected && focusReturn.focus({ preventScroll: true });
   }
+  function confirmRetrieval(move) {
+    const actions = unique(
+      legal()
+        .filter((m) => m.type === "act")
+        .map((m) => m.action),
+    );
+    const governor = legal().some((m) => m.type === "governor");
+    const exchanges = actionsAfterExchanges(s, player);
+    if (!actions.length && !governor && !exchanges.length) return false;
+    const actionLabel = (a) => `${icon(a)} ${esc(translateText(t(a), lang))}`;
+    const now = actions.map((a) => btn(actionLabel(a), `data-action="${a}"`));
+    if (governor)
+      now.push(
+        btn(
+          `${icon("marker")} ↔ ${esc(translateText(t("governor"), lang))}`,
+          "data-governor",
+        ),
+      );
+    const funded = exchanges
+      .map(
+        (route) =>
+          `<div class="retrieval-route">${btn(route.exchanges.map((type) => esc(translateText(t(type), lang))).join(" + "), `data-free="${route.exchanges[0]}"`)}<span aria-hidden="true">→</span><span class="retrieval-unlocks">${route.actions.map((a) => `<span>${actionLabel(a)}</span>`).join("")}</span></div>`,
+      )
+      .join("");
+    showDialog(
+      `<h2>${icon("warning", "Retrieve without acting")} ${esc(translateText("Retrieve without acting", lang))} — ${esc(translateText(t(move.action), lang))}</h2>${now.length ? `<h3>${esc(translateText("Available now", lang))}</h3><div class="move-options retrieval-alternatives">${now.join("")}</div>` : ""}${funded ? `<h3>${esc(translateText("After free exchanges", lang))}</h3>${funded}<p>${esc(translateText("Free exchanges are optional and do not use markers or end your turn.", lang))}</p>` : ""}<p class="retrieval-question">${esc(translateText("Retrieve this stack without acting?", lang))}</p><div class="move-options">${btn(t("cancel"), "data-close")}${btn(icon("warning", "Retrieve without acting") + " " + t("confirm"), `data-move="${s.legal.indexOf(move)}" data-confirmed-retrieval`, "retrieve-warning")}</div>`,
+    );
+    return true;
+  }
   async function send(m) {
     if (!m || pending || !enabled) return;
     moveSound.unlock();
@@ -545,11 +574,8 @@ export function mountGame(target, options = {}) {
         if (
           move?.type === "discard" &&
           !("confirmedRetrieval" in d) &&
-          legal().some((m) => m.type !== "discard")
+          confirmRetrieval(move)
         ) {
-          showDialog(
-            `<h2>${icon("warning", "Retrieve without acting")} ${esc(translateText("Retrieve without acting", lang))} — ${esc(translateText(t(move.action), lang))}</h2><p>${esc(translateText("You can still take another action. Retrieve this stack without acting?", lang))}</p><div class="move-options">${btn(t("cancel"), "data-close")}${btn(icon("warning", "Retrieve without acting") + " " + t("confirm"), `data-move="${d.move}" data-confirmed-retrieval`, "retrieve-warning")}</div>`,
-          );
           return;
         }
         send(move);
@@ -568,6 +594,7 @@ export function mountGame(target, options = {}) {
         return;
       }
       if ("action" in d) {
+        if (button.closest("dialog")) closeDialog();
         if (["plan", "neutral"].includes(s.phase)) {
           draft.push(d.action);
           if (s.phase === "neutral")

@@ -542,7 +542,6 @@
   "With 1 marker each, the player earlier in turn order has priority, starting with the first player. A majority means more markers than each opponent, not more than all opponents combined.": "各有 1 個標記時，從起始玩家算起，順序較前的玩家優先。數量優勢是比每位對手各自的標記多，不必比所有對手的標記總和多。",
   "You": "你",
   "You are the Builder and your boat is beside the island. Turn your 3 vatus into a hut, then add a drawing and a tourist.": "你是建築師，船停在島嶼旁。用手上的3瓦圖建小屋，再增加沙畫和遊客。",
-  "You can still take another action. Retrieve this stack without acting?": "你仍可執行其他行動。要收回這疊標記而不執行行動嗎？",
   "You earned 3 prosperity for the copra. The second ship still needs beef, so you received no completion bonus. Completing a ship adds 2 prosperity to the exported good's usual reward. Try the lesson again with beef to see the difference.": "你出口椰乾獲得了 3 繁榮。第二艘船仍缺牛肉，所以沒有完成獎勵。完成貨船會在商品原本的分數之外，再加 2 繁榮。重新遊玩此課程並選擇牛肉，即可比較差異。",
   "You earned 7 prosperity from one export. Goods fill the first ship that needs them. Completed ships are replaced at the start of the next round.": "一次出口得到7繁榮。貨物放到第一艘需要該貨物的商船。裝滿的商船在下一輪開始時更換。",
   "You have 1 vatu. Sell your treasure for 2 more to afford the beef export, which costs 3.": "你有1瓦圖。賣掉寶藏再得2瓦圖，就能支付成本3的牛肉出口。",
@@ -864,5 +863,9 @@
   "Sell fish beside one of your huts {p0}: fish values × the market price. The price falls after each sale.": "在自己的一間小屋 {p0} 旁出售魚：魚的價值 × 市價。每次出售後市價都會下降。",
   "Completing a ship adds {p0} to the good's reward.": "裝滿一艘商船可在貨物獎勵之外額外獲得 {p0}。",
   "Vatus paid: {p0}. Prosperity gained: {p1}.": "支付瓦圖：{p0}。獲得繁榮：{p1}。",
-  "Includes {p0} prosperity for completing ships.": "包含裝滿商船獲得的 {p0} 繁榮。"
+  "Includes {p0} prosperity for completing ships.": "包含裝滿商船獲得的 {p0} 繁榮。",
+  "Available now": "目前可執行",
+  "After free exchanges": "自由交換後",
+  "Free exchanges are optional and do not use markers or end your turn.": "自由交換是可選的，不會消耗標記或結束你的回合。",
+  "Retrieve this stack without acting?": "要收回這疊標記而不執行行動嗎？"
 }

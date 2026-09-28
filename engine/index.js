@@ -463,6 +463,37 @@ function freeVariants(s, p) {
       }
   return out;
 }
+export function actionsAfterExchanges(s, p = s.actor) {
+  if (s.finished || s.phase !== "actions" || p !== s.actor || !s.players[p])
+    return [];
+  const own = ACTIONS.filter((action) => s.players[p].markers[action] > 0);
+  const majorities = own.filter((action) => majority(s, p, action));
+  const eligible = majorities.length
+    ? majorities
+    : has(s, p, "preacher")
+      ? own
+      : [];
+  const unavailable = eligible.filter(
+    (action) => !actionOptions(s, p, action).length,
+  );
+  if (!unavailable.length) return [];
+  const routes = new Map();
+  for (const variant of freeVariants(s, p).slice(1)) {
+    const actions = unavailable.filter(
+      (action) => actionOptions(variant, p, action).length,
+    );
+    if (!actions.length) continue;
+    const exchanges = [];
+    if (variant.players[p].treasures.length < s.players[p].treasures.length)
+      exchanges.push("treasure");
+    if (has(s, p, "beggar") && variant.players[p].used) exchanges.push("beg");
+    const key = exchanges.join(",");
+    if (!routes.has(key)) routes.set(key, { exchanges, actions: [] });
+    const route = routes.get(key);
+    route.actions = [...new Set([...route.actions, ...actions])];
+  }
+  return [...routes.values()];
+}
 const planningCache = new WeakMap();
 export function canPlan(s, p, target, markers = s.players[p].markers) {
   return canPlanUncached(s, p, target, markers);

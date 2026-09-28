@@ -860,6 +860,27 @@
   font-size: 13px;
   line-height: 1.65;
 }
+.vanuatu .retrieval-route,
+.vanuatu .retrieval-unlocks {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.vanuatu .retrieval-route {
+  margin: 8px 0;
+}
+.vanuatu .retrieval-unlocks > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 6px;
+  border-radius: 5px;
+  background: #15566c0a;
+}
+.vanuatu .help-dialog .retrieval-question {
+  margin-top: 18px;
+}
 .vanuatu .rules .icon {
   width: 21px;
   height: 21px;

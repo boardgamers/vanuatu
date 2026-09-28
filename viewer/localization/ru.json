@@ -542,7 +542,6 @@
   "With 1 marker each, the player earlier in turn order has priority, starting with the first player. A majority means more markers than each opponent, not more than all opponents combined.": "При 1 маркере у каждого приоритет имеет тот, кто раньше в порядке хода, начиная с первого игрока. Преимущество означает больше маркеров, чем у каждого соперника по отдельности, а не у всех вместе.",
   "You": "Ты",
   "You are the Builder and your boat is beside the island. Turn your 3 vatus into a hut, then add a drawing and a tourist.": "Вы Строитель, и лодка рядом с островом. Потратьте свои 3 вату на хижину, затем добавьте рисунок и туриста.",
-  "You can still take another action. Retrieve this stack without acting?": "Вы ещё можете выполнить другое действие. Забрать эту стопку без выполнения действия?",
   "You earned 3 prosperity for the copra. The second ship still needs beef, so you received no completion bonus. Completing a ship adds 2 prosperity to the exported good's usual reward. Try the lesson again with beef to see the difference.": "За копру вы получили 3 процветания. Второму кораблю ещё нужна говядина, поэтому бонуса за заполнение нет. Заполнение корабля добавляет 2 процветания к обычным очкам за товар. Пройдите урок снова с говядиной, чтобы сравнить.",
   "You earned 7 prosperity from one export. Goods fill the first ship that needs them. Completed ships are replaced at the start of the next round.": "Один экспорт принёс 7 процветания. Товары отправляются на первое судно, которому они нужны. Заполненные суда заменяются в начале следующего раунда.",
   "You have 1 vatu. Sell your treasure for 2 more to afford the beef export, which costs 3.": "У вас 1 вату. Продайте сокровище ещё за 2, чтобы оплатить экспорт говядины стоимостью 3.",
@@ -864,5 +863,9 @@
   "Sell fish beside one of your huts {p0}: fish values × the market price. The price falls after each sale.": "Продайте рыбу рядом с одной из своих хижин {p0}: ценность рыбы × рыночная цена. После каждой продажи цена падает.",
   "Completing a ship adds {p0} to the good's reward.": "Полная загрузка корабля добавляет {p0} к награде за товар.",
   "Vatus paid: {p0}. Prosperity gained: {p1}.": "Уплачено вату: {p0}. Получено процветания: {p1}.",
-  "Includes {p0} prosperity for completing ships.": "Включает {p0} процветания за полную загрузку кораблей."
+  "Includes {p0} prosperity for completing ships.": "Включает {p0} процветания за полную загрузку кораблей.",
+  "Available now": "Доступно сейчас",
+  "After free exchanges": "После свободных обменов",
+  "Free exchanges are optional and do not use markers or end your turn.": "Свободные обмены необязательны, не расходуют маркеры и не завершают ваш ход.",
+  "Retrieve this stack without acting?": "Забрать эту стопку без выполнения действия?"
 }

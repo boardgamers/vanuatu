@@ -390,7 +390,25 @@ for (const width of [1440, 390]) {
     await page.locator("dialog[open] [data-confirmed-retrieval]").count(),
     1,
   );
-  assert.match(await page.locator("dialog p").innerText(), /another action/);
+  assert.match(
+    await page.locator(".retrieval-question").innerText(),
+    /Retrieve this stack/,
+  );
+  assert.deepEqual(
+    await page
+      .locator(".retrieval-alternatives [data-action]")
+      .evaluateAll((buttons) => buttons.map((b) => b.dataset.action).sort()),
+    [
+      ...new Set(
+        E.availableMoves(poor)
+          .filter((m) => m.type === "act")
+          .map((m) => m.action),
+      ),
+    ].sort(),
+  );
+  await page
+    .locator("dialog")
+    .screenshot({ path: `.local/qa/retrieval-alternatives-${width}.png` });
   await page.locator("dialog [data-close]").last().click();
   await page.screenshot({
     path: `.local/qa/unaffordable-build-${width}.png`,
@@ -417,6 +435,57 @@ for (const width of [1440, 390]) {
     "Selecting and cancelling actions must not rebuild or scroll the board",
   );
   await page.locator("[data-zoom]").click();
+  await page.locator(".turn-tray .retrieve-warning").click();
+  await page.locator('.retrieval-alternatives [data-action="fish"]').click();
+  assert.equal(await page.locator("dialog[open]").count(), 0);
+  assert.match(await page.locator(".tray-title").innerText(), /Fish/);
+  assert.equal(
+    await page.evaluate(() => JSON.stringify(window.vanuatuDemo.state)),
+    JSON.stringify(poor),
+  );
+  const funded = actionState();
+  funded.players[0].markers = Object.fromEntries(
+    E.ACTIONS.map((a) => [a, a === "build" ? 1 : 0]),
+  );
+  funded.players[0].money = 0;
+  funded.players[0].character = null;
+  funded.players[0].treasures = [3];
+  funded.players[1].markers.rest = 1;
+  await page.evaluate((s) => window.vanuatuDemo.setState(s), funded);
+  await page.locator('[data-action="build"]').click();
+  await page.locator(".turn-tray .retrieve-warning").click();
+  assert.equal(await page.locator(".retrieval-alternatives").count(), 0);
+  assert.match(
+    await page.locator("dialog").innerText(),
+    /After free exchanges/,
+  );
+  assert.match(await page.locator(".retrieval-unlocks").innerText(), /Build/);
+  await page
+    .locator("dialog")
+    .screenshot({ path: `.local/qa/retrieval-funded-${width}.png` });
+  await page.locator('dialog [data-free="treasure"]').click();
+  await page.locator("dialog [data-move]").click();
+  assert.equal(await page.evaluate(() => window.vanuatuDemo.state.actor), 0);
+  assert.equal(
+    await page.evaluate(
+      () => window.vanuatuDemo.state.players[0].markers.build,
+    ),
+    1,
+  );
+  await page.locator('[data-action="build"]').click();
+  assert.equal(await page.locator(".turn-tray .retrieve-warning").count(), 0);
+
+  funded.players[0].treasures = [2];
+  await page.evaluate((s) => window.vanuatuDemo.setState(s), funded);
+  await page.locator('[data-action="build"]').click();
+  await page.locator(".turn-tray .retrieve-warning").click();
+  assert.equal(await page.locator("dialog[open]").count(), 0);
+  assert.equal(
+    await page.evaluate(
+      () => window.vanuatuDemo.state.players[0].markers.build,
+    ),
+    0,
+  );
   for (const action of E.ACTIONS) {
     const s = actionState();
     await page.evaluate((s) => window.vanuatuDemo.setState(s), s);
