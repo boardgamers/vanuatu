@@ -270,7 +270,7 @@
   "Illegal move": "Недопустимый ход",
   "In rounds 2, 4, 6 and 8, a die rolled at the start of the round sets a countdown. During the action phase, each performed action reduces it by 1. At 0, the waters rise immediately after that action, before the next player acts.": "В раундах 2, 4, 6 и 8 бросок кубика в начале раунда задаёт обратный отсчёт. В фазе действий каждое выполненное действие уменьшает его на 1. При 0 вода поднимается сразу после этого действия, до хода следующего игрока.",
   "Income": "Доход",
-  "Instead of an action, move your entire stack to another action.": "Вместо действия переместите всю свою стопку на другое действие.",
+  "Instead of taking an action, move all your markers from one chosen action space to another. Your markers on other spaces stay put.": "Вместо выполнения действия переместите все свои маркеры с одного выбранного поля действия на другое. Ваши маркеры на остальных полях остаются на месте.",
   "Invalid replay position": "Недопустимая позиция повтора",
   "Island": "Остров",
   "Jeu automatique": "Автоигра",

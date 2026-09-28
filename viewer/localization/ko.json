@@ -270,7 +270,7 @@
   "Illegal move": "잘못된 수",
   "In rounds 2, 4, 6 and 8, a die rolled at the start of the round sets a countdown. During the action phase, each performed action reduces it by 1. At 0, the waters rise immediately after that action, before the next player acts.": "2, 4, 6, 8라운드 시작에 주사위를 굴려 카운트다운을 정합니다. 행동 단계에서 행동을 수행할 때마다 1씩 줄입니다. 0이 되면 그 행동 직후, 다음 플레이어가 행동하기 전에 물이 차오릅니다.",
   "Income": "수입",
-  "Instead of an action, move your entire stack to another action.": "행동 대신, 내 말 더미 전체를 다른 행동 칸으로 옮깁니다.",
+  "Instead of taking an action, move all your markers from one chosen action space to another. Your markers on other spaces stay put.": "행동을 수행하는 대신, 선택한 행동 칸 하나에 있는 자신의 마커를 모두 다른 행동 칸으로 옮깁니다. 다른 칸에 있는 자신의 마커는 그대로 둡니다.",
   "Invalid replay position": "잘못된 다시보기 위치",
   "Island": "섬",
   "Jeu automatique": "자동 플레이",

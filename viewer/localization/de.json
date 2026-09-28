@@ -270,7 +270,7 @@
   "Illegal move": "Ungültiger Zug",
   "In rounds 2, 4, 6 and 8, a die rolled at the start of the round sets a countdown. During the action phase, each performed action reduces it by 1. At 0, the waters rise immediately after that action, before the next player acts.": "In den Runden 2, 4, 6 und 8 legt ein Würfelwurf zu Rundenbeginn einen Countdown fest. In der Aktionsphase verringert jede ausgeführte Aktion ihn um 1. Bei 0 steigt das Wasser sofort nach dieser Aktion, bevor der nächste Spieler handelt.",
   "Income": "Einkommen",
-  "Instead of an action, move your entire stack to another action.": "Bewege statt einer Aktion deinen gesamten Stapel zu einer anderen Aktion.",
+  "Instead of taking an action, move all your markers from one chosen action space to another. Your markers on other spaces stay put.": "Statt eine Aktion auszuführen, versetze alle deine Marker von einem gewählten Aktionsfeld auf ein anderes. Deine Marker auf anderen Feldern bleiben liegen.",
   "Invalid replay position": "Ungültige Wiedergabeposition",
   "Island": "Insel",
   "Jeu automatique": "Automatisches Spiel",

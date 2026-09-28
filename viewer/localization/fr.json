@@ -270,7 +270,7 @@
   "Illegal move": "Coup illégal",
   "In rounds 2, 4, 6 and 8, a die rolled at the start of the round sets a countdown. During the action phase, each performed action reduces it by 1. At 0, the waters rise immediately after that action, before the next player acts.": "Aux manches 2, 4, 6 et 8, le dé lancé en début de manche fixe un compte à rebours. Pendant la phase d’actions, chaque action effectuée le réduit de 1. À 0, l’eau monte immédiatement après cette action, avant le joueur suivant.",
   "Income": "Revenu",
-  "Instead of an action, move your entire stack to another action.": "Au lieu d'une action, déplacez toute votre pile vers une autre action.",
+  "Instead of taking an action, move all your markers from one chosen action space to another. Your markers on other spaces stay put.": "Au lieu d’effectuer une action, déplacez tous vos marqueurs d’une case Action choisie vers une autre. Vos marqueurs sur les autres cases restent en place.",
   "Invalid replay position": "Position de relecture invalide",
   "Island": "Île",
   "Jeu automatique": "Jeu automatique",

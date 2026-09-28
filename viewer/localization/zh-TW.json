@@ -270,7 +270,7 @@
   "Illegal move": "無效行動",
   "In rounds 2, 4, 6 and 8, a die rolled at the start of the round sets a countdown. During the action phase, each performed action reduces it by 1. At 0, the waters rise immediately after that action, before the next player acts.": "第2、4、6、8輪開始時擲骰，決定倒數次數。行動階段中，每執行一次行動就減1。歸零時，在該行動結束後、下一位玩家行動前，立即結算海平面上升。",
   "Income": "收入",
-  "Instead of an action, move your entire stack to another action.": "不執行行動，改將自己的一整堆標記移到另一個行動。",
+  "Instead of taking an action, move all your markers from one chosen action space to another. Your markers on other spaces stay put.": "不執行行動，改將你在某一個所選行動格上的全部標記移到另一個行動格。你在其他格上的標記保持原位。",
   "Invalid replay position": "無效的重播位置",
   "Island": "島嶼",
   "Jeu automatique": "自動遊戲",

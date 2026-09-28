@@ -270,7 +270,7 @@
   "Illegal move": "Niedozwolony ruch",
   "In rounds 2, 4, 6 and 8, a die rolled at the start of the round sets a countdown. During the action phase, each performed action reduces it by 1. At 0, the waters rise immediately after that action, before the next player acts.": "W rundach 2, 4, 6 i 8 rzut kością na początku rundy ustala licznik. W fazie akcji każda wykonana akcja zmniejsza go o 1. Przy 0 woda podnosi się natychmiast po tej akcji, zanim zagra kolejny gracz.",
   "Income": "Dochód",
-  "Instead of an action, move your entire stack to another action.": "Zamiast akcji przenieś cały swój stos na inną akcję.",
+  "Instead of taking an action, move all your markers from one chosen action space to another. Your markers on other spaces stay put.": "Zamiast wykonywać akcję, przenieś wszystkie swoje znaczniki z jednego wybranego pola akcji na inne. Twoje znaczniki na pozostałych polach zostają na miejscu.",
   "Invalid replay position": "Nieprawidłowa pozycja powtórki",
   "Island": "Wyspa",
   "Jeu automatique": "Gra automatyczna",

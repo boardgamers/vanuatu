@@ -270,7 +270,7 @@
   "Illegal move": "Jogada ilegal",
   "In rounds 2, 4, 6 and 8, a die rolled at the start of the round sets a countdown. During the action phase, each performed action reduces it by 1. At 0, the waters rise immediately after that action, before the next player acts.": "Nas rodadas 2, 4, 6 e 8, um dado lançado no início da rodada define uma contagem regressiva. Durante a fase de ações, cada ação realizada a reduz em 1. Ao chegar a 0, as águas sobem imediatamente após essa ação, antes do próximo jogador agir.",
   "Income": "Renda",
-  "Instead of an action, move your entire stack to another action.": "Em vez de uma ação, mova toda a sua pilha para outra ação.",
+  "Instead of taking an action, move all your markers from one chosen action space to another. Your markers on other spaces stay put.": "Em vez de realizar uma ação, mova todos os seus marcadores de um único espaço de ação escolhido para outro. Seus marcadores nos demais espaços ficam onde estão.",
   "Invalid replay position": "Posição de replay inválida",
   "Island": "Ilha",
   "Jeu automatique": "Jogo automático",
