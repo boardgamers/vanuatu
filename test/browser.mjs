@@ -44,6 +44,31 @@ const page = await browser.newPage({
 page.on("pageerror", (e) => errors.push(e.message));
 await page.goto(base + "/?new&hotseat");
 await page.waitForSelector("[data-character-choice]");
+// Decorative motion must never move a tile's clickable/focusable SVG bounds.
+await page.emulateMedia({ reducedMotion: "no-preference" });
+assert.equal(
+  await page.evaluate(() => {
+    const cells = [...document.querySelectorAll(".archipelago .map-cell")];
+    const bounds = () =>
+      cells.map((cell) => JSON.stringify(cell.getBoundingClientRect()));
+    const before = bounds();
+    const reflection = document.querySelector(".archipelago .water-shimmer");
+    const animation = reflection.getAnimations()[0];
+    animation.currentTime = 14000;
+    const unchanged = JSON.stringify(before) === JSON.stringify(bounds());
+    animation.currentTime = 0;
+    return unchanged;
+  }),
+  true,
+);
+await page.emulateMedia({ reducedMotion: "reduce" });
+assert.equal(
+  await page
+    .locator(".archipelago .water-shimmer")
+    .evaluate((el) => getComputedStyle(el).animationName),
+  "none",
+);
+await page.emulateMedia({ reducedMotion: "no-preference" });
 // Every supported locale must render translated action tooltips, not English fallbacks.
 const tooltipSource = "Sail 1–3 ocean spaces, paying 1 vatu per space.";
 for (const locale of [
@@ -460,15 +485,17 @@ for (const width of [1440, 390]) {
   assert.ok(
     await page.locator(".sea-board").evaluate((board) => {
       const upcoming = board.querySelector(".upcoming").getBoundingClientRect();
-      return [...board.querySelectorAll(".cell-surface")].every((path) => {
-        const cell = path.getBoundingClientRect();
-        return (
-          cell.bottom <= upcoming.top ||
-          cell.right <= upcoming.left ||
-          cell.top >= upcoming.bottom ||
-          cell.left >= upcoming.right
-        );
-      });
+      return [...board.querySelectorAll(".archipelago .cell-surface")].every(
+        (path) => {
+          const cell = path.getBoundingClientRect();
+          return (
+            cell.bottom <= upcoming.top ||
+            cell.right <= upcoming.left ||
+            cell.top >= upcoming.bottom ||
+            cell.left >= upcoming.right
+          );
+        },
+      );
     }),
     "Overview spaces must stay clear of the upcoming tiles",
   );

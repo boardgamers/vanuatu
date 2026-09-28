@@ -1,6 +1,7 @@
 import { boardCells, tileState, TILES, COLORS } from "../engine/catalog.js";
 import { esc, svgIcon, iconLabel } from "./art.js";
 import { boardArt } from "./board-assets.js";
+import { oceanDefs, oceanSurface } from "./ocean.js";
 const tilt = (20 * Math.PI) / 180;
 const rotate = (x, y) => ({
   x: x * Math.cos(tilt) - y * Math.sin(tilt),
@@ -40,10 +41,10 @@ function tilePath(x, y) {
 const symbols = ["●", "◆", "▲", "■", "✦"];
 function tileImage(spec, c, ghost = false, prefix = "board") {
   const clip = `url(#${prefix}-cell-${c.q + 2}-${c.r})`;
-  const ocean = `<image href="${boardArt({ type: "sea" })}" x="${c.x - 111}" y="${c.y - 111}" width="222" height="222"/>`;
+  const ocean = oceanSurface(c, prefix);
   const art =
     spec.type === "island"
-      ? `<image href="${boardArt(spec)}" x="${c.x - 88}" y="${c.y - 88}" width="176" height="176"/>`
+      ? `<image href="${boardArt(spec)}" x="${c.x - 88}" y="${c.y - 88}" width="176" height="176" mask="url(#${prefix}-coast-mask)"/>`
       : "";
   return `<g ${ghost ? 'class="tile-ghost"' : ""} clip-path="${clip}" pointer-events="none">${ocean}${art}</g>`;
 }
@@ -92,7 +93,7 @@ export function boardSvg(
         `<clipPath id="${prefix}-cell-${c.q + 2}-${c.r}"><path d="${tilePath(c.x, c.y)}"/></clipPath>`,
     )
     .join("");
-  let svg = `<svg class="${preview ? "tile-art" : "archipelago"}${overview ? " overview" : ""}" viewBox="${x0} ${y0} ${x1 - x0} ${y1 - y0}" role="group" aria-label="${preview ? esc(t(s.board["0,0"].type === "island" ? "island" : "sea")) : "Vanuatu"}"><defs>${defs}<filter id="${prefix}-boat-shadow" x="-25%" y="-25%" width="150%" height="150%"><feDropShadow dx="0" dy="0" stdDeviation=".9" flood-color="#fff9df" flood-opacity="1"/><feDropShadow dx="0" dy="2" stdDeviation="1.5" flood-opacity=".45"/></filter></defs>`;
+  let svg = `<svg class="${preview ? "tile-art" : "archipelago"}${overview ? " overview" : ""}" viewBox="${x0} ${y0} ${x1 - x0} ${y1 - y0}" role="group" aria-label="${preview ? esc(t(s.board["0,0"].type === "island" ? "island" : "sea")) : "Vanuatu"}"><defs>${defs}${oceanDefs(prefix)}<filter id="${prefix}-boat-shadow" x="-25%" y="-25%" width="150%" height="150%"><feDropShadow dx="0" dy="0" stdDeviation=".9" flood-color="#fff9df" flood-opacity="1"/><feDropShadow dx="0" dy="2" stdDeviation="1.5" flood-opacity=".45"/></filter></defs>`;
   let dikes = "";
   for (const c of all) {
     const legal = targetSet.has(c.id),

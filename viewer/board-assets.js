@@ -1,4 +1,3 @@
-import { assets } from "./assets.js";
 import efate from "./assets/efate-board.webp";
 import a1 from "./assets/tile-7-board.webp";
 import a2 from "./assets/tile-9-board.webp";
@@ -13,5 +12,4 @@ const islands = {
   "tile-19": d1,
   "tile-21": d2,
 };
-export const boardArt = (tile) =>
-  tile.type === "sea" ? assets.ocean : islands[tile.art];
+export const boardArt = (tile) => islands[tile.art];

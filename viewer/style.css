@@ -301,9 +301,9 @@
   content: "";
   position: absolute;
   inset: 0;
-  background-image: var(--ocean);
-  background-size: 850px;
-  opacity: 0.75;
+  background:
+    radial-gradient(ellipse at 18% 15%, #b6e7db70, transparent 65%),
+    linear-gradient(145deg, #80c7c5, #71b6c5);
   pointer-events: none;
 }
 .vanuatu .map-scroll {
@@ -522,7 +522,7 @@
   height: 260px;
   min-height: 0;
 }
-.vanuatu .upcoming img {
+.vanuatu .upcoming .tile-art {
   width: 57px;
   height: 57px;
   object-fit: contain;
@@ -666,7 +666,7 @@
   border-color: #b17734;
   background: #f8e1ad;
 }
-.vanuatu .tile-choices img {
+.vanuatu .tile-choices .tile-art {
   width: 57px;
   height: 57px;
   object-fit: contain;
@@ -1337,7 +1337,7 @@ body:has(.vanuatu) {
     bottom: calc(var(--tray-height, 95px) + 11px);
     right: 7px;
   }
-  .vanuatu .upcoming img {
+  .vanuatu .upcoming .tile-art {
     width: 37px;
     height: 37px;
   }
@@ -1401,10 +1401,6 @@ body:has(.vanuatu) {
     transition: none !important;
     scroll-behavior: auto !important;
   }
-}
-.vanuatu .sea-board:before {
-  opacity: 0.21;
-  background-size: 520px;
 }
 .vanuatu .archipelago {
   overflow: hidden;
@@ -1740,4 +1736,24 @@ body:has(.vanuatu) {
   display: inline-flex;
   align-items: center;
   gap: 4px;
+}
+
+/* Animate the paint inside the pattern, keeping tile geometry and hit areas fixed. */
+.vanuatu .water-shimmer {
+  opacity: 0.2;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .vanuatu .archipelago .water-shimmer {
+    animation: vanuatu-water-shimmer 14s ease-in-out infinite alternate;
+  }
+}
+@keyframes vanuatu-water-shimmer {
+  from {
+    opacity: 0.12;
+    transform: translate(-1px, 0);
+  }
+  to {
+    opacity: 0.3;
+    transform: translate(1px, 1px);
+  }
 }
