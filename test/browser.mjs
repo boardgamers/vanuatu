@@ -195,17 +195,19 @@ assert.ok(
   ),
 );
 assert.ok(
-  await page
-    .locator(".resource-badge")
-    .evaluateAll((badges) =>
-      badges.every((badge) =>
-        [...badge.querySelectorAll("g")].every(
-          (g) =>
-            g.querySelector("svg").getBoundingClientRect().right <
-            g.querySelector("text").getBoundingClientRect().left,
-        ),
-      ),
+  await page.locator(".resource-badge").evaluateAll((badges) =>
+    badges.every((badge) =>
+      [...badge.querySelectorAll("g")].every((g) => {
+        const icon = g.querySelector("svg"),
+          bounds = icon.getBBox(),
+          right = new DOMPoint(
+            bounds.x + bounds.width,
+            bounds.y,
+          ).matrixTransform(icon.getScreenCTM()).x;
+        return right < g.querySelector("text").getBoundingClientRect().left;
+      }),
     ),
+  ),
 );
 assert.match(
   await page

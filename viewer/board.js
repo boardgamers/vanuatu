@@ -58,9 +58,10 @@ function resourceBadge(x, y, items) {
   let offset = x - width / 2 + 4;
   return `<g class="resource-badge"><rect x="${x - width / 2}" y="${y}" width="${width}" height="30" rx="15" fill="#fff9dfed"/>${items
     .map(({ kind, value, help }, i) => {
-      const left = offset;
+      const left = offset,
+        textOffset = kind === "tourist" ? 23 : 27;
       offset += widths[i];
-      return `<g><title>${esc(help)}</title><rect x="${left}" y="${y}" width="${widths[i]}" height="30" fill="transparent"/>${svgIcon(kind, left, y + 3, 24)}<text x="${left + 27}" y="${y + 21}" class="resource-n">${esc(value)}</text></g>`;
+      return `<g><title>${esc(help)}</title><rect x="${left}" y="${y}" width="${widths[i]}" height="30" fill="transparent"/>${svgIcon(kind, left, y + 3, 24)}<text x="${left + textOffset}" y="${y + 21}" class="resource-n">${esc(value)}</text></g>`;
     })
     .join("")}</g>`;
 }
