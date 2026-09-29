@@ -32,3 +32,5 @@ Read [the beta report](docs/BETA-REPORT.md) before public release: the supplied 
 Guided lessons are available locally at `/?lesson=planning`, `/?lesson=fishing` and `/?lesson=islands`. Add `?players=2&new`, `?water&new` or `?hotseat&new` for practice variants. Practice progress stays in this browser. The viewer defaults to English; French can be selected in Help or in the BGS game preferences.
 
 Release: `pnpm build && pnpm test && pnpm test:browser`, then `node scripts/publish-beta.mjs`. The publisher reads the admin token from `~/.bgs`, keeps the version in beta and ensures the game is listed. It refuses to overwrite a public version. `node test/simulations.mjs` runs the longer complete-game sweep.
+
+Viewer releases: see [uploading the complete viewer build](docs/viewer-publishing.md).

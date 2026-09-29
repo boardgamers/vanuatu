@@ -232,6 +232,11 @@ assert.equal(
 );
 await page.locator("[data-help]").first().click();
 await page.locator("[data-language]").selectOption("fr");
+await page.waitForFunction(
+  () =>
+    document.querySelector("[data-back] span")?.textContent ===
+    "Retour au plateau",
+);
 assert.equal(
   await page.locator("[data-back] span").textContent(),
   "Retour au plateau",
@@ -244,6 +249,10 @@ assert.equal(
 );
 await page.locator("[data-help]").first().click();
 await page.locator("[data-language]").selectOption("en");
+await page.waitForFunction(
+  () =>
+    document.querySelector("[data-back] span")?.textContent === "Back to board",
+);
 assert.equal(
   await page.locator("[data-back] span").textContent(),
   "Back to board",

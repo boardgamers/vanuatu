@@ -55,7 +55,8 @@ registerViewer(
     }
     return {
       chat,
-      onState(state) {
+      async onState(state) {
+        await localization.ready;
         localization.setState(state);
         live = state;
         if (!replaying) {
@@ -73,8 +74,8 @@ registerViewer(
       onPlayer(p) {
         ui.setPlayer(p.index);
       },
-      onPreferences(p) {
-        localization.setLocale(p.locale ?? p.language);
+      async onPreferences(p) {
+        if (!(await localization.setLocale(p.locale ?? p.language))) return;
         ui.setPreferences(p);
       },
       onAvatars(avatars) {

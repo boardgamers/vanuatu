@@ -67,7 +67,7 @@ s.events = [
   { type: "round", round: 2, first: 1 },
 ].map((e, i) => ({ round: 1, step: i + 1, ...e }));
 const server = createServer(async (req, res) => {
-  const name = req.url === "/viewer.css" ? "viewer.css" : "viewer.js";
+  const name = req.url.slice(1);
   if (req.url === "/")
     res.end(
       '<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="/viewer.css"><div id="app"></div><script src="/viewer.js"></script>',
@@ -75,11 +75,20 @@ const server = createServer(async (req, res) => {
   else {
     res.setHeader(
       "Content-Type",
-      name.endsWith("css") ? "text/css" : "text/javascript",
+      name.endsWith(".json")
+        ? "application/json"
+        : name.endsWith(".webp")
+          ? "image/webp"
+          : name.endsWith("css")
+            ? "text/css"
+            : "text/javascript",
     );
-    const url = name.endsWith("css")
-      ? process.env.JOURNAL_CSS_URL
-      : process.env.JOURNAL_JS_URL;
+    const url =
+      name === "viewer.css"
+        ? process.env.JOURNAL_CSS_URL
+        : process.env.JOURNAL_JS_URL
+          ? new URL(name, process.env.JOURNAL_JS_URL).href
+          : undefined;
     if (url) {
       const response = await fetch(url);
       assert.ok(response.ok);

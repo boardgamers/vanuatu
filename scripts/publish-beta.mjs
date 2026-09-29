@@ -1,8 +1,8 @@
+import { uploadViewerFiles } from "./viewer-files.mjs";
 import { chapterMetadata } from "../viewer/tutorials.js";
 import { readFile, mkdir, writeFile } from "node:fs/promises";
 import { homedir } from "node:os";
 import { execFileSync } from "node:child_process";
-import { createHash } from "node:crypto";
 import assert from "node:assert/strict";
 const token = (await readFile(`${homedir()}/.bgs`, "utf8")).trim();
 const base = "https://admin.boardgamers.space/api/admin/gameinfo/vanuatu";
@@ -99,25 +99,15 @@ const engine = await api(
   await readFile(`.local/release/boardgamers-vanuatu-${pkg.version}.tgz`),
   "application/octet-stream",
 );
-const js = await readFile("dist/viewer.js"),
-  css = await readFile("dist/viewer.css");
-const hash = createHash("sha256")
-  .update(js)
-  .update(css)
-  .digest("hex")
-  .slice(0, 16);
-const viewer = await api(
-  `/1/viewer/file?filename=viewer.js&bundle=${hash}`,
-  "POST",
-  js,
-  "application/octet-stream",
+const files = await uploadViewerFiles(
+  "dist",
+  "viewer.js",
+  ["viewer.css"],
+  (query, bytes) =>
+    api("/1/viewer/file?" + query, "POST", bytes, "application/octet-stream"),
 );
-const style = await api(
-  `/1/viewer/file?filename=viewer.css&bundle=${hash}`,
-  "POST",
-  css,
-  "application/octet-stream",
-);
+const viewer = { url: files.url },
+  style = { url: files.stylesheets[0] };
 const { unlisted: _unlisted, ...previous } = existing ?? {};
 await api("/1", "PUT", {
   ...previous,
@@ -126,6 +116,7 @@ await api("/1", "PUT", {
   viewer: {
     ...defaults.viewer,
     url: viewer.url,
+    scriptBytes: files.scriptBytes,
     dependencies: { scripts: [], stylesheets: [style.url] },
   },
 });

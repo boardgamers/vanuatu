@@ -9,6 +9,7 @@ const localization = mountLocalization(
   document.body,
   params.get("locale") ?? "en",
 );
+await localization.ready;
 if (params.has("lesson")) {
   const names = chapterMetadata.map((chapter) => chapter.id);
   const chapter = params.get("lesson");
@@ -61,10 +62,10 @@ if (params.has("lesson")) {
       show();
       scheduleBots();
     },
-    onPreference: (name, value) => {
+    onPreference: async (name, value) => {
       preferences[name] = value;
       localStorage.setItem("vanuatu-preferences", JSON.stringify(preferences));
-      localization.setLocale(preferences.language);
+      await localization.setLocale(preferences.language);
       ui.setPreferences(preferences);
     },
   });
@@ -73,7 +74,7 @@ if (params.has("lesson")) {
     preferences = JSON.parse(localStorage.getItem("vanuatu-preferences")) ?? {};
   } catch {}
   if (params.has("locale")) preferences.language = params.get("locale");
-  localization.setLocale(preferences.language ?? "en");
+  await localization.setLocale(preferences.language ?? "en");
   ui.setPreferences(preferences);
   function save() {
     try {
