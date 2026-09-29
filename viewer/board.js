@@ -49,14 +49,18 @@ function tileImage(spec, c, ghost = false, prefix = "board") {
   return `<g ${ghost ? 'class="tile-ghost"' : ""} clip-path="${clip}" pointer-events="none">${ocean}${art}</g>`;
 }
 function resourceBadge(x, y, items) {
-  const widths = items.map(({ value }) => 34 + String(value).length * 11);
+  const widths = items.map(
+    ({ value }) =>
+      30 +
+      [...String(value)].reduce((width, c) => width + (c === "/" ? 6 : 11), 0),
+  );
   const width = widths.reduce((a, b) => a + b, 0) + 8;
   let offset = x - width / 2 + 4;
   return `<g class="resource-badge"><rect x="${x - width / 2}" y="${y}" width="${width}" height="30" rx="15" fill="#fff9dfed"/>${items
     .map(({ kind, value, help }, i) => {
       const left = offset;
       offset += widths[i];
-      return `<g><title>${esc(help)}</title><rect x="${left}" y="${y}" width="${widths[i]}" height="30" fill="transparent"/>${svgIcon(kind, left, y + 3, 24)}<text x="${left + 29}" y="${y + 21}" class="resource-n">${esc(value)}</text></g>`;
+      return `<g><title>${esc(help)}</title><rect x="${left}" y="${y}" width="${widths[i]}" height="30" fill="transparent"/>${svgIcon(kind, left, y + 3, 24)}<text x="${left + 27}" y="${y + 21}" class="resource-n">${esc(value)}</text></g>`;
     })
     .join("")}</g>`;
 }
@@ -166,10 +170,7 @@ export function boardSvg(
           },
           {
             kind: "draw",
-            value:
-              preview || ghost
-                ? `${tile.drawings}/${spec.drawings}`
-                : tile.drawings,
+            value: `${tile.drawings}/${spec.drawings}`,
             help: `${label("draw")}: ${tile.drawings}/${spec.drawings}`,
           },
         ]);
