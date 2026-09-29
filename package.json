@@ -11,7 +11,7 @@
     "build": "node scripts/build.mjs",
     "test": "node --test test/*.test.js",
     "dev": "node scripts/dev.mjs",
-    "test:browser": "node test/browser.mjs && node test/journal-browser.mjs",
+    "test:browser": "node test/browser.mjs && node test/journal-browser.mjs && node test/map-zoom-browser.mjs",
     "check": "pnpm test:locales && pnpm build && pnpm test && pnpm test:browser && pnpm test:tutorial:browser",
     "test:locales": "node scripts/check-locales.mjs viewer/localization && node --test scripts/localization.test.mjs",
     "test:tutorial:browser": "node test/tutorial-browser.mjs && node test/tutorial-walkthrough-browser.mjs"

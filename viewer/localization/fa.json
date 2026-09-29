@@ -867,5 +867,7 @@
   "Available now": "اکنون در دسترس",
   "After free exchanges": "پس از مبادله‌های آزاد",
   "Free exchanges are optional and do not use markers or end your turn.": "مبادله‌های آزاد اختیاری هستند، نشانگر مصرف نمی‌کنند و نوبت شما را پایان نمی‌دهند.",
-  "Retrieve this stack without acting?": "این دسته را بدون انجام عمل پس می‌گیرید؟"
+  "Retrieve this stack without acting?": "این دسته را بدون انجام عمل پس می‌گیرید؟",
+  "Zoom in": "بزرگ‌نمایی",
+  "Zoom out": "کوچک‌نمایی"
 }

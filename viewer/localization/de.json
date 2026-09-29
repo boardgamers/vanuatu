@@ -867,5 +867,7 @@
   "Available now": "Jetzt möglich",
   "After free exchanges": "Nach freien Tauschaktionen",
   "Free exchanges are optional and do not use markers or end your turn.": "Freie Tauschaktionen sind freiwillig, verbrauchen keine Marker und beenden deinen Zug nicht.",
-  "Retrieve this stack without acting?": "Diesen Stapel ohne Aktion zurücknehmen?"
+  "Retrieve this stack without acting?": "Diesen Stapel ohne Aktion zurücknehmen?",
+  "Zoom in": "Vergrößern",
+  "Zoom out": "Verkleinern"
 }

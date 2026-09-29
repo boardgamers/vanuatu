@@ -867,5 +867,7 @@
   "Available now": "Disponible maintenant",
   "After free exchanges": "Après des échanges libres",
   "Free exchanges are optional and do not use markers or end your turn.": "Les échanges libres sont facultatifs et ne consomment ni marqueurs ni votre tour.",
-  "Retrieve this stack without acting?": "Retirer cette pile sans agir ?"
+  "Retrieve this stack without acting?": "Retirer cette pile sans agir ?",
+  "Zoom in": "Zoomer",
+  "Zoom out": "Dézoomer"
 }

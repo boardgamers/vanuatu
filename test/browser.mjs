@@ -160,15 +160,24 @@ await page.waitForFunction((before) => scrollY > before + 20, beforeSwipe);
 await cdp.send("Emulation.setTouchEmulationEnabled", { enabled: false });
 await cdp.detach();
 await page.evaluate(() => scrollTo(0, 0));
-// The overview remains reachable above the taller character-selection tray.
+// Zoom controls remain reachable above the taller character-selection tray.
 for (const width of [390, 1440]) {
   await page.setViewportSize({ width, height: 1000 });
-  await page.locator("[data-overview]").click();
-  assert.equal(
-    await page.locator("[data-overview]").getAttribute("aria-pressed"),
-    "true",
+  await page.evaluate(
+    () =>
+      new Promise((resolve) =>
+        requestAnimationFrame(() => requestAnimationFrame(resolve)),
+      ),
   );
-  await page.locator("[data-overview]").click();
+  const before = await page
+    .locator(".archipelago")
+    .evaluate((svg) => svg.getBoundingClientRect().width);
+  await page.locator("[data-zoom-in]").click();
+  const after = await page
+    .locator(".archipelago")
+    .evaluate((svg) => svg.getBoundingClientRect().width);
+  assert.ok(Math.abs(after / before - 1.25) < 0.02);
+  await page.locator("[data-zoom-out]").click();
 }
 // Empty action stacks do not leave labels above their icons or shift columns.
 const actionLayout = await page
@@ -361,7 +370,7 @@ for (const width of [1440, 390]) {
   poor.players[0].money = 0;
   poor.players[0].character = null;
   await page.evaluate((s) => window.vanuatuDemo.setState(s), poor);
-  await page.locator("[data-zoom]").click();
+  await page.locator("[data-zoom-in]").click();
   await page.evaluate(() => {
     const map = document.querySelector(".map-scroll");
     map.scrollLeft = 120;
@@ -436,7 +445,7 @@ for (const width of [1440, 390]) {
     }),
     "Selecting and cancelling actions must not rebuild or scroll the board",
   );
-  await page.locator("[data-zoom]").click();
+  await page.locator("[data-zoom-out]").click();
   await page.locator(".turn-tray .retrieve-warning").click();
   await page.locator('.retrieval-alternatives [data-action="fish"]').click();
   assert.equal(await page.locator("dialog[open]").count(), 0);
@@ -532,61 +541,58 @@ for (const width of [1440, 390]) {
   const position = await page.evaluate(() =>
     JSON.stringify(window.vanuatuDemo.state),
   );
-  await page.locator("[data-overview]").click();
+  while (
+    (await page.locator("[data-zoom-out]").getAttribute("aria-disabled")) !==
+    "true"
+  )
+    await page.locator("[data-zoom-out]").click();
   assert.equal(
-    await page.locator("[data-overview]").getAttribute("aria-pressed"),
+    await page.locator("[data-zoom-out]").getAttribute("aria-disabled"),
     "true",
   );
   assert.ok(
     await page.locator(".archipelago").evaluate((svg) => {
       const box = svg.viewBox.baseVal;
-      return [...svg.querySelectorAll(".cell-surface")].every((path) => {
-        const cell = path.getBBox();
-        return (
-          cell.x >= box.x &&
-          cell.y >= box.y &&
-          cell.x + cell.width <= box.x + box.width &&
-          cell.y + cell.height <= box.y + box.height
-        );
-      });
-    }),
-    "Overview must include every empty space",
-  );
-  assert.equal(await page.locator(".map-scroll .map-cell").count(), 16);
-  assert.ok(
-    await page.locator(".sea-board").evaluate((board) => {
-      const upcoming = board.querySelector(".upcoming").getBoundingClientRect();
-      return [...board.querySelectorAll(".archipelago .cell-surface")].every(
+      return [...svg.querySelectorAll(".occupied .cell-surface")].every(
         (path) => {
-          const cell = path.getBoundingClientRect();
+          const cell = path.getBBox();
           return (
-            cell.bottom <= upcoming.top ||
-            cell.right <= upcoming.left ||
-            cell.top >= upcoming.bottom ||
-            cell.left >= upcoming.right
+            cell.x >= box.x &&
+            cell.y >= box.y &&
+            cell.x + cell.width <= box.x + box.width &&
+            cell.y + cell.height <= box.y + box.height
           );
         },
       );
     }),
-    "Overview spaces must stay clear of the upcoming tiles",
+    "Minimum zoom includes all placed tiles",
   );
+  assert.equal(await page.locator(".map-scroll .map-cell").count(), 16);
   assert.equal(
     await page.evaluate(() => JSON.stringify(window.vanuatuDemo.state)),
     position,
   );
   await page.screenshot({
-    path: `.local/qa/overview-${width}.png`,
+    path: `.local/qa/zoom-min-${width}.png`,
     fullPage: true,
   });
-  await page.locator("[data-overview]").click();
+  for (let i = 0; i < 3; i++) await page.locator("[data-zoom-in]").click();
+  assert.ok(
+    Number(await page.locator(".map-scroll").getAttribute("data-zoom")) > 1,
+  );
   assert.equal(
     await page.locator(".archipelago").getAttribute("viewBox"),
     closeView,
   );
-  await page.locator("[data-zoom]").click();
-  await page.locator("[data-overview]").click();
-  assert.equal(await page.locator(".map-scroll.zoomed").count(), 0);
-  await page.locator("[data-overview]").click();
+  await page.screenshot({
+    path: `.local/qa/zoom-mid-${width}.png`,
+    fullPage: true,
+  });
+  while (
+    (await page.locator("[data-zoom-out]").getAttribute("aria-disabled")) !==
+    "true"
+  )
+    await page.locator("[data-zoom-out]").click();
   // Upcoming tiles open with the same starting resources and capacities as the board.
   await page.locator("[data-upcoming]").click();
   const upcoming = await page.evaluate(() => window.vanuatuDemo.state.upcoming);

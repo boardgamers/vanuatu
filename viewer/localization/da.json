@@ -867,5 +867,7 @@
   "Available now": "Muligt nu",
   "After free exchanges": "Efter frie bytter",
   "Free exchanges are optional and do not use markers or end your turn.": "Frie bytter er valgfrie, bruger ingen markører og afslutter ikke din tur.",
-  "Retrieve this stack without acting?": "Tag denne stak tilbage uden at handle?"
+  "Retrieve this stack without acting?": "Tag denne stak tilbage uden at handle?",
+  "Zoom in": "Zoom ind",
+  "Zoom out": "Zoom ud"
 }

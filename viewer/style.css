@@ -311,22 +311,21 @@
   width: 100%;
   overflow: auto;
   overscroll-behavior: auto;
+  touch-action: pan-x pan-y;
   scrollbar-width: thin;
   min-height: 490px;
   height: min(69vh, 740px);
   padding: 65px 10px 83px;
+}
+.vanuatu .map-canvas {
+  display: grid;
+  place-items: center;
 }
 .vanuatu .archipelago {
   display: block;
   width: 100%;
   height: 100%;
   overflow: visible;
-  min-height: 345px;
-}
-.vanuatu .map-scroll.zoomed .archipelago {
-  width: 1450px;
-  height: 900px;
-  min-height: 900px;
 }
 .vanuatu .cell-surface {
   fill: #eafcf915;
@@ -475,9 +474,9 @@
 .vanuatu .map-tools button {
   background: #fff8dfcf;
 }
-.vanuatu .map-tools button[aria-pressed="true"] {
-  background: #fff8df;
-  box-shadow: inset 0 0 0 2px #356658;
+.vanuatu .map-tools button[aria-disabled="true"] {
+  opacity: 0.45;
+  cursor: default;
 }
 .vanuatu .sea-dashboard > * {
   pointer-events: auto;
@@ -1300,9 +1299,6 @@ body:has(.vanuatu) {
     min-height: 430px;
     padding: 80px 0 104px;
   }
-  .vanuatu .archipelago {
-    min-height: 245px;
-  }
   .vanuatu .sea-dashboard {
     top: 8px;
     flex-wrap: wrap;
@@ -1438,23 +1434,12 @@ body:has(.vanuatu) {
 .vanuatu .map-cell:not(.legal) .cell-surface {
   stroke: #e2fff830;
 }
-.vanuatu .archipelago.overview {
-  transform: translateY(-28px);
-}
-.vanuatu .archipelago.overview .map-cell:not(.occupied) .cell-surface {
-  stroke: #28697388;
-  stroke-width: 1;
-  vector-effect: non-scaling-stroke;
-}
 @media (max-width: 700px) {
   .vanuatu .map-scroll {
     padding-bottom: 125px;
   }
   .vanuatu .sea-board:has(.character-tray) .map-scroll {
     padding-bottom: 166px;
-  }
-  .vanuatu .archipelago {
-    min-height: 200px;
   }
   .vanuatu .character-choice {
     min-height: 84px;

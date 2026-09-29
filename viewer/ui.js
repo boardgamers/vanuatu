@@ -18,6 +18,7 @@ import {
   esc,
 } from "./art.js";
 import { boardSvg, center, tilePreviewSvg } from "./board.js";
+import { mountMapZoom } from "./map-zoom.js";
 import { translator, characterHelp } from "./labels.js";
 import { mountActivity } from "./activity.js";
 import { rulesHtml } from "./rules.js";
@@ -70,8 +71,6 @@ export function mountGame(target, options = {}) {
     draft = [],
     tile = null,
     bonus = true,
-    zoom = false,
-    overview = false,
     lang = resolveLocale(options.language ?? "en"),
     hostedLocale = false,
     colorBlind = false,
@@ -91,6 +90,7 @@ export function mountGame(target, options = {}) {
   const moveSound = createMoveSound();
   const events = new AbortController();
   const listener = { signal: events.signal };
+  const mapZoom = mountMapZoom(play);
   const trayObserver = new ResizeObserver(([entry]) => {
     entry.target.parentElement?.style.setProperty(
       "--tray-height",
@@ -399,9 +399,7 @@ export function mountGame(target, options = {}) {
     const focus = play.contains(document.activeElement)
       ? document.activeElement?.getAttribute("data-action")
       : null;
-    const scroll = play.querySelector(".map-scroll");
-    const sx = scroll?.scrollLeft ?? 0,
-      sy = scroll?.scrollTop ?? 0;
+    const mapAnchor = mapZoom.capture();
     const trayHtml = tray();
     const marketHelp = `Fish price: ${s.market} vatus per fish value. Falls by 1 after each sale (minimum 1); resets to 3 next round.`;
     const targets =
@@ -411,7 +409,7 @@ export function mountGame(target, options = {}) {
             .map((m) => m.cell)
         : actualTargets();
     const html = `<header class="game-header"><div class="brand">${btn("🏝️ Vanuatu", "data-boardgame", "wordmark")}<div class="game-credits"><span>Designed by Alain Epron</span><span>Published by Quined Games</span></div></div><div class="round-track" aria-label="${t("round")} ${s.round}/8">${Array.from({ length: 8 }, (_, i) => `<span title="${t("round")} ${i + 1}/8" class="${i + 1 === s.round ? "current" : i + 1 < s.round ? "past" : ""}">${i + 1}</span>`).join("")}</div><nav class="header-tools">${analysis || !options.chat ? "" : titled(t("chat"), `${icon("chat")}<span class="unread-badge" hidden></span>`, 'data-activity="chat"', "icon-button")}${titled(t("journal"), icon("journal"), 'data-activity="journal"', "icon-button")}${titled(t("colorBlind"), icon("colorBlind"), `data-color-blind aria-pressed="${colorBlind}"`, "icon-button")}${titled(t("help"), icon("help"), "data-help", "icon-button")}${titled(t("full"), icon("fullscreen"), "data-fullscreen", "icon-button")}</nav></header>
-  <div class="table">${dock()}<section class="sea-board"><div class="sea-dashboard"><div class="market-info"><span class="fish-price" title="${esc(marketHelp)}">${icon("fish", marketHelp)} = ${token("coin", s.market, marketHelp)}</span><span title="${t("tourist")}">${token("tourist", s.tourists, `${"Tourists available this round"}: ${s.tourists}`)}</span>${s.waterCountdown !== null ? `<span title="${t("waterLeft")}">${token("water", s.waterCountdown, `${t("waterLeft")}: ${s.waterCountdown}`)}</span>` : ""}</div>${tradeShips()}</div><div class="map-scroll ${zoom ? "zoomed" : ""}">${boardSvg(s, { player, colorBlind, overview, language: lang, selected, targets, hoverTile: s.phase === "expand" ? tile : null, t })}</div><div class="map-tools">${titled(overview ? "Focus on placed tiles" : "Show full board", icon("overview"), `data-overview aria-pressed="${overview}"`, "icon-button")}${titled(zoom ? t("fit") : t("zoom"), icon(zoom ? "eye" : "zoom"), "data-zoom", "icon-button")}</div>${s.upcoming.length && s.phase !== "expand" ? titled(t("next"), `${s.upcoming.map((id) => tilePreviewSvg(id, { t, colorBlind, language: lang, prefix: "upcoming-" + id })).join("")}${icon("zoom", t("next"))}`, "data-upcoming", "upcoming") : ""}${trayHtml}</section></div><section class="players">${s.players.map(playerCard).join("")}</section><footer class="play-footer"><span title="${"Automatic conversion"}">${token("coin", 10)} → ${token("point", 5)}</span>${btn(t("help"), "data-help", "text-button")}</footer>`;
+  <div class="table">${dock()}<section class="sea-board"><div class="sea-dashboard"><div class="market-info"><span class="fish-price" title="${esc(marketHelp)}">${icon("fish", marketHelp)} = ${token("coin", s.market, marketHelp)}</span><span title="${t("tourist")}">${token("tourist", s.tourists, `${"Tourists available this round"}: ${s.tourists}`)}</span>${s.waterCountdown !== null ? `<span title="${t("waterLeft")}">${token("water", s.waterCountdown, `${t("waterLeft")}: ${s.waterCountdown}`)}</span>` : ""}</div>${tradeShips()}</div><div class="map-scroll"><div class="map-canvas">${boardSvg(s, { player, colorBlind, language: lang, selected, targets, hoverTile: s.phase === "expand" ? tile : null, t })}</div></div><div class="map-tools">${titled("Zoom out", icon("zoomOut"), "data-zoom-out", "icon-button")}${titled("Zoom in", icon("zoom"), "data-zoom-in", "icon-button")}</div>${s.upcoming.length && s.phase !== "expand" ? titled(t("next"), `${s.upcoming.map((id) => tilePreviewSvg(id, { t, colorBlind, language: lang, prefix: "upcoming-" + id })).join("")}${icon("zoom", t("next"))}`, "data-upcoming", "upcoming") : ""}${trayHtml}</section></div><section class="players">${s.players.map(playerCard).join("")}</section><footer class="play-footer"><span title="${"Automatic conversion"}">${token("coin", 10)} → ${token("point", 5)}</span>${btn(t("help"), "data-help", "text-button")}</footer>`;
     // Patch in place so cached SVG tile images and focused controls survive
     // preference changes and incoming state updates.
     morphdom(play, `<div class="play">${html}</div>`, {
@@ -419,11 +417,7 @@ export function mountGame(target, options = {}) {
       onBeforeElUpdated: (from, to) => !from.isEqualNode(to),
     });
     observeTray();
-    const newScroll = play.querySelector(".map-scroll");
-    if (newScroll) {
-      newScroll.scrollLeft = sx;
-      newScroll.scrollTop = sy;
-    }
+    mapZoom.update(mapAnchor);
     if (focus)
       play
         .querySelector(`[data-action="${focus}"]`)
@@ -627,18 +621,8 @@ export function mountGame(target, options = {}) {
         renderControls();
         return;
       }
-      if ("overview" in d) {
-        overview = !overview;
-        zoom = false;
-        render();
-        play.querySelector("[data-overview]").focus({ preventScroll: true });
-        return;
-      }
-      if ("zoom" in d) {
-        zoom = !zoom;
-        if (zoom) overview = false;
-        render();
-        play.querySelector("[data-zoom]").focus({ preventScroll: true });
+      if ("zoomIn" in d || "zoomOut" in d) {
+        mapZoom.step("zoomIn" in d ? 1 : -1);
         return;
       }
       if ("characterChoice" in d) {
@@ -851,6 +835,7 @@ export function mountGame(target, options = {}) {
     },
     destroy() {
       events.abort();
+      mapZoom.destroy();
       trayObserver.disconnect();
       moveSound.destroy();
       offChat?.();

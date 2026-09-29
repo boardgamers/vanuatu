@@ -867,5 +867,7 @@
   "Available now": "目前可執行",
   "After free exchanges": "自由交換後",
   "Free exchanges are optional and do not use markers or end your turn.": "自由交換是可選的，不會消耗標記或結束你的回合。",
-  "Retrieve this stack without acting?": "要收回這疊標記而不執行行動嗎？"
+  "Retrieve this stack without acting?": "要收回這疊標記而不執行行動嗎？",
+  "Zoom in": "放大",
+  "Zoom out": "縮小"
 }

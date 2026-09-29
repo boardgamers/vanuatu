@@ -867,5 +867,7 @@
   "Available now": "Dostępne teraz",
   "After free exchanges": "Po wymianach darmowych",
   "Free exchanges are optional and do not use markers or end your turn.": "Darmowe wymiany są opcjonalne, nie zużywają znaczników i nie kończą twojej tury.",
-  "Retrieve this stack without acting?": "Zabrać ten stos bez wykonywania akcji?"
+  "Retrieve this stack without acting?": "Zabrać ten stos bez wykonywania akcji?",
+  "Zoom in": "Przybliż",
+  "Zoom out": "Oddal"
 }

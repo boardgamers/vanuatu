@@ -52,6 +52,8 @@ const paths = {
     '<path d="m5 16 8 8L28 7" fill="none" stroke="currentColor" stroke-width="3"/>',
   eye: '<path d="M2 16Q16-2 30 16 16 34 2 16z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="16" cy="16" r="5" fill="currentColor"/>',
   zoom: '<circle cx="13" cy="13" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="m20 20 9 9M8 13h10m-5-5v10" stroke="currentColor" stroke-width="2"/>',
+  zoomOut:
+    '<circle cx="13" cy="13" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="m20 20 9 9M8 13h10" stroke="currentColor" stroke-width="2"/>',
   sound:
     '<path d="M3 12h7l8-7v22l-8-7H3zM23 10q8 6 0 12" fill="none" stroke="currentColor" stroke-width="2"/>',
 };
@@ -87,6 +89,7 @@ const meanings = {
   check: ["Complete", "Terminé"],
   eye: ["Overview", "Vue d’ensemble"],
   zoom: ["Zoom board", "Agrandir le plateau"],
+  zoomOut: ["Zoom out", "Dézoomer"],
   sound: ["Game sounds", "Sons du jeu"],
 };
 export const iconLabel = (name, language = "en") => meanings[name]?.[0] ?? name;

@@ -867,5 +867,7 @@
   "Available now": "지금 가능",
   "After free exchanges": "자유 교환 후",
   "Free exchanges are optional and do not use markers or end your turn.": "자유 교환은 선택 사항이며, 마커를 사용하거나 차례를 끝내지 않습니다.",
-  "Retrieve this stack without acting?": "행동하지 않고 이 더미를 회수할까요?"
+  "Retrieve this stack without acting?": "행동하지 않고 이 더미를 회수할까요?",
+  "Zoom in": "확대",
+  "Zoom out": "축소"
 }

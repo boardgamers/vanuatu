@@ -867,5 +867,7 @@
   "Available now": "Διαθέσιμα τώρα",
   "After free exchanges": "Μετά από δωρεάν ανταλλαγές",
   "Free exchanges are optional and do not use markers or end your turn.": "Οι δωρεάν ανταλλαγές είναι προαιρετικές, δεν καταναλώνουν δείκτες και δεν τελειώνουν τη σειρά σου.",
-  "Retrieve this stack without acting?": "Να πάρεις πίσω αυτή τη στοίβα χωρίς ενέργεια;"
+  "Retrieve this stack without acting?": "Να πάρεις πίσω αυτή τη στοίβα χωρίς ενέργεια;",
+  "Zoom in": "Μεγέθυνση",
+  "Zoom out": "Σμίκρυνση"
 }

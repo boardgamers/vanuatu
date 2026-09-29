@@ -867,5 +867,7 @@
   "Available now": "Доступно сейчас",
   "After free exchanges": "После свободных обменов",
   "Free exchanges are optional and do not use markers or end your turn.": "Свободные обмены необязательны, не расходуют маркеры и не завершают ваш ход.",
-  "Retrieve this stack without acting?": "Забрать эту стопку без выполнения действия?"
+  "Retrieve this stack without acting?": "Забрать эту стопку без выполнения действия?",
+  "Zoom in": "Приблизить",
+  "Zoom out": "Отдалить"
 }
