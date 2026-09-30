@@ -394,11 +394,11 @@ export function mountActivity(
     refreshAvatars() {
       view?.refresh();
     },
-    setUnread(n) {
+    setUnread(n, notifications = true) {
       const badge = root.querySelector(".unread");
       badge.textContent = n;
       badge.hidden = !n;
-      shortcut.hidden = !n || analysis;
+      shortcut.hidden = !notifications || !n || analysis;
       shortcut.innerHTML = `${icon("chat")} ${n}`;
       shortcut.setAttribute("aria-label", `${t("chat")}: ${n}`);
     },

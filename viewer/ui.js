@@ -431,6 +431,7 @@ export function mountGame(target, options = {}) {
     activity.update(s, analysis, colorBlind);
     updateUnread();
   }
+  let chatNotifications = true;
   function updateUnread() {
     const n = options.chat?.snapshot.unreadIds.length ?? 0;
     const badge = play.querySelector(".unread-badge");
@@ -438,7 +439,7 @@ export function mountGame(target, options = {}) {
       badge.textContent = n;
       badge.hidden = !n;
     }
-    activity.setUnread(n);
+    activity.setUnread(n, chatNotifications);
   }
   const offChat = options.chat?.subscribe(updateUnread);
   function showDialog(html) {
@@ -817,6 +818,7 @@ export function mountGame(target, options = {}) {
       render();
     },
     setPreferences(p) {
+      chatNotifications = p.chatNotifications !== false;
       analysis = p.analysis === true;
       colorBlind = p.colorBlind === true;
       sound = p.sound === true;
