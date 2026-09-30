@@ -45,6 +45,17 @@ try {
     page.on("pageerror", (error) => errors.push(error.message));
     await page.goto(base + "/?new&hotseat&locale=fr");
     await page.waitForSelector(".map-scroll[data-zoom]");
+    assert.equal(
+      await page
+        .locator(".archipelago")
+        .evaluate((svg) =>
+          svg
+            .getAnimations({ subtree: true })
+            .some((a) => a.playState === "running"),
+        ),
+      false,
+      "The mobile board must not continuously repaint decorative water",
+    );
     await page.locator(".sea-board").scrollIntoViewIfNeeded();
     const map = page.locator(".map-scroll");
     const zoom = () => map.evaluate((el) => Number(el.dataset.zoom));
@@ -80,6 +91,11 @@ try {
       { id: 1, x: midpoint.x - distance / 2, y: midpoint.y },
       { id: 2, x: midpoint.x + distance / 2, y: midpoint.y },
     ];
+    // Real pinches usually begin with one finger, then add the second.
+    await cdp.send("Input.dispatchTouchEvent", {
+      type: "touchStart",
+      touchPoints: points(80).slice(0, 1),
+    });
     await cdp.send("Input.dispatchTouchEvent", {
       type: "touchStart",
       touchPoints: points(80),

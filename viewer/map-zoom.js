@@ -7,6 +7,9 @@ export function mountMapZoom(root) {
   let zoom,
     observed,
     pinch,
+    mapEvents,
+    pinchEvents,
+    layoutKey,
     suppressClick = false;
   const events = new AbortController();
   const observer = new ResizeObserver(() => update(capture()));
@@ -59,12 +62,34 @@ export function mountMapZoom(root) {
     const scale = Math.min(f.width / box.width, f.height / box.height) * zoom;
     const width = box.width * scale,
       height = box.height * scale;
-    canvas.style.width = `${Math.max(f.width, width)}px`;
-    canvas.style.height = `${Math.max(f.height, height)}px`;
-    svg.style.width = `${width}px`;
-    svg.style.height = `${height}px`;
-    map.dataset.zoom = String(zoom);
-    if (anchor) {
+    let resized = false;
+    for (const [node, property, value] of [
+      [canvas, "width", Math.max(f.width, width)],
+      [canvas, "height", Math.max(f.height, height)],
+      [svg, "width", width],
+      [svg, "height", height],
+    ]) {
+      // CSSOM rounds fractional pixels; comparing the serialized strings can
+      // otherwise rewrite the same size after every state update.
+      if (
+        !node.style[property] ||
+        Math.abs(parseFloat(node.style[property]) - value) > 0.01
+      ) {
+        node.style[property] = `${value}px`;
+        resized = true;
+      }
+    }
+    const nextLayout = [
+      box.x,
+      box.y,
+      box.width,
+      box.height,
+      f.width,
+      f.height,
+      zoom,
+    ].join();
+    if (map.dataset.zoom !== String(zoom)) map.dataset.zoom = String(zoom);
+    if (anchor && (resized || layoutKey !== nextLayout)) {
       const client = anchor.client ?? center(map);
       const actual = anchor.world.matrixTransform(svg.getScreenCTM());
       map.scrollLeft += actual.x - client.x;
@@ -73,14 +98,32 @@ export function mountMapZoom(root) {
       map.scrollLeft = (canvas.clientWidth - f.width) / 2;
       map.scrollTop = (canvas.clientHeight - f.height) / 2;
     }
-    root
-      .querySelector("[data-zoom-out]")
-      ?.setAttribute("aria-disabled", String(zoom <= MIN_ZOOM));
-    root
-      .querySelector("[data-zoom-in]")
-      ?.setAttribute("aria-disabled", String(zoom >= MAX_ZOOM));
+    layoutKey = nextLayout;
+    for (const [selector, disabled] of [
+      ["[data-zoom-out]", zoom <= MIN_ZOOM],
+      ["[data-zoom-in]", zoom >= MAX_ZOOM],
+    ]) {
+      const button = root.querySelector(selector);
+      if (button?.getAttribute("aria-disabled") !== String(disabled))
+        button?.setAttribute("aria-disabled", String(disabled));
+    }
     if (observed !== map) {
       observer.disconnect();
+      mapEvents?.abort();
+      endPinch();
+      mapEvents = new AbortController();
+      map.addEventListener("touchstart", startPinch, {
+        passive: true,
+        signal: mapEvents.signal,
+      });
+      for (const type of ["touchend", "touchcancel"])
+        map.addEventListener(
+          type,
+          (event) => {
+            if (event.touches.length < 2) endPinch();
+          },
+          { passive: true, signal: mapEvents.signal },
+        );
       observer.observe(map, { box: "border-box" });
       observed = map;
     }
@@ -96,26 +139,42 @@ export function mountMapZoom(root) {
       point: { x: (a.clientX + b.clientX) / 2, y: (a.clientY + b.clientY) / 2 },
     };
   };
-  root.addEventListener(
-    "touchstart",
-    (event) => {
-      if (event.touches.length === 1) suppressClick = false;
-      const el = elements();
-      if (
-        !el ||
-        event.touches.length !== 2 ||
-        ![...event.touches].every((t) => el.map.contains(t.target))
-      )
-        return;
-      const { distance, point } = geometry(event.touches);
-      const anchor = capture(point);
-      if (!distance || !anchor) return;
-      pinch = { distance, zoom, anchor };
-      suppressClick = true;
-      if (event.cancelable) event.preventDefault();
-    },
-    { passive: false, signal: events.signal },
-  );
+  function endPinch() {
+    pinch = null;
+    pinchEvents?.abort();
+    pinchEvents = null;
+  }
+  function startPinch(event) {
+    if (event.touches.length === 1) suppressClick = false;
+    const map = event.currentTarget;
+    if (
+      event.touches.length !== 2 ||
+      ![...event.touches].every((t) => map.contains(t.target))
+    )
+      return;
+    const { distance, point } = geometry(event.touches);
+    const anchor = capture(point);
+    if (!distance || !anchor) return;
+    endPinch();
+    pinch = { distance, zoom, anchor };
+    suppressClick = true;
+    // Ordinary swipes stay native. Only a two-finger map gesture needs a
+    // cancellable move listener; do not make all page scrolling wait for JS.
+    pinchEvents = new AbortController();
+    map.addEventListener("touchmove", movePinch, {
+      passive: false,
+      signal: pinchEvents.signal,
+    });
+  }
+  function movePinch(event) {
+    if (!pinch || event.touches.length !== 2) return;
+    if (event.cancelable) event.preventDefault();
+    const { distance, point } = geometry(event.touches);
+    setZoom((pinch.zoom * distance) / pinch.distance, {
+      ...pinch.anchor,
+      client: point,
+    });
+  }
   root.addEventListener(
     "pointerdown",
     (event) => {
@@ -123,29 +182,6 @@ export function mountMapZoom(root) {
     },
     { signal: events.signal },
   );
-  root.addEventListener(
-    "touchmove",
-    (event) => {
-      if (!pinch || event.touches.length !== 2) return;
-      if (event.cancelable) event.preventDefault();
-      const { distance, point } = geometry(event.touches);
-      setZoom((pinch.zoom * distance) / pinch.distance, {
-        ...pinch.anchor,
-        client: point,
-      });
-    },
-    { passive: false, signal: events.signal },
-  );
-  for (const type of ["touchend", "touchcancel"])
-    root.addEventListener(
-      type,
-      (event) => {
-        if (!pinch || event.touches.length >= 2) return;
-        pinch = null;
-        if (event.cancelable) event.preventDefault();
-      },
-      { passive: false, signal: events.signal },
-    );
   root.addEventListener(
     "click",
     (event) => {
@@ -168,6 +204,8 @@ export function mountMapZoom(root) {
       setZoom((zoom ?? 1) * STEP ** direction);
     },
     destroy() {
+      endPinch();
+      mapEvents?.abort();
       events.abort();
       observer.disconnect();
     },

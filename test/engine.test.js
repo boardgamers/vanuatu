@@ -247,6 +247,68 @@ test("batched planning accounts for the first new marker as a prerequisite", () 
     ),
   );
 });
+test("planning a sale before export uses the cash left after immediate conversion", () => {
+  for (const { money, fish, market, cash, points, allowed } of [
+    { money: 0, fish: [3], market: 3, cash: 9, points: 0, allowed: true },
+    // Reported position: 1 + 3 × 3 = 10 vatus becomes 5 prosperity, 0 cash.
+    { money: 1, fish: [3], market: 3, cash: 0, points: 5, allowed: false },
+    { money: 1, fish: [3], market: 2, cash: 7, points: 0, allowed: true },
+    { money: 1, fish: [1], market: 3, cash: 4, points: 0, allowed: true },
+    { money: 1, fish: [1], market: 1, cash: 2, points: 0, allowed: false },
+  ]) {
+    const s = actionState();
+    s.phase = "plan";
+    s.planningPass = 0;
+    Object.assign(s.players[0], {
+      money,
+      fish,
+      markers: Object.fromEntries(E.ACTIONS.map((a) => [a, 0])),
+    });
+    s.market = market;
+    s.board["0,0"].huts = [0];
+    s.board["0,0"].goods = { kava: 0, copra: 0, beef: 1 };
+    const label = JSON.stringify({ money, fish, market });
+    assert.equal(
+      E.availableMoves(s).some(
+        (m) => m.type === "plan" && m.actions.join() === "sell,buy",
+      ),
+      allowed,
+      label,
+    );
+
+    s.phase = "actions";
+    s.players[0].markers.sell = 1;
+    s.players[0].markers.buy = 1;
+    const afterSale = E.move(s, act(s, 0, "sell", { fish }), 0);
+    assert.equal(afterSale.players[0].money, cash, label);
+    assert.equal(afterSale.players[0].score, points, label);
+    assert.equal(
+      E.actionOptions(afterSale, 0, "buy").some((m) => m.good === "beef"),
+      allowed,
+      label,
+    );
+  }
+});
+test("planned sailing can spend a vatu before a sale to avoid conversion and fund export", () => {
+  const s = actionState();
+  s.phase = "plan";
+  s.planningPass = 0;
+  Object.assign(s.players[0], {
+    money: 1,
+    fish: [3],
+    markers: Object.fromEntries(E.ACTIONS.map((a) => [a, 0])),
+  });
+  s.market = 3;
+  s.board["0,0"].huts = [0];
+  s.board["0,0"].goods = { kava: 0, copra: 0, beef: 1 };
+  const sellThenExport = () =>
+    E.availableMoves(s).some(
+      (m) => m.type === "plan" && m.actions.join() === "sell,buy",
+    );
+  assert.equal(sellThenExport(), false);
+  s.players[0].markers.sail = 1;
+  assert.equal(sellThenExport(), true);
+});
 test("an optional treasure sale is not skipped by automatic marker retrieval", () => {
   let s = actionState();
   s.actor = 0;

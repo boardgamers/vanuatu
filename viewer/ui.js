@@ -1,7 +1,7 @@
 import { blockingHtml, blockingText } from "./blocking.js";
 import { FIRST_HELP, RETRIEVE_HELP } from "./learning.js";
 import { EXTEND_WHO, EXTEND_HOW, REMAINING_TILES } from "./learning.js";
-import morphdom from "morphdom";
+import { createRenderer } from "./dom.js";
 import {
   ACTIONS,
   CHARACTERS,
@@ -76,7 +76,23 @@ export function mountGame(target, options = {}) {
     colorBlind = false,
     sound = false,
     revision,
+    stateKey,
     focusReturn;
+  const patch = createRenderer(
+    ".game-header, .action-dock, .market-info, .demand-ships, .map-scroll, .map-tools, .upcoming, .turn-tray, .player-card, .play-footer",
+    (from, to) => {
+      // These attributes belong to the layout/zoom controllers, not the state.
+      const attr = from.matches(".sea-board, .map-canvas, .archipelago")
+        ? "style"
+        : from.matches(".map-scroll")
+          ? "data-zoom"
+          : from.matches("[data-zoom-in], [data-zoom-out]")
+            ? "aria-disabled"
+            : null;
+      if (attr && from.hasAttribute(attr))
+        to.setAttribute(attr, from.getAttribute(attr));
+    },
+  );
   const icon = (name, label) =>
     renderIcon(
       name,
@@ -92,15 +108,18 @@ export function mountGame(target, options = {}) {
   const listener = { signal: events.signal };
   const mapZoom = mountMapZoom(play);
   const trayObserver = new ResizeObserver(([entry]) => {
-    entry.target.parentElement?.style.setProperty(
-      "--tray-height",
-      `${entry.target.getBoundingClientRect().height}px`,
-    );
+    const parent = entry.target.parentElement;
+    const height = `${entry.borderBoxSize?.[0]?.blockSize ?? entry.target.getBoundingClientRect().height}px`;
+    if (parent && parent.style.getPropertyValue("--tray-height") !== height)
+      parent.style.setProperty("--tray-height", height);
   });
+  let observedTray;
   function observeTray() {
-    trayObserver.disconnect();
     const tray = play.querySelector(".turn-tray");
-    if (tray) trayObserver.observe(tray);
+    if (tray === observedTray) return;
+    trayObserver.disconnect();
+    if (tray) trayObserver.observe(tray, { box: "border-box" });
+    observedTray = tray;
   }
   const activity = mountActivity(root.querySelector(".activity-root"), {
     chat: options.chat,
@@ -221,7 +240,7 @@ export function mountGame(target, options = {}) {
   }
   function playerCard(p, i) {
     const c = CHARACTERS[p.character];
-    return `<section class="player-card ${i === s.actor && !s.finished ? "active" : ""} ${i === player ? "own" : ""}" style="--player:${p.color}"><div class="player-name">${btn(`${avatars[i] ? `<img class="player-avatar" src="${esc(avatars[i])}" alt="">` : ""}<span>${colorBlind ? symbols[i] + " " : ""}${esc(p.name)}</span>`, `data-bgs-player="${i}"`, "profile")} ${s.first === i ? btn(icon("first", translateText(FIRST_HELP, lang)), `data-first-help aria-label="${t("first")}"`, "icon-button") : ""}<strong class="score">${token("point", p.score)}</strong></div><div class="player-supplies">${token("coin", p.money)}<span class="hand" title="${t("fishStock")}">${p.fish.length ? p.fish.map((n) => token("fish", n)).join("") : token("fish", 0)}</span><span class="hand" title="${t("treasure")}">${p.treasures.length ? p.treasures.map((n) => token("explore", n)).join("") : token("explore", 0)}</span>${token("build", p.hutsLeft)}</div>${c ? `<button type="button" class="character-owned ${p.used ? "used" : ""}" data-character="${p.character}"><img src="${assets["character-" + c.art]}" alt=""><span>${charName(p.character)}</span>${p.used ? icon("check") : icon(c.action ?? "point")}</button>` : ""}${i === player ? `<div class="free-actions">${legal().some((m) => m.type === "treasure") ? btn(`${icon("explore")} → ${icon("coin")}`, `data-free="treasure" title="${t("treasure")}"`) : ""}${legal().some((m) => m.type === "beg") ? btn(`${icon("point")} → ${icon("coin")}`, `data-free="beg" title="${t("beg")}"`) : ""}</div>` : ""}</section>`;
+    return `<section class="player-card ${i === s.actor && !s.finished ? "active" : ""} ${i === player ? "own" : ""}" style="--player:${p.color}"><div class="player-name">${btn(`${avatars[i] ? `<img class="player-avatar" src="${esc(avatars[i])}" alt="">` : ""}<span>${colorBlind ? symbols[i] + " " : ""}${esc(p.name)}</span>`, `data-bgs-player="${i}" title="${esc(p.name)}"`, "profile")} ${s.first === i ? btn(icon("first", translateText(FIRST_HELP, lang)), `data-first-help aria-label="${t("first")}"`, "icon-button") : ""}<strong class="score">${token("point", p.score)}</strong></div><div class="player-supplies">${token("coin", p.money)}<span class="hand" title="${t("fishStock")}">${p.fish.length ? p.fish.map((n) => token("fish", n)).join("") : token("fish", 0)}</span><span class="hand" title="${t("treasure")}">${p.treasures.length ? p.treasures.map((n) => token("explore", n)).join("") : token("explore", 0)}</span>${token("build", p.hutsLeft)}</div>${c ? `<button type="button" class="character-owned ${p.used ? "used" : ""}" data-character="${p.character}" title="${charName(p.character)}"><img src="${assets["character-" + c.art]}" alt=""><span>${charName(p.character)}</span>${p.used ? icon("check") : icon(c.action ?? "point")}</button>` : ""}${i === player ? `<div class="free-actions">${legal().some((m) => m.type === "treasure") ? btn(`${icon("explore")} → ${icon("coin")}`, `data-free="treasure" title="${t("treasure")}"`) : ""}${legal().some((m) => m.type === "beg") ? btn(`${icon("point")} → ${icon("coin")}`, `data-free="beg" title="${t("beg")}"`) : ""}</div>` : ""}</section>`;
   }
   function dock() {
     const planning = ["plan", "neutral"].includes(s.phase) && working().length;
@@ -362,9 +381,11 @@ export function mountGame(target, options = {}) {
   }
   function renderControls() {
     const focus = document.activeElement?.getAttribute("data-action");
-    play.querySelector(".action-dock").outerHTML = dock();
-    play.querySelector(".turn-tray").outerHTML = tray();
+    patch(play.querySelector(".action-dock"), dock());
+    patch(play.querySelector(".turn-tray"), tray());
     observeTray();
+    // The highlights below are updated outside the HTML renderer.
+    patch.invalidate(play.querySelector(".map-scroll"));
     const targets = new Set(actualTargets());
     for (const cell of play.querySelectorAll(".map-cell[data-cell]")) {
       const id = cell.dataset.cell;
@@ -391,6 +412,34 @@ export function mountGame(target, options = {}) {
         .querySelector(`[data-action="${focus}"]`)
         ?.focus({ preventScroll: true });
   }
+  let boardKey, boardHtml;
+  function renderBoard(targets) {
+    const hoverTile = s.phase === "expand" ? tile : null;
+    const next = JSON.stringify([
+      s.boardLayout,
+      s.board,
+      s.players.map(({ boat, name, color }) => [boat, name, color]),
+      player,
+      colorBlind,
+      lang,
+      selected,
+      targets,
+      hoverTile,
+    ]);
+    if (boardKey !== next) {
+      boardKey = next;
+      boardHtml = boardSvg(s, {
+        player,
+        colorBlind,
+        language: lang,
+        selected,
+        targets,
+        hoverTile,
+        t,
+      });
+    }
+    return boardHtml;
+  }
   function render() {
     if (!s) {
       play.innerHTML = `<p class="loading">${t("connected")}</p>`;
@@ -409,13 +458,10 @@ export function mountGame(target, options = {}) {
             .map((m) => m.cell)
         : actualTargets();
     const html = `<header class="game-header"><div class="brand">${btn("🏝️ Vanuatu", "data-boardgame", "wordmark")}<div class="game-credits"><span>Designed by Alain Epron</span><span>Published by Quined Games</span></div></div><div class="round-track" aria-label="${t("round")} ${s.round}/8">${Array.from({ length: 8 }, (_, i) => `<span title="${t("round")} ${i + 1}/8" class="${i + 1 === s.round ? "current" : i + 1 < s.round ? "past" : ""}">${i + 1}</span>`).join("")}</div><nav class="header-tools">${analysis || !options.chat ? "" : titled(t("chat"), `${icon("chat")}<span class="unread-badge" hidden></span>`, 'data-activity="chat"', "icon-button")}${titled(t("journal"), icon("journal"), 'data-activity="journal"', "icon-button")}${titled(t("colorBlind"), icon("colorBlind"), `data-color-blind aria-pressed="${colorBlind}"`, "icon-button")}${titled(t("help"), icon("help"), "data-help", "icon-button")}${titled(t("full"), icon("fullscreen"), "data-fullscreen", "icon-button")}</nav></header>
-  <div class="table">${dock()}<section class="sea-board"><div class="sea-dashboard"><div class="market-info"><span class="fish-price" title="${esc(marketHelp)}">${icon("fish", marketHelp)} = ${token("coin", s.market, marketHelp)}</span><span title="${t("tourist")}">${token("tourist", s.tourists, `${"Tourists available this round"}: ${s.tourists}`)}</span>${s.waterCountdown !== null ? `<span title="${t("waterLeft")}">${token("water", s.waterCountdown, `${t("waterLeft")}: ${s.waterCountdown}`)}</span>` : ""}</div>${tradeShips()}</div><div class="map-scroll"><div class="map-canvas">${boardSvg(s, { player, colorBlind, language: lang, selected, targets, hoverTile: s.phase === "expand" ? tile : null, t })}</div></div><div class="map-tools">${titled("Zoom out", icon("zoomOut"), "data-zoom-out", "icon-button")}${titled("Zoom in", icon("zoom"), "data-zoom-in", "icon-button")}</div>${s.upcoming.length && s.phase !== "expand" ? titled(t("next"), `${s.upcoming.map((id) => tilePreviewSvg(id, { t, colorBlind, language: lang, prefix: "upcoming-" + id })).join("")}${icon("zoom", t("next"))}`, "data-upcoming", "upcoming") : ""}${trayHtml}</section></div><section class="players">${s.players.map(playerCard).join("")}</section><footer class="play-footer"><span title="${"Automatic conversion"}">${token("coin", 10)} → ${token("point", 5)}</span>${btn(t("help"), "data-help", "text-button")}</footer>`;
+  <div class="table">${dock()}<section class="sea-board"><div class="sea-dashboard"><div class="market-info"><span class="fish-price" title="${esc(marketHelp)}">${icon("fish", marketHelp)} = ${token("coin", s.market, marketHelp)}</span><span title="${t("tourist")}">${token("tourist", s.tourists, `${"Tourists available this round"}: ${s.tourists}`)}</span>${s.waterCountdown !== null ? `<span title="${t("waterLeft")}">${token("water", s.waterCountdown, `${t("waterLeft")}: ${s.waterCountdown}`)}</span>` : ""}</div>${tradeShips()}</div><div class="map-scroll"><div class="map-canvas">${renderBoard(targets)}</div></div><div class="map-tools">${titled("Zoom out", icon("zoomOut"), "data-zoom-out", "icon-button")}${titled("Zoom in", icon("zoom"), "data-zoom-in", "icon-button")}</div>${s.upcoming.length && s.phase !== "expand" ? titled(t("next"), `${s.upcoming.map((id) => tilePreviewSvg(id, { t, colorBlind, language: lang, prefix: "upcoming-" + id })).join("")}${icon("zoom", t("next"))}`, "data-upcoming", "upcoming") : ""}${trayHtml}</section></div><section class="players">${s.players.map(playerCard).join("")}</section><footer class="play-footer"><span title="${"Automatic conversion"}">${token("coin", 10)} → ${token("point", 5)}</span>${btn(t("help"), "data-help", "text-button")}</footer>`;
     // Patch in place so cached SVG tile images and focused controls survive
     // preference changes and incoming state updates.
-    morphdom(play, `<div class="play">${html}</div>`, {
-      childrenOnly: true,
-      onBeforeElUpdated: (from, to) => !from.isEqualNode(to),
-    });
+    patch(play, `<div class="play">${html}</div>`, true);
     observeTray();
     mapZoom.update(mapAnchor);
     if (focus)
@@ -436,8 +482,8 @@ export function mountGame(target, options = {}) {
     const n = options.chat?.snapshot.unreadIds.length ?? 0;
     const badge = play.querySelector(".unread-badge");
     if (badge) {
-      badge.textContent = n;
-      badge.hidden = !n;
+      if (badge.textContent !== String(n)) badge.textContent = n;
+      if (badge.hidden !== !n) badge.hidden = !n;
     }
     activity.setUnread(n, chatNotifications);
   }
@@ -790,34 +836,39 @@ export function mountGame(target, options = {}) {
     root,
     render(state) {
       const next = `${state.historyLength ?? state.round + ":" + state.phase}:${player}`;
+      const key = JSON.stringify(state);
+      s = state;
+      if (stateKey === key && next === revision) return;
+      stateKey = key;
       if (next !== revision) {
         selected = null;
         action = null;
         draft = [];
         revision = next;
       }
-      s = state;
       render();
     },
     setAvatars(value) {
+      if (JSON.stringify(avatars) === JSON.stringify(value)) return;
       avatars = value;
       render();
       activity.refreshAvatars();
     },
     setPlayer(p) {
-      if (player !== p) {
-        player = p;
-        draft = [];
-        action = null;
-        selected = null;
-      }
+      if (player === p) return;
+      player = p;
+      draft = [];
+      action = null;
+      selected = null;
       render();
     },
     setEnabled(v) {
+      if (enabled === v) return;
       enabled = v;
       render();
     },
     setPreferences(p) {
+      const previous = `${analysis}:${colorBlind}:${lang}`;
       chatNotifications = p.chatNotifications !== false;
       analysis = p.analysis === true;
       colorBlind = p.colorBlind === true;
@@ -825,15 +876,19 @@ export function mountGame(target, options = {}) {
       moveSound.setEnabled(sound);
       for (const [name, value] of Object.entries({ colorBlind, sound })) {
         const checkbox = dialog.querySelector(`[data-pref="${name}"]`);
-        if (checkbox) checkbox.checked = value;
+        if (checkbox && checkbox.checked !== value) checkbox.checked = value;
       }
       hostedLocale = typeof p.locale === "string";
       if (hostedLocale || typeof p.language === "string") {
-        lang = resolveLocale(p.locale ?? p.language);
-        t = translator(lang);
-        activity.setLanguage(lang);
+        const nextLang = resolveLocale(p.locale ?? p.language);
+        if (lang !== nextLang) {
+          lang = nextLang;
+          t = translator(lang);
+          activity.setLanguage(lang);
+        }
       }
-      render();
+      if (previous !== `${analysis}:${colorBlind}:${lang}`) render();
+      else updateUnread();
     },
     destroy() {
       events.abort();

@@ -1241,26 +1241,27 @@ body:has(.vanuatu) {
     display: none;
   }
   .vanuatu .action-dock {
-    flex-direction: row;
-    justify-content: stretch;
-    gap: 4px;
+    display: grid;
+    grid-template-columns: repeat(9, minmax(0, 1fr));
+    gap: 2px;
     padding: 0;
-    overflow: auto;
-    scrollbar-width: thin;
     order: 0;
   }
   .vanuatu .action-dock > button {
-    flex: 1 0 58px;
     display: flex;
     align-items: center;
     flex-direction: column;
     justify-content: center;
-    min-height: 74px;
-    padding: 4px;
+    min-width: 0;
+    min-height: 44px;
+    gap: 2px;
+    padding: 2px 1px;
     box-shadow: inset 0 3px #a2b6a4;
   }
   .vanuatu .action-content {
     align-items: center;
+    width: 100%;
+    gap: 0;
   }
   .vanuatu .action-dock .action-symbol {
     flex-basis: auto;
@@ -1277,19 +1278,46 @@ body:has(.vanuatu) {
       0 0 0 1px #a16a28;
   }
   .vanuatu .action-label {
-    font-size: 9px;
-    white-space: nowrap;
+    /* Keep the translated name accessible; the pictogram identifies the
+       action visually without requiring a sideways swipe. */
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
   }
   .vanuatu .action-stacks {
-    gap: 2px;
-    min-height: 14px;
-    max-width: 60px;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1px 2px;
+    min-height: 0;
+    width: 100%;
+    max-width: 42px;
   }
   .vanuatu .marker-stack {
-    min-width: 13px;
+    min-width: 0;
     height: 13px;
     font-size: 8px;
+    white-space: nowrap;
+  }
+  .vanuatu .action-stacks:not(:has(> :nth-child(2))) {
+    grid-template-columns: minmax(0, 20px);
+    justify-content: center;
+  }
+  .vanuatu .action-dock .draft-marker {
+    height: 13px;
+    line-height: 13px;
+    font-size: 10px;
+    text-align: center;
+  }
+  .vanuatu .action-dock .retrieve-only-icon {
+    position: absolute;
+    top: 3px;
+    right: 1px;
+  }
+  .vanuatu .action-dock .retrieve-only-icon .icon {
+    width: 12px;
+    height: 12px;
   }
   .vanuatu .sea-board {
     border-radius: 12px;
@@ -1360,12 +1388,78 @@ body:has(.vanuatu) {
   }
   .vanuatu .players {
     margin-top: 10px;
-    gap: 8px;
+    gap: 6px;
     scroll-snap-type: x proximity;
   }
   .vanuatu .player-card {
-    flex: 0 0 215px;
+    flex: 0 0 min(190px, calc((100% - 6px) / 2));
+    min-width: 0;
+    padding: 7px 6px 6px;
     scroll-snap-align: start;
+  }
+  .vanuatu .player-name {
+    gap: 3px;
+  }
+  .vanuatu .player-card .profile {
+    gap: 3px;
+    min-height: 24px;
+  }
+  .vanuatu .player-card .player-avatar {
+    width: 18px;
+    height: 18px;
+  }
+  .vanuatu .player-name .icon-button {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    min-height: 24px;
+    padding: 2px;
+  }
+  .vanuatu .player-name .icon-button .icon {
+    width: 17px;
+    height: 17px;
+  }
+  .vanuatu .score {
+    font-size: 14px;
+  }
+  .vanuatu .score .icon,
+  .vanuatu .player-supplies .icon {
+    width: 17px;
+    height: 17px;
+  }
+  .vanuatu .player-supplies {
+    gap: 4px;
+    margin-top: 4px;
+    font-size: 11px;
+  }
+  .vanuatu .player-supplies .token {
+    gap: 1px;
+  }
+  .vanuatu .hand {
+    flex-wrap: wrap;
+    gap: 2px;
+  }
+  .vanuatu .hand .token + .token {
+    border-left: 1px solid #bbc8b7;
+    padding-left: 2px;
+  }
+  .vanuatu .hand .token + .token .icon {
+    display: none;
+  }
+  .vanuatu .character-owned {
+    margin-top: 5px;
+    gap: 4px;
+    padding-right: 4px;
+  }
+  .vanuatu .character-owned > span {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .vanuatu .character-owned img {
+    width: 22px;
+    height: 22px;
   }
   .vanuatu .play-footer {
     margin: 6px auto 12px;
@@ -1748,7 +1842,9 @@ body:has(.vanuatu) {
 .vanuatu .water-shimmer {
   opacity: 0.2;
 }
-@media (prefers-reduced-motion: no-preference) {
+/* An animated SVG pattern repaints every tile, including while scrolling.
+   Keep the water still on touch screens and compact layouts. */
+@media (min-width: 701px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   .vanuatu .archipelago .water-shimmer {
     animation: vanuatu-water-shimmer 14s ease-in-out infinite alternate;
   }

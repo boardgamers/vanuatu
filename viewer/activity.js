@@ -1,4 +1,5 @@
 import { assets } from "./assets.js";
+import { createRenderer } from "./dom.js";
 import { tilePreviewSvg } from "./board.js";
 import { blockingHtml } from "./blocking.js";
 import { translateText } from "./localization/index.js";
@@ -46,11 +47,16 @@ export function mountActivity(
     journal = root.querySelector(".journal-panel"),
     panel = root.querySelector(".chat-panel");
   const wide = window.matchMedia("(min-width: 1100px)");
+  const patch = createRenderer("li");
   let mode = "journal",
     analysis = false,
     state,
     t = translator(lang),
     following = true,
+    followFrame,
+    unreadKey,
+    labelsLanguage,
+    rowSources = [],
     key = "";
   const view = chat
     ? mountChat(panel, {
@@ -365,9 +371,19 @@ export function mountActivity(
       state.boardLayout;
     if (next === key) return;
     key = next;
-    list.innerHTML = journalRows(state).map(rowHtml).join("");
+    const rows = journalRows(state).map(rowHtml).filter(Boolean);
+    const mounted = [...list.children];
+    for (let i = 0; i < Math.min(mounted.length, rows.length); i++)
+      if (rowSources[i] !== rows[i]) patch(mounted[i], rows[i]);
+    for (const row of mounted.slice(rows.length)) row.remove();
+    if (rows.length > mounted.length)
+      list.insertAdjacentHTML("beforeend", rows.slice(mounted.length).join(""));
+    rowSources = rows;
+    cancelAnimationFrame(followFrame);
     if (following)
-      requestAnimationFrame(() => (list.scrollTop = list.scrollHeight));
+      followFrame = requestAnimationFrame(() => {
+        if (following) list.scrollTop = list.scrollHeight;
+      });
   }
   root.addEventListener("click", (e) => {
     const b = e.target.closest("button");
@@ -395,6 +411,9 @@ export function mountActivity(
       view?.refresh();
     },
     setUnread(n, notifications = true) {
+      const next = `${n}:${notifications}:${analysis}:${lang}:${colorBlind}`;
+      if (unreadKey === next) return;
+      unreadKey = next;
       const badge = root.querySelector(".unread");
       badge.textContent = n;
       badge.hidden = !n;
@@ -403,6 +422,8 @@ export function mountActivity(
       shortcut.setAttribute("aria-label", `${t("chat")}: ${n}`);
     },
     setLanguage(l) {
+      if (labelsLanguage === l) return;
+      labelsLanguage = l;
       lang = l;
       t = translator(l);
       root.querySelector("[data-back] span").textContent = t("board");
@@ -412,6 +433,7 @@ export function mountActivity(
       refresh();
     },
     destroy() {
+      cancelAnimationFrame(followFrame);
       wide.removeEventListener("change", resize);
       view?.destroy();
       root.remove();
