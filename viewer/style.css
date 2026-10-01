@@ -268,7 +268,7 @@
   min-width: 20px;
   height: 16px;
   background: var(--player);
-  color: #fff;
+  color: var(--player-text, #fff);
   border-radius: 8px;
   font-size: 10px;
   font-weight: 750;
@@ -709,7 +709,7 @@
   max-width: 160px;
 }
 .vanuatu .player-card .profile {
-  color: color-mix(in srgb, var(--player) 60%, black);
+  color: var(--player-ink, #244e53);
 }
 .vanuatu .player-supplies .icon-build {
   color: var(--player);
@@ -731,7 +731,7 @@
 }
 .vanuatu .chat-panel .chat-author[data-bgs-player] {
   /* Darken the player palette for readable names on the cream chat surface. */
-  color: color-mix(in srgb, var(--chat-player-color, #244e53) 60%, black);
+  color: var(--chat-player-ink, #244e53);
 }
 .vanuatu .chat-panel .chat-author {
   display: inline-flex;
@@ -1858,4 +1858,13 @@ body:has(.vanuatu) {
     opacity: 0.3;
     transform: translate(1px, 1px);
   }
+}
+
+.vanuatu .supporter-badge {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin-left: 4px;
+  vertical-align: -2px;
+  flex-shrink: 0;
 }

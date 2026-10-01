@@ -1,3 +1,4 @@
+import { playerColorInk } from "./player-colors.js";
 import { assets } from "./assets.js";
 import { createRenderer } from "./dom.js";
 import { tilePreviewSvg } from "./board.js";
@@ -73,7 +74,11 @@ export function mountActivity(
           author.className = "chat-author";
           author.dataset.bgsPlayer = index;
           const color = state?.players[index]?.color ?? COLORS[index];
-          if (color) author.style.setProperty("--chat-player-color", color);
+          if (color)
+            author.style.setProperty(
+              "--chat-player-ink",
+              playerColorInk(color),
+            );
           const avatar = avatarForPlayer?.(index);
           if (avatar) {
             const img = document.createElement("img");
@@ -136,7 +141,7 @@ export function mountActivity(
   const text = (source) => esc(translateText(source, lang));
   const playerName = (p) =>
     state?.players[p]
-      ? `<strong class="event-player" translate="no" style="color:${esc(state.players[p].color)}">${esc(state.players[p].name)}</strong>`
+      ? `<strong class="event-player" translate="no" style="color:${esc(playerColorInk(state.players[p].color))}">${esc(state.players[p].name)}</strong>`
       : "";
   const chip = (html, kind = "") =>
     `<span class="event-chip ${kind}">${html}</span>`;

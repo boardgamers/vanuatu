@@ -157,7 +157,14 @@ export function boardSvg(
           svg += `<g><title>${esc(help)}</title>`;
           svg +=
             huts[i] !== undefined
-              ? svgIcon("build", x, y, 30, COLORS[huts[i]], help)
+              ? svgIcon(
+                  "build",
+                  x,
+                  y,
+                  30,
+                  s.players[huts[i]]?.color ?? COLORS[huts[i]],
+                  help,
+                )
               : `<rect x="${x + 3}" y="${y + 5}" width="24" height="23" rx="4" fill="#ffffff77" stroke="#786344" stroke-dasharray="3 2"/>`;
           if (colorBlind && huts[i] !== undefined)
             svg += `<text x="${x + 16}" y="${y + 26}" class="color-symbol">${symbols[huts[i]]}</text>`;

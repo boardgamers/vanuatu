@@ -1,4 +1,9 @@
 import { blockingHtml, blockingText } from "./blocking.js";
+import {
+  playerColorState,
+  playerColorText,
+  playerColorInk,
+} from "./player-colors.js";
 import { FIRST_HELP, RETRIEVE_HELP } from "./learning.js";
 import { EXTEND_WHO, EXTEND_HOW, REMAINING_TILES } from "./learning.js";
 import { createRenderer } from "./dom.js";
@@ -61,6 +66,17 @@ export function mountGame(target, options = {}) {
     dialog = root.querySelector("dialog"),
     feedback = root.querySelector(".feedback");
   let avatars = [];
+  let appearance = {};
+  const playerBadge = (i) => {
+    const badge = appearance.players?.[i]?.pro && appearance.supporterBadge;
+    return badge
+      ? `<img class="supporter-badge" src="${esc(badge.url)}" alt="${esc(badge.label)}" title="${esc(badge.label)}">`
+      : "";
+  };
+  let playerColors = [];
+  let rawState;
+  const displayState = (state) =>
+    playerColorState(state, playerColors, colorBlind);
   let s,
     player,
     enabled = true,
@@ -240,7 +256,7 @@ export function mountGame(target, options = {}) {
   }
   function playerCard(p, i) {
     const c = CHARACTERS[p.character];
-    return `<section class="player-card ${i === s.actor && !s.finished ? "active" : ""} ${i === player ? "own" : ""}" style="--player:${p.color}"><div class="player-name">${btn(`${avatars[i] ? `<img class="player-avatar" src="${esc(avatars[i])}" alt="">` : ""}<span>${colorBlind ? symbols[i] + " " : ""}${esc(p.name)}</span>`, `data-bgs-player="${i}" title="${esc(p.name)}"`, "profile")} ${s.first === i ? btn(icon("first", translateText(FIRST_HELP, lang)), `data-first-help aria-label="${t("first")}"`, "icon-button") : ""}<strong class="score">${token("point", p.score)}</strong></div><div class="player-supplies">${token("coin", p.money)}<span class="hand" title="${t("fishStock")}">${p.fish.length ? p.fish.map((n) => token("fish", n)).join("") : token("fish", 0)}</span><span class="hand" title="${t("treasure")}">${p.treasures.length ? p.treasures.map((n) => token("explore", n)).join("") : token("explore", 0)}</span>${token("build", p.hutsLeft)}</div>${c ? `<button type="button" class="character-owned ${p.used ? "used" : ""}" data-character="${p.character}" title="${charName(p.character)}"><img src="${assets["character-" + c.art]}" alt=""><span>${charName(p.character)}</span>${p.used ? icon("check") : icon(c.action ?? "point")}</button>` : ""}${i === player ? `<div class="free-actions">${legal().some((m) => m.type === "treasure") ? btn(`${icon("explore")} → ${icon("coin")}`, `data-free="treasure" title="${t("treasure")}"`) : ""}${legal().some((m) => m.type === "beg") ? btn(`${icon("point")} → ${icon("coin")}`, `data-free="beg" title="${t("beg")}"`) : ""}</div>` : ""}</section>`;
+    return `<section class="player-card ${i === s.actor && !s.finished ? "active" : ""} ${i === player ? "own" : ""}" style="--player:${p.color};--player-ink:${playerColorInk(p.color)};--player-text:${playerColorText(p.color)}"><div class="player-name">${btn(`${avatars[i] ? `<img class="player-avatar" src="${esc(avatars[i])}" alt="">` : ""}<span>${colorBlind ? symbols[i] + " " : ""}${esc(p.name)}</span>${playerBadge(i)}`, `data-bgs-player="${i}" title="${esc(p.name)}"`, "profile")} ${s.first === i ? btn(icon("first", translateText(FIRST_HELP, lang)), `data-first-help aria-label="${t("first")}"`, "icon-button") : ""}<strong class="score">${token("point", p.score)}</strong></div><div class="player-supplies">${token("coin", p.money)}<span class="hand" title="${t("fishStock")}">${p.fish.length ? p.fish.map((n) => token("fish", n)).join("") : token("fish", 0)}</span><span class="hand" title="${t("treasure")}">${p.treasures.length ? p.treasures.map((n) => token("explore", n)).join("") : token("explore", 0)}</span>${token("build", p.hutsLeft)}</div>${c ? `<button type="button" class="character-owned ${p.used ? "used" : ""}" data-character="${p.character}" title="${charName(p.character)}"><img src="${assets["character-" + c.art]}" alt=""><span>${charName(p.character)}</span>${p.used ? icon("check") : icon(c.action ?? "point")}</button>` : ""}${i === player ? `<div class="free-actions">${legal().some((m) => m.type === "treasure") ? btn(`${icon("explore")} → ${icon("coin")}`, `data-free="treasure" title="${t("treasure")}"`) : ""}${legal().some((m) => m.type === "beg") ? btn(`${icon("point")} → ${icon("coin")}`, `data-free="beg" title="${t("beg")}"`) : ""}</div>` : ""}</section>`;
   }
   function dock() {
     const planning = ["plan", "neutral"].includes(s.phase) && working().length;
@@ -293,7 +309,7 @@ export function mountGame(target, options = {}) {
         const stacks = s.players
           .map((p, i) =>
             p.markers[a]
-              ? `<span class="marker-stack ${s.majorities?.[i]?.includes(a) ? "majority" : ""}" style="--player:${p.color}" title="${esc(p.name)}: ${p.markers[a]}">${colorBlind ? symbols[i] : ""}${p.markers[a]}</span>`
+              ? `<span class="marker-stack ${s.majorities?.[i]?.includes(a) ? "majority" : ""}" style="--player:${p.color};--player-ink:${playerColorInk(p.color)};--player-text:${playerColorText(p.color)}" title="${esc(p.name)}: ${p.markers[a]}">${colorBlind ? symbols[i] : ""}${p.markers[a]}</span>`
               : "",
           )
           .join("");
@@ -747,7 +763,7 @@ export function mountGame(target, options = {}) {
             .sort((a, b) => b.score - a.score)
             .map(
               (p) =>
-                `<div style="--player:${p.color}"><b>${esc(p.name)}</b>${token("point", p.score)}${
+                `<div style="--player:${p.color};--player-ink:${playerColorInk(p.color)};--player-text:${playerColorText(p.color)}"><b>${esc(p.name)}</b>${token("point", p.score)}${
                   p.final
                     ? `<small>${Object.entries(p.final)
                         .filter(([, v]) => v !== 0)
@@ -837,7 +853,8 @@ export function mountGame(target, options = {}) {
     render(state) {
       const next = `${state.historyLength ?? state.round + ":" + state.phase}:${player}`;
       const key = JSON.stringify(state);
-      s = state;
+      rawState = state;
+      s = displayState(state);
       if (stateKey === key && next === revision) return;
       stateKey = key;
       if (next !== revision) {
@@ -868,10 +885,17 @@ export function mountGame(target, options = {}) {
       render();
     },
     setPreferences(p) {
-      const previous = `${analysis}:${colorBlind}:${lang}`;
+      const previous = `${analysis}:${colorBlind}:${lang}:${playerColors.join()}:${JSON.stringify(appearance)}`;
+      appearance = p.bgs ?? {};
       chatNotifications = p.chatNotifications !== false;
       analysis = p.analysis === true;
       colorBlind = p.colorBlind === true;
+      playerColors = Array.isArray(p.bgs?.playerColors)
+        ? p.bgs.playerColors.map((c) =>
+            typeof c === "string" && /^#[a-f0-9]{6}$/i.test(c) ? c : undefined,
+          )
+        : [];
+      s = displayState(rawState);
       sound = p.sound === true;
       moveSound.setEnabled(sound);
       for (const [name, value] of Object.entries({ colorBlind, sound })) {
@@ -887,7 +911,11 @@ export function mountGame(target, options = {}) {
           activity.setLanguage(lang);
         }
       }
-      if (previous !== `${analysis}:${colorBlind}:${lang}`) render();
+      if (
+        previous !==
+        `${analysis}:${colorBlind}:${lang}:${playerColors.join()}:${JSON.stringify(appearance)}`
+      )
+        render();
       else updateUnread();
     },
     destroy() {
