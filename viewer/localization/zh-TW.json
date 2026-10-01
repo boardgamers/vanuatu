@@ -891,5 +891,6 @@
   "Finish the round": "完成這個回合",
   "The last stack had no possible action, so it was retrieved automatically. Rest bonuses are now paid; Maya's First player token makes her start the next round.": "最後一堆標記沒有可執行的行動，因此自動收回。休息獎勵已發放；Maya 的起始玩家標記讓她開始下一回合。",
   "A complete round": "一個完整回合",
-  "You played a whole round: Rest → Fish → Sell, then retrieved two unusable stacks. Your Rest bonus is now paid. Plan useful alternatives: a marker does not reserve an action, its resources or its place in your sequence.": "你玩完了一整個回合：休息 → 捕魚 → 賣魚，接著收回兩堆無法使用的標記。休息獎勵已發放。規劃有用的替代方案：標記不會預留行動、資源或執行順序。"
+  "You played a whole round: Rest → Fish → Sell, then retrieved two unusable stacks. Your Rest bonus is now paid. Plan useful alternatives: a marker does not reserve an action, its resources or its place in your sequence.": "你玩完了一整個回合：休息 → 捕魚 → 賣魚，接著收回兩堆無法使用的標記。休息獎勵已發放。規劃有用的替代方案：標記不會預留行動、資源或執行順序。",
+  "No tourists available this round.": "本回合沒有可用的遊客。"
 }

@@ -891,5 +891,6 @@
   "Finish the round": "Ολοκληρώστε τον γύρο",
   "The last stack had no possible action, so it was retrieved automatically. Rest bonuses are now paid; Maya's First player token makes her start the next round.": "Η τελευταία στοίβα δεν επέτρεπε καμία ενέργεια και ανακτήθηκε αυτόματα. Τα μπόνους Ανάπαυσης αποδόθηκαν· το πλακίδιο Πρώτου παίκτη της Maya την κάνει να αρχίσει τον επόμενο γύρο.",
   "A complete round": "Ένας ολόκληρος γύρος",
-  "You played a whole round: Rest → Fish → Sell, then retrieved two unusable stacks. Your Rest bonus is now paid. Plan useful alternatives: a marker does not reserve an action, its resources or its place in your sequence.": "Παίξατε ολόκληρο γύρο: Ανάπαυση → Ψάρεμα → Πώληση και ανακτήσατε δύο άχρηστες στοίβες. Το μπόνους Ανάπαυσης αποδόθηκε. Σχεδιάστε εναλλακτικές: ένας δείκτης δεν δεσμεύει ενέργεια, πόρους ή θέση στην ακολουθία σας."
+  "You played a whole round: Rest → Fish → Sell, then retrieved two unusable stacks. Your Rest bonus is now paid. Plan useful alternatives: a marker does not reserve an action, its resources or its place in your sequence.": "Παίξατε ολόκληρο γύρο: Ανάπαυση → Ψάρεμα → Πώληση και ανακτήσατε δύο άχρηστες στοίβες. Το μπόνους Ανάπαυσης αποδόθηκε. Σχεδιάστε εναλλακτικές: ένας δείκτης δεν δεσμεύει ενέργεια, πόρους ή θέση στην ακολουθία σας.",
+  "No tourists available this round.": "Δεν υπάρχουν διαθέσιμοι τουρίστες σε αυτόν τον γύρο."
 }

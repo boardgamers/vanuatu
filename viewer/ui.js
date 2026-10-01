@@ -262,6 +262,7 @@ export function mountGame(target, options = {}) {
     const planning = ["plan", "neutral"].includes(s.phase) && working().length;
     return `<nav class="action-dock" aria-label="${t("actions")}">${ACTIONS.map(
       (a) => {
+        const emptySupply = a === "tourist" && s.tourists === 0;
         const countDraft = draft.filter((x) => x === a).length;
         const allowed = planning
           ? working().some((m) =>
@@ -292,8 +293,9 @@ export function mountGame(target, options = {}) {
             s.phase === "plan" &&
             !allowed &&
             draft.length < (s.planningPass === 2 ? 1 : 2));
-        const hint =
-          explain && s.phase === "actions"
+        const hint = emptySupply
+          ? "No tourists available this round."
+          : explain && s.phase === "actions"
             ? blockingText(s, player, a, lang)
             : explain
               ? ({
@@ -306,6 +308,14 @@ export function mountGame(target, options = {}) {
                 }[a] ??
                 "This action is not possible with your current resources and planned actions. Plan its prerequisites first.")
               : "";
+        const help = [
+          translateText(actionHelp[a], lang),
+          hint && translateText(hint, lang),
+          retrieveOnly && translateText("Retrieve without acting", lang),
+          retrieveOnly && blockingText(s, player, a, lang),
+        ]
+          .filter(Boolean)
+          .join("\n");
         const stacks = s.players
           .map((p, i) =>
             p.markers[a]
@@ -315,8 +325,8 @@ export function mountGame(target, options = {}) {
           .join("");
         return btn(
           `<span class="action-symbol">${icon(a)}</span><span class="action-content"><span class="action-label">${t(a)}</span><span class="action-stacks">${stacks}${retrieveOnly ? `<span class="retrieve-only-icon">${icon("warning", "Retrieve without acting")}</span>` : ""}${s.neutral[a] ? `<span class="marker-stack neutral" title="${"Neutral markers"}">${s.neutral[a]}</span>` : ""}${countDraft ? `<span class="draft-marker" title="${"Markers being placed"}">+${countDraft}</span>` : ""}</span></span>`,
-          `data-action="${a}" title="${esc(translateText(actionHelp[a], lang) + (retrieveOnly ? "\n" + translateText("Retrieve without acting", lang) + "\n" + blockingText(s, player, a, lang) : hint ? "\n" + translateText(hint, lang) : ""))}" ${allowed ? "" : explain ? `aria-disabled="true" data-unavailable="${esc(hint)}"` : "disabled"} aria-pressed="${action === a}"`,
-          `${action === a ? "chosen" : ""} ${allowed ? "available" : ""} ${retrieveOnly ? "retrieve-only" : ""}`,
+          `data-action="${a}" title="${esc(help)}" ${allowed ? "" : explain ? `aria-disabled="true" data-unavailable="${esc(hint)}"` : "disabled"} aria-pressed="${action === a}"`,
+          `${action === a ? "chosen" : ""} ${allowed ? "available" : ""} ${retrieveOnly ? "retrieve-only" : ""} ${emptySupply ? "supply-empty" : ""}`,
         );
       },
     ).join("")}</nav>`;

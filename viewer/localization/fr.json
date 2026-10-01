@@ -891,5 +891,6 @@
   "Finish the round": "Terminez la manche",
   "The last stack had no possible action, so it was retrieved automatically. Rest bonuses are now paid; Maya's First player token makes her start the next round.": "La dernière pile ne permettait aucune action : elle a donc été retirée automatiquement. Les bonus Repos sont versés ; le jeton Premier joueur de Maya lui fera commencer la prochaine manche.",
   "A complete round": "Une manche complète",
-  "You played a whole round: Rest → Fish → Sell, then retrieved two unusable stacks. Your Rest bonus is now paid. Plan useful alternatives: a marker does not reserve an action, its resources or its place in your sequence.": "Vous avez joué une manche entière : Se reposer → Pêcher → Vendre, puis retiré deux piles inutilisables. Votre bonus Repos est versé. Prévoyez des alternatives utiles : un marqueur ne réserve ni une action, ni ses ressources, ni sa place dans votre enchaînement."
+  "You played a whole round: Rest → Fish → Sell, then retrieved two unusable stacks. Your Rest bonus is now paid. Plan useful alternatives: a marker does not reserve an action, its resources or its place in your sequence.": "Vous avez joué une manche entière : Se reposer → Pêcher → Vendre, puis retiré deux piles inutilisables. Votre bonus Repos est versé. Prévoyez des alternatives utiles : un marqueur ne réserve ni une action, ni ses ressources, ni sa place dans votre enchaînement.",
+  "No tourists available this round.": "Aucun touriste disponible pour cette manche."
 }

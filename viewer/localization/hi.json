@@ -891,5 +891,6 @@
   "Finish the round": "राउंड पूरा करें",
   "The last stack had no possible action, so it was retrieved automatically. Rest bonuses are now paid; Maya's First player token makes her start the next round.": "आखिरी ढेर से कोई क्रिया संभव नहीं थी, इसलिए वह अपने-आप वापस आ गया। आराम के बोनस मिल गए हैं; माया का पहला खिलाड़ी टोकन उसे अगला राउंड शुरू करने देगा।",
   "A complete round": "एक पूरा राउंड",
-  "You played a whole round: Rest → Fish → Sell, then retrieved two unusable stacks. Your Rest bonus is now paid. Plan useful alternatives: a marker does not reserve an action, its resources or its place in your sequence.": "आपने पूरा राउंड खेला: आराम → मछली पकड़ना → बेचना, फिर दो अनुपयोगी ढेर वापस लिए। आराम का बोनस मिल गया है। उपयोगी विकल्प रखें: मार्कर किसी क्रिया, उसके संसाधनों या उसके क्रम को आरक्षित नहीं करता।"
+  "You played a whole round: Rest → Fish → Sell, then retrieved two unusable stacks. Your Rest bonus is now paid. Plan useful alternatives: a marker does not reserve an action, its resources or its place in your sequence.": "आपने पूरा राउंड खेला: आराम → मछली पकड़ना → बेचना, फिर दो अनुपयोगी ढेर वापस लिए। आराम का बोनस मिल गया है। उपयोगी विकल्प रखें: मार्कर किसी क्रिया, उसके संसाधनों या उसके क्रम को आरक्षित नहीं करता।",
+  "No tourists available this round.": "इस दौर में कोई पर्यटक उपलब्ध नहीं है।"
 }

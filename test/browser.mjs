@@ -104,7 +104,7 @@ for (const locale of [
     .locator(".action-dock [data-action]")
     .evaluateAll((buttons) => buttons.map((button) => button.title));
   assert.equal(titles.length, 9);
-  for (const title of titles) {
+  for (const title of titles.flatMap((text) => text.split("\n"))) {
     assert.ok(
       Object.values(catalog).includes(title),
       `${locale}: tooltip must come from its catalogue`,
@@ -340,6 +340,35 @@ assert.equal(
 );
 for (const width of [1440, 390]) {
   await page.setViewportSize({ width, height: width === 390 ? 844 : 1000 });
+  // An empty supply blocks transport, but must not prevent retrieving markers.
+  const noTourists = actionState();
+  noTourists.tourists = 0;
+  noTourists.players[0].markers = Object.fromEntries(
+    E.ACTIONS.map((action) => [action, action === "tourist" ? 1 : 0]),
+  );
+  noTourists.players[1].markers.rest = 1;
+  await page.evaluate((s) => window.vanuatuDemo.setState(s), noTourists);
+  const touristAction = page.locator('[data-action="tourist"]');
+  assert.match(
+    await touristAction.getAttribute("title"),
+    /No tourists available this round/,
+  );
+  await touristAction.click();
+  assert.equal(await page.locator(".cell-highlight.legal").count(), 0);
+  await page.locator(".action-dock").screenshot({
+    path: `.local/qa/tourists-empty-${width}.png`,
+  });
+  await page.locator(".turn-tray .retrieve-warning").click();
+  assert.equal(
+    await page.evaluate(
+      () => window.vanuatuDemo.state.players[0].markers.tourist,
+    ),
+    0,
+  );
+  await page.evaluate((s) => window.vanuatuDemo.setState(s), actionState());
+  await touristAction.click();
+  assert.equal(await page.locator(".action-dock .supply-empty").count(), 0);
+  assert.ok((await page.locator(".cell-highlight.legal").count()) > 0);
   for (const [index, good] of E.GOODS.entries()) {
     const s = actionState();
     s.demands = [{ id: 1, goods: [...E.GOODS], filled: [false, false, false] }];
