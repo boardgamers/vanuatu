@@ -29,7 +29,7 @@ Component uncertainties and implementation validation are recorded in the beta r
 
 Read [the beta report](docs/BETA-REPORT.md) before public release: the supplied ocean values and one outer board location still need confirmation. Bots are suitable for practice and automated coverage, not a claim of strong competitive play.
 
-Guided lessons are available locally at `/?lesson=planning`, `/?lesson=fishing` and `/?lesson=islands`. Add `?players=2&new`, `?water&new` or `?hotseat&new` for practice variants. Practice progress stays in this browser. The viewer defaults to English; French can be selected in Help or in the BGS game preferences.
+Guided lessons are available locally at `/?lesson=planning`, `/?lesson=full-round`, `/?lesson=fishing` and `/?lesson=islands`. The full-round lesson follows every phase through changing majorities, lost opportunities and end-of-round bonuses. Add `?players=2&new`, `?water&new` or `?hotseat&new` for practice variants. Practice progress stays in this browser. The viewer defaults to English; French can be selected in Help or in the BGS game preferences.
 
 Release: `pnpm build && pnpm test && pnpm test:browser`, then `node scripts/publish-beta.mjs`. The publisher reads the admin token from `~/.bgs`, keeps the version in beta and ensures the game is listed. It refuses to overwrite a public version. `node test/simulations.mjs` runs the longer complete-game sweep.
 

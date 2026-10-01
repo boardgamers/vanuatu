@@ -8,6 +8,10 @@ import {
   REMAINING_TILES,
 } from "./learning.js";
 import * as E from "../engine/index.js";
+import {
+  createFullRoundChapter,
+  fullRoundMetadata,
+} from "./tutorial-full-round.js";
 export const chapterMetadata = [
   {
     id: "planning",
@@ -15,6 +19,7 @@ export const chapterMetadata = [
     title: "Plan your day",
     description: "Place five markers and understand action majorities.",
   },
+  fullRoundMetadata,
   {
     id: "fishing",
     version: 2,
@@ -111,6 +116,7 @@ const planCount = (s) =>
 const only = (action) => (s, m) =>
   m.action === action ? undefined : `Choose ${action} for this step.`;
 export const chapters = {
+  "full-round": createFullRoundChapter(prepared),
   expansion: {
     game: "vanuatu",
     id: "expansion",

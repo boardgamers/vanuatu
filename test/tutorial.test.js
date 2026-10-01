@@ -4,6 +4,85 @@ import { createTutorial } from "@boardgamers/protocol/tutorial";
 import { chapters } from "../viewer/tutorials.js";
 import { availableMoves, majority, move } from "../engine/index.js";
 
+test("the full-round lesson forces a changed order and lets the player choose a lost stack", async () => {
+  for (const firstDiscard of ["build", "draw"]) {
+    const chapter = chapters["full-round"];
+    const lesson = await createTutorial(chapter);
+    const initialMoney = lesson.snapshot.state.players[0].money;
+    const actions = [];
+    while (!lesson.snapshot.completed) {
+      const { state, step, canContinue } = lesson.snapshot;
+      const current = chapter.steps[step];
+      const legal = availableMoves(state, 0);
+      if (current.id === "blocked") {
+        assert.equal(state.round, 1);
+        assert.equal(majority(state, 0, "fish"), false);
+        assert.equal(state.players[1].markers.fish, 2);
+        assert.deepEqual(
+          legal.filter((m) => m.type === "act").map((m) => m.action),
+          ["rest"],
+        );
+        assert.equal(
+          state.players.every(
+            (p) => Object.values(p.markers).reduce((a, b) => a + b) === 5,
+          ),
+          true,
+        );
+      }
+      if (current.id === "fish") {
+        assert.equal(state.players[1].markers.fish, 0);
+        assert.equal(majority(state, 0, "fish"), true);
+        assert.equal(state.board["0,0"].huts.length, 3);
+      }
+      if (current.id === "sell") {
+        assert.equal(state.market, 2);
+        assert.equal(state.board["0,0"].drawings, 1);
+      }
+      if (current.id === "retrieve") {
+        assert.equal(state.players[0].money, initialMoney + 2);
+        assert.equal(state.players[0].score, 0, "Rest has not paid yet");
+        assert.deepEqual(
+          legal.map((m) => m.type),
+          ["discard", "discard"],
+        );
+        assert.deepEqual(
+          new Set(legal.map((m) => m.action)),
+          new Set(["build", "draw"]),
+        );
+      }
+      if (canContinue) await lesson.continue();
+      else {
+        const chosen = legal.find(
+          (m) =>
+            !current.validateMove?.(state, m) &&
+            (m.type !== "discard" || m.action === firstDiscard),
+        );
+        assert.ok(chosen, current.id);
+        if (chosen.type === "act") actions.push(chosen.action);
+        assert.equal(await lesson.play(chosen), true, current.id);
+      }
+    }
+    const state = lesson.snapshot.state;
+    assert.deepEqual(actions, ["rest", "fish", "sell"]);
+    assert.equal(state.round, 2);
+    assert.equal(
+      state.phase,
+      "expand",
+      "Stop before opponents start the next round",
+    );
+    assert.equal(state.first, 1);
+    assert.equal(state.players[0].money, initialMoney + 3);
+    assert.equal(state.players[0].score, 1);
+    assert.equal(
+      state.players.every((p) =>
+        Object.values(p.markers).every((n) => n === 0),
+      ),
+      true,
+    );
+    lesson.destroy();
+  }
+});
+
 test("planning opponents spread their markers and release a blocked fishing action", () => {
   const chapter = chapters.planning;
   for (const choice of availableMoves(chapter.initialState(), 0)) {
