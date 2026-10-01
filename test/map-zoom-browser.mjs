@@ -3,6 +3,7 @@ import { chromium } from "playwright";
 import { mkdir, readFile } from "node:fs/promises";
 import { createServer } from "node:http";
 import { resolve, extname } from "node:path";
+import * as E from "../engine/index.js";
 
 const dist = resolve("dist");
 const server = createServer(async (req, res) => {
@@ -36,6 +37,87 @@ const browser = await chromium.launch({
 const errors = [];
 await mkdir(".local/qa", { recursive: true });
 try {
+  const expanded = E.init(3, [], {}, "map-fit");
+  const remainingTiles = Object.keys(E.TILES).filter(
+    (id) => !Object.values(expanded.board).some((tile) => tile.id === id),
+  );
+  for (const cell of E.boardCells(expanded))
+    if (!expanded.board[cell.id])
+      expanded.board[cell.id] = E.tileState(remainingTiles.shift());
+  expanded.round = 7;
+  expanded.phase = "plan";
+  for (const width of [760, 900, 1440]) {
+    const page = await browser.newPage({ viewport: { width, height: 800 } });
+    page.on("pageerror", (error) => errors.push(error.message));
+    for (const state of [E.init(3, [], {}, "map-fit"), expanded]) {
+      await page.goto(base + "/?hotseat");
+      await page.evaluate(
+        (s) => localStorage.setItem("vanuatu-practice-v1", JSON.stringify(s)),
+        state,
+      );
+      await page.reload();
+      await page.waitForSelector(".map-scroll[data-zoom]");
+      await page.waitForFunction(
+        () => document.querySelector(".map-scroll").dataset.zoom === "1",
+      );
+      const fit = await page.locator(".map-scroll").evaluate((map) => {
+        const frame = map.getBoundingClientRect(),
+          css = getComputedStyle(map);
+        const svg = map.querySelector(".archipelago").getBoundingClientRect();
+        return (
+          svg.left >= frame.left + parseFloat(css.paddingLeft) - 1 &&
+          svg.right <=
+            frame.left + map.clientWidth - parseFloat(css.paddingRight) + 1 &&
+          svg.top >= frame.top + parseFloat(css.paddingTop) - 1 &&
+          svg.bottom <=
+            frame.top + map.clientHeight - parseFloat(css.paddingBottom) + 1
+        );
+      });
+      assert.ok(fit, `${width}px: the whole active map fits after reload`);
+      await page.locator("[data-zoom-in]").click();
+      assert.equal(
+        await page.locator(".map-scroll").getAttribute("data-zoom"),
+        "1.25",
+      );
+      await page.reload();
+      await page.waitForFunction(
+        () => document.querySelector(".map-scroll")?.dataset.zoom === "1",
+      );
+    }
+    await page.screenshot({ path: `.local/qa/map-fit-expanded-${width}.png` });
+    await page.close();
+  }
+  const resizedPage = await browser.newPage({
+    viewport: { width: 390, height: 844 },
+  });
+  resizedPage.on("pageerror", (error) => errors.push(error.message));
+  await resizedPage.goto(base + "/?hotseat");
+  await resizedPage.evaluate(
+    (s) => localStorage.setItem("vanuatu-practice-v1", JSON.stringify(s)),
+    expanded,
+  );
+  await resizedPage.reload();
+  await resizedPage.waitForFunction(
+    () => Number(document.querySelector(".map-scroll")?.dataset.zoom) > 1,
+  );
+  assert.ok(
+    await resizedPage
+      .locator(".archipelago")
+      .evaluate((svg) => svg.getScreenCTM().a >= 0.499),
+    "An expanded phone map keeps readable tiles",
+  );
+  await resizedPage.setViewportSize({ width: 900, height: 844 });
+  await resizedPage.waitForFunction(
+    () => document.querySelector(".map-scroll").dataset.zoom === "1",
+  );
+  await resizedPage.locator("[data-zoom-in]").click();
+  await resizedPage.setViewportSize({ width: 390, height: 844 });
+  assert.equal(
+    await resizedPage.locator(".map-scroll").getAttribute("data-zoom"),
+    "1.25",
+    "Resizing preserves an explicitly chosen zoom",
+  );
+  await resizedPage.close();
   for (const width of [320, 390]) {
     const page = await browser.newPage({
       viewport: { width, height: 844 },
@@ -59,7 +141,15 @@ try {
     await page.locator(".sea-board").scrollIntoViewIfNeeded();
     const map = page.locator(".map-scroll");
     const zoom = () => map.evaluate((el) => Number(el.dataset.zoom));
-    assert.equal(await zoom(), 1.5);
+    const initialZoom = await zoom();
+    assert.ok(initialZoom >= 1 && initialZoom <= 1.5);
+    const tileScale = await page
+      .locator(".archipelago")
+      .evaluate((svg) => svg.getScreenCTM().a);
+    assert.ok(
+      tileScale >= 0.499,
+      "The initial phone view keeps tile badges readable",
+    );
     await page.screenshot({ path: `.local/qa/map-zoom-default-${width}.png` });
     const original = await page.evaluate(() =>
       JSON.stringify(window.vanuatuDemo.state),
@@ -112,7 +202,7 @@ try {
       touchPoints: [],
     });
     assert.ok(
-      Math.abs((await zoom()) - 3) < 0.01,
+      Math.abs((await zoom()) - initialZoom * 2) < 0.01,
       "Pinching should double the map scale",
     );
     assert.equal(
@@ -223,7 +313,7 @@ try {
   }
   assert.deepEqual(errors, []);
   console.log(
-    "Map zoom: progressive controls, native pinch, anchoring, panning and page scrolling passed at 320/390px.",
+    "Map zoom: desktop reload fitting, responsive defaults, phone readability, native pinch, anchoring, panning and page scrolling passed.",
   );
 } finally {
   await browser.close();

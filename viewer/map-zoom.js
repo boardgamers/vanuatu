@@ -1,6 +1,7 @@
 const MIN_ZOOM = 1;
 const MAX_ZOOM = 4;
 const STEP = 1.25;
+const READABLE_TILE_SCALE = 0.5;
 const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
 
 export function mountMapZoom(root) {
@@ -10,6 +11,7 @@ export function mountMapZoom(root) {
     mapEvents,
     pinchEvents,
     layoutKey,
+    autoFit = true,
     suppressClick = false;
   const events = new AbortController();
   const observer = new ResizeObserver(() => update(capture()));
@@ -58,8 +60,15 @@ export function mountMapZoom(root) {
       box = svg.viewBox.baseVal;
     if (f.width <= 0 || f.height <= 0) return;
     const initial = zoom === undefined;
-    zoom ??= map.clientWidth < 700 ? 1.5 : 1;
-    const scale = Math.min(f.width / box.width, f.height / box.height) * zoom;
+    const fitScale = Math.min(f.width / box.width, f.height / box.height);
+    if (autoFit) {
+      // Fit desktop panels even when narrow; on phones keep 176-unit tiles
+      // at least 88px wide so their resource badges remain readable.
+      zoom = matchMedia("(max-width: 700px)").matches
+        ? clamp(READABLE_TILE_SCALE / fitScale, MIN_ZOOM, MAX_ZOOM)
+        : MIN_ZOOM;
+    }
+    const scale = fitScale * zoom;
     const width = box.width * scale,
       height = box.height * scale;
     let resized = false;
@@ -89,12 +98,12 @@ export function mountMapZoom(root) {
       zoom,
     ].join();
     if (map.dataset.zoom !== String(zoom)) map.dataset.zoom = String(zoom);
-    if (anchor && (resized || layoutKey !== nextLayout)) {
+    if (!autoFit && anchor && (resized || layoutKey !== nextLayout)) {
       const client = anchor.client ?? center(map);
       const actual = anchor.world.matrixTransform(svg.getScreenCTM());
       map.scrollLeft += actual.x - client.x;
       map.scrollTop += actual.y - client.y;
-    } else if (initial) {
+    } else if (initial || (autoFit && layoutKey !== nextLayout)) {
       map.scrollLeft = (canvas.clientWidth - f.width) / 2;
       map.scrollTop = (canvas.clientHeight - f.height) / 2;
     }
@@ -112,6 +121,17 @@ export function mountMapZoom(root) {
       mapEvents?.abort();
       endPinch();
       mapEvents = new AbortController();
+      for (const type of ["pointerdown", "wheel"])
+        map.addEventListener(
+          type,
+          () => {
+            autoFit = false;
+          },
+          {
+            passive: true,
+            signal: mapEvents.signal,
+          },
+        );
       map.addEventListener("touchstart", startPinch, {
         passive: true,
         signal: mapEvents.signal,
@@ -129,6 +149,7 @@ export function mountMapZoom(root) {
     }
   }
   function setZoom(value, anchor = capture()) {
+    autoFit = false;
     zoom = clamp(value, MIN_ZOOM, MAX_ZOOM);
     update(anchor);
   }
