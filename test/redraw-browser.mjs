@@ -204,6 +204,41 @@ try {
     }, state);
     assert.equal(await page.locator(".event-beg").count(), 0);
     assert.equal(await fish.textContent(), "2");
+    await page.evaluate(async () => {
+      host.emit("preferences", {
+        locale: "fr",
+        sound: false,
+        colorBlind: true,
+        bgs: {
+          players: [],
+          playerColors: [],
+          playerSymbols: ["star", "hexagon", "cross"],
+        },
+      });
+      await settle();
+    });
+    assert.equal(
+      await page.locator(".boat.own .color-symbol").textContent(),
+      "★",
+    );
+    await page.evaluate(async () => {
+      host.emit("preferences", {
+        locale: "fr",
+        sound: false,
+        colorBlind: true,
+        bgs: {
+          players: [],
+          playerColors: [],
+          playerSymbols: ["diamond", "hexagon", "cross"],
+        },
+      });
+      await settle();
+    });
+    assert.equal(
+      await page.locator(".boat.own .color-symbol").textContent(),
+      "◆",
+      "symbol-only updates invalidate the board cache",
+    );
     assert.deepEqual(errors, []);
     console.log(
       `${width}px: duplicate updates, sound, marker-only changes, selection reset, resources and retained journal rows passed`,

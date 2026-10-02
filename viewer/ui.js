@@ -1,3 +1,4 @@
+import { playerSymbolGlyph } from "@boardgamers/protocol/player-symbols";
 import { blockingHtml, blockingText } from "./blocking.js";
 import {
   playerColorState,
@@ -55,7 +56,7 @@ const actionHelp = {
     "Bring a tourist to an adjacent island and earn 1 vatu for every hut there, of any colour.",
   rest: "Choose a rest token. Its bonus is resolved at the end of the round.",
 };
-const symbols = ["●", "◆", "▲", "■", "✦"];
+const defaultSymbols = ["●", "◆", "▲", "■", "✦"];
 export function mountGame(target, options = {}) {
   const root = document.createElement("div");
   root.className = "vanuatu";
@@ -67,6 +68,8 @@ export function mountGame(target, options = {}) {
     feedback = root.querySelector(".feedback");
   let avatars = [];
   let appearance = {};
+  const symbol = (i) =>
+    playerSymbolGlyph(appearance.playerSymbols?.[i], defaultSymbols[i]);
   const playerBadge = (i) => {
     const badge = appearance.players?.[i]?.pro && appearance.supporterBadge;
     return badge
@@ -256,7 +259,7 @@ export function mountGame(target, options = {}) {
   }
   function playerCard(p, i) {
     const c = CHARACTERS[p.character];
-    return `<section class="player-card ${i === s.actor && !s.finished ? "active" : ""} ${i === player ? "own" : ""}" style="--player:${p.color};--player-ink:${playerColorInk(p.color)};--player-text:${playerColorText(p.color)}"><div class="player-name">${btn(`${avatars[i] ? `<img class="player-avatar" src="${esc(avatars[i])}" alt="">` : ""}<span>${colorBlind ? symbols[i] + " " : ""}${esc(p.name)}</span>${playerBadge(i)}`, `data-bgs-player="${i}" title="${esc(p.name)}"`, "profile")} ${s.first === i ? btn(icon("first", translateText(FIRST_HELP, lang)), `data-first-help aria-label="${t("first")}"`, "icon-button") : ""}<strong class="score">${token("point", p.score)}</strong></div><div class="player-supplies">${token("coin", p.money)}<span class="hand" title="${t("fishStock")}">${p.fish.length ? p.fish.map((n) => token("fish", n)).join("") : token("fish", 0)}</span><span class="hand" title="${t("treasure")}">${p.treasures.length ? p.treasures.map((n) => token("explore", n)).join("") : token("explore", 0)}</span>${token("build", p.hutsLeft)}</div>${c ? `<button type="button" class="character-owned ${p.used ? "used" : ""}" data-character="${p.character}" title="${charName(p.character)}"><img src="${assets["character-" + c.art]}" alt=""><span>${charName(p.character)}</span>${p.used ? icon("check") : icon(c.action ?? "point")}</button>` : ""}${i === player ? `<div class="free-actions">${legal().some((m) => m.type === "treasure") ? btn(`${icon("explore")} → ${icon("coin")}`, `data-free="treasure" title="${t("treasure")}"`) : ""}${legal().some((m) => m.type === "beg") ? btn(`${icon("point")} → ${icon("coin")}`, `data-free="beg" title="${t("beg")}"`) : ""}</div>` : ""}</section>`;
+    return `<section class="player-card ${i === s.actor && !s.finished ? "active" : ""} ${i === player ? "own" : ""}" style="--player:${p.color};--player-ink:${playerColorInk(p.color)};--player-text:${playerColorText(p.color)}"><div class="player-name">${btn(`${avatars[i] ? `<img class="player-avatar" src="${esc(avatars[i])}" alt="">` : ""}<span>${colorBlind ? symbol(i) + " " : ""}${esc(p.name)}</span>${playerBadge(i)}`, `data-bgs-player="${i}" title="${esc(p.name)}"`, "profile")} ${s.first === i ? btn(icon("first", translateText(FIRST_HELP, lang)), `data-first-help aria-label="${t("first")}"`, "icon-button") : ""}<strong class="score">${token("point", p.score)}</strong></div><div class="player-supplies">${token("coin", p.money)}<span class="hand" title="${t("fishStock")}">${p.fish.length ? p.fish.map((n) => token("fish", n)).join("") : token("fish", 0)}</span><span class="hand" title="${t("treasure")}">${p.treasures.length ? p.treasures.map((n) => token("explore", n)).join("") : token("explore", 0)}</span>${token("build", p.hutsLeft)}</div>${c ? `<button type="button" class="character-owned ${p.used ? "used" : ""}" data-character="${p.character}" title="${charName(p.character)}"><img src="${assets["character-" + c.art]}" alt=""><span>${charName(p.character)}</span>${p.used ? icon("check") : icon(c.action ?? "point")}</button>` : ""}${i === player ? `<div class="free-actions">${legal().some((m) => m.type === "treasure") ? btn(`${icon("explore")} → ${icon("coin")}`, `data-free="treasure" title="${t("treasure")}"`) : ""}${legal().some((m) => m.type === "beg") ? btn(`${icon("point")} → ${icon("coin")}`, `data-free="beg" title="${t("beg")}"`) : ""}</div>` : ""}</section>`;
   }
   function dock() {
     const planning = ["plan", "neutral"].includes(s.phase) && working().length;
@@ -319,7 +322,7 @@ export function mountGame(target, options = {}) {
         const stacks = s.players
           .map((p, i) =>
             p.markers[a]
-              ? `<span class="marker-stack ${s.majorities?.[i]?.includes(a) ? "majority" : ""}" style="--player:${p.color};--player-ink:${playerColorInk(p.color)};--player-text:${playerColorText(p.color)}" title="${esc(p.name)}: ${p.markers[a]}">${colorBlind ? symbols[i] : ""}${p.markers[a]}</span>`
+              ? `<span class="marker-stack ${s.majorities?.[i]?.includes(a) ? "majority" : ""}" style="--player:${p.color};--player-ink:${playerColorInk(p.color)};--player-text:${playerColorText(p.color)}" title="${esc(p.name)}: ${p.markers[a]}">${colorBlind ? symbol(i) : ""}${p.markers[a]}</span>`
               : "",
           )
           .join("");
@@ -447,6 +450,7 @@ export function mountGame(target, options = {}) {
       s.players.map(({ boat, name, color }) => [boat, name, color]),
       player,
       colorBlind,
+      appearance.playerSymbols,
       lang,
       selected,
       targets,
@@ -457,6 +461,7 @@ export function mountGame(target, options = {}) {
       boardHtml = boardSvg(s, {
         player,
         colorBlind,
+        playerSymbols: appearance.playerSymbols,
         language: lang,
         selected,
         targets,

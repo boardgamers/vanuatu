@@ -1,3 +1,4 @@
+import { playerSymbolGlyph } from "@boardgamers/protocol/player-symbols";
 import { boardCells, tileState, TILES, COLORS } from "../engine/catalog.js";
 import { esc, svgIcon, iconLabel } from "./art.js";
 import { boardArt } from "./board-assets.js";
@@ -38,7 +39,7 @@ function tilePath(x, y) {
   }
   return path + "Z";
 }
-const symbols = ["●", "◆", "▲", "■", "✦"];
+const defaultSymbols = ["●", "◆", "▲", "■", "✦"];
 function tileImage(spec, c, ghost = false, prefix = "board") {
   const clip = `url(#${prefix}-cell-${c.q + 2}-${c.r})`;
   const ocean = oceanSurface(c, prefix);
@@ -73,6 +74,7 @@ export function boardSvg(
     hoverTile,
     player,
     colorBlind = false,
+    playerSymbols = [],
     overview = false,
     preview = false,
     prefix = "board",
@@ -80,6 +82,9 @@ export function boardSvg(
     t,
   } = {},
 ) {
+  const symbols = defaultSymbols.map((fallback, i) =>
+    playerSymbolGlyph(playerSymbols[i], fallback),
+  );
   const label = (name) => iconLabel(name, language);
   const targetSet = new Set(targets);
   const all = boardCells(s)
