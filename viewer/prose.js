@@ -5,68 +5,118 @@ import { resolveLocale } from "./localization/runtime.js";
 // inputs or HTML. Translate the complete sentence first, then replace whole terms.
 // Include grammatical forms used by the catalogues; longest phrases win.
 const terms = {
-  en: ["vatus|vatu", "prosperity points|prosperity", "Build", "Draw"],
+  en: [
+    "vatus|vatu",
+    "prosperity points|prosperity",
+    "Build",
+    "Draw",
+    "first player",
+  ],
   fr: [
     "vatus|vatu",
     "points de prospérité|point de prospérité|prospérité",
     "Construire",
     "Dessiner",
+    "premier joueur",
   ],
   de: [
     "Vatus|Vatu",
     "Wohlstandspunkte|Wohlstandspunkten|Wohlstands|Wohlstand",
     "Bauen",
     "Zeichnen",
+    "Startspieler|Startspielers",
   ],
-  nl: ["vatus|vatu", "welvaartspunten|welvaart", "Bouwen", "Tekenen"],
-  da: ["vatus|vatu", "velstandspoint|velstand", "Byg", "Tegn"],
+  nl: [
+    "vatus|vatu",
+    "welvaartspunten|welvaart",
+    "Bouwen",
+    "Tekenen",
+    "startspeler",
+  ],
+  da: [
+    "vatus|vatu",
+    "velstandspoint|velstand",
+    "Byg",
+    "Tegn",
+    "startspiller|startspilleren|startspillerens",
+  ],
   it: [
     "vatus|vatu",
     "punti prosperità|punti di prosperità|prosperità",
     "Costruisci|Costruire",
     "Disegnare|Disegna",
+    "primo giocatore",
   ],
   "pt-BR": [
     "vatus|vatu",
     "pontos de prosperidade|ponto de prosperidade|prosperidade",
     "Construir",
     "Desenhar",
+    "primeiro jogador",
   ],
   pl: [
     "vatus|vatu",
     "punkty dobrobytu|punktów dobrobytu|dobrobytu|dobrobyt",
     "Buduj|Budowa|Budowy|Budowę",
     "Rysuj|Rysowanie|Rysowania",
+    "pierwszy gracz|pierwszego gracza|pierwszym graczem|gracz rozpoczynający|gracza rozpoczynającego",
   ],
   ro: [
     "vatus|vatu",
     "puncte de prosperitate|prosperitate",
     "Construiește|Construcție",
     "Desenează|Desen",
+    "primul jucător|primului jucător",
   ],
   ru: [
     "вату",
     "очки процветания|очков процветания|процветания|процветание",
     "Строить|Строительство|Строительства",
     "Рисовать|Рисование|Рисования",
+    "первый игрок|первого игрока|первым игроком|первому игроку",
   ],
   el: [
     "βάτου",
     "πόντοι ευημερίας|πόντους ευημερίας|ευημερία|ευημερίας",
     "Χτίσε|Κατασκευή|Κατασκευής",
     "Σχεδίαση|Σχέδιο|Σχεδίου",
+    "πρώτος παίκτης|πρώτο παίκτη|πρώτου παίκτη",
   ],
-  hi: ["वातु", "समृद्धि अंक|समृद्धि", "निर्माण", "चित्र बनाएँ|चित्र"],
-  ko: ["바투", "번영 점수|번영", "건설", "모래그림|그림"],
-  "zh-TW": ["瓦圖", "繁榮點數|繁榮分數|繁榮", "建造", "沙畫"],
-  vi: ["vatus|vatu", "điểm thịnh vượng|thịnh vượng", "Xây dựng|Xây", "Vẽ"],
-  fa: ["واتو|واتوی", "امتیاز شکوفایی|شکوفایی|رفاه", "ساخت", "نقاشی"],
+  hi: [
+    "वातु",
+    "समृद्धि अंक|समृद्धि",
+    "निर्माण",
+    "चित्र बनाएँ|चित्र",
+    "पहला खिलाड़ी|पहले खिलाड़ी|प्रथम खिलाड़ी",
+  ],
+  ko: [
+    "바투",
+    "번영 점수|번영",
+    "건설",
+    "모래그림|그림",
+    "선 플레이어|시작 플레이어",
+  ],
+  "zh-TW": ["瓦圖", "繁榮點數|繁榮分數|繁榮", "建造", "沙畫", "起始玩家"],
+  vi: [
+    "vatus|vatu",
+    "điểm thịnh vượng|thịnh vượng",
+    "Xây dựng|Xây",
+    "Vẽ",
+    "người chơi đầu tiên|người chơi đầu",
+  ],
+  fa: [
+    "واتو|واتوی",
+    "امتیاز شکوفایی|شکوفایی|رفاه",
+    "ساخت",
+    "نقاشی",
+    "بازیکن اول",
+  ],
 };
 const cache = new Map();
 const escapePattern = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 function vocabulary(locale) {
   if (cache.has(locale)) return cache.get(locale);
-  const names = ["coin", "point", "build", "draw"];
+  const names = ["coin", "point", "build", "draw", "first"];
   const words = new Map(
     (terms[locale] ?? terms.en).flatMap((group, i) =>
       group.split("|").map((word) => [word.toLowerCase(), names[i]]),
