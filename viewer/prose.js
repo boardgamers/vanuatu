@@ -112,14 +112,50 @@ const terms = {
     "بازیکن اول",
   ],
 };
+const goods = {
+  en: ["kava", "copra", "beef"],
+  fr: ["kava", "coprah|copra", "bœuf|boeuf"],
+  de: ["Kava", "Kopra", "Rindfleisch"],
+  nl: ["kava", "kopra", "rundvlees"],
+  da: ["kava", "kopra|kopraen", "oksekød"],
+  it: ["kava", "copra", "manzo"],
+  "pt-BR": ["kava", "copra", "boi"],
+  pl: [
+    "kava|kavy|kavę|kavą",
+    "kopra|kopry|koprę|koprą",
+    "wołowina|wołowiny|wołowinę|wołowiną",
+  ],
+  ro: ["kava", "copra", "vită|vita"],
+  ru: [
+    "кава|кавы|каву|кавой",
+    "копра|копры|копру|копрой",
+    "говядина|говядины|говядину|говядиной",
+  ],
+  el: ["κάβα", "κόπρα", "μοσχάρι"],
+  hi: ["कावा", "खोपरा|खोपरे", "गोमांस"],
+  ko: ["카바", "코프라", "소고기"],
+  "zh-TW": ["卡瓦", "椰乾", "牛肉"],
+  vi: ["kava", "cùi dừa khô", "thịt bò"],
+  fa: ["کاوا", "مغز خشک نارگیل", "گوشت گاو"],
+};
 const cache = new Map();
 const escapePattern = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 function vocabulary(locale) {
   if (cache.has(locale)) return cache.get(locale);
-  const names = ["coin", "point", "build", "draw", "first"];
+  const names = [
+    "coin",
+    "point",
+    "build",
+    "draw",
+    "first",
+    "kava",
+    "copra",
+    "beef",
+  ];
   const words = new Map(
-    (terms[locale] ?? terms.en).flatMap((group, i) =>
-      group.split("|").map((word) => [word.toLowerCase(), names[i]]),
+    [...(terms[locale] ?? terms.en), ...(goods[locale] ?? goods.en)].flatMap(
+      (group, i) =>
+        group.split("|").map((word) => [word.toLowerCase(), names[i]]),
     ),
   );
   const body = [...words.keys()]
@@ -137,7 +173,7 @@ function vocabulary(locale) {
   cache.set(locale, result);
   return result;
 }
-export function pictogramText(text, locale = "en") {
+export function pictogramText(text, locale = "en", colorBlind = false) {
   const { words, pattern } = vocabulary(resolveLocale(locale));
   let result = "",
     end = 0;
@@ -145,7 +181,7 @@ export function pictogramText(text, locale = "en") {
     const label = match[0],
       name = words.get(label.toLowerCase());
     result += esc(text.slice(end, match.index));
-    result += `<span class="prose-icon" role="img" aria-label="${esc(label)}" title="${esc(label)}">${icon(name, label)}</span>`;
+    result += `<span class="prose-icon" role="img" aria-label="${esc(label)}" title="${esc(label)}">${icon(name, label, false, colorBlind)}</span>`;
     end = match.index + label.length;
   }
   return result + esc(text.slice(end));

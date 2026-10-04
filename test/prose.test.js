@@ -6,7 +6,7 @@ import { LESSON } from "../viewer/tutorial-copy.js";
 import { languages } from "../viewer/localization/runtime.js";
 
 for (const locale of Object.keys(languages))
-  test(`tutorial prose preserves ${locale} grammar around the four symbols`, async () => {
+  test(`tutorial prose preserves ${locale} grammar around action and resource symbols`, async () => {
     const catalog = JSON.parse(
       await readFile(
         new URL(`../viewer/localization/${locale}.json`, import.meta.url),
@@ -17,6 +17,29 @@ for (const locale of Object.keys(languages))
     const html = pictogramText(text, locale);
     for (const name of ["coin", "point", "draw", "build"])
       assert.ok(html.includes(`icon-${name}`), `${locale}: ${name}`);
+    for (const source of [
+      LESSON.tradeCompare,
+      LESSON.tradeChoose,
+      LESSON.tradeIncomplete,
+    ]) {
+      const goods = pictogramText(catalog[source], locale, true);
+      assert.equal(
+        (goods.match(/icon-copra/g) ?? []).length,
+        1,
+        `${locale}: copra`,
+      );
+      assert.equal(
+        (goods.match(/icon-beef/g) ?? []).length,
+        source === LESSON.tradeChoose ? 1 : 2,
+        `${locale}: beef`,
+      );
+      assert.equal(
+        (goods.match(/resource-symbol/g) ?? []).length,
+        source === LESSON.tradeChoose ? 2 : 3,
+        `${locale}: color-blind symbols`,
+      );
+    }
+    assert.match(pictogramText(catalog.kava, locale), /icon-kava/);
     // Replace the generated icon with its accessible name: no translated text,
     // punctuation or amounts may disappear or change order.
     const plain = html.replace(

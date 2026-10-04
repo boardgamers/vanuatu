@@ -4,6 +4,9 @@ import { readFile, mkdir } from "node:fs/promises";
 import { extname, resolve } from "node:path";
 import { chromium } from "playwright";
 import { languages } from "../viewer/localization/runtime.js";
+import { createTutorial } from "@boardgamers/protocol/tutorial";
+import { chapters } from "../viewer/tutorials.js";
+import { availableMoves } from "../engine/index.js";
 const dist = resolve("dist");
 const server = createServer(async (req, res) => {
   try {
@@ -68,6 +71,57 @@ try {
       await page.locator(".bgs-tutorial-playback button").nth(1).click();
       await prose.locator(".icon-coin").first().waitFor();
     }
+  }
+  const saved = new Map();
+  const trade = await createTutorial({
+    ...chapters.trade,
+    storage: {
+      getItem: (key) => saved.get(key) ?? null,
+      setItem: (key, value) => saved.set(key, value),
+      removeItem: (key) => saved.delete(key),
+    },
+  });
+  while (trade.snapshot.step < 5) {
+    if (trade.snapshot.canContinue) await trade.continue();
+    else {
+      const snap = trade.snapshot;
+      const step = chapters.trade.steps[snap.step];
+      const move = availableMoves(snap.state, 0).find(
+        (m) => !step.validateMove?.(snap.state, m),
+      );
+      assert.equal(await trade.play(move), true);
+    }
+  }
+  trade.destroy();
+  await page.addInitScript(
+    (entries) => {
+      for (const [key, value] of entries) localStorage.setItem(key, value);
+    },
+    [...saved],
+  );
+  for (const locale of ["en", "fr"]) {
+    await page.goto(`${base}/?lesson=trade&locale=${locale}`);
+    const prose = page.locator(".bgs-tutorial-body > p").first();
+    await prose.locator(".icon-copra").waitFor();
+    assert.equal(await prose.locator(".icon-beef").count(), 2);
+    assert.equal(await prose.locator(".resource-symbol").count(), 0);
+    await page.locator("[data-color-blind]").click();
+    assert.equal(await prose.locator(".resource-symbol").count(), 3);
+    // The guide must retain the setting when the controller renders a new step.
+    await page.locator(".bgs-tutorial-playback button").nth(3).click();
+    assert.equal(await prose.locator(".resource-symbol").count(), 2);
+    await page.locator(".bgs-tutorial-playback button").nth(1).click();
+    assert.equal(await prose.locator(".resource-symbol").count(), 3);
+    await page.locator("[data-color-blind]").click();
+    assert.equal(await prose.locator(".resource-symbol").count(), 0);
+    assert.ok(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+    );
+    await page
+      .locator(".vanuatu-tutorial")
+      .screenshot({ path: `.local/qa/prose-export-${locale}.png` });
   }
   await page.goto(`${base}/?new&hotseat&locale=fr`);
   await page.locator('[data-character-choice="beggar"]').click();

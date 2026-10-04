@@ -17,7 +17,7 @@ import { PRICES, VALUES } from "../engine/catalog.js";
 import { pictogramText } from "./prose.js";
 import { translateText } from "./localization/index.js";
 export function rulesHtml(lang = "en", colorBlind = false) {
-  const prose = (text) => pictogramText(t(text), lang);
+  const prose = (text) => pictogramText(t(text), lang, colorBlind);
   const t = (text) => translateText(text, lang);
   const icon = (name) =>
     renderIcon(name, t(iconLabel(name)), false, colorBlind);

@@ -171,7 +171,7 @@ export function mountGame(target, options = {}) {
   const charName = (c) => esc(CHARACTERS[c]?.["name"] ?? c);
   const charHelp = (c) => esc(characterHelp[c]?.[0] ?? "");
   const charHelpHtml = (c) =>
-    `<span data-character-help="${esc(c)}" data-prose-locale="${lang}" translate="no">${pictogramText(translateText(characterHelp[c]?.[0] ?? "", lang), lang)}</span>`;
+    `<span data-character-help="${esc(c)}" data-prose-locale="${lang}:${colorBlind}" translate="no">${pictogramText(translateText(characterHelp[c]?.[0] ?? "", lang), lang, colorBlind)}</span>`;
   function btn(content, attr = "", className = "") {
     return `<button type="button" class="${className}" ${attr}>${content}</button>`;
   }
@@ -509,15 +509,16 @@ export function mountGame(target, options = {}) {
       rules.dataset.presentation = rulesKey;
     }
     for (const help of dialog.querySelectorAll("[data-character-help]")) {
-      if (help.dataset.proseLocale === lang) continue;
+      if (help.dataset.proseLocale === rulesKey) continue;
       help.innerHTML = pictogramText(
         translateText(
           characterHelp[help.dataset.characterHelp]?.[0] ?? "",
           lang,
         ),
         lang,
+        colorBlind,
       );
-      help.dataset.proseLocale = lang;
+      help.dataset.proseLocale = rulesKey;
     }
     activity.update(s, analysis, colorBlind);
     updateUnread();

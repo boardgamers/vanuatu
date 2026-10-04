@@ -21,9 +21,16 @@ export async function mountLesson(target, options) {
   const guide = document.createElement("div");
   guide.className = "vanuatu-tutorial";
   target.append(guide);
-  let errorFrame;
+  let errorFrame,
+    colorBlind = false;
   const ui = mountGame(target, {
     language: options.locale ?? "en",
+    onPreference: (name, value) => {
+      if (name === "colorBlind") {
+        colorBlind = value;
+        renderProse(tutorial.snapshot);
+      }
+    },
     onMove: async (m) => {
       const accepted = await tutorial.play(m);
       if (!accepted) {
@@ -59,13 +66,14 @@ export async function mountLesson(target, options) {
   const error = guide.querySelector('[role="alert"]');
   error.setAttribute("translate", "no");
   error.classList.add("tutorial-error");
-  const offProse = tutorial.subscribe((snapshot) => {
+  function renderProse(snapshot) {
     [snapshot.text, snapshot.hint].forEach((source, i) => {
       const paragraph = paragraphs[i];
       if (!paragraph || !source) return;
       paragraph.innerHTML = pictogramText(
         translateText(source, options.locale),
         options.locale,
+        colorBlind,
       );
     });
     // Validators often return the current instruction. Show it once, as the
@@ -73,13 +81,14 @@ export async function mountLesson(target, options) {
     paragraphs[0].hidden =
       !!snapshot.error && snapshot.error.trim() === snapshot.text.trim();
     if (snapshot.error) {
-      error.innerHTML = `${icon("warning", "")}<span>${pictogramText(translateText(snapshot.error, options.locale), options.locale)}</span>`;
+      error.innerHTML = `${icon("warning", "")}<span>${pictogramText(translateText(snapshot.error, options.locale), options.locale, colorBlind)}</span>`;
       guide.querySelector(".bgs-tutorial-body").hidden = false;
       const collapse = guide.querySelector(".bgs-tutorial-heading button");
       collapse.setAttribute("aria-expanded", "true");
       collapse.textContent = translateText("Hide", options.locale);
     }
-  });
+  }
+  const offProse = tutorial.subscribe(renderProse);
   return () => {
     cancelAnimationFrame(errorFrame);
     offProse();
