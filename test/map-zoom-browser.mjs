@@ -46,8 +46,14 @@ try {
       expanded.board[cell.id] = E.tileState(remainingTiles.shift());
   expanded.round = 7;
   expanded.phase = "plan";
-  for (const width of [760, 900, 1440]) {
-    const page = await browser.newPage({ viewport: { width, height: 800 } });
+  for (const [width, height] of [
+    [760, 800],
+    [900, 800],
+    [1280, 800],
+    [1493, 935],
+    [1920, 1080],
+  ]) {
+    const page = await browser.newPage({ viewport: { width, height } });
     page.on("pageerror", (error) => errors.push(error.message));
     for (const state of [E.init(3, [], {}, "map-fit"), expanded]) {
       await page.goto(base + "/?hotseat");
@@ -58,31 +64,93 @@ try {
       await page.reload();
       await page.waitForSelector(".map-scroll[data-zoom]");
       await page.waitForFunction(
-        () => document.querySelector(".map-scroll").dataset.zoom === "1",
+        () => document.querySelector(".archipelago").style.width,
+      );
+      const initialZoom = Number(
+        await page.locator(".map-scroll").getAttribute("data-zoom"),
+      );
+      assert.ok(
+        width >= 1280
+          ? initialZoom >= (state === expanded ? 1.1 : 1) && initialZoom <= 1.25
+          : initialZoom === 1,
+        `${width}px: use a closer default when space allows (zoom ${initialZoom})`,
       );
       const fit = await page.locator(".map-scroll").evaluate((map) => {
         const frame = map.getBoundingClientRect(),
           css = getComputedStyle(map);
         const svg = map.querySelector(".archipelago").getBoundingClientRect();
+        const wide =
+          map.clientWidth -
+            parseFloat(css.paddingLeft) -
+            parseFloat(css.paddingRight) >=
+          900;
+        const closer = wide && Number(map.dataset.zoom) > 1;
+        const top = closer ? 12 : parseFloat(css.paddingTop);
+        const bottom = closer
+          ? map
+              .closest(".sea-board")
+              .querySelector(".turn-tray")
+              .getBoundingClientRect().height + 12
+          : parseFloat(css.paddingBottom);
         return (
           svg.left >= frame.left + parseFloat(css.paddingLeft) - 1 &&
           svg.right <=
             frame.left + map.clientWidth - parseFloat(css.paddingRight) + 1 &&
-          svg.top >= frame.top + parseFloat(css.paddingTop) - 1 &&
-          svg.bottom <=
-            frame.top + map.clientHeight - parseFloat(css.paddingBottom) + 1
+          svg.top >= frame.top + top - 1 &&
+          svg.bottom <= frame.top + map.clientHeight - bottom + 1
         );
       });
       assert.ok(fit, `${width}px: the whole active map fits after reload`);
       await page.locator("[data-zoom-in]").click();
-      assert.equal(
-        await page.locator(".map-scroll").getAttribute("data-zoom"),
-        "1.25",
+      assert.ok(
+        Math.abs(
+          Number(await page.locator(".map-scroll").getAttribute("data-zoom")) -
+            initialZoom * 1.25,
+        ) < 0.001,
       );
       await page.reload();
       await page.waitForFunction(
-        () => document.querySelector(".map-scroll")?.dataset.zoom === "1",
+        (zoom) =>
+          Number(document.querySelector(".map-scroll")?.dataset.zoom) === zoom,
+        initialZoom,
       );
+      const overlaps = await page.locator(".sea-board").evaluate((board) => {
+        const overlays = [
+          ...board.querySelectorAll(
+            ".sea-dashboard > *, .map-tools, .upcoming, .turn-tray",
+          ),
+        ].map((el) => ({
+          rect: el.getBoundingClientRect(),
+          name: el.className,
+        }));
+        return [
+          ...board.querySelectorAll(
+            ".archipelago .map-cell.occupied .cell-surface",
+          ),
+        ].flatMap((el) => {
+          const tile = el.getBoundingClientRect();
+          return overlays
+            .filter(
+              ({ rect: o }) =>
+                tile.right > o.left &&
+                tile.left < o.right &&
+                tile.bottom > o.top &&
+                tile.top < o.bottom,
+            )
+            .map(({ name, rect }) => ({
+              cell: el.closest("[data-cell]").dataset.cell,
+              overlay: name,
+              tile: tile.toJSON(),
+              control: rect.toJSON(),
+            }));
+        });
+      });
+      if (width >= 1280 && initialZoom > 1)
+        assert.deepEqual(
+          overlaps,
+          [],
+          `${width}px: controls do not obscure tiles at the default zoom`,
+        );
     }
     await page.screenshot({ path: `.local/qa/map-fit-expanded-${width}.png` });
     await page.close();

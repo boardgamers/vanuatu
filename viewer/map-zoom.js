@@ -28,7 +28,14 @@ export function mountMapZoom(root) {
       top = parseFloat(css.paddingTop);
     const width = map.clientWidth - left - parseFloat(css.paddingRight);
     const height = map.clientHeight - top - parseFloat(css.paddingBottom);
-    return { x: rect.left + left, y: rect.top + top, width, height };
+    return {
+      x: rect.left + left,
+      y: rect.top + top,
+      width,
+      height,
+      top,
+      bottom: parseFloat(css.paddingBottom),
+    };
   }
   function center(map) {
     const f = frame(map);
@@ -67,6 +74,22 @@ export function mountMapZoom(root) {
       zoom = matchMedia("(max-width: 700px)").matches
         ? clamp(READABLE_TILE_SCALE / fitScale, MIN_ZOOM, MAX_ZOOM)
         : MIN_ZOOM;
+      if (f.width >= 900) {
+        // Wide panels leave room between the corner controls. Use the spare
+        // vertical padding for a closer view, while keeping the entire SVG
+        // above the action tray and at least 12px from the viewport edges.
+        const trayHeight =
+          root.querySelector(".turn-tray")?.getBoundingClientRect().height ?? 0;
+        const extra = Math.max(
+          0,
+          Math.min(f.top - 12, f.bottom - trayHeight - 12),
+        );
+        const closeScale = Math.min(
+          f.width / box.width,
+          (f.height + 2 * extra) / box.height,
+        );
+        zoom = clamp(closeScale / fitScale, MIN_ZOOM, STEP);
+      }
     }
     const scale = fitScale * zoom;
     const width = box.width * scale,
