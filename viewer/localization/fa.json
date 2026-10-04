@@ -892,5 +892,6 @@
   "The last stack had no possible action, so it was retrieved automatically. Rest bonuses are now paid; Maya's First player token makes her start the next round.": "آخرین دسته هیچ اقدام ممکنی نداشت، پس خودکار پس گرفته شد. پاداش‌های استراحت پرداخت شدند؛ توکن بازیکن اول مایا باعث می‌شود او دور بعد را آغاز کند.",
   "A complete round": "یک دور کامل",
   "You played a whole round: Rest → Fish → Sell, then retrieved two unusable stacks. Your Rest bonus is now paid. Plan useful alternatives: a marker does not reserve an action, its resources or its place in your sequence.": "یک دور کامل بازی کردید: استراحت، سپس ماهیگیری و فروش، و بعد پس گرفتن دو دستهٔ بی‌استفاده. پاداش استراحت پرداخت شد. گزینه‌های جایگزین داشته باشید: نشانگر، اقدام یا منابع یا جای آن در ترتیب شما را رزرو نمی‌کند.",
-  "No tourists available this round.": "در این دور هیچ گردشگری در دسترس نیست."
+  "No tourists available this round.": "در این دور هیچ گردشگری در دسترس نیست.",
+  "Tourist tile": "کاشی گردشگران"
 }

@@ -166,6 +166,11 @@ export function mountActivity(
   function eventHtml(e) {
     const d = e.details ?? {};
     switch (e.type) {
+      case "touristDraw":
+        return (
+          heading(e, text("Tourist tile")) +
+          details(chip(token("tourist", e.tourists)))
+        );
       case "action": {
         const parts = [];
         if (d.cost !== undefined) parts.push(cost(d.cost));

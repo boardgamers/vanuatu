@@ -892,5 +892,6 @@
   "The last stack had no possible action, so it was retrieved automatically. Rest bonuses are now paid; Maya's First player token makes her start the next round.": "De laatste stapel had geen mogelijke actie en werd automatisch teruggenomen. De rustbonussen zijn nu toegekend; dankzij haar startspelertoken begint Maya de volgende ronde.",
   "A complete round": "Een volledige ronde",
   "You played a whole round: Rest → Fish → Sell, then retrieved two unusable stacks. Your Rest bonus is now paid. Plan useful alternatives: a marker does not reserve an action, its resources or its place in your sequence.": "Je speelde een hele ronde: Rusten → Vissen → Verkopen, daarna nam je twee onbruikbare stapels terug. Je rustbonus is toegekend. Plan alternatieven: een marker reserveert geen actie, grondstoffen of plek in je volgorde.",
-  "No tourists available this round.": "Deze ronde zijn er geen toeristen beschikbaar."
+  "No tourists available this round.": "Deze ronde zijn er geen toeristen beschikbaar.",
+  "Tourist tile": "Toeristentegel"
 }

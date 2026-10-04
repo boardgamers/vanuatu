@@ -60,6 +60,7 @@ function prepared(phase = "actions") {
     "1,1": E.tileState("startBoat"),
   };
   s.tourists = 2;
+  s.events[0].tourists = s.tourists;
   return s;
 }
 function play(s, m, opponentMove = E.moveAI) {

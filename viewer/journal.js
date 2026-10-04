@@ -41,7 +41,19 @@ export function journalRows(state) {
       neutral = emptyMarkers();
       players.forEach((p) => (p.markers = emptyMarkers()));
     }
-    if (["start", "round"].includes(e.type)) continue;
+    if (["start", "round"].includes(e.type)) {
+      if (Number.isInteger(e.tourists))
+        rows.push({
+          kind: "event",
+          event: {
+            type: "touristDraw",
+            round: e.round,
+            step: e.step,
+            tourists: e.tourists,
+          },
+        });
+      continue;
+    }
     const player = players[e.p];
     let nextPhase = {
       place: "expand",

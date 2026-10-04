@@ -7,7 +7,7 @@ const s = E.stripSecret(E.init(3, [], {}, "journal-browser"), 0);
 s.players.forEach((p, i) => (p.name = ["Coyote", "Spock", "AlphaZero"][i]));
 s.round = 2;
 s.events = [
-  { type: "start", p: 0 },
+  { type: "start", p: 0, tourists: 3 },
   { type: "character", p: 0, character: "vendor" },
   { type: "character", p: 1, character: "artist" },
   { type: "character", p: 2, character: "buyer" },
@@ -64,7 +64,7 @@ s.events = [
   { type: "rest", p: 1, token: "hidden" },
   { type: "discard", p: 0, action: "sail", markers: 2 },
   { type: "restBonus", p: 1, token: "both" },
-  { type: "round", round: 2, first: 1 },
+  { type: "round", round: 2, first: 1, tourists: 0 },
 ].map((e, i) => ({ round: 1, step: i + 1, ...e }));
 const server = createServer(async (req, res) => {
   const name = req.url.slice(1);
@@ -120,6 +120,17 @@ try {
     assert.equal(await list.locator(".round-divider").count(), 2);
     assert.equal(await list.locator(".phase-divider").count(), 6);
     assert.equal(await list.locator(".event-plan").count(), 9);
+    assert.deepEqual(
+      await list
+        .locator(".round-divider + .event-touristDraw .token b")
+        .allTextContents(),
+      ["3", "0"],
+      "the tourist tile is shown immediately after each round heading, including zero",
+    );
+    assert.equal(
+      await list.locator(".event-touristDraw .event-player").count(),
+      0,
+    );
     assert.ok(
       await list
         .locator("li")
@@ -201,6 +212,11 @@ try {
       assert.ok(
         (await list.innerText()).includes(c["Ship completed (+2 included)"]),
       );
+      assert.ok(
+        (await list.locator(".event-touristDraw").first().innerText()).includes(
+          c["Tourist tile"],
+        ),
+      );
       assert.equal(
         await list.locator(".event-action .resource-symbol").count(),
         1,
@@ -211,6 +227,15 @@ try {
       );
     }
     await page.evaluate(() => host.emit("preferences", { locale: "fr" }));
+    await page.waitForFunction(() =>
+      document
+        .querySelector(".event-touristDraw")
+        ?.textContent.includes("Tuile Touristes"),
+    );
+    await list.evaluate((e) => (e.scrollTop = e.scrollHeight));
+    await list.screenshot({
+      path: `.local/qa/journal-tourist-draw-${width}.png`,
+    });
     await list.scrollIntoViewIfNeeded();
     await list
       .locator(".event-plan")

@@ -892,5 +892,6 @@
   "The last stack had no possible action, so it was retrieved automatically. Rest bonuses are now paid; Maya's First player token makes her start the next round.": "L'ultima pila non permetteva alcuna azione, quindi è stata ritirata automaticamente. I bonus Riposo vengono assegnati; il gettone Primo giocatore di Maya le farà iniziare il prossimo round.",
   "A complete round": "Un round completo",
   "You played a whole round: Rest → Fish → Sell, then retrieved two unusable stacks. Your Rest bonus is now paid. Plan useful alternatives: a marker does not reserve an action, its resources or its place in your sequence.": "Hai giocato un round intero: Riposare → Pescare → Vendere, poi hai ritirato due pile inutilizzabili. Il bonus Riposo è stato assegnato. Prevedi alternative: un segnalino non riserva un'azione, le sue risorse o il suo posto nella sequenza.",
-  "No tourists available this round.": "Nessun turista disponibile in questo round."
+  "No tourists available this round.": "Nessun turista disponibile in questo round.",
+  "Tourist tile": "Tessera Turisti"
 }

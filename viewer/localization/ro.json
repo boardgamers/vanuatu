@@ -892,5 +892,6 @@
   "The last stack had no possible action, so it was retrieved automatically. Rest bonuses are now paid; Maya's First player token makes her start the next round.": "Ultimul teanc nu permitea nicio acțiune, așa că a fost retras automat. Bonusurile de Odihnă sunt acordate; jetonul Primul jucător al Mayei o face să înceapă runda următoare.",
   "A complete round": "O rundă completă",
   "You played a whole round: Rest → Fish → Sell, then retrieved two unusable stacks. Your Rest bonus is now paid. Plan useful alternatives: a marker does not reserve an action, its resources or its place in your sequence.": "Ai jucat o rundă întreagă: Odihnă → Pescuit → Vânzare, apoi ai retras două teancuri inutilizabile. Bonusul de Odihnă este acordat. Planifică alternative: un jeton nu rezervă o acțiune, resursele ei sau locul ei în secvență.",
-  "No tourists available this round.": "Nu sunt turiști disponibili în această rundă."
+  "No tourists available this round.": "Nu sunt turiști disponibili în această rundă.",
+  "Tourist tile": "Jeton de turiști"
 }

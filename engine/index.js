@@ -189,7 +189,7 @@ function initialize(count, expansions, options, seed, boardLayout) {
       ? shuffle(s, Object.keys(CHARACTERS)).slice(0, 5)
       : Object.keys(CHARACTERS);
   startSelection(s);
-  say(s, "start", { p: s.first });
+  say(s, "start", { p: s.first, tourists: s.tourists });
   saveFrame(s);
   return s;
 }
@@ -837,7 +837,7 @@ function endRound(s) {
   s.planningPass = 0;
   s.neutral = emptyMarkers();
   s.neutralPlaced = 0;
-  say(s, "round", { round: s.round, first: s.first });
+  say(s, "round", { round: s.round, first: s.first, tourists: s.tourists });
 }
 function finish(s) {
   for (const [p, a] of s.players.entries()) {
@@ -1061,12 +1061,24 @@ function publicFrame(frame, p, finished = false) {
   );
   return out;
 }
+function withTouristDraw(s, event) {
+  if (["start", "round"].includes(event.type) && event.tourists === undefined) {
+    // Older saves keep the revealed tile in the first public frame of each
+    // round. Later frames only have the remaining, possibly depleted supply.
+    const tourists = s._frames.find(
+      (frame) => frame.round === event.round,
+    )?.tourists;
+    if (tourists !== undefined) return { ...event, tourists };
+  }
+  return event;
+}
 export function stripSecret(s, p) {
   const out = publicFrame(capture(s), p, s.finished);
+  out.lastEvents = out.lastEvents.map((e) => withTouristDraw(s, e));
   out.events = copy(s.events).map((e) =>
     e.type === "rest" && e.p !== p && !s.finished
       ? { ...e, token: "hidden" }
-      : e,
+      : withTouristDraw(s, e),
   );
   out.historyLength = logLength(s);
   out.legal = p === undefined ? [] : availableMoves(s, p);
@@ -1080,9 +1092,11 @@ export function logSlice(
   { player, start = 0, end = s._frames.length - 1 } = {},
 ) {
   return {
-    frames: s._frames
-      .slice(start, end + 1)
-      .map((f) => publicFrame(f, player, s.finished)),
+    frames: s._frames.slice(start, end + 1).map((f) => {
+      const frame = publicFrame(f, player, s.finished);
+      frame.lastEvents = frame.lastEvents.map((e) => withTouristDraw(s, e));
+      return frame;
+    }),
     start,
     end: Math.min(end, s._frames.length - 1),
     length: logLength(s),

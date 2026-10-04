@@ -892,5 +892,6 @@
   "The last stack had no possible action, so it was retrieved automatically. Rest bonuses are now paid; Maya's First player token makes her start the next round.": "마지막 더미로 가능한 행동이 없으므로 자동으로 회수됐습니다. 휴식 보너스가 지급됐으며 선 플레이어 토큰을 가진 Maya가 다음 라운드를 시작합니다.",
   "A complete round": "한 라운드 완료",
   "You played a whole round: Rest → Fish → Sell, then retrieved two unusable stacks. Your Rest bonus is now paid. Plan useful alternatives: a marker does not reserve an action, its resources or its place in your sequence.": "휴식 → 낚시 → 판매 후 사용할 수 없는 두 더미를 회수하며 한 라운드를 마쳤습니다. 휴식 보너스도 받았습니다. 대안을 준비하세요. 마커는 행동, 자원, 실행 순서를 예약하지 않습니다.",
-  "No tourists available this round.": "이번 라운드에 남은 관광객이 없습니다."
+  "No tourists available this round.": "이번 라운드에 남은 관광객이 없습니다.",
+  "Tourist tile": "관광객 타일"
 }

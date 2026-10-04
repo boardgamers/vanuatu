@@ -3,6 +3,44 @@ import assert from "node:assert/strict";
 import * as E from "../engine/index.js";
 import { journalRows } from "../viewer/journal.js";
 
+test("each round logs its tourist draw, including zero, and old saves retain the original counts", () => {
+  let s = E.init(3, [], {}, "journal-tourist-draws");
+  const draws = [s.tourists];
+  for (let i = 0; i < 700 && !s.finished; i++) {
+    const round = s.round;
+    s = E.moveAI(s, s.actor);
+    if (s.round !== round) draws.push(s.tourists);
+  }
+  assert.ok(s.finished);
+  assert.deepEqual([...draws].sort(), [0, 1, 1, 2, 2, 2, 3, 3]);
+  const drawRows = (state) =>
+    journalRows(state)
+      .filter((row) => row.event?.type === "touristDraw")
+      .map((row) => [row.event.round, row.event.tourists]);
+  const expected = draws.map((n, i) => [i + 1, n]);
+  assert.deepEqual(drawRows(E.stripSecret(s, 0)), expected);
+
+  const old = structuredClone(s);
+  for (const e of [...old.events, ...old._frames.flatMap((f) => f.lastEvents)])
+    delete e.tourists;
+  // The current supply cannot tell us how many arrived earlier in the round.
+  old.tourists = 0;
+  const before = structuredClone(old);
+  assert.deepEqual(drawRows(E.stripSecret(old, 0)), expected);
+  assert.deepEqual(
+    E.logSlice(old)
+      .frames.flatMap((f) => f.lastEvents)
+      .filter((e) => e.type === "round")
+      .map((e) => [e.round, e.tourists]),
+    expected.slice(1),
+  );
+  assert.deepEqual(
+    old,
+    before,
+    "reading the journal does not mutate a saved game",
+  );
+});
+
 function fixture(action, options = {}) {
   const s = E.init(3, ["rising-waters"], {}, "journal");
   s.phase = "actions";
