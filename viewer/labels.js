@@ -96,8 +96,8 @@ export function translator(lang) {
 }
 export const characterHelp = {
   navigator: [
-    "Sail 1–3 spaces for free.",
-    "Naviguer de 1 à 3 cases gratuitement.",
+    "During Sail, move 1–3 spaces without paying.",
+    "Pendant l’action Naviguer, avancez de 1 à 3 cases sans payer.",
   ],
   fisherman: [
     "Fishing also earns prosperity equal to the fish tile.",
@@ -128,8 +128,8 @@ export const characterHelp = {
     "Transporter un touriste rapporte 2 prospérité par dessin sur cette île.",
   ],
   beggar: [
-    "Once per round, exchange up to 3 prosperity for the same number of vatus.",
-    "Une fois par tour, échanger jusqu’à 3 prospérité contre autant de vatus.",
+    "Once per round, exchange 1–3 of your prosperity for as many vatus; never below 0.",
+    "Une fois par manche, échangez 1 à 3 de vos points de prospérité contre autant de vatus, sans passer sous 0.",
   ],
   preacher: [
     "If you hold no majority, perform one planned action anyway.",

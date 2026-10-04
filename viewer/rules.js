@@ -131,7 +131,7 @@ export function rulesHtml(lang = "en", colorBlind = false) {
     [
       "Final scoring",
       message(
-        "After round 8: remaining fish → their value in {p0}; first player → {p1}; every {p2} → {p3}; treasures → twice their value in {p4}; each hut → {p5} per tourist on its island. Most prosperity wins; ties favour more huts, then more vatus.",
+        "After round 8: remaining fish → their value in {p0}; {p6} first player → {p1}; every {p2} → {p3}; treasures → twice their value in {p4}; each hut → {p5} per tourist on its island. Most prosperity wins; ties favour more huts, then more vatus.",
         [
           icon("coin"),
           token("point", 3),
@@ -139,6 +139,7 @@ export function rulesHtml(lang = "en", colorBlind = false) {
           token("point", 1),
           icon("point"),
           token("point", 2),
+          icon("first"),
         ],
       ),
     ],

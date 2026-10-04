@@ -22,18 +22,24 @@ export const chapterMetadata = [
   fullRoundMetadata,
   {
     id: "fishing",
-    version: 2,
+    version: 3,
     title: "From sea to market",
     description: "Sail, fish and sell your catch beside your hut.",
   },
   {
     id: "islands",
-    version: 2,
+    version: 3,
     title: "An island economy",
     description: "Build a hut, draw in the sand and welcome a tourist.",
   },
-  { id: "trade", version: 3, title: "Trade", description: LESSON.tradeStart },
-  { id: "rest", version: 1, title: "Rest", description: LESSON.restStart },
+  {
+    id: "beggar",
+    version: 1,
+    title: "Beggar",
+    description: LESSON.beggarRoute,
+  },
+  { id: "trade", version: 4, title: "Trade", description: LESSON.tradeStart },
+  { id: "rest", version: 2, title: "Rest", description: LESSON.restStart },
   { id: "expansion", version: 2, title: EXTEND_TITLE, description: EXTEND_WHO },
   {
     id: "rising-waters",
@@ -236,11 +242,13 @@ export const chapters = {
   fishing: {
     game: "vanuatu",
     id: "fishing",
-    version: 2,
+    version: 3,
     initialState: () => {
       const s = prepared();
       s.board["0,0"].huts = [0];
       s.players[0].hutsLeft = 7;
+      s.players[0].character = "navigator";
+      s.players[0].money = 4;
       s.players[0].markers.sail = 1;
       s.players[0].markers.fish = 1;
       s.players[0].markers.sell = 1;
@@ -254,12 +262,15 @@ export const chapters = {
       {
         id: "sail",
         title: "Find a fishing ground",
-        text: "Choose Sail and move to the ocean space with fish value 2. Each space costs 1 vatu.",
+        text: LESSON.navigatorSail,
         complete: (s) => s.players[0].boat === "1,0",
         validateMove: (s, m) =>
-          m.action === "sail" && m.path.at(-1) === "1,0"
+          m.action === "sail" &&
+          m.bonus &&
+          m.path.length === 1 &&
+          m.path[0] === "1,0"
             ? undefined
-            : "Sail to the ocean space with fish value 2.",
+            : LESSON.navigatorSail,
       },
       {
         id: "fish",
@@ -279,13 +290,13 @@ export const chapters = {
     ],
     completion: {
       title: "Trade keeps you moving",
-      text: "The fish price has dropped from 3 to 2 (top left of the board). It resets to 3 next round. Every 10 vatus automatically becomes 5 prosperity.",
+      text: LESSON.fishingConversion,
     },
   },
   islands: {
     game: "vanuatu",
     id: "islands",
-    version: 2,
+    version: 3,
     initialState: () => {
       const s = prepared();
       s.players[0].character = "builder";
@@ -319,6 +330,12 @@ export const chapters = {
         validateMove: only("draw"),
       },
       {
+        id: "full-island",
+        title: "Draw in the sand",
+        text: LESSON.drawingLimit,
+      },
+      { id: "supply", title: "Tourists", text: LESSON.touristSupply },
+      {
         id: "tourist",
         title: "Welcome a visitor",
         text: "Transport a tourist to the island. You earn 1 vatu per hut there. At game end, each of your huts earns 2 prosperity per tourist.",
@@ -332,10 +349,57 @@ export const chapters = {
     },
   },
 
+  beggar: {
+    game: "vanuatu",
+    id: "beggar",
+    version: 1,
+    initialState: () => {
+      const s = prepared();
+      Object.assign(s.players[0], {
+        character: "beggar",
+        boat: "1,0",
+        money: 0,
+        score: 0,
+      });
+      s.players[0].markers.draw = 1;
+      s.players[0].markers.build = 1;
+      s.players[0].markers.rest = 3;
+      return s;
+    },
+    move: play,
+    steps: [
+      { id: "route", title: "Beggar", text: LESSON.beggarStart },
+      {
+        id: "draw",
+        title: "Draw in the sand",
+        text: LESSON.beggarDraw,
+        complete: (s) => s.players[0].score === 3,
+        validateMove: only("draw"),
+      },
+      {
+        id: "exchange",
+        title: "Beggar",
+        text: LESSON.beggarExchange,
+        complete: (s) => s.players[0].used && s.players[0].money === 3,
+        validateMove: (s, m) =>
+          m.type === "beg" && m.amount === 3
+            ? undefined
+            : LESSON.beggarExchange,
+      },
+      {
+        id: "build",
+        title: "Build",
+        text: LESSON.beggarBuild,
+        complete: (s) => s.board["0,0"].huts.includes(0),
+        validateMove: only("build"),
+      },
+    ],
+    completion: { title: "Beggar", text: LESSON.beggarDone },
+  },
   trade: {
     game: "vanuatu",
     id: "trade",
-    version: 3,
+    version: 4,
     initialState: () => {
       const s = prepared();
       s.players[0].boat = "0,1";
@@ -394,7 +458,7 @@ export const chapters = {
   rest: {
     game: "vanuatu",
     id: "rest",
-    version: 1,
+    version: 2,
     initialState: () => {
       const s = prepared();
       s.first = 1;
@@ -421,6 +485,7 @@ export const chapters = {
             ? undefined
             : LESSON.restChoice,
       },
+      { id: "final-bonus", title: "Final scoring", text: LESSON.firstFinal },
     ],
     completion: { title: "First player", text: FIRST_HELP },
   },

@@ -1,4 +1,24 @@
 export const LESSON = {
+  navigatorSail:
+    "Choose Sail and use the Navigator bonus to reach the fish value 2 for free. You still need a Sail marker and the majority; the character only removes the vatu cost.",
+  fishingConversion:
+    "The fish price has dropped from 3 to 2. Your 4 vatus + 6 from the sale immediately became 5 prosperity and 0 vatus. This conversion cannot wait: you have no money left for a paid action, such as Export.",
+  drawingLimit:
+    "The drawing counter now reads 1/1: this island is full. To draw again in a later round, sail beside an island with a free drawing space.",
+  touristSupply:
+    "The tourist tile sets the shared supply for this round. At 0, nobody can transport a tourist. The island also needs a free tourist space; check its counter before planning.",
+  firstFinal:
+    "At the end of round 8, after Rest bonuses, whoever holds the First player marker gains 3 prosperity. Taking that token in the last round can still pay off.",
+  beggarRoute: "Draw, exchange prosperity, then build with no starting cash.",
+  beggarStart:
+    "You are the Beggar with 0 vatus and 0 prosperity. You cannot exchange points you do not have. Your Draw and Build markers are ready: earn prosperity first.",
+  beggarDraw:
+    "Draw on the island beside your boat to earn 3 prosperity. Keep your Build marker for afterwards.",
+  beggarExchange:
+    "Use the Beggar to exchange your 3 prosperity for 3 vatus. This uses the character, not an action marker, and does not end your turn.",
+  beggarBuild: "Now spend the 3 vatus to build a hut beside your boat.",
+  beggarDone:
+    "One action funded the next. The Beggar exchanges up to 3 prosperity once per round; your score cannot go below 0.",
   character:
     "Choose a character. Its bonus can be used once this round. Next round, choose a new character before returning this one.",
   fishingStart:

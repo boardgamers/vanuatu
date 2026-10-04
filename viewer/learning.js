@@ -23,4 +23,4 @@ export const EXTEND_RULE =
   "The first player places both revealed tiles in either order. Each tile must touch at least two placed tiles. Islands cannot touch each other; an ocean tile must touch an island.";
 
 export const EXPORT_RULE =
-  "Buy one good from an island beside your boat and send it straight to the first ship that needs it. Pay vatus; gain prosperity. No hut or cargo space is needed.";
+  "The coloured cubes on islands are goods. Buy one beside your boat and send it straight to the first ship that needs it. Pay vatus; gain prosperity. No hut or cargo space is needed.";

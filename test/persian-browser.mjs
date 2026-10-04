@@ -96,8 +96,8 @@ try {
           if (await toggle.count()) await toggle.setChecked(!!m.bonus);
           const cell = m.cell ?? m.path?.at(-1);
           if (cell) await p.locator(`.map-cell[data-cell="${cell}"]`).click();
-        } else if (m.type === "treasure")
-          await p.locator('[data-free="treasure"]').click();
+        } else if (["treasure", "beg"].includes(m.type))
+          await p.locator(`[data-free="${m.type}"]`).click();
         else if (m.type === "governor")
           await p.locator("[data-governor]").click();
         const root = (await p.locator("dialog[open]").count())

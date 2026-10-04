@@ -175,7 +175,10 @@ test("the fishing lesson shows the sale's lower price before the next round rese
     assert.equal(lesson.snapshot.state.round, 1);
   }
   assert.equal(lesson.snapshot.completed, true);
-  assert.equal(lesson.snapshot.state.players[0].money, 8);
+  assert.equal(lesson.snapshot.state.players[0].money, 0);
+  assert.equal(lesson.snapshot.state.players[0].score, 5);
+  assert.equal(lesson.snapshot.state.players[0].used, true);
+  assert.equal(lesson.snapshot.state.players[0].markers.sail, 0);
   let next = lesson.snapshot.state;
   next = move(
     next,
@@ -263,4 +266,55 @@ test("the export lesson explains both the ordinary reward and ship completion bo
     );
     lesson.destroy();
   }
+});
+
+test("the Beggar lesson funds Build without negative prosperity or consuming another action", async () => {
+  const chapter = chapters.beggar;
+  const lesson = await createTutorial(chapter);
+  let state = lesson.snapshot.state;
+  assert.equal(
+    availableMoves(state, 0).some((m) => m.type === "beg"),
+    false,
+  );
+  assert.equal(
+    availableMoves(state, 0).some(
+      (m) => m.type === "act" && m.action === "build",
+    ),
+    false,
+  );
+  await lesson.continue();
+  assert.equal(
+    await lesson.play(
+      availableMoves(state, 0).find((m) => m.action === "draw"),
+    ),
+    true,
+  );
+  state = lesson.snapshot.state;
+  assert.equal(state.players[0].score, 3);
+  assert.equal(state.players[0].money, 0);
+  assert.equal(
+    await lesson.play({ type: "beg", amount: 2 }),
+    false,
+    "The guided route needs the full hut price",
+  );
+  const markers = { ...state.players[0].markers };
+  assert.equal(await lesson.play({ type: "beg", amount: 3 }), true);
+  state = lesson.snapshot.state;
+  assert.equal(state.actor, 0);
+  assert.deepEqual(state.players[0].markers, markers);
+  assert.equal(state.players[0].score, 0);
+  assert.equal(state.players[0].money, 3);
+  assert.equal(
+    availableMoves(state, 0).some((m) => m.type === "beg"),
+    false,
+  );
+  const build = availableMoves(state, 0).find(
+    (m) => m.type === "act" && m.action === "build",
+  );
+  assert.ok(build);
+  assert.equal(await lesson.play(build), true);
+  assert.equal(lesson.snapshot.completed, true);
+  assert.equal(lesson.snapshot.state.players[0].money, 0);
+  assert.deepEqual(lesson.snapshot.state.board["0,0"].huts, [0]);
+  lesson.destroy();
 });
