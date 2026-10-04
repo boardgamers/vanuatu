@@ -27,6 +27,7 @@ import { boardSvg, center, tilePreviewSvg } from "./board.js";
 import { mountMapZoom } from "./map-zoom.js";
 import { translator, characterHelp } from "./labels.js";
 import { mountActivity } from "./activity.js";
+import { pictogramText } from "./prose.js";
 import { rulesHtml } from "./rules.js";
 import { createMoveSound } from "./sound.js";
 import {
@@ -169,6 +170,8 @@ export function mountGame(target, options = {}) {
   const own = () => s?.players[player];
   const charName = (c) => esc(CHARACTERS[c]?.["name"] ?? c);
   const charHelp = (c) => esc(characterHelp[c]?.[0] ?? "");
+  const charHelpHtml = (c) =>
+    `<span data-character-help="${esc(c)}" data-prose-locale="${lang}" translate="no">${pictogramText(translateText(characterHelp[c]?.[0] ?? "", lang), lang)}</span>`;
   function btn(content, attr = "", className = "") {
     return `<button type="button" class="${className}" ${attr}>${content}</button>`;
   }
@@ -346,7 +349,7 @@ export function mountGame(target, options = {}) {
         .map((m) => {
           const c = CHARACTERS[m.character];
           return btn(
-            `<img src="${assets["character-" + c.art]}" alt=""><strong>${charName(m.character)}</strong><span>${charHelp(m.character)}</span>`,
+            `<img src="${assets["character-" + c.art]}" alt=""><strong>${charName(m.character)}</strong>${charHelpHtml(m.character)}`,
             `data-character-choice="${m.character}"`,
             "character-choice",
           );
@@ -504,6 +507,17 @@ export function mountGame(target, options = {}) {
     if (rules && rules.dataset.presentation !== rulesKey) {
       rules.innerHTML = rulesHtml(lang, colorBlind);
       rules.dataset.presentation = rulesKey;
+    }
+    for (const help of dialog.querySelectorAll("[data-character-help]")) {
+      if (help.dataset.proseLocale === lang) continue;
+      help.innerHTML = pictogramText(
+        translateText(
+          characterHelp[help.dataset.characterHelp]?.[0] ?? "",
+          lang,
+        ),
+        lang,
+      );
+      help.dataset.proseLocale = lang;
     }
     activity.update(s, analysis, colorBlind);
     updateUnread();
@@ -708,13 +722,13 @@ export function mountGame(target, options = {}) {
           (m) => m.type === "character" && m.character === d.characterChoice,
         );
         showDialog(
-          `<div class="character-detail"><img src="${assets["character-" + CHARACTERS[m.character].art]}" alt=""><div><h2>${charName(m.character)}</h2><p>${charHelp(m.character)}</p>${moveButton(m, true)}</div></div>`,
+          `<div class="character-detail"><img src="${assets["character-" + CHARACTERS[m.character].art]}" alt=""><div><h2>${charName(m.character)}</h2><p>${charHelpHtml(m.character)}</p>${moveButton(m, true)}</div></div>`,
         );
         return;
       }
       if ("character" in d) {
         showDialog(
-          `<div class="character-detail"><img src="${assets["character-" + CHARACTERS[d.character].art]}" alt=""><div><h2>${charName(d.character)}</h2><p>${charHelp(d.character)}</p><small>${"Once per round."}</small></div></div>`,
+          `<div class="character-detail"><img src="${assets["character-" + CHARACTERS[d.character].art]}" alt=""><div><h2>${charName(d.character)}</h2><p>${charHelpHtml(d.character)}</p><small>${"Once per round."}</small></div></div>`,
         );
         return;
       }

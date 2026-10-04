@@ -1889,3 +1889,19 @@ body:has(.vanuatu) {
   vertical-align: -2px;
   flex-shrink: 0;
 }
+
+/* Inline rules/tutorial symbols stay legible at prose size and keep native
+   tooltip labels. They do not intercept gestures or add another scroll area. */
+:is(.vanuatu, .vanuatu-tutorial) .prose-icon {
+  display: inline-block;
+  vertical-align: -0.3em;
+  line-height: 1;
+  white-space: nowrap;
+}
+:is(.vanuatu, .vanuatu-tutorial) .prose-icon > .icon {
+  width: 1.55em;
+  height: 1.55em;
+  min-width: 20px;
+  min-height: 20px;
+  vertical-align: baseline;
+}

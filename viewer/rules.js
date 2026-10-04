@@ -14,8 +14,10 @@ import {
   esc,
 } from "./art.js";
 import { PRICES, VALUES } from "../engine/catalog.js";
+import { pictogramText } from "./prose.js";
 import { translateText } from "./localization/index.js";
 export function rulesHtml(lang = "en", colorBlind = false) {
+  const prose = (text) => pictogramText(t(text), lang);
   const t = (text) => translateText(text, lang);
   const icon = (name) =>
     renderIcon(name, t(iconLabel(name)), false, colorBlind);
@@ -77,7 +79,7 @@ export function rulesHtml(lang = "en", colorBlind = false) {
     ],
     [
       "Export",
-      esc(t(EXPORT_RULE)) +
+      prose(EXPORT_RULE) +
         '<span class="export-prices" role="list">' +
         Object.keys(PRICES)
           .map(
@@ -180,5 +182,5 @@ export function rulesHtml(lang = "en", colorBlind = false) {
     "Final scoring": "point",
     "Rising Waters (expansion only)": "water",
   };
-  return `<div class="rules">${paragraphs.map(([h, p]) => `<section><h3>${sectionIcons[h] ? icon(sectionIcons[h]) + " " : ""}${esc(t(h))}</h3><p translate="no">${p.includes("<") ? p : esc(t(p))}</p></section>`).join("")}</div><p class="rules-links"><a href="https://www.quined.nl/wp-content/uploads/2019/01/Vanuatu_Rulebook_${lang === "fr" ? "FR-WEBversion" : "UK_WEBversion-4"}.pdf" target="_blank" rel="noopener">${esc(t("Original rulebook"))} ↗</a> · <a href="https://quined.nl/wp-content/uploads/2017/06/Vanuatu2p_EN.pdf" target="_blank" rel="noopener">${esc(t("Two-player rules"))} ↗</a></p>`;
+  return `<div class="rules">${paragraphs.map(([h, p]) => `<section><h3>${sectionIcons[h] ? icon(sectionIcons[h]) + " " : ""}${esc(t(h))}</h3><p translate="no">${p.includes("<") ? p : prose(p)}</p></section>`).join("")}</div><p class="rules-links"><a href="https://www.quined.nl/wp-content/uploads/2019/01/Vanuatu_Rulebook_${lang === "fr" ? "FR-WEBversion" : "UK_WEBversion-4"}.pdf" target="_blank" rel="noopener">${esc(t("Original rulebook"))} ↗</a> · <a href="https://quined.nl/wp-content/uploads/2017/06/Vanuatu2p_EN.pdf" target="_blank" rel="noopener">${esc(t("Two-player rules"))} ↗</a></p>`;
 }
