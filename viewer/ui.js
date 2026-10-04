@@ -578,7 +578,12 @@ export function mountGame(target, options = {}) {
     feedback.hidden = true;
     render();
     try {
-      await options.onMove?.(m);
+      // A tutorial rejection is already explained by its guide. Keep the draft
+      // available to correct, without playing a move sound or a second alert.
+      if ((await options.onMove?.(m)) === false) {
+        closeDialog();
+        return;
+      }
       void moveSound.play();
       selected = null;
       action = null;

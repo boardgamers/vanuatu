@@ -1905,3 +1905,20 @@ body:has(.vanuatu) {
   min-height: 20px;
   vertical-align: baseline;
 }
+
+.vanuatu-tutorial .tutorial-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  padding: 10px 12px;
+  border-inline-start: 3px solid #b77b3c;
+  border-radius: 4px;
+  background: #fff1da;
+  color: #784922;
+}
+.vanuatu-tutorial .tutorial-error > .icon {
+  flex: none;
+  width: 21px;
+  height: 21px;
+  color: #ad7132;
+}

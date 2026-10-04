@@ -14,7 +14,7 @@
     "test:browser": "node test/browser.mjs && node test/journal-browser.mjs && node test/map-zoom-browser.mjs && node test/redraw-browser.mjs && node test/mobile-layout-browser.mjs && node test/prose-browser.mjs",
     "check": "pnpm test:locales && pnpm build && pnpm test && pnpm test:browser && pnpm test:tutorial:browser",
     "test:locales": "node scripts/check-locales.mjs viewer/localization && node --test scripts/localization.test.mjs",
-    "test:tutorial:browser": "node test/tutorial-browser.mjs && node test/tutorial-walkthrough-browser.mjs"
+    "test:tutorial:browser": "node test/tutorial-browser.mjs && node test/tutorial-walkthrough-browser.mjs && node test/tutorial-errors-browser.mjs"
   },
   "dependencies": {
     "@boardgamers/protocol": "0.9.0",
