@@ -1922,3 +1922,24 @@ body:has(.vanuatu) {
   height: 21px;
   color: #ad7132;
 }
+.vanuatu .cell-unavailable {
+  margin: 0 0 10px;
+  font-weight: 600;
+}
+/* Each explanation starts with a pictogram of what is missing. */
+.vanuatu .obstacles .obstacle {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.vanuatu .obstacles .obstacle + .obstacle {
+  margin-top: 4px;
+}
+.vanuatu .obstacles .obstacle > .icon {
+  flex: none;
+  width: 1.4em;
+  height: 1.4em;
+}
+.vanuatu .obstacles .obstacle:not(:has(> .icon)) {
+  padding-inline-start: calc(1.4em + 6px);
+}

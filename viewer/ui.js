@@ -1,11 +1,18 @@
 import { playerSymbolGlyph } from "@boardgamers/protocol/player-symbols";
-import { blockingHtml, blockingText } from "./blocking.js";
+import {
+  blockingHtml,
+  blockingText,
+  cellHtml,
+  planText,
+  proseHtml,
+} from "./blocking.js";
+import { markerBlockers } from "../engine/marker-blockers.js";
 import {
   playerColorState,
   playerColorText,
   playerColorInk,
 } from "./player-colors.js";
-import { FIRST_HELP, RETRIEVE_HELP } from "./learning.js";
+import { FIRST_HELP, RETRIEVE_CHOICE } from "./learning.js";
 import { EXTEND_WHO, EXTEND_HOW, REMAINING_TILES } from "./learning.js";
 import { createRenderer } from "./dom.js";
 import {
@@ -302,9 +309,21 @@ export function mountGame(target, options = {}) {
         const hint = emptySupply
           ? "No tourists available this round."
           : explain && s.phase === "actions"
-            ? blockingText(s, player, a, lang)
+            ? s.actor === player || markerBlockers(s, player, a).length
+              ? blockingText(s, player, a, lang)
+              : "Wait for your turn."
             : explain
-              ? ({
+              ? planText(s, player, a, lang, {
+                  ...own()?.markers,
+                  ...Object.fromEntries(
+                    draft.map((x) => [
+                      x,
+                      (own()?.markers[x] ?? 0) +
+                        draft.filter((y) => y === x).length,
+                    ]),
+                  ),
+                }) ||
+                ({
                   fish: "Fishing requires fish on your boat's space. Plan Sail first if needed.",
                   explore:
                     "Exploring requires treasure on your boat's space. Plan Sail first if needed.",
@@ -312,7 +331,7 @@ export function mountGame(target, options = {}) {
                     ? undefined
                     : "Selling requires fish. Plan Fish first if your hold is empty.",
                 }[a] ??
-                "This action is not possible with your current resources and planned actions. Plan its prerequisites first.")
+                  "This action is not possible with your current resources and planned actions. Plan its prerequisites first.")
               : "";
         const help = [
           translateText(actionHelp[a], lang),
@@ -395,17 +414,9 @@ export function mountGame(target, options = {}) {
       (m) => m.type === "discard" && m.action === action,
     );
     const governor = moves.some((m) => m.type === "governor");
-    const buildCost = own()?.character === "builder" && !own()?.used ? 1 : 3;
     const pickText =
-      discard &&
-      action === "build" &&
-      !s.options.risingWaters &&
-      own()?.money < buildCost
-        ? `${"Not enough vatus."} ${token("coin", `${own().money}/${buildCost}`, `${t("cost")}: ${buildCost}`)}`
-        : targets.length && !selected
-          ? `${icon("sail")} ${"Choose a space"}`
-          : "";
-    return `<div class="turn-tray ${discard ? "retrieval-tray" : ""}"><div class="tray-title">${selectedAction ? `${icon(action)} ${t(action)}` : t("actions")}</div>${discard ? `<p class="retrieval-help">${blockingHtml(s, player, action, lang)}<br>${esc(translateText(RETRIEVE_HELP, lang))}</p>` : !selectedAction && moves.some((m) => m.type === "discard") ? `<p class="retrieval-help">${esc(translateText(RETRIEVE_HELP, lang))}</p>` : ""}${hasBonus && hasNormal ? `<label class="bonus-switch" title="${charHelp(own()?.character)}"><input type="checkbox" data-bonus ${bonus ? "checked" : ""}>${charName(own()?.character)}</label>` : ""}<span class="pick-hint">${pickText}</span><div class="move-options">${opts.map((m) => moveButton(m, true)).join("")}${discard ? moveButton(discard) : ""}</div>${governor ? btn(`${icon("marker")} ↔`, `data-governor title="${t("governor")}"`) : ""}${selectedAction ? titled(t("cancel"), icon("close"), "data-cancel", "icon-button") : ""}</div>`;
+      targets.length && !selected ? `${icon("sail")} ${"Choose a space"}` : "";
+    return `<div class="turn-tray ${discard ? "retrieval-tray" : ""}"><div class="tray-title">${selectedAction ? `${icon(action)} ${t(action)}` : t("actions")}</div>${discard ? `<p class="retrieval-help obstacles">${blockingHtml(s, player, action, lang, undefined, colorBlind)}</p>` : !selectedAction && moves.some((m) => m.type === "discard") ? `<p class="retrieval-help">${esc(translateText(RETRIEVE_CHOICE, lang))}</p>` : ""}${hasBonus && hasNormal ? `<label class="bonus-switch" title="${charHelp(own()?.character)}"><input type="checkbox" data-bonus ${bonus ? "checked" : ""}>${charName(own()?.character)}</label>` : ""}<span class="pick-hint">${pickText}</span><div class="move-options">${opts.map((m) => moveButton(m, true)).join("")}${discard ? moveButton(discard) : ""}</div>${governor ? btn(`${icon("marker")} ↔`, `data-governor title="${t("governor")}"`) : ""}${selectedAction ? titled(t("cancel"), icon("close"), "data-cancel", "icon-button") : ""}</div>`;
   }
   function tradeShips() {
     const help = `Foreign trade\n${colorBlind ? "K: kava · C: copra · B: beef." : "Green: kava · White: copra · Red: beef."}\nEach export fills the first ship (1 → 3) still needing that good. ✓ = already delivered.\nCompleting a ship adds 2 prosperity points.`;
@@ -605,14 +616,24 @@ export function mountGame(target, options = {}) {
     } else if (actualTargets().includes(id)) selected = id;
     else {
       const b = s.board[id];
+      // Say why a space cannot be chosen for the selected action.
+      const why =
+        action && s.phase === "actions"
+          ? cellHtml(s, player, action, id, lang, colorBlind)
+          : "";
+      const reason = why
+        ? `<p class="cell-unavailable obstacles">${why}</p>`
+        : "";
       if (b?.type === "island")
         showDialog(
-          `<h2>${t("island")}</h2><div class="island-detail"><img src="${assets[TILES[b.id].art]}" alt=""><div>${token("build", `${b.huts.length}/${TILES[b.id].huts}`)} ${token("tourist", `${b.tourists}/${TILES[b.id].tourists}`)} ${token("draw", `${b.drawings}/${TILES[b.id].drawings}`)}<p>${Object.entries(
+          `<h2>${t("island")}</h2>${reason}<div class="island-detail"><img src="${assets[TILES[b.id].art]}" alt=""><div>${token("build", `${b.huts.length}/${TILES[b.id].huts}`)} ${token("tourist", `${b.tourists}/${TILES[b.id].tourists}`)} ${token("draw", `${b.drawings}/${TILES[b.id].drawings}`)}<p>${Object.entries(
             b.goods,
           )
             .map(([g, n]) => token(g, n))
             .join("")}</p></div></div>`,
         );
+      else if (why)
+        showDialog(`<h2>${icon(action)} ${t(action)}</h2>${reason}`);
     }
     if (s.phase === "expand") render();
     else renderControls();
@@ -658,7 +679,13 @@ export function mountGame(target, options = {}) {
         return;
       }
       if ("unavailable" in d) {
-        showDialog(`<h2>${t(d.action)}</h2><p>${esc(d.unavailable)}</p>`);
+        const blocked =
+          s.phase === "actions" &&
+          (s.actor === player ||
+            markerBlockers(s, player, d.action).length > 0);
+        showDialog(
+          `<h2>${icon(d.action)} ${t(d.action)}</h2><p class="obstacles">${blocked ? blockingHtml(s, player, d.action, lang, undefined, colorBlind) : proseHtml(translateText(d.unavailable, lang), lang, colorBlind)}</p>`,
+        );
         return;
       }
       if ("move" in d) {

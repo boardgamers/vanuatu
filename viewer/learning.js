@@ -12,10 +12,10 @@ export const REMAINING_TILES = "Tiles still to place";
 
 export const FIRST_HELP =
   "The first player does not rotate automatically. Take the First player token with Rest to become first player next round. Otherwise, the current first player stays first. Ties in marker counts follow turn order, starting with the first player. With the same number of markers, you can block a later player from taking that action until you remove yours.";
+export const RETRIEVE_CHOICE =
+  "Choose an action to take back its markers without acting.";
 export const RETRIEVE_HELP =
-  "Choose one action stack to retrieve without acting. All your markers on that action are removed. Retrieval is automatic only when it is the sole remaining move.";
-export const BLOCKED = "Blocked by";
-export const TIE = "Tie: earlier in turn order";
+  "Choose one action stack to retrieve without acting. All your markers on that action are removed.";
 export const IMPOSSIBLE =
   "No legal action with your current position and resources.";
 

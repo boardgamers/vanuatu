@@ -402,6 +402,20 @@ for (const width of [1440, 390]) {
     assert.equal(exported.players[0].score, E.VALUES[good]);
     assert.equal(exported.board["0,0"].goods[good], 0);
   }
+  // Choosing a full island explains why it cannot take another hut.
+  const crowded = actionState();
+  crowded.players[0].character = null;
+  crowded.board["0,0"].huts = Array(E.TILES[crowded.board["0,0"].id].huts).fill(
+    1,
+  );
+  await page.evaluate((s) => window.vanuatuDemo.setState(s), crowded);
+  await page.locator('[data-action="build"]').click();
+  await page.locator('.map-cell[data-cell="0,0"]').click();
+  assert.match(
+    await page.locator("dialog[open] .cell-unavailable").innerText(),
+    /no free hut space \(\d+\/\d+\)/,
+  );
+  await page.locator("dialog[open] [data-close]").click();
   // Resolving an unaffordable majority is retrieval only, and selecting actions
   // must preserve the board's SVG/images (including its current zoom and scroll).
   const poor = actionState();
@@ -428,7 +442,13 @@ for (const width of [1440, 390]) {
   await build.click();
   assert.match(
     await page.locator(".turn-tray").innerText(),
-    /Not enough vatus/,
+    /Not enough[\s\S]*: 0 available, 3 needed\./,
+  );
+  assert.equal(
+    await page
+      .locator('.retrieval-help .prose-icon[aria-label="vatus"]')
+      .count(),
+    1,
   );
   assert.match(
     await page.locator(".turn-tray [data-move]").getAttribute("aria-label"),

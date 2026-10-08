@@ -301,7 +301,7 @@ export function mountActivity(
           heading(e, text("Retrieve without acting"), "warning") +
           details(chip(markerToken(e.action, e.markers ?? ""), "event-cost")) +
           (e.blockers
-            ? `<span class="event-explanation">${blockingHtml(state, e.p, e.action, lang, e.blockers)}</span>`
+            ? `<span class="event-explanation obstacles">${blockingHtml(state, e.p, e.action, lang, e, colorBlind)}</span>`
             : "")
         );
       case "governor":

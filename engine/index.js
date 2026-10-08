@@ -1,5 +1,6 @@
 import { actionDetails } from "./event-details.js";
 import { markerBlockers } from "./marker-blockers.js";
+import { actionObstacles } from "./action-obstacles.js";
 import { sha256 } from "@noble/hashes/sha2.js";
 import {
   ACTIONS,
@@ -875,6 +876,11 @@ function execute(s, m, p) {
     ...(m.type === "discard"
       ? {
           blockers: markerBlockers(s, p, m.action),
+          obstacles: actionObstacles(
+            { ...s, restAvailable: s._restAvailable },
+            p,
+            m.action,
+          ),
           markers: a.markers[m.action],
         }
       : {}),
