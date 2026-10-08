@@ -24,8 +24,9 @@ async function api(path, method = "GET", body, contentType) {
 }
 const versions = await api("/versions");
 const existing = versions.some((v) => v.version === 1) ? await api("/1") : null;
-if (existing?.public)
-  throw Error("Refusing to change a public release with the beta publisher.");
+// Once public, releases only replace the engine and viewer; the live entry's
+// settings (including its public status) are kept.
+const live = !!existing?.public;
 const defaults = {
   public: false,
   meta: { botsPublic: true },
@@ -111,28 +112,33 @@ const viewer = { url: files.url },
 const { unlisted: _unlisted, ...previous } = existing ?? {};
 await api("/1", "PUT", {
   ...previous,
-  ...defaults,
+  ...(live ? {} : defaults),
   engine: { ...engine.engine, entryPoint: "dist/engine.js" },
   viewer: {
-    ...defaults.viewer,
+    ...(live ? existing.viewer : defaults.viewer),
     url: viewer.url,
     scriptBytes: files.scriptBytes,
-    dependencies: { scripts: [], stylesheets: [style.url] },
+    dependencies: {
+      ...(live ? existing.viewer.dependencies : defaults.viewer.dependencies),
+      stylesheets: [style.url],
+    },
   },
 });
-await api("/meta", "PUT", { unlisted: null });
-await api(
-  "/assets/cover?name=Vanuatu",
-  "PUT",
-  await readFile("viewer/assets/cover.webp"),
-  "image/webp",
-);
-const access = await api("/beta-users");
-if (!access.some((u) => u.username === "coyotte508"))
-  await api("/beta-users", "POST", { usernameOrEmail: "coyotte508" });
+if (!live) {
+  await api("/meta", "PUT", { unlisted: null });
+  await api(
+    "/assets/cover?name=Vanuatu",
+    "PUT",
+    await readFile("viewer/assets/cover.webp"),
+    "image/webp",
+  );
+  const access = await api("/beta-users");
+  if (!access.some((u) => u.username === "coyotte508"))
+    await api("/beta-users", "POST", { usernameOrEmail: "coyotte508" });
+}
 const published = await api("/1"),
   meta = await api("/meta");
-assert.equal(published.public, false);
+assert.equal(published.public, live);
 assert.ok(!meta.unlisted);
 assert.equal(published.engine.package.version, pkg.version);
 assert.equal(published.viewer.chat, true);
@@ -142,7 +148,7 @@ await writeFile(
 );
 console.log(
   JSON.stringify({
-    beta: !published.public,
+    public: published.public,
     listed: !meta.unlisted,
     engine: published.engine.package.version,
     viewer: published.viewer.url,
