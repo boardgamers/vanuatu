@@ -102,6 +102,7 @@ export function mountGame(target, options = {}) {
     hostedLocale = false,
     colorBlind = false,
     sound = false,
+    undoAvailable = false,
     revision,
     stateKey,
     focusReturn;
@@ -502,7 +503,7 @@ export function mountGame(target, options = {}) {
             .filter((m) => m.type === "place" && m.tile === tile)
             .map((m) => m.cell)
         : actualTargets();
-    const html = `<header class="game-header"><div class="brand">${btn("🏝️ Vanuatu", "data-boardgame", "wordmark")}<div class="game-credits"><span>Designed by Alain Epron</span><span>Published by Quined Games</span></div></div><div class="round-track" aria-label="${t("round")} ${s.round}/8">${Array.from({ length: 8 }, (_, i) => `<span title="${t("round")} ${i + 1}/8" class="${i + 1 === s.round ? "current" : i + 1 < s.round ? "past" : ""}">${i + 1}</span>`).join("")}</div><nav class="header-tools">${analysis || !options.chat ? "" : titled(t("chat"), `${icon("chat")}<span class="unread-badge" hidden></span>`, 'data-activity="chat"', "icon-button")}${titled(t("journal"), icon("journal"), 'data-activity="journal"', "icon-button")}${titled(t("colorBlind"), icon("colorBlind"), `data-color-blind aria-pressed="${colorBlind}"`, "icon-button")}${titled(t("help"), icon("help"), "data-help", "icon-button")}${titled(t("full"), icon("fullscreen"), "data-fullscreen", "icon-button")}</nav></header>
+    const html = `<header class="game-header"><div class="brand">${btn("🏝️ Vanuatu", "data-boardgame", "wordmark")}<div class="game-credits"><span>Designed by Alain Epron</span><span>Published by Quined Games</span></div></div><div class="round-track" aria-label="${t("round")} ${s.round}/8">${Array.from({ length: 8 }, (_, i) => `<span title="${t("round")} ${i + 1}/8" class="${i + 1 === s.round ? "current" : i + 1 < s.round ? "past" : ""}">${i + 1}</span>`).join("")}</div><nav class="header-tools">${undoAvailable && enabled && !analysis ? titled(t("undoMove"), icon("undo"), "data-undo-move", "icon-button") : ""}${analysis || !options.chat ? "" : titled(t("chat"), `${icon("chat")}<span class="unread-badge" hidden></span>`, 'data-activity="chat"', "icon-button")}${titled(t("journal"), icon("journal"), 'data-activity="journal"', "icon-button")}${titled(t("colorBlind"), icon("colorBlind"), `data-color-blind aria-pressed="${colorBlind}"`, "icon-button")}${titled(t("help"), icon("help"), "data-help", "icon-button")}${titled(t("full"), icon("fullscreen"), "data-fullscreen", "icon-button")}</nav></header>
   <div class="table">${dock()}<section class="sea-board"><div class="sea-dashboard"><div class="market-info"><span class="fish-price" title="${esc(marketHelp)}">${icon("fish", marketHelp)} = ${token("coin", s.market, marketHelp)}</span><span title="${t("tourist")}">${token("tourist", s.tourists, `${"Tourists available this round"}: ${s.tourists}`)}</span>${s.waterCountdown !== null ? `<span title="${t("waterLeft")}">${token("water", s.waterCountdown, `${t("waterLeft")}: ${s.waterCountdown}`)}</span>` : ""}</div>${tradeShips()}</div><div class="map-scroll"><div class="map-canvas">${renderBoard(targets)}</div></div><div class="map-tools">${titled("Zoom out", icon("zoomOut"), "data-zoom-out", "icon-button")}${titled("Zoom in", icon("zoom"), "data-zoom-in", "icon-button")}</div>${s.upcoming.length && s.phase !== "expand" ? titled(t("next"), `${s.upcoming.map((id) => tilePreviewSvg(id, { t, colorBlind, language: lang, prefix: "upcoming-" + id })).join("")}${icon("zoom", t("next"))}`, "data-upcoming", "upcoming") : ""}${trayHtml}</section></div><section class="players">${s.players.map(playerCard).join("")}</section><footer class="play-footer"><span title="${"Automatic conversion"}">${token("coin", 10)} → ${token("point", 5)}</span>${btn(t("help"), "data-help", "text-button")}</footer>`;
     // Patch in place so cached SVG tile images and focused controls survive
     // preference changes and incoming state updates.
@@ -661,6 +662,10 @@ export function mountGame(target, options = {}) {
       }
       if (!button || button.disabled) return;
       const d = button.dataset;
+      if ("undoMove" in d) {
+        options.onUndo?.();
+        return;
+      }
       if ("upcoming" in d) {
         showDialog(
           `<h2>${t("next")}</h2><div class="upcoming-details">${s.upcoming
@@ -944,6 +949,12 @@ export function mountGame(target, options = {}) {
     setEnabled(v) {
       if (enabled === v) return;
       enabled = v;
+      render();
+    },
+    // BGS takes back the player's last move in games against bots (protocol `undo`).
+    setUndoAvailable(v) {
+      if (undoAvailable === v) return;
+      undoAvailable = v;
       render();
     },
     setPreferences(p) {

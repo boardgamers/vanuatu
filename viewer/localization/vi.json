@@ -945,5 +945,6 @@
   "{p0} has more markers: {p1} against {p2}.": "{p0} có nhiều điểm đánh dấu hơn: {p1} so với {p2}.",
   "No majority on this action.": "Không chiếm đa số ở hành động này.",
   "Wait for your turn.": "Hãy chờ đến lượt bạn.",
-  "Choose an action to take back its markers without acting.": "Chọn một hành động để thu hồi dấu của nó mà không thực hiện hành động."
+  "Choose an action to take back its markers without acting.": "Chọn một hành động để thu hồi dấu của nó mà không thực hiện hành động.",
+  "Undo my move": "Hoàn tác nước đi"
 }

@@ -20,6 +20,7 @@ const entries = {
   choose: ["Choose", "Choisir"],
   cancel: ["Cancel", "Annuler"],
   undo: ["Undo", "Annuler"],
+  undoMove: ["Undo my move", "Annuler mon coup"],
   waiting: ["Waiting for", "Au tour de"],
   you: ["You", "Vous"],
   spectator: ["Spectator", "Spectateur"],

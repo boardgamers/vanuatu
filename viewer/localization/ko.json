@@ -945,5 +945,6 @@
   "{p0} has more markers: {p1} against {p2}.": "{p0}의 마커가 더 많습니다: {p1} 대 {p2}.",
   "No majority on this action.": "이 행동에서 과반을 차지하지 못했습니다.",
   "Wait for your turn.": "차례를 기다리세요.",
-  "Choose an action to take back its markers without acting.": "행동하지 않고 마커를 회수할 행동을 선택하세요."
+  "Choose an action to take back its markers without acting.": "행동하지 않고 마커를 회수할 행동을 선택하세요.",
+  "Undo my move": "내 수 되돌리기"
 }

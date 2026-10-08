@@ -55,7 +55,9 @@ if (params.has("lesson")) {
   control.querySelector("[data-count]").value = state.players.length;
   control.querySelector("[data-water]").checked = state.options.risingWaters;
   control.querySelector("[data-hotseat]").checked = hotseat;
+  let undoRequests = 0;
   const ui = mountGame(document.querySelector("#game"), {
+    onUndo: () => (undoRequests += 1),
     onMove: (m) => {
       state = engine.move(state, m, hotseat ? state.actor : 0);
       save();
@@ -149,6 +151,9 @@ if (params.has("lesson")) {
     },
     engine,
     ui,
+    get undoRequests() {
+      return undoRequests;
+    },
   };
   show();
   scheduleBots();

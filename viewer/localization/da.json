@@ -945,5 +945,6 @@
   "{p0} has more markers: {p1} against {p2}.": "{p0} har flere markører: {p1} mod {p2}.",
   "No majority on this action.": "Intet flertal på denne handling.",
   "Wait for your turn.": "Vent på din tur.",
-  "Choose an action to take back its markers without acting.": "Vælg en handling, hvis markører du tager tilbage uden at handle."
+  "Choose an action to take back its markers without acting.": "Vælg en handling, hvis markører du tager tilbage uden at handle.",
+  "Undo my move": "Fortryd mit træk"
 }

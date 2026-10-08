@@ -945,5 +945,6 @@
   "{p0} has more markers: {p1} against {p2}.": "{p0} 的指示物較多：{p1} 對 {p2}。",
   "No majority on this action.": "此行動未取得多數。",
   "Wait for your turn.": "請等待輪到你。",
-  "Choose an action to take back its markers without acting.": "選擇一個行動，收回其標記但不執行行動。"
+  "Choose an action to take back its markers without acting.": "選擇一個行動，收回其標記但不執行行動。",
+  "Undo my move": "撤回我的行動"
 }

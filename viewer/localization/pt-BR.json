@@ -945,5 +945,6 @@
   "{p0} has more markers: {p1} against {p2}.": "{p0} tem mais marcadores: {p1} contra {p2}.",
   "No majority on this action.": "Sem maioria nesta ação.",
   "Wait for your turn.": "Aguarde sua vez.",
-  "Choose an action to take back its markers without acting.": "Escolha uma ação para recolher os marcadores dela sem agir."
+  "Choose an action to take back its markers without acting.": "Escolha uma ação para recolher os marcadores dela sem agir.",
+  "Undo my move": "Desfazer jogada"
 }

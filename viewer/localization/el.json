@@ -945,5 +945,6 @@
   "{p0} has more markers: {p1} against {p2}.": "Ο/Η {p0} έχει περισσότερους δείκτες: {p1} έναντι {p2}.",
   "No majority on this action.": "Καμία πλειοψηφία σε αυτή τη δράση.",
   "Wait for your turn.": "Περιμένετε τη σειρά σας.",
-  "Choose an action to take back its markers without acting.": "Επίλεξε μια ενέργεια για να πάρεις πίσω τους δείκτες της χωρίς να την εκτελέσεις."
+  "Choose an action to take back its markers without acting.": "Επίλεξε μια ενέργεια για να πάρεις πίσω τους δείκτες της χωρίς να την εκτελέσεις.",
+  "Undo my move": "Αναίρεση κίνησης"
 }

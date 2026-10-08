@@ -945,5 +945,6 @@
   "{p0} has more markers: {p1} against {p2}.": "{p0} are mai mulți marcatori: {p1} față de {p2}.",
   "No majority on this action.": "Nicio majoritate la această acțiune.",
   "Wait for your turn.": "Așteaptă-ți rândul.",
-  "Choose an action to take back its markers without acting.": "Alege o acțiune ale cărei marcaje le retragi fără a acționa."
+  "Choose an action to take back its markers without acting.": "Alege o acțiune ale cărei marcaje le retragi fără a acționa.",
+  "Undo my move": "Anulează mutarea"
 }

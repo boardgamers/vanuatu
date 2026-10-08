@@ -945,5 +945,6 @@
   "{p0} has more markers: {p1} against {p2}.": "{p0} heeft meer markers: {p1} tegen {p2}.",
   "No majority on this action.": "Geen meerderheid op deze actie.",
   "Wait for your turn.": "Wacht op je beurt.",
-  "Choose an action to take back its markers without acting.": "Kies een actie waarvan je de markers zonder actie terugneemt."
+  "Choose an action to take back its markers without acting.": "Kies een actie waarvan je de markers zonder actie terugneemt.",
+  "Undo my move": "Zet ongedaan maken"
 }

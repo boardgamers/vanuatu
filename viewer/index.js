@@ -23,6 +23,7 @@ registerViewer(
       onOpenPlayer: ctx.openPlayer,
       onOpenBoardgame: ctx.openBoardgame,
       onPreference: ctx.updatePreference,
+      onUndo: ctx.undo,
       onMove: (m) =>
         new Promise((resolve, reject) => {
           pending = { resolve, reject };
@@ -80,6 +81,9 @@ registerViewer(
       },
       onAvatars(avatars) {
         ui.setAvatars(avatars);
+      },
+      onUndoAvailable(available) {
+        ui.setUndoAvailable(available);
       },
       onError(e) {
         clearTimeout(timeout);

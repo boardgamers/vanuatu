@@ -945,5 +945,6 @@
   "{p0} has more markers: {p1} against {p2}.": "У {p0} больше маркеров: {p1} против {p2}.",
   "No majority on this action.": "Нет большинства на этом действии.",
   "Wait for your turn.": "Дождитесь своего хода.",
-  "Choose an action to take back its markers without acting.": "Выберите действие, маркеры которого вы заберёте без выполнения действия."
+  "Choose an action to take back its markers without acting.": "Выберите действие, маркеры которого вы заберёте без выполнения действия.",
+  "Undo my move": "Отменить ход"
 }

@@ -945,5 +945,6 @@
   "{p0} has more markers: {p1} against {p2}.": "{p0} مهرهٔ بیشتری دارد: {p1} در برابر {p2}.",
   "No majority on this action.": "در این اقدام اکثریت ندارید.",
   "Wait for your turn.": "منتظر نوبت خود باشید.",
-  "Choose an action to take back its markers without acting.": "اقدامی را انتخاب کنید تا مهره‌هایش را بدون انجام آن پس بگیرید."
+  "Choose an action to take back its markers without acting.": "اقدامی را انتخاب کنید تا مهره‌هایش را بدون انجام آن پس بگیرید.",
+  "Undo my move": "بازگرداندن حرکت"
 }
