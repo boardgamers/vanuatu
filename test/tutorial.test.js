@@ -50,12 +50,23 @@ test("the full-round lesson forces a changed order and lets the player choose a 
           new Set(["build", "draw"]),
         );
       }
+      if (current.id === "last-stack") {
+        assert.equal(state.round, 1);
+        assert.equal(
+          state.players[0].score,
+          0,
+          "Rest waits for manual retrieval",
+        );
+        assert.equal(legal.length, 1);
+        assert.equal(legal[0].type, "discard");
+        assert.notEqual(legal[0].action, firstDiscard);
+      }
       if (canContinue) await lesson.continue();
       else {
         const chosen = legal.find(
           (m) =>
             !current.validateMove?.(state, m) &&
-            (m.type !== "discard" || m.action === firstDiscard),
+            (current.id !== "retrieve" || m.action === firstDiscard),
         );
         assert.ok(chosen, current.id);
         if (chosen.type === "act") actions.push(chosen.action);

@@ -102,6 +102,7 @@ export function mountGame(target, options = {}) {
     hostedLocale = false,
     colorBlind = false,
     sound = false,
+    autoRetrieve = false,
     undoAvailable = false,
     revision,
     stateKey,
@@ -808,7 +809,7 @@ export function mountGame(target, options = {}) {
       }
       if ("help" in d) {
         showDialog(
-          `<h2>${t("help")}</h2><div class="preferences"><label><input type="checkbox" data-pref="colorBlind" ${colorBlind ? "checked" : ""}>${t("colorBlind")}</label><label><input type="checkbox" data-pref="sound" ${sound ? "checked" : ""}>${t("sound")}</label>${
+          `<h2>${t("help")}</h2><div class="preferences"><label><input type="checkbox" data-pref="colorBlind" ${colorBlind ? "checked" : ""}>${t("colorBlind")}</label><label><input type="checkbox" data-pref="sound" ${sound ? "checked" : ""}>${t("sound")}</label>${options.onSetting && Number.isInteger(player) && !analysis ? `<label><input type="checkbox" data-setting="autoRetrieve" ${autoRetrieve ? "checked" : ""}>${esc(translateText("Automatically retrieve markers when there is no choice", lang))}</label>` : ""}${
             hostedLocale
               ? ""
               : `<select data-language aria-label="Language">${Object.entries(
@@ -876,6 +877,10 @@ export function mountGame(target, options = {}) {
         }
         options.onPreference?.(key, value);
         render();
+      }
+      if (e.target.matches("[data-setting]")) {
+        options.onSetting?.(e.target.dataset.setting, e.target.checked);
+        e.target.checked = autoRetrieve;
       }
       if (e.target.matches("[data-language]")) {
         lang = e.target.value;
@@ -956,6 +961,11 @@ export function mountGame(target, options = {}) {
       if (undoAvailable === v) return;
       undoAvailable = v;
       render();
+    },
+    setSettings(settings) {
+      autoRetrieve = settings?.autoRetrieve === true;
+      const checkbox = dialog.querySelector('[data-setting="autoRetrieve"]');
+      if (checkbox) checkbox.checked = autoRetrieve;
     },
     setPreferences(p) {
       const previous = `${analysis}:${colorBlind}:${lang}:${playerColors.join()}:${JSON.stringify(appearance)}`;

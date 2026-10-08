@@ -64,6 +64,12 @@ if (params.has("lesson")) {
       show();
       scheduleBots();
     },
+    onSetting: (name, value) => {
+      const p = hotseat ? state.actor : 0;
+      state = engine.setPlayerSettings(state, p, { [name]: value });
+      save();
+      show();
+    },
     onPreference: async (name, value) => {
       preferences[name] = value;
       localStorage.setItem("vanuatu-preferences", JSON.stringify(preferences));
@@ -87,6 +93,9 @@ if (params.has("lesson")) {
     localization.setState(state);
     const p = hotseat ? state.actor : 0;
     ui.setPlayer(p);
+    ui.setSettings(
+      Number.isInteger(p) ? engine.playerSettings(state, p) : null,
+    );
     ui.render(engine.stripSecret(state, p));
   }
   function scheduleBots() {

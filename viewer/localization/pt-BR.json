@@ -889,7 +889,7 @@
   "Choose which stack to retrieve": "Escolha qual pilha retirar",
   "Only Build and Draw remain. Both now have your majority, but the island has no space for either. Choose which stack to retrieve without acting; the game does not choose for you.": "Só restam Construir e Desenhar. Você tem a maioria nas duas ações, mas não há espaço na ilha. Escolha qual pilha retirar sem agir; o jogo não escolhe por você.",
   "Finish the round": "Termine a rodada",
-  "The last stack had no possible action, so it was retrieved automatically. Rest bonuses are now paid; Maya's First player token makes her start the next round.": "A última pilha não permitia nenhuma ação e foi retirada automaticamente. Os bônus de descanso foram pagos; a ficha de Primeiro jogador de Maya faz com que ela comece a próxima rodada.",
+  "Retrieve your last stack without acting: the island has no space for it. This finishes the round and pays Rest bonuses; Maya starts the next round.": "Recolha sua última pilha sem agir: não há espaço na ilha. Isso encerra a rodada e paga os bônus de Descanso; Maya começa a próxima rodada.",
   "A complete round": "Uma rodada completa",
   "You played a whole round: Rest → Fish → Sell, then retrieved two unusable stacks. Your Rest bonus is now paid. Plan useful alternatives: a marker does not reserve an action, its resources or its place in your sequence.": "Você jogou uma rodada inteira: Descansar → Pescar → Vender, depois retirou duas pilhas inutilizáveis. Seu bônus de descanso foi pago. Planeje alternativas: um marcador não reserva uma ação, seus recursos ou sua posição na sequência.",
   "No tourists available this round.": "Nenhum turista disponível nesta rodada.",
@@ -946,5 +946,6 @@
   "No majority on this action.": "Sem maioria nesta ação.",
   "Wait for your turn.": "Aguarde sua vez.",
   "Choose an action to take back its markers without acting.": "Escolha uma ação para recolher os marcadores dela sem agir.",
-  "Undo my move": "Desfazer jogada"
+  "Undo my move": "Desfazer jogada",
+  "Automatically retrieve markers when there is no choice": "Recolher marcadores automaticamente quando não há escolha"
 }

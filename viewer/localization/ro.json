@@ -889,7 +889,7 @@
   "Choose which stack to retrieve": "Alege ce teanc retragi",
   "Only Build and Draw remain. Both now have your majority, but the island has no space for either. Choose which stack to retrieve without acting; the game does not choose for you.": "Au rămas doar Construcția și Desenul. Ai majoritate la ambele, dar insula nu mai are loc. Alege ce teanc retragi fără acțiune; jocul nu alege în locul tău.",
   "Finish the round": "Încheie runda",
-  "The last stack had no possible action, so it was retrieved automatically. Rest bonuses are now paid; Maya's First player token makes her start the next round.": "Ultimul teanc nu permitea nicio acțiune, așa că a fost retras automat. Bonusurile de Odihnă sunt acordate; jetonul Primul jucător al Mayei o face să înceapă runda următoare.",
+  "Retrieve your last stack without acting: the island has no space for it. This finishes the round and pays Rest bonuses; Maya starts the next round.": "Retrage ultimul teanc fără să acționezi: insula nu mai are loc. Astfel se încheie runda și se acordă bonusurile de Odihnă; Maya începe runda următoare.",
   "A complete round": "O rundă completă",
   "You played a whole round: Rest → Fish → Sell, then retrieved two unusable stacks. Your Rest bonus is now paid. Plan useful alternatives: a marker does not reserve an action, its resources or its place in your sequence.": "Ai jucat o rundă întreagă: Odihnă → Pescuit → Vânzare, apoi ai retras două teancuri inutilizabile. Bonusul de Odihnă este acordat. Planifică alternative: un jeton nu rezervă o acțiune, resursele ei sau locul ei în secvență.",
   "No tourists available this round.": "Nu sunt turiști disponibili în această rundă.",
@@ -946,5 +946,6 @@
   "No majority on this action.": "Nicio majoritate la această acțiune.",
   "Wait for your turn.": "Așteaptă-ți rândul.",
   "Choose an action to take back its markers without acting.": "Alege o acțiune ale cărei marcaje le retragi fără a acționa.",
-  "Undo my move": "Anulează mutarea"
+  "Undo my move": "Anulează mutarea",
+  "Automatically retrieve markers when there is no choice": "Retrage automat marcatorii când nu există altă opțiune"
 }

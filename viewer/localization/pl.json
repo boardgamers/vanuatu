@@ -889,7 +889,7 @@
   "Choose which stack to retrieve": "Wybierz stos do zabrania",
   "Only Build and Draw remain. Both now have your majority, but the island has no space for either. Choose which stack to retrieve without acting; the game does not choose for you.": "Zostały tylko Budowa i Rysowanie. Masz większość w obu akcjach, ale na wyspie nie ma miejsca. Wybierz stos do zabrania bez wykonywania akcji; gra nie wybiera za ciebie.",
   "Finish the round": "Zakończ rundę",
-  "The last stack had no possible action, so it was retrieved automatically. Rest bonuses are now paid; Maya's First player token makes her start the next round.": "Ostatni stos nie umożliwiał żadnej akcji, więc zabrano go automatycznie. Premie Odpoczynku zostały wypłacone; żeton Pierwszego gracza pozwoli Mayi rozpocząć kolejną rundę.",
+  "Retrieve your last stack without acting: the island has no space for it. This finishes the round and pays Rest bonuses; Maya starts the next round.": "Zabierz ostatni stos bez wykonywania akcji: na wyspie nie ma miejsca. To kończy rundę i wypłaca premie Odpoczynku; Maya rozpoczyna kolejną rundę.",
   "A complete round": "Cała runda",
   "You played a whole round: Rest → Fish → Sell, then retrieved two unusable stacks. Your Rest bonus is now paid. Plan useful alternatives: a marker does not reserve an action, its resources or its place in your sequence.": "Rozegrałeś całą rundę: Odpoczynek → Łowienie → Sprzedaż, potem zabrałeś dwa bezużyteczne stosy. Premia Odpoczynku została wypłacona. Planuj alternatywy: znacznik nie rezerwuje akcji, jej zasobów ani miejsca w kolejności.",
   "No tourists available this round.": "W tej rundzie nie ma dostępnych turystów.",
@@ -946,5 +946,6 @@
   "No majority on this action.": "Brak większości w tej akcji.",
   "Wait for your turn.": "Poczekaj na swoją turę.",
   "Choose an action to take back its markers without acting.": "Wybierz akcję, z której zabierasz znaczniki bez jej wykonywania.",
-  "Undo my move": "Cofnij ruch"
+  "Undo my move": "Cofnij ruch",
+  "Automatically retrieve markers when there is no choice": "Automatycznie zabieraj znaczniki, gdy nie ma wyboru"
 }

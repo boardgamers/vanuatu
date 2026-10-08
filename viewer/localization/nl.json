@@ -889,7 +889,7 @@
   "Choose which stack to retrieve": "Kies welke stapel je terugneemt",
   "Only Build and Draw remain. Both now have your majority, but the island has no space for either. Choose which stack to retrieve without acting; the game does not choose for you.": "Alleen Bouwen en Tekenen blijven over. Je hebt bij beide de meerderheid, maar het eiland is vol. Kies welke stapel je zonder actie terugneemt; het spel kiest niet voor jou.",
   "Finish the round": "Rond de ronde af",
-  "The last stack had no possible action, so it was retrieved automatically. Rest bonuses are now paid; Maya's First player token makes her start the next round.": "De laatste stapel had geen mogelijke actie en werd automatisch teruggenomen. De rustbonussen zijn nu toegekend; dankzij haar startspelertoken begint Maya de volgende ronde.",
+  "Retrieve your last stack without acting: the island has no space for it. This finishes the round and pays Rest bonuses; Maya starts the next round.": "Neem je laatste stapel terug zonder actie: op het eiland is geen ruimte. Dit beëindigt de ronde en keert de Rust-bonussen uit; Maya begint de volgende ronde.",
   "A complete round": "Een volledige ronde",
   "You played a whole round: Rest → Fish → Sell, then retrieved two unusable stacks. Your Rest bonus is now paid. Plan useful alternatives: a marker does not reserve an action, its resources or its place in your sequence.": "Je speelde een hele ronde: Rusten → Vissen → Verkopen, daarna nam je twee onbruikbare stapels terug. Je rustbonus is toegekend. Plan alternatieven: een marker reserveert geen actie, grondstoffen of plek in je volgorde.",
   "No tourists available this round.": "Deze ronde zijn er geen toeristen beschikbaar.",
@@ -946,5 +946,6 @@
   "No majority on this action.": "Geen meerderheid op deze actie.",
   "Wait for your turn.": "Wacht op je beurt.",
   "Choose an action to take back its markers without acting.": "Kies een actie waarvan je de markers zonder actie terugneemt.",
-  "Undo my move": "Zet ongedaan maken"
+  "Undo my move": "Zet ongedaan maken",
+  "Automatically retrieve markers when there is no choice": "Markeringen automatisch terugnemen als er geen keuze is"
 }

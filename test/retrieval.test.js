@@ -18,6 +18,58 @@ function position() {
   return s;
 }
 
+test("the last unusable stack waits for its player before ending the round", () => {
+  let s = position();
+  s.players[1].markers.rest = 0;
+  s.players[0].markers.draw = 2;
+  s.board["0,0"].drawings = E.TILES[s.board["0,0"].id].drawings;
+  s.players[0].rest = "both";
+  const before = structuredClone(s);
+  s = E.move(s, { type: "discard", action: "build" }, 0);
+  assert.equal(s.round, 1);
+  assert.equal(s.actor, 0);
+  assert.equal(s.players[0].markers.draw, 2);
+  assert.equal(s.players[0].score, 0);
+  assert.deepEqual(E.availableMoves(s), [{ type: "discard", action: "draw" }]);
+  assert.deepEqual(before.players[0].markers.draw, 2);
+  s = E.move(s, { type: "discard", action: "draw" }, 0);
+  assert.equal(s.round, 2);
+  assert.equal(s.players[0].markers.draw, 0);
+  assert.equal(s.players[0].score, 1);
+  assert.equal(s._history.at(-1).move.action, "draw");
+});
+
+test("automatic retrieval is opt-in for the next actor, scoped to each player", () => {
+  let s = position();
+  s.players[1].markers = { draw: 1 };
+  s.board["0,0"].drawings = E.TILES[s.board["0,0"].id].drawings;
+  assert.deepEqual(E.playerSettings(s, 1), { autoRetrieve: false });
+  const optedIn = E.setPlayerSettings(s, 1, { autoRetrieve: true });
+  assert.deepEqual(E.playerSettings(s, 1), { autoRetrieve: false });
+  assert.deepEqual(E.playerSettings(optedIn, 0), { autoRetrieve: false });
+  const manual = E.move(s, { type: "discard", action: "build" }, 0);
+  assert.equal(manual.actor, 1);
+  assert.equal(manual.players[1].markers.draw, 1);
+  const automatic = E.move(optedIn, { type: "discard", action: "build" }, 0);
+  assert.equal(automatic.round, 2);
+  assert.equal(automatic.players[1].markers.draw, 0);
+  assert.deepEqual(automatic._history.at(-1).autoRetrieve, [
+    false,
+    true,
+    false,
+  ]);
+  const disabled = E.setPlayerSettings(optedIn, 1, { autoRetrieve: false });
+  assert.equal(
+    E.move(disabled, { type: "discard", action: "build" }, 0).round,
+    1,
+  );
+  assert.equal(
+    E.playerSettings(E.setPlayerSettings(s, 1, { autoRetrieve: "true" }), 1)
+      .autoRetrieve,
+    false,
+  );
+});
+
 test("treasure exchanges count as retrieval alternatives only when they unlock an action", () => {
   const s = position();
   s.players[0].treasures = [2];
@@ -100,4 +152,18 @@ test("funding respects preacher permission and actor", () => {
   s.players[0].used = true;
   assert.deepEqual(E.actionsAfterExchanges(s), []);
   assert.deepEqual(E.actionsAfterExchanges(s, 1), []);
+});
+
+test("replay keeps automatic retrieval decisions across setting changes", () => {
+  let s = E.init(3, [], {}, "retrieval-replay");
+  for (let n = 0; n < 120 && !s.finished; n++) {
+    if (n % 10 === 0)
+      s = E.setPlayerSettings(s, n % 3, { autoRetrieve: n % 20 === 0 });
+    s = E.moveAI(s, s.actor);
+  }
+  const replayed = E.replay(s);
+  assert.equal(replayed.actor, s.actor);
+  assert.equal(replayed.round, s.round);
+  assert.deepEqual(replayed.events, s.events);
+  assert.deepEqual(replayed.players, s.players);
 });

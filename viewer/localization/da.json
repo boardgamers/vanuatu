@@ -889,7 +889,7 @@
   "Choose which stack to retrieve": "Vælg hvilken stak du tager tilbage",
   "Only Build and Draw remain. Both now have your majority, but the island has no space for either. Choose which stack to retrieve without acting; the game does not choose for you.": "Kun Byggeri og Tegning er tilbage. Du har flertal i begge, men øen har ingen plads. Vælg hvilken stak du tager tilbage uden at handle; spillet vælger ikke for dig.",
   "Finish the round": "Afslut runden",
-  "The last stack had no possible action, so it was retrieved automatically. Rest bonuses are now paid; Maya's First player token makes her start the next round.": "Den sidste stak tillod ingen handling og blev derfor taget tilbage automatisk. Hvilebonusserne er nu udbetalt; Mayas startspillerbrik lader hende starte næste runde.",
+  "Retrieve your last stack without acting: the island has no space for it. This finishes the round and pays Rest bonuses; Maya starts the next round.": "Tag din sidste stak tilbage uden at handle: øen har ikke plads. Det afslutter runden og giver Hvile-bonusserne; Maya starter næste runde.",
   "A complete round": "En hel runde",
   "You played a whole round: Rest → Fish → Sell, then retrieved two unusable stacks. Your Rest bonus is now paid. Plan useful alternatives: a marker does not reserve an action, its resources or its place in your sequence.": "Du spillede en hel runde: Hvile → Fiskeri → Salg og tog derefter to ubrugelige stakke tilbage. Din hvilebonus er udbetalt. Planlæg alternativer: en markør reserverer hverken en handling, dens ressourcer eller dens plads i rækkefølgen.",
   "No tourists available this round.": "Ingen turister til rådighed i denne runde.",
@@ -946,5 +946,6 @@
   "No majority on this action.": "Intet flertal på denne handling.",
   "Wait for your turn.": "Vent på din tur.",
   "Choose an action to take back its markers without acting.": "Vælg en handling, hvis markører du tager tilbage uden at handle.",
-  "Undo my move": "Fortryd mit træk"
+  "Undo my move": "Fortryd mit træk",
+  "Automatically retrieve markers when there is no choice": "Tag automatisk markører tilbage, når der ikke er noget valg"
 }

@@ -14,6 +14,8 @@ Node 24+, pnpm. `pnpm install`, `pnpm build`, `pnpm dev` (port 5246). `pnpm test
 
 BGS supplies the shared `colorBlind` and `sound` preferences. Color-blind mode adds player symbols and K/C/B resource labels; game sounds give a quiet confirmation after successful moves. The toggles in Rules & help update the same BGS account settings. Standalone practice stores its own preferences locally.
 
+Marker retrieval is manual by default, including the last unusable action stack. Each player can opt into automatic retrieval when retrieving one stack is the only available move in Rules & help; this setting is saved separately for each game. Automatic retrieval never skips optional treasure exchanges or chooses between multiple stacks. Guided lessons always use manual retrieval.
+
 Supported scope: 2–5 players, all eleven characters, the official two-player variant, optional Rising Waters, replay and finished-game analysis, bots, BGS chat, player hover cards and board thumbnails.
 
 ## References

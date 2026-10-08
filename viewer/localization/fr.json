@@ -889,7 +889,7 @@
   "Choose which stack to retrieve": "Choisissez quelle pile retirer",
   "Only Build and Draw remain. Both now have your majority, but the island has no space for either. Choose which stack to retrieve without acting; the game does not choose for you.": "Il ne reste que Construire et Dessiner. Vous y avez maintenant la majorité, mais l'île n'a plus de place. Choisissez quelle pile retirer sans agir ; le jeu ne choisit pas à votre place.",
   "Finish the round": "Terminez la manche",
-  "The last stack had no possible action, so it was retrieved automatically. Rest bonuses are now paid; Maya's First player token makes her start the next round.": "La dernière pile ne permettait aucune action : elle a donc été retirée automatiquement. Les bonus Repos sont versés ; le jeton Premier joueur de Maya lui fera commencer la prochaine manche.",
+  "Retrieve your last stack without acting: the island has no space for it. This finishes the round and pays Rest bonuses; Maya starts the next round.": "Reprenez votre dernière pile sans agir : l'île n'a plus de place. Cela termine la manche et accorde les bonus de Repos ; Maya commence la manche suivante.",
   "A complete round": "Une manche complète",
   "You played a whole round: Rest → Fish → Sell, then retrieved two unusable stacks. Your Rest bonus is now paid. Plan useful alternatives: a marker does not reserve an action, its resources or its place in your sequence.": "Vous avez joué une manche entière : Se reposer → Pêcher → Vendre, puis retiré deux piles inutilisables. Votre bonus Repos est versé. Prévoyez des alternatives utiles : un marqueur ne réserve ni une action, ni ses ressources, ni sa place dans votre enchaînement.",
   "No tourists available this round.": "Aucun touriste disponible pour cette manche.",
@@ -946,5 +946,6 @@
   "No majority on this action.": "Pas de majorité sur cette action.",
   "Wait for your turn.": "Attendez votre tour.",
   "Choose an action to take back its markers without acting.": "Choisissez une action dont vous reprenez les marqueurs sans agir.",
-  "Undo my move": "Annuler mon coup"
+  "Undo my move": "Annuler mon coup",
+  "Automatically retrieve markers when there is no choice": "Reprendre automatiquement les marqueurs lorsqu'il n'y a pas de choix"
 }

@@ -889,7 +889,7 @@
   "Choose which stack to retrieve": "Chọn chồng dấu để thu về",
   "Only Build and Draw remain. Both now have your majority, but the island has no space for either. Choose which stack to retrieve without acting; the game does not choose for you.": "Chỉ còn Xây và Vẽ. Bạn đã chiếm đa số ở cả hai, nhưng đảo hết chỗ. Hãy chọn chồng dấu để thu về mà không hành động; trò chơi không chọn thay bạn.",
   "Finish the round": "Kết thúc vòng",
-  "The last stack had no possible action, so it was retrieved automatically. Rest bonuses are now paid; Maya's First player token makes her start the next round.": "Chồng dấu cuối không có hành động khả thi nên được thu tự động. Thưởng Nghỉ ngơi đã được trao; thẻ Người đi đầu của Maya giúp cô ấy bắt đầu vòng tiếp theo.",
+  "Retrieve your last stack without acting: the island has no space for it. This finishes the round and pays Rest bonuses; Maya starts the next round.": "Thu hồi chồng dấu cuối cùng mà không hành động: đảo không còn chỗ. Việc này kết thúc vòng và trả thưởng Nghỉ ngơi; Maya bắt đầu vòng tiếp theo.",
   "A complete round": "Một vòng hoàn chỉnh",
   "You played a whole round: Rest → Fish → Sell, then retrieved two unusable stacks. Your Rest bonus is now paid. Plan useful alternatives: a marker does not reserve an action, its resources or its place in your sequence.": "Bạn đã chơi trọn vòng: Nghỉ ngơi → Câu cá → Bán, rồi thu hai chồng dấu không dùng được. Thưởng Nghỉ ngơi đã được trao. Hãy có phương án khác: dấu không giữ trước hành động, tài nguyên hay thứ tự thực hiện.",
   "No tourists available this round.": "Không còn khách du lịch trong vòng này.",
@@ -946,5 +946,6 @@
   "No majority on this action.": "Không chiếm đa số ở hành động này.",
   "Wait for your turn.": "Hãy chờ đến lượt bạn.",
   "Choose an action to take back its markers without acting.": "Chọn một hành động để thu hồi dấu của nó mà không thực hiện hành động.",
-  "Undo my move": "Hoàn tác nước đi"
+  "Undo my move": "Hoàn tác nước đi",
+  "Automatically retrieve markers when there is no choice": "Tự động thu hồi dấu khi không có lựa chọn"
 }

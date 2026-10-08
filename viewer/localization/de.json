@@ -889,7 +889,7 @@
   "Choose which stack to retrieve": "Wähle den Stapel zum Zurücknehmen",
   "Only Build and Draw remain. Both now have your majority, but the island has no space for either. Choose which stack to retrieve without acting; the game does not choose for you.": "Nur Bauen und Zeichnen bleiben. Du hast nun bei beiden die Mehrheit, aber auf der Insel ist kein Platz mehr. Wähle selbst, welchen Stapel du ohne Aktion zurücknimmst.",
   "Finish the round": "Beende die Runde",
-  "The last stack had no possible action, so it was retrieved automatically. Rest bonuses are now paid; Maya's First player token makes her start the next round.": "Der letzte Stapel erlaubte keine Aktion und wurde automatisch zurückgenommen. Die Ruheboni werden ausgezahlt; Mayas Startspieler-Plättchen lässt sie die nächste Runde beginnen.",
+  "Retrieve your last stack without acting: the island has no space for it. This finishes the round and pays Rest bonuses; Maya starts the next round.": "Nimm deinen letzten Stapel ohne Aktion zurück: Auf der Insel ist kein Platz mehr. Damit endet die Runde und die Ruheboni werden ausgezahlt; Maya beginnt die nächste Runde.",
   "A complete round": "Eine ganze Runde",
   "You played a whole round: Rest → Fish → Sell, then retrieved two unusable stacks. Your Rest bonus is now paid. Plan useful alternatives: a marker does not reserve an action, its resources or its place in your sequence.": "Du hast eine ganze Runde gespielt: Ausruhen → Fischen → Verkaufen, dann zwei unbrauchbare Stapel zurückgenommen. Dein Ruhebonus ist ausgezahlt. Plane Alternativen: Ein Marker reserviert weder eine Aktion noch ihre Ressourcen oder ihre Position in deiner Reihenfolge.",
   "No tourists available this round.": "In dieser Runde sind keine Touristen verfügbar.",
@@ -946,5 +946,6 @@
   "No majority on this action.": "Keine Mehrheit bei dieser Aktion.",
   "Wait for your turn.": "Warte, bis du am Zug bist.",
   "Choose an action to take back its markers without acting.": "Wähle eine Aktion, deren Marker du ohne Aktion zurücknimmst.",
-  "Undo my move": "Zug zurücknehmen"
+  "Undo my move": "Zug zurücknehmen",
+  "Automatically retrieve markers when there is no choice": "Marker automatisch zurücknehmen, wenn es keine Wahl gibt"
 }

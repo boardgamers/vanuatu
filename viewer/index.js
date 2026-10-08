@@ -23,6 +23,7 @@ registerViewer(
       onOpenPlayer: ctx.openPlayer,
       onOpenBoardgame: ctx.openBoardgame,
       onPreference: ctx.updatePreference,
+      onSetting: ctx.updateSetting,
       onUndo: ctx.undo,
       onMove: (m) =>
         new Promise((resolve, reject) => {
@@ -78,6 +79,9 @@ registerViewer(
       async onPreferences(p) {
         if (!(await localization.setLocale(p.locale ?? p.language))) return;
         ui.setPreferences(p);
+      },
+      onSettings(settings) {
+        ui.setSettings(settings);
       },
       onAvatars(avatars) {
         ui.setAvatars(avatars);

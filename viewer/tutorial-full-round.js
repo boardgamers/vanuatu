@@ -2,7 +2,7 @@ import * as E from "../engine/index.js";
 
 export const fullRoundMetadata = {
   id: "full-round",
-  version: 1,
+  version: 2,
   title: "A round does not always go to plan",
   description:
     "Play a complete round: blocked actions, changing priorities and end-of-round bonuses.",
@@ -28,7 +28,7 @@ export const ROUND_LESSON = {
   retrieve:
     "Only Build and Draw remain. Both now have your majority, but the island has no space for either. Choose which stack to retrieve without acting; the game does not choose for you.",
   remaining:
-    "The last stack had no possible action, so it was retrieved automatically. Rest bonuses are now paid; Maya's First player token makes her start the next round.",
+    "Retrieve your last stack without acting: the island has no space for it. This finishes the round and pays Rest bonuses; Maya starts the next round.",
   done: "You played a whole round: Rest → Fish → Sell, then retrieved two unusable stacks. Your Rest bonus is now paid. Plan useful alternatives: a marker does not reserve an action, its resources or its place in your sequence.",
 };
 
@@ -182,13 +182,15 @@ export function createFullRoundChapter(prepared) {
         id: "retrieve",
         title: "Choose which stack to retrieve",
         text: ROUND_LESSON.retrieve,
-        complete: (s) => s.round === 2,
+        complete: (s) => count(s) === 1,
         validateMove: retrieve,
       },
       {
         id: "last-stack",
         title: "Finish the round",
         text: ROUND_LESSON.remaining,
+        complete: (s) => s.round === 2,
+        validateMove: retrieve,
       },
     ],
     completion: { title: "A complete round", text: ROUND_LESSON.done },

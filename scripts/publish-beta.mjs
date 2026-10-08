@@ -24,8 +24,7 @@ async function api(path, method = "GET", body, contentType) {
 }
 const versions = await api("/versions");
 const existing = versions.some((v) => v.version === 1) ? await api("/1") : null;
-// Once public, releases only replace the engine and viewer; the live entry's
-// settings (including its public status) are kept.
+// Existing entries receive only changed release fields; all other metadata is kept.
 const live = !!existing?.public;
 const defaults = {
   public: false,
@@ -53,6 +52,14 @@ const defaults = {
     thumbnail: true,
     dependencies: { scripts: [], stylesheets: [] },
   },
+  settings: [
+    {
+      name: "autoRetrieve",
+      label: "Automatically retrieve markers when there is no choice",
+      type: "checkbox",
+      default: false,
+    },
+  ],
   preferences: [
     {
       name: "colorBlind",
@@ -90,7 +97,7 @@ if (existing)
     ".local/release/before.json",
     JSON.stringify(existing, null, 2),
   );
-execFileSync("pnpm", ["pack", "--pack-destination", ".local/release"], {
+execFileSync("npm", ["pack", "--pack-destination", ".local/release"], {
   stdio: "inherit",
 });
 const pkg = JSON.parse(await readFile("package.json", "utf8"));
@@ -109,22 +116,46 @@ const files = await uploadViewerFiles(
 );
 const viewer = { url: files.url },
   style = { url: files.stylesheets[0] };
-const { unlisted: _unlisted, ...previous } = existing ?? {};
-await api("/1", "PUT", {
-  ...previous,
-  ...(live ? {} : defaults),
+const patch = {
+  settings: [
+    ...(existing?.settings ?? []).filter(
+      (setting) => setting.name !== "autoRetrieve",
+    ),
+    ...defaults.settings,
+  ],
+  tutorial: {
+    ...(existing?.tutorial ?? defaults.tutorial),
+    chapters: existing?.tutorial?.chapters
+      ? existing.tutorial.chapters.map((chapter) =>
+          chapter.id === "full-round"
+            ? {
+                ...chapter,
+                version: chapterMetadata.find((c) => c.id === "full-round")
+                  .version,
+              }
+            : chapter,
+        )
+      : chapterMetadata,
+  },
   engine: { ...engine.engine, entryPoint: "dist/engine.js" },
   viewer: {
-    ...(live ? existing.viewer : defaults.viewer),
+    ...(existing?.viewer ?? defaults.viewer),
     url: viewer.url,
     scriptBytes: files.scriptBytes,
     dependencies: {
-      ...(live ? existing.viewer.dependencies : defaults.viewer.dependencies),
+      ...(existing?.viewer?.dependencies ?? defaults.viewer.dependencies),
       stylesheets: [style.url],
     },
   },
-});
-if (!live) {
+};
+if (existing) {
+  for (const field of ["settings", "tutorial"])
+    if (JSON.stringify(patch[field]) === JSON.stringify(existing[field]))
+      delete patch[field];
+}
+await writeFile(".local/release/patch.json", JSON.stringify(patch, null, 2));
+await api("/1", "PUT", patch);
+if (!existing) {
   await api("/meta", "PUT", { unlisted: null });
   await api(
     "/assets/cover?name=Vanuatu",
@@ -139,7 +170,15 @@ if (!live) {
 const published = await api("/1"),
   meta = await api("/meta");
 assert.equal(published.public, live);
-assert.ok(!meta.unlisted);
+if (existing) {
+  for (const [field, value] of Object.entries(existing))
+    if (!["engine", "viewer", "settings", "tutorial", "updatedAt"].includes(field))
+      assert.deepEqual(
+        published[field],
+        value,
+        `Unexpected metadata change: ${field}`,
+      );
+} else assert.ok(!meta.unlisted);
 assert.equal(published.engine.package.version, pkg.version);
 assert.equal(published.viewer.chat, true);
 await writeFile(

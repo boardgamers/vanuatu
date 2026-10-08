@@ -889,7 +889,7 @@
   "Choose which stack to retrieve": "選擇要收回哪堆標記",
   "Only Build and Draw remain. Both now have your majority, but the island has no space for either. Choose which stack to retrieve without acting; the game does not choose for you.": "只剩建造和畫沙畫。這兩項現在都是你的標記最多，但島上已沒有空間。請自行選擇不執行行動就收回哪堆標記；遊戲不會替你選。",
   "Finish the round": "完成這個回合",
-  "The last stack had no possible action, so it was retrieved automatically. Rest bonuses are now paid; Maya's First player token makes her start the next round.": "最後一堆標記沒有可執行的行動，因此自動收回。休息獎勵已發放；Maya 的起始玩家標記讓她開始下一回合。",
+  "Retrieve your last stack without acting: the island has no space for it. This finishes the round and pays Rest bonuses; Maya starts the next round.": "不執行行動，收回最後一疊標記：島上已無空間。這會結束本輪並發放休息獎勵；Maya 將開始下一輪。",
   "A complete round": "一個完整回合",
   "You played a whole round: Rest → Fish → Sell, then retrieved two unusable stacks. Your Rest bonus is now paid. Plan useful alternatives: a marker does not reserve an action, its resources or its place in your sequence.": "你玩完了一整個回合：休息 → 捕魚 → 賣魚，接著收回兩堆無法使用的標記。休息獎勵已發放。規劃有用的替代方案：標記不會預留行動、資源或執行順序。",
   "No tourists available this round.": "本回合沒有可用的遊客。",
@@ -946,5 +946,6 @@
   "No majority on this action.": "此行動未取得多數。",
   "Wait for your turn.": "請等待輪到你。",
   "Choose an action to take back its markers without acting.": "選擇一個行動，收回其標記但不執行行動。",
-  "Undo my move": "撤回我的行動"
+  "Undo my move": "撤回我的行動",
+  "Automatically retrieve markers when there is no choice": "無其他選擇時自動收回標記"
 }

@@ -980,6 +980,7 @@ function automate(s) {
       (m) => !["beg", "treasure"].includes(m.type),
     );
     if (
+      playerSettings(s, s.actor).autoRetrieve &&
       moves.length === 1 &&
       moves[0].type === "discard" &&
       freeMoves(s, s.actor).length === 0
@@ -1009,7 +1010,13 @@ function applyMove(data, input, p) {
   const s = copy(data);
   execute(s, legal, p);
   automate(s);
-  s._history.push({ p, move: copy(legal) });
+  s._history.push({
+    p,
+    move: copy(legal),
+    autoRetrieve: data.players.map(
+      (_, q) => playerSettings(data, q).autoRetrieve,
+    ),
+  });
   saveFrame(s);
   return s;
 }
@@ -1121,10 +1128,17 @@ export function replay(s, { to = logLength(s) } = {}) {
     b.seed,
     s.boardLayout ?? 1,
   );
-  for (const h of s._history.slice(0, to - 1)) r = applyMove(r, h.move, h.p);
+  for (const h of s._history.slice(0, to - 1)) {
+    // Old history entries predate the setting and always retrieved automatically.
+    r.players.forEach((p, i) => {
+      p.settings = { ...p.settings, autoRetrieve: h.autoRetrieve?.[i] ?? true };
+    });
+    r = applyMove(r, h.move, h.p);
+  }
   s.players.forEach((p, i) => {
     r.players[i].name = p.name;
     r.players[i].dropped = p.dropped;
+    r.players[i].settings = copy(p.settings ?? {});
   });
   return r;
 }
@@ -1406,4 +1420,20 @@ export function dropPlayer(s, p) {
   const out = copy(s);
   out.players[p].dropped = true;
   return playDropped(out);
+}
+
+// Per-player settings apply only to this game; older saves default to manual retrieval.
+export function playerSettings(s, p) {
+  check(Number.isInteger(p) && !!s.players[p], "Unknown player");
+  return { autoRetrieve: s.players[p].settings?.autoRetrieve === true };
+}
+export function setPlayerSettings(s, p, settings) {
+  playerSettings(s, p);
+  const out = copy(s);
+  if (typeof settings?.autoRetrieve === "boolean")
+    out.players[p].settings = {
+      ...out.players[p].settings,
+      autoRetrieve: settings.autoRetrieve,
+    };
+  return out;
 }

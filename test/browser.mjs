@@ -338,6 +338,51 @@ assert.equal(
   await page.evaluate(() => window.vanuatuDemo.state.players[0].money),
   8,
 );
+// A per-game opt-in persists with the game and affects only that seat.
+const retrievalSetting = actionState();
+retrievalSetting.players[0].markers = { fish: 1 };
+retrievalSetting.players[1].markers = { build: 1 };
+retrievalSetting.players[1].money = 0;
+await page.evaluate((s) => window.vanuatuDemo.setState(s), retrievalSetting);
+await page.locator(".header-tools [data-help]").click();
+const autoRetrieve = page.locator('[data-setting="autoRetrieve"]');
+assert.equal(await autoRetrieve.isChecked(), false);
+await autoRetrieve.check();
+await page.waitForFunction(
+  () => window.vanuatuDemo.state.players[0].settings?.autoRetrieve === true,
+);
+assert.equal(await autoRetrieve.isChecked(), true);
+assert.equal(
+  await page.evaluate(
+    () =>
+      window.vanuatuDemo.engine.playerSettings(window.vanuatuDemo.state, 1)
+        .autoRetrieve,
+  ),
+  false,
+);
+await autoRetrieve.uncheck();
+await page.waitForFunction(
+  () => window.vanuatuDemo.state.players[0].settings?.autoRetrieve === false,
+);
+await page.locator("dialog [data-close]").click();
+await page.evaluate((s) => window.vanuatuDemo.setState(s), retrievalSetting);
+await page.locator('[data-action="fish"]').click();
+await page.locator(".turn-tray .primary[data-move]").click();
+await page.waitForFunction(() => window.vanuatuDemo.state.actor === 1);
+assert.equal(
+  await page.evaluate(() => window.vanuatuDemo.state.players[1].markers.build),
+  1,
+);
+await page.locator('[data-action="build"]').click();
+assert.match(
+  await page.locator(".turn-tray").innerText(),
+  /0 available, 3 needed/,
+);
+await page.locator(".turn-tray .retrieve-warning").click();
+assert.equal(
+  await page.evaluate(() => window.vanuatuDemo.state.players[1].markers.build),
+  0,
+);
 for (const width of [1440, 390]) {
   await page.setViewportSize({ width, height: width === 390 ? 844 : 1000 });
   // An empty supply blocks transport, but must not prevent retrieving markers.

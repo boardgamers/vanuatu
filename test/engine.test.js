@@ -309,13 +309,14 @@ test("planned sailing can spend a vatu before a sale to avoid conversion and fun
   s.players[0].markers.sail = 1;
   assert.equal(sellThenExport(), true);
 });
-test("an optional treasure sale is not skipped by automatic marker retrieval", () => {
+test("an optional treasure sale is not skipped by opted-in automatic marker retrieval", () => {
   let s = actionState();
   s.actor = 0;
   s.players[0].markers = { ...s.players[0].markers, fish: 1 };
   s.players[1].markers = Object.fromEntries(
     E.ACTIONS.map((a) => [a, a === "sail" ? 1 : 0]),
   );
+  s = E.setPlayerSettings(s, 1, { autoRetrieve: true });
   s.players[1].money = 0;
   s.players[1].treasures = [2];
   s = E.move(s, act(s, 0, "fish"), 0);
