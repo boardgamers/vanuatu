@@ -172,7 +172,9 @@ const published = await api("/1"),
 assert.equal(published.public, live);
 if (existing) {
   for (const [field, value] of Object.entries(existing))
-    if (!["engine", "viewer", "settings", "tutorial", "updatedAt"].includes(field))
+    if (
+      !["engine", "viewer", "settings", "tutorial", "updatedAt"].includes(field)
+    )
       assert.deepEqual(
         published[field],
         value,
