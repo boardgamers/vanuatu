@@ -27,7 +27,7 @@ test("regional language preferences select supported catalogues", () => {
   assert.equal(resolveLocale("nl-BE"), "nl");
   assert.equal(resolveLocale("pt-PT"), "pt-BR");
   assert.equal(resolveLocale("zh-Hant-TW"), "zh-TW");
-  assert.equal(resolveLocale("zh-CN"), "en");
+  assert.equal(resolveLocale("zh-CN"), "zh-CN");
   assert.equal(resolveLocale(undefined), "en");
 });
 test("dynamic values are reordered while player names stay unchanged", () => {
@@ -93,4 +93,20 @@ test("Persian regional tags and game terminology preserve dynamic values", async
   );
   t.setLocale("en");
   assert.equal(t.translate("Sail"), "Sail");
+});
+
+test("Simplified Chinese aliases preserve Traditional Chinese preferences", () => {
+  for (const tag of [
+    "zh",
+    "zh-CN",
+    "zh_CN",
+    "zh-SG",
+    "zh-Hans",
+    "zh-Hans-CN",
+  ]) {
+    assert.equal(resolveLocale(tag), "zh-CN");
+  }
+  for (const tag of ["zh-TW", "zh-HK", "zh-MO", "zh-Hant", "zh-Hant-CN"]) {
+    assert.equal(resolveLocale(tag), "zh-TW");
+  }
 });

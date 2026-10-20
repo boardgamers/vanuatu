@@ -96,6 +96,7 @@ const terms = {
     "모래그림|그림",
     "선 플레이어|시작 플레이어",
   ],
+  "zh-CN": ["瓦图", "繁荣点|繁荣", "建造", "绘画|沙画", "起始玩家"],
   "zh-TW": ["瓦圖", "繁榮點數|繁榮分數|繁榮", "建造", "沙畫", "起始玩家"],
   vi: [
     "vatus|vatu",
@@ -134,6 +135,7 @@ const goods = {
   el: ["κάβα", "κόπρα", "μοσχάρι"],
   hi: ["कावा", "खोपरा|खोपरे", "गोमांस"],
   ko: ["카바", "코프라", "소고기"],
+  "zh-CN": ["卡瓦", "椰干", "牛肉"],
   "zh-TW": ["卡瓦", "椰乾", "牛肉"],
   vi: ["kava", "cùi dừa khô", "thịt bò"],
   fa: ["کاوا", "مغز خشک نارگیل", "گوشت گاو"],
@@ -164,7 +166,9 @@ function vocabulary(locale) {
     .join("|");
   // Korean particles and Chinese words have no separating spaces. Numbers can
   // touch a unit in any language (e.g. 0바투); letters in other words cannot.
-  const boundary = ["ko", "zh-TW"].includes(locale) ? "" : "[\\p{L}\\p{M}]";
+  const boundary = ["ko", "zh-TW", "zh-CN"].includes(locale)
+    ? ""
+    : "[\\p{L}\\p{M}]";
   const pattern = new RegExp(
     `${boundary ? `(?<!${boundary})` : ""}(?:${body})${boundary ? `(?!${boundary})` : ""}`,
     "giu",

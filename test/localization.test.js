@@ -21,7 +21,7 @@ test("locale negotiation preserves regional language variants", () => {
     ["NL-nl", "nl"],
     ["pt", "pt-BR"],
     ["zh-Hant", "zh-TW"],
-    ["zh-CN", "en"],
+    ["zh-CN", "zh-CN"],
     [undefined, "en"],
   ])
     assert.equal(resolveLocale(input), expected);
