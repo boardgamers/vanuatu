@@ -69,6 +69,12 @@ const defaults = {
     },
     { name: "sound", label: "Game sounds", type: "checkbox", default: true },
     {
+      name: "animations",
+      label: "Animations",
+      type: "checkbox",
+      default: true,
+    },
+    {
       name: "language",
       label: "Language",
       type: "select",
@@ -117,6 +123,17 @@ const files = await uploadViewerFiles(
 const viewer = { url: files.url },
   style = { url: files.stylesheets[0] };
 const patch = {
+  preferences: [
+    ...(existing?.preferences ?? defaults.preferences).filter(
+      (preference) => preference.name !== "animations",
+    ),
+    existing?.preferences?.find(
+      (preference) => preference.name === "animations",
+    ) ??
+      defaults.preferences.find(
+        (preference) => preference.name === "animations",
+      ),
+  ],
   settings: [
     ...(existing?.settings ?? []).filter(
       (setting) => setting.name !== "autoRetrieve",
@@ -149,7 +166,7 @@ const patch = {
   },
 };
 if (existing) {
-  for (const field of ["settings", "tutorial"])
+  for (const field of ["settings", "tutorial", "preferences"])
     if (JSON.stringify(patch[field]) === JSON.stringify(existing[field]))
       delete patch[field];
 }
@@ -173,7 +190,14 @@ assert.equal(published.public, live);
 if (existing) {
   for (const [field, value] of Object.entries(existing))
     if (
-      !["engine", "viewer", "settings", "tutorial", "updatedAt"].includes(field)
+      ![
+        "engine",
+        "viewer",
+        "settings",
+        "tutorial",
+        "preferences",
+        "updatedAt",
+      ].includes(field)
     )
       assert.deepEqual(
         published[field],

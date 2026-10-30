@@ -3,10 +3,11 @@ import assert from "node:assert/strict";
 import { createMoveSound } from "../viewer/sound.js";
 
 function audioFixture() {
-  const counts = { created: 0, played: 0, stopped: 0, closed: 0 };
+  const counts = { created: 0, played: 0, stopped: 0, closed: 0, buffers: 0 };
   const context = {
     state: "suspended",
     currentTime: 0,
+    sampleRate: 8000,
     destination: {},
     async resume() {
       this.state = "running";
@@ -24,7 +25,7 @@ function audioFixture() {
     },
     createOscillator() {
       return {
-        frequency: {},
+        frequency: { setValueAtTime() {}, exponentialRampToValueAtTime() {} },
         connect(gain) {
           return gain;
         },
@@ -39,6 +40,16 @@ function audioFixture() {
           }
         },
       };
+    },
+    createBuffer(channels, length) {
+      counts.buffers++;
+      return { getChannelData: () => new Float32Array(length) };
+    },
+    createBufferSource() {
+      return this.createOscillator();
+    },
+    createBiquadFilter() {
+      return { frequency: {}, connect: (node) => node, disconnect() {} };
     },
   };
   const audio = createMoveSound(() => {
@@ -115,5 +126,41 @@ test("unavailable browser audio does not interrupt play", async () => {
   audio.setEnabled(true);
   audio.unlock();
   await audio.play();
+  audio.destroy();
+});
+
+test("material cues reuse noise and replace fast overlapping sounds", async () => {
+  const { audio, counts } = audioFixture();
+  audio.setEnabled(true);
+  audio.unlock();
+  await audio.play("sail");
+  assert.equal(counts.played, 2);
+  await audio.play("draw");
+  assert.equal(counts.buffers, 1);
+  assert.equal(counts.stopped, 2);
+  await audio.play("complete");
+  assert.equal(counts.played, 7);
+  audio.setEnabled(false);
+  assert.equal(counts.stopped, 7);
+  audio.destroy();
+});
+
+test("cancelling effects also cancels a sound still waiting for audio unlock", async () => {
+  const { audio, counts, context } = audioFixture();
+  let resume;
+  context.resume = () =>
+    new Promise((resolve) => {
+      resume = () => {
+        context.state = "running";
+        resolve();
+      };
+    });
+  audio.setEnabled(true);
+  audio.unlock();
+  const pending = audio.play("sail");
+  audio.stop();
+  resume();
+  await pending;
+  assert.equal(counts.played, 0);
   audio.destroy();
 });

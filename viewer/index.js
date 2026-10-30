@@ -101,17 +101,22 @@ registerViewer(
         }
         const data = log.data;
         if (data?.frames?.length && log.start === position - 1) {
-          ui.render({ ...data.frames[0], legal: [], historyLength: position });
+          ui.render(
+            { ...data.frames[0], legal: [], historyLength: position },
+            { live: false },
+          );
           ui.setEnabled(false);
         }
       },
       onReplayStart() {
         replaying = true;
+        ui.stopEffects();
         ui.setEnabled(false);
         seek(live?.historyLength ?? 1);
       },
       onReplayTo(index) {
         replaying = true;
+        ui.stopEffects();
         seek(index);
       },
       onReplayEnd() {
@@ -119,7 +124,7 @@ registerViewer(
         ui.setEnabled(true);
         if (live) {
           position = live.historyLength;
-          ui.render(live);
+          ui.render(live, { live: false });
         }
         ctx.fetchState();
       },

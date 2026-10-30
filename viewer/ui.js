@@ -37,6 +37,7 @@ import { mountActivity } from "./activity.js";
 import { pictogramText } from "./prose.js";
 import { rulesHtml } from "./rules.js";
 import { createMoveSound } from "./sound.js";
+import { createEffects, liveEvents } from "./effects.js";
 import {
   languages,
   resolveLocale,
@@ -102,6 +103,7 @@ export function mountGame(target, options = {}) {
     hostedLocale = false,
     colorBlind = false,
     sound = false,
+    animations = true,
     autoRetrieve = false,
     undoAvailable = false,
     revision,
@@ -133,8 +135,14 @@ export function mountGame(target, options = {}) {
     renderToken(name, n, label ?? `${iconLabel(name, lang)}: ${n}`, colorBlind);
   let t = translator(lang);
   const moveSound = createMoveSound();
+  const effects = createEffects(root, { icon, sound: moveSound, center });
   const events = new AbortController();
   const listener = { signal: events.signal };
+  root.addEventListener("pointerdown", () => moveSound.unlock(), {
+    ...listener,
+    passive: true,
+  });
+  root.addEventListener("keydown", () => moveSound.unlock(), listener);
   const mapZoom = mountMapZoom(play);
   const trayObserver = new ResizeObserver(([entry]) => {
     const parent = entry.target.parentElement;
@@ -271,7 +279,7 @@ export function mountGame(target, options = {}) {
   }
   function playerCard(p, i) {
     const c = CHARACTERS[p.character];
-    return `<section class="player-card ${i === s.actor && !s.finished ? "active" : ""} ${i === player ? "own" : ""}" style="--player:${p.color};--player-ink:${playerColorInk(p.color)};--player-text:${playerColorText(p.color)}"><div class="player-name">${btn(`${avatars[i] ? `<img class="player-avatar" src="${esc(avatars[i])}" alt="">` : ""}<span>${colorBlind ? symbol(i) + " " : ""}${esc(p.name)}</span>${playerBadge(i)}`, `data-bgs-player="${i}" title="${esc(p.name)}"`, "profile")} ${s.first === i ? btn(icon("first", translateText(FIRST_HELP, lang)), `data-first-help aria-label="${t("first")}"`, "icon-button") : ""}<strong class="score">${token("point", p.score)}</strong></div><div class="player-supplies">${token("coin", p.money)}<span class="hand" title="${t("fishStock")}">${p.fish.length ? p.fish.map((n) => token("fish", n)).join("") : token("fish", 0)}</span><span class="hand" title="${t("treasure")}">${p.treasures.length ? p.treasures.map((n) => token("explore", n)).join("") : token("explore", 0)}</span>${token("build", p.hutsLeft)}</div>${c ? `<button type="button" class="character-owned ${p.used ? "used" : ""}" data-character="${p.character}" title="${charName(p.character)}"><img src="${assets["character-" + c.art]}" alt=""><span>${charName(p.character)}</span>${p.used ? icon("check") : icon(c.action ?? "point")}</button>` : ""}${i === player ? `<div class="free-actions">${legal().some((m) => m.type === "treasure") ? btn(`${icon("explore")} → ${icon("coin")}`, `data-free="treasure" title="${t("treasure")}"`) : ""}${legal().some((m) => m.type === "beg") ? btn(`${icon("point")} → ${icon("coin")}`, `data-free="beg" title="${t("beg")}"`) : ""}</div>` : ""}</section>`;
+    return `<section data-player-card="${i}" class="player-card ${i === s.actor && !s.finished ? "active" : ""} ${i === player ? "own" : ""}" style="--player:${p.color};--player-ink:${playerColorInk(p.color)};--player-text:${playerColorText(p.color)}"><div class="player-name">${btn(`${avatars[i] ? `<img class="player-avatar" src="${esc(avatars[i])}" alt="">` : ""}<span>${colorBlind ? symbol(i) + " " : ""}${esc(p.name)}</span>${playerBadge(i)}`, `data-bgs-player="${i}" title="${esc(p.name)}"`, "profile")} ${s.first === i ? btn(icon("first", translateText(FIRST_HELP, lang)), `data-first-help aria-label="${t("first")}"`, "icon-button") : ""}<strong class="score">${token("point", p.score)}</strong></div><div class="player-supplies">${token("coin", p.money)}<span class="hand" title="${t("fishStock")}">${p.fish.length ? p.fish.map((n) => token("fish", n)).join("") : token("fish", 0)}</span><span class="hand" title="${t("treasure")}">${p.treasures.length ? p.treasures.map((n) => token("explore", n)).join("") : token("explore", 0)}</span>${token("build", p.hutsLeft)}</div>${c ? `<button type="button" class="character-owned ${p.used ? "used" : ""}" data-character="${p.character}" title="${charName(p.character)}"><img src="${assets["character-" + c.art]}" alt=""><span>${charName(p.character)}</span>${p.used ? icon("check") : icon(c.action ?? "point")}</button>` : ""}${i === player ? `<div class="free-actions">${legal().some((m) => m.type === "treasure") ? btn(`${icon("explore")} → ${icon("coin")}`, `data-free="treasure" title="${t("treasure")}"`) : ""}${legal().some((m) => m.type === "beg") ? btn(`${icon("point")} → ${icon("coin")}`, `data-free="beg" title="${t("beg")}"`) : ""}</div>` : ""}</section>`;
   }
   function dock() {
     const planning = ["plan", "neutral"].includes(s.phase) && working().length;
@@ -346,7 +354,7 @@ export function mountGame(target, options = {}) {
         const stacks = s.players
           .map((p, i) =>
             p.markers[a]
-              ? `<span class="marker-stack ${s.majorities?.[i]?.includes(a) ? "majority" : ""}" style="--player:${p.color};--player-ink:${playerColorInk(p.color)};--player-text:${playerColorText(p.color)}" title="${esc(p.name)}: ${p.markers[a]}">${colorBlind ? symbol(i) : ""}${p.markers[a]}</span>`
+              ? `<span data-marker-player="${i}" class="marker-stack ${s.majorities?.[i]?.includes(a) ? "majority" : ""}" style="--player:${p.color};--player-ink:${playerColorInk(p.color)};--player-text:${playerColorText(p.color)}" title="${esc(p.name)}: ${p.markers[a]}">${colorBlind ? symbol(i) : ""}${p.markers[a]}</span>`
               : "",
           )
           .join("");
@@ -422,7 +430,7 @@ export function mountGame(target, options = {}) {
   }
   function tradeShips() {
     const help = `Foreign trade\n${colorBlind ? "K: kava · C: copra · B: beef." : "Green: kava · White: copra · Red: beef."}\nEach export fills the first ship (1 → 3) still needing that good. ✓ = already delivered.\nCompleting a ship adds 2 prosperity points.`;
-    return `<div class="demand-ships" title="${esc(help)}" aria-label="${esc(help)}">${s.demands.map((d, i) => `<div class="demand-ship"><small>${i + 1}</small>${d.goods.map((g, j) => `<span class="${d.filled[j] ? "filled" : ""}">${icon(g)}${d.filled[j] ? icon("check") : ""}</span>`).join("")}${icon("buy")}</div>`).join("")}</div>`;
+    return `<div class="demand-ships" title="${esc(help)}" aria-label="${esc(help)}">${s.demands.map((d, i) => `<div class="demand-ship" data-ship="${d.id}"><small>${i + 1}</small>${d.goods.map((g, j) => `<span class="${d.filled[j] ? "filled" : ""}">${icon(g)}${d.filled[j] ? icon("check") : ""}</span>`).join("")}${icon("buy")}</div>`).join("")}</div>`;
   }
   function renderControls() {
     const focus = document.activeElement?.getAttribute("data-action");
@@ -598,7 +606,6 @@ export function mountGame(target, options = {}) {
         closeDialog();
         return;
       }
-      void moveSound.play();
       selected = null;
       action = null;
       draft = [];
@@ -725,6 +732,11 @@ export function mountGame(target, options = {}) {
           if (s.phase === "neutral")
             draft.sort((a, b) => ACTIONS.indexOf(a) - ACTIONS.indexOf(b));
           renderControls();
+          effects.drop(
+            play.querySelector(`[data-action="${d.action}"] .draft-marker`),
+          );
+          moveSound.unlock();
+          void moveSound.play("marker");
           return;
         } else {
           action = d.action;
@@ -809,7 +821,7 @@ export function mountGame(target, options = {}) {
       }
       if ("help" in d) {
         showDialog(
-          `<h2>${t("help")}</h2><div class="preferences"><label><input type="checkbox" data-pref="colorBlind" ${colorBlind ? "checked" : ""}>${t("colorBlind")}</label><label><input type="checkbox" data-pref="sound" ${sound ? "checked" : ""}>${t("sound")}</label>${options.onSetting && Number.isInteger(player) && !analysis ? `<label><input type="checkbox" data-setting="autoRetrieve" ${autoRetrieve ? "checked" : ""}>${esc(translateText("Automatically retrieve markers when there is no choice", lang))}</label>` : ""}${
+          `<h2>${t("help")}</h2><div class="preferences"><label><input type="checkbox" data-pref="colorBlind" ${colorBlind ? "checked" : ""}>${t("colorBlind")}</label><label><input type="checkbox" data-pref="animations" ${animations ? "checked" : ""}>${esc(translateText("Animations", lang))}</label><label><input type="checkbox" data-pref="sound" ${sound ? "checked" : ""}>${t("sound")}</label>${options.onSetting && Number.isInteger(player) && !analysis ? `<label><input type="checkbox" data-setting="autoRetrieve" ${autoRetrieve ? "checked" : ""}>${esc(translateText("Automatically retrieve markers when there is no choice", lang))}</label>` : ""}${
             hostedLocale
               ? ""
               : `<select data-language aria-label="Language">${Object.entries(
@@ -870,6 +882,11 @@ export function mountGame(target, options = {}) {
         if (key === "colorBlind") {
           colorBlind = value;
         }
+        if (key === "animations") {
+          animations = value;
+          effects.setEnabled(value);
+          root.dataset.animations = String(value);
+        }
         if (key === "sound") {
           sound = value;
           moveSound.setEnabled(value);
@@ -922,13 +939,18 @@ export function mountGame(target, options = {}) {
   );
   return {
     root,
-    render(state) {
+    render(state, { live = true } = {}) {
+      const before = s;
+      const incoming = live && !analysis ? liveEvents(before, state) : [];
+      const captured = incoming.length ? effects.capture() : null;
       const next = `${state.historyLength ?? state.round + ":" + state.phase}:${player}`;
       const key = JSON.stringify(state);
       rawState = state;
       s = displayState(state);
       if (stateKey === key && next === revision) return;
       stateKey = key;
+      effects.cancel();
+      if (!incoming.length) moveSound.stop();
       if (next !== revision) {
         selected = null;
         action = null;
@@ -936,6 +958,7 @@ export function mountGame(target, options = {}) {
         revision = next;
       }
       render();
+      if (incoming.length) effects.show(incoming, before, s, captured, player);
     },
     setAvatars(value) {
       if (JSON.stringify(avatars) === JSON.stringify(value)) return;
@@ -950,6 +973,10 @@ export function mountGame(target, options = {}) {
       action = null;
       selected = null;
       render();
+    },
+    stopEffects() {
+      effects.cancel();
+      moveSound.stop();
     },
     setEnabled(v) {
       if (enabled === v) return;
@@ -979,9 +1006,17 @@ export function mountGame(target, options = {}) {
           )
         : [];
       s = displayState(rawState);
+      animations = p.animations !== false;
+      effects.setEnabled(animations);
+      if (root.dataset.animations !== String(animations))
+        root.dataset.animations = String(animations);
       sound = p.sound === true;
       moveSound.setEnabled(sound);
-      for (const [name, value] of Object.entries({ colorBlind, sound })) {
+      for (const [name, value] of Object.entries({
+        colorBlind,
+        sound,
+        animations,
+      })) {
         const checkbox = dialog.querySelector(`[data-pref="${name}"]`);
         if (checkbox && checkbox.checked !== value) checkbox.checked = value;
       }
@@ -1005,6 +1040,7 @@ export function mountGame(target, options = {}) {
       events.abort();
       mapZoom.destroy();
       trayObserver.disconnect();
+      effects.destroy();
       moveSound.destroy();
       offChat?.();
       activity.destroy();

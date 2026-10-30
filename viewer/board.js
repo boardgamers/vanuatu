@@ -212,7 +212,7 @@ export function boardSvg(
       const x = c.x + ((i % 3) - (rowSize - 1) / 2) * 39,
         y = c.y + (boats.length > 3 ? row * 32 : 11);
       const help = `${"Boat"} · ${p.name}`;
-      svg += `<g class="boat ${pi === player ? "own" : ""}" transform="translate(${x - 24} ${y - 24})" style="color:${p.color}" filter="url(#${prefix}-boat-shadow)"><title>${esc(help)}</title>${svgIcon("sail", 0, 0, 48, p.color, help)}${colorBlind ? `<text x="25" y="40" class="color-symbol">${symbols[pi]}</text>` : ""}</g>`;
+      svg += `<g data-boat="${pi}" class="boat ${pi === player ? "own" : ""}" transform="translate(${x - 24} ${y - 24})" style="color:${p.color}" filter="url(#${prefix}-boat-shadow)"><title>${esc(help)}</title>${svgIcon("sail", 0, 0, 48, p.color, help)}${colorBlind ? `<text x="25" y="40" class="color-symbol">${symbols[pi]}</text>` : ""}</g>`;
     }
     svg += "</g>";
   }
