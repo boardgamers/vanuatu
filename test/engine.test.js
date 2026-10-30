@@ -184,14 +184,27 @@ test("hidden deck, future RNG and rest choice are not exposed", () => {
 });
 test("deterministic replay reconstructs every history boundary", () => {
   let s = E.init(3, [], {}, "replay");
-  for (let n = 0; n < 14; n++) s = E.moveAI(s, s.actor);
+  const states = [s];
+  for (let n = 0; n < 14; n++) {
+    const before = structuredClone(s);
+    s = E.moveAI(s, s.actor);
+    assert.deepEqual(states.at(-1), before);
+    states.push(s);
+  }
+  const before = structuredClone(s);
   for (let n = 1; n <= E.logLength(s); n++) {
     const r = E.createAnalysis(s, { to: n });
     assert.equal(E.logLength(r), n);
+    assert.deepEqual(r._history, states[n - 1]._history);
+    assert.deepEqual(r.events, states[n - 1].events);
+    assert.equal(r._rng, states[n - 1]._rng);
     assert.deepEqual(
       E.stripSecret(r, 0).board,
       E.logSlice(s, { player: 0, start: n - 1, end: n - 1 }).frames[0].board,
     );
+    r.players[0].money = -100;
+    r._frames[0].players[0].money = -100;
+    assert.deepEqual(s, before);
   }
 });
 test("Rising Waters floods after its action countdown and dikes protect edges", () => {

@@ -993,29 +993,27 @@ function automate(s) {
   check(guard < 100, "Automatic turn limit");
 }
 function applyMove(data, input, p) {
-  check(!data.finished, "The game has ended");
+  return applyMoveInPlace(copy(data), input, p);
+}
+function applyMoveInPlace(s, input, p) {
+  check(!s.finished, "The game has ended");
   check(
-    Number.isInteger(p) && p >= 0 && p < data.players.length,
+    Number.isInteger(p) && p >= 0 && p < s.players.length,
     "Unknown player",
   );
   const m = normalizeMove(input);
-  check(
-    p === data.actor || ["beg", "treasure"].includes(m.type),
-    "Not your turn",
-  );
-  const legal = availableMoves(data, p).find((x) =>
-    matches(normalizeMove(x), m),
-  );
+  check(p === s.actor || ["beg", "treasure"].includes(m.type), "Not your turn");
+  const legal = availableMoves(s, p).find((x) => matches(normalizeMove(x), m));
   check(legal, "That move is not available");
-  const s = copy(data);
+  const autoRetrieve = s.players.map(
+    (_, q) => playerSettings(s, q).autoRetrieve,
+  );
   execute(s, legal, p);
   automate(s);
   s._history.push({
     p,
     move: copy(legal),
-    autoRetrieve: data.players.map(
-      (_, q) => playerSettings(data, q).autoRetrieve,
-    ),
+    autoRetrieve,
   });
   saveFrame(s);
   return s;
@@ -1121,7 +1119,7 @@ export function replay(s, { to = logLength(s) } = {}) {
     "Invalid replay position",
   );
   const b = s._setup;
-  let r = initialize(
+  const r = initialize(
     b.count,
     b.expansions,
     b.options,
@@ -1133,7 +1131,8 @@ export function replay(s, { to = logLength(s) } = {}) {
     r.players.forEach((p, i) => {
       p.settings = { ...p.settings, autoRetrieve: h.autoRetrieve?.[i] ?? true };
     });
-    r = applyMove(r, h.move, h.p);
+    // Replay owns this fresh state; cloning its accumulated frames per move is quadratic.
+    applyMoveInPlace(r, h.move, h.p);
   }
   s.players.forEach((p, i) => {
     r.players[i].name = p.name;
