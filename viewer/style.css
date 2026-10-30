@@ -54,6 +54,11 @@
   outline: 3px solid #bb773c;
   outline-offset: 3px;
 }
+/* SVG groups otherwise receive a rectangular outline around their bounds.
+   Their keyboard focus uses the tile-shaped overlay instead. */
+.vanuatu .map-cell:focus {
+  outline: none;
+}
 .vanuatu .action-dock button {
   background-image: linear-gradient(#ffffff38, #b9955720);
   box-shadow:
@@ -448,6 +453,7 @@
   stroke-dasharray: 8 5;
 }
 .vanuatu .cell-highlight.legal.hovered,
+.vanuatu .cell-highlight.focused,
 .vanuatu .cell-highlight.selected {
   stroke: #9c692c;
   stroke-width: 5;

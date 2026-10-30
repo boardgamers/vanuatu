@@ -460,6 +460,7 @@ export function mountGame(target, options = {}) {
           cell.removeAttribute(attribute);
       }
     }
+    updateMapFocus();
     if (focus)
       play
         .querySelector(`[data-action="${focus}"]`)
@@ -517,6 +518,7 @@ export function mountGame(target, options = {}) {
     // Patch in place so cached SVG tile images and focused controls survive
     // preference changes and incoming state updates.
     patch(play, `<div class="play">${html}</div>`, true);
+    updateMapFocus();
     observeTray();
     mapZoom.update(mapAnchor);
     if (focus)
@@ -647,6 +649,18 @@ export function mountGame(target, options = {}) {
     if (s.phase === "expand") render();
     else renderControls();
   }
+  function updateMapFocus() {
+    const cell = play.querySelector('.map-cell[role="button"]:focus-visible');
+    const highlight =
+      cell &&
+      play.querySelector(`[data-highlight-cell="${cell.dataset.cell}"]`);
+    for (const previous of play.querySelectorAll(".cell-highlight.focused"))
+      if (previous !== highlight) previous.classList.remove("focused");
+    if (highlight && !highlight.classList.contains("focused"))
+      highlight.classList.add("focused");
+  }
+  for (const event of ["focusin", "focusout"])
+    root.addEventListener(event, updateMapFocus, listener);
   for (const event of ["pointerover", "pointerout"])
     root.addEventListener(
       event,
