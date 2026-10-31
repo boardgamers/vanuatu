@@ -100,9 +100,12 @@ export function createMoveSound(
         // Fast bot moves replace the previous cue instead of building a queue.
         stop();
         switch (kind) {
+          case "marker":
+            tone(260, 0.09, 0.075, 0, 130);
+            break;
           case "sail":
-            rustle(700, 0.42, 0.04);
-            rustle(1100, 0.28, 0.025, 0.12);
+            rustle(700, 0.42, 0.08);
+            rustle(1100, 0.28, 0.05, 0.12);
             break;
           case "fish":
             tone(380, 0.13, 0.035, 0, 160);
@@ -139,7 +142,7 @@ export function createMoveSound(
             tone(660, 0.28, 0.012, 0.08);
             break;
           case "discard":
-            tone(160, 0.09, 0.018, 0, 110);
+            tone(160, 0.09, 0.075, 0, 110);
             break;
           default:
             tone(260, 0.09, 0.04, 0, 130);
