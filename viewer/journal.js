@@ -7,6 +7,17 @@ const total = (values) => values.reduce((a, b) => a + b, 0);
 // Old saves contain the moves, but not their outcomes. Reconstruct only public,
 // deterministic information. In particular, never guess old trade-ship bonuses
 // or use today's character, fish price or board contents for an earlier action.
+export function eventCells(event) {
+  const d = event.details ?? {};
+  return [
+    ...new Set(
+      [d.from, ...(event.path ?? []), d.cell, event.cell].filter(
+        (cell) => typeof cell === "string" && /^-?\d+,-?\d+$/.test(cell),
+      ),
+    ),
+  ];
+}
+
 export function journalRows(state) {
   const events = state.events ?? state.lastEvents ?? [];
   const completeHistory = events[0]?.type === "start";
@@ -52,6 +63,36 @@ export function journalRows(state) {
             tourists: e.tourists,
           },
         });
+      if (e.type === "round") {
+        const refills =
+          e.refills ??
+          (completeHistory
+            ? Object.entries(board)
+                .filter(
+                  ([, tile]) =>
+                    tile.type === "island" &&
+                    !tile.submerged &&
+                    Object.values(tile.goods).every((n) => n === 0),
+                )
+                .map(([cell, tile]) => ({
+                  cell,
+                  goods: { ...tileState(tile.id).goods },
+                }))
+            : []);
+        for (const refill of refills) {
+          if (board[refill.cell])
+            board[refill.cell].goods = { ...refill.goods };
+          rows.push({
+            kind: "event",
+            event: {
+              type: "restock",
+              round: e.round,
+              cell: refill.cell,
+              goods: refill.goods,
+            },
+          });
+        }
+      }
       continue;
     }
     const player = players[e.p];
@@ -108,6 +149,7 @@ export function journalRows(state) {
           fallback.income = total(e.fish) * context.market;
         }
       }
+      if (e.action === "sell" && completeHistory) fallback.cell = player.boat;
       e.details = { ...fallback, ...e.details };
       const tile = board[e.cell ?? player.boat];
       if (e.action === "sail") player.boat = e.path.at(-1);
@@ -118,6 +160,8 @@ export function journalRows(state) {
         if (e.action === "explore") tile.treasure--;
         if (e.action === "build" && e.hut) tile.huts.push(e.p);
         if (e.action === "draw") tile.drawings++;
+        if (e.action === "buy")
+          tile.goods[e.good] = Math.max(0, (tile.goods[e.good] ?? 0) - 1);
       }
       player.markers[e.action] = 0;
     }
@@ -131,6 +175,8 @@ export function journalRows(state) {
       player.markers[e.from] = 0;
     }
     if (e.type === "submerged" && board[e.cell]) {
+      board[e.cell].submerged = true;
+      board[e.cell].goods = {};
       board[e.cell].huts = [];
       board[e.cell].drawings = 0;
     }

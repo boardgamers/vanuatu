@@ -948,5 +948,8 @@
   "Wait for your turn.": "请等待你的回合。",
   "Choose an action to take back its markers without acting.": "选择一个行动，收回其标记而不执行。",
   "Undo my move": "撤销我的行动",
-  "Automatically retrieve markers when there is no choice": "没有选择时自动收回标记"
+  "Automatically retrieve markers when there is no choice": "没有选择时自动收回标记",
+  "Goods replenished": "货物已补充",
+  "Empty goods space": "空货物格",
+  "At the start of each round, completed ships are replaced. An island with no goods left receives its original assortment again. If even one cube remains, none are replenished.": "每轮开始时，已装满的船会被替换。完全没有货物的岛屿会重新补上原本的货物组合。只要还剩一颗方块，就不会补充任何货物。"
 }

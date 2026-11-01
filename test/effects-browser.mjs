@@ -93,6 +93,7 @@ try {
         }
       };
     });
+    await p.addInitScript(() => localStorage.setItem("vanuatu-map-view", "2d"));
     await p.goto(`http://127.0.0.1:${server.address().port}/`);
     if (width === 1440) {
       const samples = await p.evaluate(async () => {
@@ -293,13 +294,8 @@ try {
       0,
       "Reduced motion suppresses overlays",
     );
-    await p.emulateMedia({ reducedMotion: "no-preference" });
     await p.evaluate(() =>
-      host.emit("preferences", {
-        locale: "fr",
-        sound: false,
-        animations: false,
-      }),
+      host.emit("preferences", { locale: "fr", sound: false, mapView: "2d" }),
     );
     await emit(s);
     const mutedAt = await p.evaluate(() => window.played);
@@ -311,11 +307,9 @@ try {
       "Muted incoming moves are silent",
     );
     await p.locator("[data-help]").first().click();
-    assert.equal(
-      await p.locator('[data-pref="animations"]').isChecked(),
-      false,
-    );
-    await p.locator('[data-pref="animations"]').check();
+    assert.equal(await p.locator('[data-pref="animations"]').count(), 0);
+    assert.equal(await p.locator("[data-map-preference]").inputValue(), "2d");
+    await p.emulateMedia({ reducedMotion: "no-preference" });
     await p.locator("dialog [data-close]").click();
     await emit(s);
     await emit(sailed);

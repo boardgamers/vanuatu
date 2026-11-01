@@ -24,3 +24,6 @@ export const EXTEND_RULE =
 
 export const EXPORT_RULE =
   "The coloured cubes on islands are goods. Buy one beside your boat and send it straight to the first ship that needs it. Pay vatus; gain prosperity. No hut or cargo space is needed.";
+
+export const REFILL_RULE =
+  "At the start of each round, completed ships are replaced. An island with no goods left receives its original assortment again. If even one cube remains, none are replenished.";

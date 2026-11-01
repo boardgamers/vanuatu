@@ -948,5 +948,8 @@
   "Wait for your turn.": "अपनी बारी का इंतज़ार करें।",
   "Choose an action to take back its markers without acting.": "एक कार्रवाई चुनें जिसके मार्कर आप बिना कार्रवाई किए वापस लेंगे।",
   "Undo my move": "अपनी चाल वापस लें",
-  "Automatically retrieve markers when there is no choice": "कोई विकल्प न होने पर मार्कर अपने-आप वापस लें"
+  "Automatically retrieve markers when there is no choice": "कोई विकल्प न होने पर मार्कर अपने-आप वापस लें",
+  "Goods replenished": "माल फिर भरा गया",
+  "Empty goods space": "माल की खाली जगह",
+  "At the start of each round, completed ships are replaced. An island with no goods left receives its original assortment again. If even one cube remains, none are replenished.": "हर दौर की शुरुआत में भरे हुए जहाज़ बदल दिए जाते हैं। जिस द्वीप पर कोई माल नहीं बचा है, वहाँ शुरुआती माल फिर रख दिया जाता है। अगर एक भी घन बचा हो, तो कोई माल नहीं भरा जाता।"
 }

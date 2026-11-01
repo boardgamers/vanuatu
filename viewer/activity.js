@@ -12,11 +12,18 @@ import {
   esc,
 } from "./art.js";
 import { translator } from "./labels.js";
-import { journalRows } from "./journal.js";
+import { journalRows, eventCells } from "./journal.js";
 import { ACTIONS, CHARACTERS, COLORS } from "../engine/catalog.js";
 export function mountActivity(
   target,
-  { chat, openPlayer, avatarForPlayer, onBack, language = "en" } = {},
+  {
+    chat,
+    openPlayer,
+    avatarForPlayer,
+    onBack,
+    onHighlight,
+    language = "en",
+  } = {},
 ) {
   let colorBlind = false,
     lang = language;
@@ -166,6 +173,17 @@ export function mountActivity(
   function eventHtml(e) {
     const d = e.details ?? {};
     switch (e.type) {
+      case "restock":
+        return (
+          heading(e, text("Goods replenished"), "buy") +
+          details(
+            Object.entries(e.goods)
+              .filter(([, n]) => n > 0)
+              .map(([good, n]) => gain(good, n))
+              .join(""),
+          ) +
+          location(e.cell)
+        );
       case "touristDraw":
         return (
           heading(e, text("Tourist tile")) +
@@ -367,8 +385,12 @@ export function mountActivity(
       return `<li class="phase-divider">${symbol ? icon(symbol) : ""}<b>${text(label)}</b>${row.pass ? `<span>${row.pass}/3</span>` : ""}</li>`;
     }
     const html = eventHtml(row.event);
+    const cells = eventCells(row.event);
+    const button = cells.length
+      ? `<button type="button" class="journal-location" data-journal-cells="${esc(cells.join(" "))}" aria-pressed="false" title="${esc(t("board"))}">${html}<span class="journal-locate" aria-hidden="true">${icon("overview")}</span></button>`
+      : html;
     return html
-      ? `<li class="journal-event event-${esc(row.event.type === "character" ? "select-character" : row.event.type)}">${html}</li>`
+      ? `<li class="journal-event event-${esc(row.event.type === "character" ? "select-character" : row.event.type)}">${button}</li>`
       : "";
   }
   function refresh() {
@@ -395,6 +417,83 @@ export function mountActivity(
         if (following) list.scrollTop = list.scrollHeight;
       });
   }
+  const interactions = new AbortController(),
+    listener = { signal: interactions.signal };
+  let pinned, hovered, focused;
+  function highlight() {
+    const row = hovered ?? focused ?? pinned;
+    for (const button of list.querySelectorAll("[data-journal-cells]")) {
+      button.classList.toggle("inspected", button === row);
+      button.setAttribute("aria-pressed", String(button === pinned));
+    }
+    onHighlight?.(row?.dataset.journalCells.split(" ") ?? []);
+  }
+  function clearHighlight() {
+    pinned = hovered = focused = null;
+    highlight();
+  }
+  list.addEventListener(
+    "pointerover",
+    (e) => {
+      if (e.pointerType === "touch") return;
+      const row = e.target.closest("[data-journal-cells]");
+      if (row !== hovered) {
+        hovered = row;
+        highlight();
+      }
+    },
+    listener,
+  );
+  list.addEventListener(
+    "pointerleave",
+    () => {
+      hovered = null;
+      highlight();
+    },
+    listener,
+  );
+  list.addEventListener(
+    "focusin",
+    (e) => {
+      focused = e.target.closest("[data-journal-cells]");
+      highlight();
+    },
+    listener,
+  );
+  list.addEventListener(
+    "focusout",
+    () => {
+      focused = null;
+      highlight();
+    },
+    listener,
+  );
+  list.addEventListener(
+    "click",
+    (e) => {
+      const row = e.target.closest("[data-journal-cells]");
+      if (!row) return;
+      pinned = pinned === row ? null : row;
+      hovered = focused = null;
+      highlight();
+      if (pinned) onBack?.();
+    },
+    listener,
+  );
+  document.addEventListener(
+    "pointerdown",
+    (e) => {
+      if (pinned && !e.target.closest("[data-journal-cells]")) clearHighlight();
+    },
+    listener,
+  );
+  document.addEventListener(
+    "keydown",
+    (e) => {
+      if (e.key === "Escape") clearHighlight();
+    },
+    listener,
+  );
   root.addEventListener("click", (e) => {
     const b = e.target.closest("button");
     if (!b) return;
@@ -410,6 +509,7 @@ export function mountActivity(
     open,
     update(s, isAnalysis, isColorBlind = false) {
       colorBlind = isColorBlind;
+      if (state && s.historyLength < state.historyLength) clearHighlight();
       state = s;
       const changed = analysis !== isAnalysis;
       analysis = isAnalysis;
@@ -443,6 +543,7 @@ export function mountActivity(
       refresh();
     },
     destroy() {
+      interactions.abort();
       cancelAnimationFrame(followFrame);
       wide.removeEventListener("change", resize);
       view?.destroy();

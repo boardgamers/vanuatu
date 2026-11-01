@@ -38,6 +38,9 @@ try {
     });
     const errors = [];
     page.on("pageerror", (e) => errors.push(e.message));
+    await page.addInitScript(() =>
+      localStorage.setItem("vanuatu-map-view", "2d"),
+    );
     await page.goto(base + "/?new&hotseat");
     await page.waitForFunction(() => window.vanuatuDemo);
     const state = E.init(3, [], {}, "mouse-pan");
@@ -156,15 +159,13 @@ try {
       await page.evaluate((type) => {
         if (type === "blur") window.dispatchEvent(new Event("blur"));
         else
-          document
-            .querySelector(".map-scroll")
-            .dispatchEvent(
-              new PointerEvent(type, {
-                bubbles: true,
-                pointerId: window.lastPointer,
-                pointerType: "mouse",
-              }),
-            );
+          document.querySelector(".map-scroll").dispatchEvent(
+            new PointerEvent(type, {
+              bubbles: true,
+              pointerId: window.lastPointer,
+              pointerType: "mouse",
+            }),
+          );
       }, cancel);
       await page.mouse.up();
       assert.equal(await map.getAttribute("data-pan"), "ready");

@@ -36,6 +36,9 @@ try {
       p.setDefaultTimeout(5000);
       const errors = [];
       p.on("pageerror", (e) => errors.push(e.message));
+      await p.addInitScript(() =>
+        localStorage.setItem("vanuatu-map-view", "2d"),
+      );
       await p.goto(`http://127.0.0.1:${server.address().port}/`);
       await p.evaluate(async (id) => {
         window.progress = null;
@@ -139,6 +142,7 @@ try {
     const p = await browser.newPage({ viewport: { width, height: 1000 } });
     const errors = [];
     p.on("pageerror", (error) => errors.push(error.message));
+    await p.addInitScript(() => localStorage.setItem("vanuatu-map-view", "2d"));
     await p.goto(`http://127.0.0.1:${server.address().port}/`);
     const state = init(3, [], {}, "zh-cn-switch");
     state.players[0].name = "Draw";

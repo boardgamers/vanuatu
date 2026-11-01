@@ -41,6 +41,9 @@ try {
       const page = await browser.newPage({ viewport: { width, height: 844 } });
       const errors = [];
       page.on("pageerror", (e) => errors.push(e.message));
+      await page.addInitScript(() =>
+        localStorage.setItem("vanuatu-map-view", "2d"),
+      );
       await page.goto(`${base}/?lesson=full-round&locale=${locale}`);
       const guide = page.locator(".vanuatu-tutorial");
       const instruction = guide.locator(".bgs-tutorial-body > p").first();

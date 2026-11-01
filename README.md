@@ -12,7 +12,7 @@ The repository is public; the game is listed on BGS as a beta. Supplied artwork 
 
 Node 24+, pnpm. `pnpm install`, `pnpm build`, `pnpm dev` (port 5246). `pnpm test` runs rules tests; install the browser once with `pnpm exec playwright install chromium`; `pnpm test:browser` checks the viewer.
 
-BGS supplies the shared `colorBlind` and `sound` preferences. Color-blind mode adds player symbols and K/C/B resource labels; game sounds give a quiet confirmation after successful moves. The toggles in Rules & help update the same BGS account settings. Standalone practice stores its own preferences locally.
+BGS supplies the shared `colorBlind` and `sound` preferences. Color-blind mode adds player symbols and K/C/B resource labels; game sounds give a quiet confirmation after successful moves. The toggles in Rules & help update the same BGS account settings. Standalone practice stores its own preferences locally. The 2D/3D switch saves the `mapView` preference through BGS; 3D is the default, with a 2D fallback when WebGL is unavailable. Motion follows the browser’s reduced-motion setting.
 
 Marker retrieval is manual by default, including the last unusable action stack. Each player can opt into automatic retrieval when retrieving one stack is the only available move in Rules & help; this setting is saved separately for each game. Automatic retrieval never skips optional treasure exchanges or chooses between multiple stacks. Guided lessons always use manual retrieval.
 

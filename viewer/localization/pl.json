@@ -948,5 +948,8 @@
   "Wait for your turn.": "Poczekaj na swoją turę.",
   "Choose an action to take back its markers without acting.": "Wybierz akcję, z której zabierasz znaczniki bez jej wykonywania.",
   "Undo my move": "Cofnij ruch",
-  "Automatically retrieve markers when there is no choice": "Automatycznie zabieraj znaczniki, gdy nie ma wyboru"
+  "Automatically retrieve markers when there is no choice": "Automatycznie zabieraj znaczniki, gdy nie ma wyboru",
+  "Goods replenished": "Uzupełniono towary",
+  "Empty goods space": "Puste miejsce na towar",
+  "At the start of each round, completed ships are replaced. An island with no goods left receives its original assortment again. If even one cube remains, none are replenished.": "Na początku każdej rundy pełne statki są zastępowane nowymi. Wyspa, na której nie ma już żadnych towarów, odzyskuje swój początkowy zestaw. Jeśli pozostała choć jedna kostka, niczego się nie uzupełnia."
 }

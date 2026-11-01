@@ -948,5 +948,8 @@
   "Wait for your turn.": "Warte, bis du am Zug bist.",
   "Choose an action to take back its markers without acting.": "Wähle eine Aktion, deren Marker du ohne Aktion zurücknimmst.",
   "Undo my move": "Zug zurücknehmen",
-  "Automatically retrieve markers when there is no choice": "Marker automatisch zurücknehmen, wenn es keine Wahl gibt"
+  "Automatically retrieve markers when there is no choice": "Marker automatisch zurücknehmen, wenn es keine Wahl gibt",
+  "Goods replenished": "Waren aufgefüllt",
+  "Empty goods space": "Leerer Warenplatz",
+  "At the start of each round, completed ships are replaced. An island with no goods left receives its original assortment again. If even one cube remains, none are replenished.": "Zu Beginn jeder Runde werden volle Schiffe ersetzt. Eine Insel ohne Waren erhält ihren ursprünglichen Warenbestand zurück. Solange auch nur ein Würfel übrig ist, wird nichts aufgefüllt."
 }

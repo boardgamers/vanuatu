@@ -1,3 +1,7 @@
+import {
+  mapViewPreference,
+  releasePreferences,
+} from "./release-preferences.mjs";
 import { uploadViewerFiles } from "./viewer-files.mjs";
 import { chapterMetadata } from "../viewer/tutorials.js";
 import { readFile, mkdir, writeFile } from "node:fs/promises";
@@ -68,12 +72,7 @@ const defaults = {
       default: false,
     },
     { name: "sound", label: "Game sounds", type: "checkbox", default: true },
-    {
-      name: "animations",
-      label: "Animations",
-      type: "checkbox",
-      default: true,
-    },
+    mapViewPreference,
     {
       name: "language",
       label: "Language",
@@ -123,17 +122,9 @@ const files = await uploadViewerFiles(
 const viewer = { url: files.url },
   style = { url: files.stylesheets[0] };
 const patch = {
-  preferences: [
-    ...(existing?.preferences ?? defaults.preferences).filter(
-      (preference) => preference.name !== "animations",
-    ),
-    existing?.preferences?.find(
-      (preference) => preference.name === "animations",
-    ) ??
-      defaults.preferences.find(
-        (preference) => preference.name === "animations",
-      ),
-  ],
+  preferences: releasePreferences(
+    existing?.preferences ?? defaults.preferences,
+  ),
   settings: [
     ...(existing?.settings ?? []).filter(
       (setting) => setting.name !== "autoRetrieve",
@@ -207,6 +198,10 @@ if (existing) {
 } else assert.ok(!meta.unlisted);
 assert.equal(published.engine.package.version, pkg.version);
 assert.equal(published.viewer.chat, true);
+assert.deepEqual(
+  published.preferences,
+  releasePreferences(existing?.preferences ?? defaults.preferences),
+);
 await writeFile(
   ".local/release/published.json",
   JSON.stringify(published, null, 2),

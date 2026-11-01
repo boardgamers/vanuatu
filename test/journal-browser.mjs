@@ -108,6 +108,9 @@ try {
     });
     const errors = [];
     page.on("pageerror", (e) => errors.push(e.message));
+    await page.addInitScript(() =>
+      localStorage.setItem("vanuatu-map-view", "2d"),
+    );
     await page.goto(`http://127.0.0.1:${server.address().port}`);
     await page.evaluate((state) => {
       window.fixture = state;

@@ -58,10 +58,11 @@ if (params.has("lesson")) {
   let undoRequests = 0;
   const ui = mountGame(document.querySelector("#game"), {
     onUndo: () => (undoRequests += 1),
-    onMove: (m) => {
+    onMove: async (m) => {
       state = engine.move(state, m, hotseat ? state.actor : 0);
       save();
       show();
+      await ui.whenIdle();
       scheduleBots();
     },
     onSetting: (name, value) => {
@@ -101,10 +102,11 @@ if (params.has("lesson")) {
   function scheduleBots() {
     clearTimeout(timer);
     if (!hotseat && !state.finished && state.actor !== 0)
-      timer = setTimeout(() => {
+      timer = setTimeout(async () => {
         state = engine.moveAI(state, state.actor);
         save();
         show();
+        await ui.whenIdle();
         scheduleBots();
       }, 450);
   }
@@ -145,6 +147,7 @@ if (params.has("lesson")) {
       state = engine.moveAI(state, state.actor);
       save();
       show();
+      await ui.whenIdle();
       await new Promise((r) => setTimeout(r, 160));
     }
     autoplay = false;

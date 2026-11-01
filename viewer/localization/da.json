@@ -948,5 +948,8 @@
   "Wait for your turn.": "Vent på din tur.",
   "Choose an action to take back its markers without acting.": "Vælg en handling, hvis markører du tager tilbage uden at handle.",
   "Undo my move": "Fortryd mit træk",
-  "Automatically retrieve markers when there is no choice": "Tag automatisk markører tilbage, når der ikke er noget valg"
+  "Automatically retrieve markers when there is no choice": "Tag automatisk markører tilbage, når der ikke er noget valg",
+  "Goods replenished": "Varer genopfyldt",
+  "Empty goods space": "Tom vareplads",
+  "At the start of each round, completed ships are replaced. An island with no goods left receives its original assortment again. If even one cube remains, none are replenished.": "Ved begyndelsen af hver runde udskiftes fyldte skibe. En ø uden varer får sit oprindelige udvalg igen. Hvis blot én terning er tilbage, genopfyldes intet."
 }

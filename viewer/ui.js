@@ -1,3 +1,5 @@
+import { createTradeTransition } from "./trade-transition.js";
+import { mountBoard3D } from "./three/board.js";
 import { playerSymbolGlyph } from "@boardgamers/protocol/player-symbols";
 import {
   blockingHtml,
@@ -109,8 +111,17 @@ export function mountGame(target, options = {}) {
     revision,
     stateKey,
     focusReturn;
+  let board3D,
+    threeUnavailable = false,
+    mapView = "3d",
+    mapLive = false,
+    journalCells = [];
+  try {
+    if (localStorage.getItem("vanuatu-map-view") === "2d") mapView = "2d";
+  } catch {}
+  root.dataset.mapView = mapView;
   const patch = createRenderer(
-    ".game-header, .action-dock, .market-info, .demand-ships, .map-scroll, .map-tools, .upcoming, .turn-tray, .player-card, .play-footer",
+    ".map-3d, .game-header, .action-dock, .market-info, .demand-ships, .map-scroll, .map-tools, .upcoming, .turn-tray, .player-card, .play-footer",
     (from, to) => {
       // These attributes belong to the layout/zoom controllers, not the state.
       const attr = from.matches(".sea-board, .map-canvas, .archipelago")
@@ -138,12 +149,41 @@ export function mountGame(target, options = {}) {
   const effects = createEffects(root, { icon, sound: moveSound, center });
   const events = new AbortController();
   const listener = { signal: events.signal };
-  root.addEventListener("pointerdown", () => moveSound.unlock(), {
-    ...listener,
-    passive: true,
-  });
-  root.addEventListener("keydown", () => moveSound.unlock(), listener);
+  root.addEventListener(
+    "pointerdown",
+    () => {
+      moveSound.unlock();
+      board3D?.unlock();
+    },
+    {
+      ...listener,
+      passive: true,
+    },
+  );
+  root.addEventListener(
+    "keydown",
+    () => {
+      moveSound.unlock();
+      board3D?.unlock();
+    },
+    listener,
+  );
+  const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
   const mapZoom = mountMapZoom(play);
+  const tradeTransition = createTradeTransition(root, () => {
+    const node = play.querySelector(".demand-ships");
+    if (node && s) patch(node, tradeShips());
+  });
+  function syncMotion() {
+    animations = !reducedMotion.matches;
+    effects.setEnabled(animations);
+    mapZoom.setEnabled(animations);
+    tradeTransition.setEnabled(animations);
+    root.dataset.animations = String(animations);
+    syncBoard3D();
+  }
+  reducedMotion.addEventListener("change", syncMotion, listener);
+  syncMotion();
   const trayObserver = new ResizeObserver(([entry]) => {
     const parent = entry.target.parentElement;
     const height = `${entry.borderBoxSize?.[0]?.blockSize ?? entry.target.getBoundingClientRect().height}px`;
@@ -153,6 +193,13 @@ export function mountGame(target, options = {}) {
   let observedTray;
   function observeTray() {
     const tray = play.querySelector(".turn-tray");
+    // Size the map from the final panel before either renderer frames it.
+    // Waiting for ResizeObserver used to trigger a second camera fit.
+    if (tray) {
+      const height = `${tray.getBoundingClientRect().height}px`;
+      if (tray.parentElement.style.getPropertyValue("--tray-height") !== height)
+        tray.parentElement.style.setProperty("--tray-height", height);
+    }
     if (tray === observedTray) return;
     trayObserver.disconnect();
     if (tray) trayObserver.observe(tray, { box: "border-box" });
@@ -162,7 +209,19 @@ export function mountGame(target, options = {}) {
     chat: options.chat,
     openPlayer: options.onOpenPlayer,
     avatarForPlayer: (index) => avatars[index],
-    onBack: () => play.scrollIntoView({ block: "start" }),
+    onBack: () =>
+      play.scrollIntoView({
+        block: "start",
+        behavior:
+          animations && !matchMedia("(prefers-reduced-motion: reduce)").matches
+            ? "smooth"
+            : "instant",
+      }),
+    onHighlight(cells) {
+      journalCells = cells;
+      updateMapFocus();
+      syncBoard3D();
+    },
     language: lang,
   });
   activity.setLanguage(lang);
@@ -430,7 +489,13 @@ export function mountGame(target, options = {}) {
   }
   function tradeShips() {
     const help = `Foreign trade\n${colorBlind ? "K: kava · C: copra · B: beef." : "Green: kava · White: copra · Red: beef."}\nEach export fills the first ship (1 → 3) still needing that good. ✓ = already delivered.\nCompleting a ship adds 2 prosperity points.`;
-    return `<div class="demand-ships" title="${esc(help)}" aria-label="${esc(help)}">${s.demands.map((d, i) => `<div class="demand-ship" data-ship="${d.id}"><small>${i + 1}</small>${d.goods.map((g, j) => `<span class="${d.filled[j] ? "filled" : ""}">${icon(g)}${d.filled[j] ? icon("check") : ""}</span>`).join("")}${icon("buy")}</div>`).join("")}</div>`;
+    return `<div class="demand-ships" title="${esc(help)}" aria-label="${esc(help)}">${tradeTransition
+      .demands(s.demands)
+      .map(
+        (d, i) =>
+          `<div class="demand-ship" data-ship="${d.id}"><small>${i + 1}</small>${d.goods.map((g, j) => `<span class="${d.filled[j] ? "filled" : ""}">${icon(g)}${d.filled[j] ? icon("check") : ""}</span>`).join("")}${icon("buy")}</div>`,
+      )
+      .join("")}</div>`;
   }
   function renderControls() {
     const focus = document.activeElement?.getAttribute("data-action");
@@ -461,10 +526,70 @@ export function mountGame(target, options = {}) {
       }
     }
     updateMapFocus();
+    syncBoard3D();
     if (focus)
       play
         .querySelector(`[data-action="${focus}"]`)
         ?.focus({ preventScroll: true });
+  }
+  function setMapView(value, notify = false) {
+    if (value !== "2d" && value !== "3d") return;
+    mapView = threeUnavailable ? "2d" : value;
+    root.dataset.mapView = mapView;
+    try {
+      localStorage.setItem("vanuatu-map-view", mapView);
+    } catch {}
+    const select = dialog.querySelector("[data-map-preference]");
+    if (select) select.value = mapView;
+    effects.cancel();
+    moveSound.stop();
+    if (notify) options.onPreference?.("mapView", mapView);
+  }
+  function syncBoard3D() {
+    if (!s) return;
+    const host = play.querySelector(".map-3d");
+    if (mapView === "3d" && !board3D && !threeUnavailable) {
+      try {
+        board3D = mountBoard3D(host, { onSelect: cellClick });
+      } catch (error) {
+        console.warn("3D unavailable; using 2D", error);
+        threeUnavailable = true;
+        mapView = "2d";
+        root.dataset.mapView = mapView;
+        for (const button of play.querySelectorAll("[data-map-view]")) {
+          button.setAttribute(
+            "aria-pressed",
+            String(button.dataset.mapView === mapView),
+          );
+          if (button.dataset.mapView === "3d") button.disabled = true;
+        }
+      }
+    }
+    play
+      .querySelector(".map-scroll")
+      ?.toggleAttribute("inert", mapView === "3d");
+    if (!board3D) return;
+    const targets =
+      s.phase === "expand"
+        ? working()
+            .filter((m) => m.type === "place" && m.tile === tile)
+            .map((m) => m.cell)
+        : actualTargets();
+    board3D.setVisible(mapView === "3d");
+    board3D.update(s, {
+      selected,
+      targets,
+      hoverTile: tile,
+      player,
+      colorBlind,
+      journalCells,
+      symbols: s.players.map((_, i) => symbol(i)),
+      language: lang,
+      animations,
+      sound,
+      live: mapLive,
+    });
+    mapLive = false;
   }
   let boardKey, boardHtml;
   function renderBoard(targets) {
@@ -514,13 +639,14 @@ export function mountGame(target, options = {}) {
             .map((m) => m.cell)
         : actualTargets();
     const html = `<header class="game-header"><div class="brand">${btn("🏝️ Vanuatu", "data-boardgame", "wordmark")}<div class="game-credits"><span>Designed by Alain Epron</span><span>Published by Quined Games</span></div></div><div class="round-track" aria-label="${t("round")} ${s.round}/8">${Array.from({ length: 8 }, (_, i) => `<span title="${t("round")} ${i + 1}/8" class="${i + 1 === s.round ? "current" : i + 1 < s.round ? "past" : ""}">${i + 1}</span>`).join("")}</div><nav class="header-tools">${undoAvailable && enabled && !analysis ? titled(t("undoMove"), icon("undo"), "data-undo-move", "icon-button") : ""}${analysis || !options.chat ? "" : titled(t("chat"), `${icon("chat")}<span class="unread-badge" hidden></span>`, 'data-activity="chat"', "icon-button")}${titled(t("journal"), icon("journal"), 'data-activity="journal"', "icon-button")}${titled(t("colorBlind"), icon("colorBlind"), `data-color-blind aria-pressed="${colorBlind}"`, "icon-button")}${titled(t("help"), icon("help"), "data-help", "icon-button")}${titled(t("full"), icon("fullscreen"), "data-fullscreen", "icon-button")}</nav></header>
-  <div class="table">${dock()}<section class="sea-board"><div class="sea-dashboard"><div class="market-info"><span class="fish-price" title="${esc(marketHelp)}">${icon("fish", marketHelp)} = ${token("coin", s.market, marketHelp)}</span><span title="${t("tourist")}">${token("tourist", s.tourists, `${"Tourists available this round"}: ${s.tourists}`)}</span>${s.waterCountdown !== null ? `<span title="${t("waterLeft")}">${token("water", s.waterCountdown, `${t("waterLeft")}: ${s.waterCountdown}`)}</span>` : ""}</div>${tradeShips()}</div><div class="map-scroll"><div class="map-canvas">${renderBoard(targets)}</div></div><div class="map-tools">${titled("Zoom out", icon("zoomOut"), "data-zoom-out", "icon-button")}${titled("Zoom in", icon("zoom"), "data-zoom-in", "icon-button")}</div>${s.upcoming.length && s.phase !== "expand" ? titled(t("next"), `${s.upcoming.map((id) => tilePreviewSvg(id, { t, colorBlind, language: lang, prefix: "upcoming-" + id })).join("")}${icon("zoom", t("next"))}`, "data-upcoming", "upcoming") : ""}${trayHtml}</section></div><section class="players">${s.players.map(playerCard).join("")}</section><footer class="play-footer"><span title="${"Automatic conversion"}">${token("coin", 10)} → ${token("point", 5)}</span>${btn(t("help"), "data-help", "text-button")}</footer>`;
+  <div class="table">${dock()}<section class="sea-board"><div class="sea-dashboard"><div class="market-info"><span class="fish-price" title="${esc(marketHelp)}">${icon("fish", marketHelp)} = ${token("coin", s.market, marketHelp)}</span><span title="${t("tourist")}">${token("tourist", s.tourists, `${"Tourists available this round"}: ${s.tourists}`)}</span>${s.waterCountdown !== null ? `<span title="${t("waterLeft")}">${token("water", s.waterCountdown, `${t("waterLeft")}: ${s.waterCountdown}`)}</span>` : ""}</div>${tradeShips()}</div><div class="map-scroll"><div class="map-canvas">${renderBoard(targets)}</div></div><div class="map-3d"></div><div class="map-tools"><span class="map-view-switch">${btn("2D", `data-map-view="2d" aria-pressed="${mapView === "2d"}"`)}${btn("3D", `data-map-view="3d" aria-pressed="${mapView === "3d"}" ${threeUnavailable ? "disabled" : ""}`)}</span><span class="three-tools">${titled(translateText("Overview", lang), icon("overview"), "data-three-home", "icon-button")}${titled("Zoom out", icon("zoomOut"), "data-three-out", "icon-button")}${titled("Zoom in", icon("zoom"), "data-three-in", "icon-button")}</span>${titled("Zoom out", icon("zoomOut"), "data-zoom-out", "icon-button")}${titled("Zoom in", icon("zoom"), "data-zoom-in", "icon-button")}</div>${s.upcoming.length && s.phase !== "expand" ? titled(t("next"), `${s.upcoming.map((id) => tilePreviewSvg(id, { t, colorBlind, language: lang, prefix: "upcoming-" + id })).join("")}${icon("zoom", t("next"))}`, "data-upcoming", "upcoming") : ""}${trayHtml}</section></div><section class="players">${s.players.map(playerCard).join("")}</section><footer class="play-footer"><span title="${"Automatic conversion"}">${token("coin", 10)} → ${token("point", 5)}</span>${btn(t("help"), "data-help", "text-button")}</footer>`;
     // Patch in place so cached SVG tile images and focused controls survive
     // preference changes and incoming state updates.
     patch(play, `<div class="play">${html}</div>`, true);
     updateMapFocus();
     observeTray();
     mapZoom.update(mapAnchor);
+    syncBoard3D();
     if (focus)
       play
         .querySelector(`[data-action="${focus}"]`)
@@ -650,6 +776,11 @@ export function mountGame(target, options = {}) {
     else renderControls();
   }
   function updateMapFocus() {
+    for (const cell of play.querySelectorAll("[data-highlight-cell]"))
+      cell.classList.toggle(
+        "journal-highlight",
+        journalCells.includes(cell.dataset.highlightCell),
+      );
     const cell = play.querySelector('.map-cell[role="button"]:focus-visible');
     const highlight =
       cell &&
@@ -684,6 +815,23 @@ export function mountGame(target, options = {}) {
       }
       if (!button || button.disabled) return;
       const d = button.dataset;
+      if ("mapView" in d) {
+        setMapView(d.mapView, true);
+        render();
+        return;
+      }
+      if ("threeHome" in d) {
+        board3D?.reset();
+        return;
+      }
+      if ("threeIn" in d) {
+        board3D?.zoom(0.8);
+        return;
+      }
+      if ("threeOut" in d) {
+        board3D?.zoom(1.25);
+        return;
+      }
       if ("undoMove" in d) {
         options.onUndo?.();
         return;
@@ -835,7 +983,7 @@ export function mountGame(target, options = {}) {
       }
       if ("help" in d) {
         showDialog(
-          `<h2>${t("help")}</h2><div class="preferences"><label><input type="checkbox" data-pref="colorBlind" ${colorBlind ? "checked" : ""}>${t("colorBlind")}</label><label><input type="checkbox" data-pref="animations" ${animations ? "checked" : ""}>${esc(translateText("Animations", lang))}</label><label><input type="checkbox" data-pref="sound" ${sound ? "checked" : ""}>${t("sound")}</label>${options.onSetting && Number.isInteger(player) && !analysis ? `<label><input type="checkbox" data-setting="autoRetrieve" ${autoRetrieve ? "checked" : ""}>${esc(translateText("Automatically retrieve markers when there is no choice", lang))}</label>` : ""}${
+          `<h2>${t("help")}</h2><div class="preferences"><label><input type="checkbox" data-pref="colorBlind" ${colorBlind ? "checked" : ""}>${t("colorBlind")}</label><select data-map-preference aria-label="2D / 3D"><option value="2d" ${mapView === "2d" ? "selected" : ""}>2D</option><option value="3d" ${mapView === "3d" ? "selected" : ""} ${threeUnavailable ? "disabled" : ""}>3D</option></select><label><input type="checkbox" data-pref="sound" ${sound ? "checked" : ""}>${t("sound")}</label>${options.onSetting && Number.isInteger(player) && !analysis ? `<label><input type="checkbox" data-setting="autoRetrieve" ${autoRetrieve ? "checked" : ""}>${esc(translateText("Automatically retrieve markers when there is no choice", lang))}</label>` : ""}${
             hostedLocale
               ? ""
               : `<select data-language aria-label="Language">${Object.entries(
@@ -896,17 +1044,17 @@ export function mountGame(target, options = {}) {
         if (key === "colorBlind") {
           colorBlind = value;
         }
-        if (key === "animations") {
-          animations = value;
-          effects.setEnabled(value);
-          root.dataset.animations = String(value);
-        }
         if (key === "sound") {
           sound = value;
           moveSound.setEnabled(value);
+          syncBoard3D();
           moveSound.unlock();
         }
         options.onPreference?.(key, value);
+        render();
+      }
+      if (e.target.matches("[data-map-preference]")) {
+        setMapView(e.target.value, true);
         render();
       }
       if (e.target.matches("[data-setting]")) {
@@ -959,11 +1107,13 @@ export function mountGame(target, options = {}) {
       const captured = incoming.length ? effects.capture() : null;
       const next = `${state.historyLength ?? state.round + ":" + state.phase}:${player}`;
       const key = JSON.stringify(state);
+      mapLive = live && !analysis;
       rawState = state;
       s = displayState(state);
       if (stateKey === key && next === revision) return;
       stateKey = key;
       effects.cancel();
+      tradeTransition.prepare(before, s, incoming);
       if (!incoming.length) moveSound.stop();
       if (next !== revision) {
         selected = null;
@@ -973,6 +1123,7 @@ export function mountGame(target, options = {}) {
       }
       render();
       if (incoming.length) effects.show(incoming, before, s, captured, player);
+      void tradeTransition.run();
     },
     setAvatars(value) {
       if (JSON.stringify(avatars) === JSON.stringify(value)) return;
@@ -988,7 +1139,17 @@ export function mountGame(target, options = {}) {
       selected = null;
       render();
     },
+    whenIdle: () =>
+      Promise.all([
+        board3D?.whenIdle(),
+        mapZoom.whenIdle(),
+        tradeTransition.whenIdle(),
+        effects.whenIdle(),
+      ]),
     stopEffects() {
+      board3D?.settle();
+      mapZoom.settle();
+      tradeTransition.cancel();
       effects.cancel();
       moveSound.stop();
     },
@@ -1009,7 +1170,7 @@ export function mountGame(target, options = {}) {
       if (checkbox) checkbox.checked = autoRetrieve;
     },
     setPreferences(p) {
-      const previous = `${analysis}:${colorBlind}:${lang}:${playerColors.join()}:${JSON.stringify(appearance)}`;
+      const previous = `${analysis}:${colorBlind}:${lang}:${mapView}:${playerColors.join()}:${JSON.stringify(appearance)}`;
       appearance = p.bgs ?? {};
       chatNotifications = p.chatNotifications !== false;
       analysis = p.analysis === true;
@@ -1020,16 +1181,18 @@ export function mountGame(target, options = {}) {
           )
         : [];
       s = displayState(rawState);
-      animations = p.animations !== false;
-      effects.setEnabled(animations);
-      if (root.dataset.animations !== String(animations))
-        root.dataset.animations = String(animations);
+      if (
+        (p.mapView === "2d" || p.mapView === "3d") &&
+        p.mapView !== mapView &&
+        !threeUnavailable
+      )
+        setMapView(p.mapView);
+      syncMotion();
       sound = p.sound === true;
       moveSound.setEnabled(sound);
       for (const [name, value] of Object.entries({
         colorBlind,
         sound,
-        animations,
       })) {
         const checkbox = dialog.querySelector(`[data-pref="${name}"]`);
         if (checkbox && checkbox.checked !== value) checkbox.checked = value;
@@ -1045,14 +1208,19 @@ export function mountGame(target, options = {}) {
       }
       if (
         previous !==
-        `${analysis}:${colorBlind}:${lang}:${playerColors.join()}:${JSON.stringify(appearance)}`
+        `${analysis}:${colorBlind}:${lang}:${mapView}:${playerColors.join()}:${JSON.stringify(appearance)}`
       )
         render();
-      else updateUnread();
+      else {
+        updateUnread();
+        syncBoard3D();
+      }
     },
     destroy() {
       events.abort();
       mapZoom.destroy();
+      tradeTransition.destroy();
+      board3D?.destroy();
       trayObserver.disconnect();
       effects.destroy();
       moveSound.destroy();

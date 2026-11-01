@@ -55,6 +55,9 @@ try {
     game.players[0].markers.fish = 1;
     game.board["1,0"] = E.tileState("startFish");
     const state = E.stripSecret(game, 0);
+    await page.addInitScript(() =>
+      localStorage.setItem("vanuatu-map-view", "2d"),
+    );
     await page.goto(`http://127.0.0.1:${server.address().port}/`);
     await page.evaluate((s) => {
       window.fixture = s;

@@ -80,11 +80,17 @@ export function createEffects(root, { icon, sound, center }) {
   root.append(layer);
   const animations = new Set();
   let frame = 0,
-    enabled = true;
+    enabled = true,
+    ready = Promise.resolve(),
+    resolveReady;
   const allowed = () => enabled && !motion.matches && !doc.hidden;
   const query = (selector) => root.querySelector(selector);
   const point = (element) => {
-    if (!element) return null;
+    if (
+      !element ||
+      (root.dataset.mapView === "3d" && element.closest(".map-scroll"))
+    )
+      return null;
     const r = element.getBoundingClientRect();
     if (
       !r.width ||
@@ -121,6 +127,8 @@ export function createEffects(root, { icon, sound, center }) {
     for (const animation of animations) animation.cancel();
     animations.clear();
     layer.replaceChildren();
+    resolveReady?.();
+    resolveReady = null;
   }
   function animate(
     node,
@@ -142,6 +150,10 @@ export function createEffects(root, { icon, sound, center }) {
     const finish = () => {
       animations.delete(animation);
       if (remove) node.remove();
+      if (!animations.size && !frame) {
+        resolveReady?.();
+        resolveReady = null;
+      }
     };
     animation.onfinish = () => {
       animation.cancel();
@@ -237,16 +249,22 @@ export function createEffects(root, { icon, sound, center }) {
     cancel();
     if (doc.hidden) return;
     const cue = soundFor(events);
-    if (cue) void sound.play(cue);
+    if (cue && !(cue === "sail" && root.dataset.mapView === "3d"))
+      void sound.play(cue);
     if (!allowed()) return;
     // Pending controls and dialog closure can render again in the same turn.
     // Position effects once, after that work, without a per-frame layout loop.
+    ready = new Promise((resolve) => (resolveReady = resolve));
     frame = view.requestAnimationFrame(() => {
       frame = 0;
       if (!allowed()) return;
       for (const event of events) {
         const p = event.p;
         const d = event.details ?? {};
+        if (event.type === "place" && root.dataset.mapView !== "3d") {
+          const placed = query(`.map-cell[data-cell="${event.cell}"]`);
+          if (placed) animate(placed, [{ opacity: 0 }, { opacity: 1 }], 650);
+        }
         if (["plan", "neutral"].includes(event.type)) {
           for (const action of new Set(event.actions))
             drop(
@@ -316,7 +334,6 @@ export function createEffects(root, { icon, sound, center }) {
           for (const shipment of d.shipments ?? []) {
             const ship = query(`[data-ship="${shipment.ship}"]`);
             fly(icon(event.good), source, point(ship));
-            if (shipment.complete) pulse(ship);
           }
         const changes = rewards(event);
         if (changes.length)
@@ -328,7 +345,7 @@ export function createEffects(root, { icon, sound, center }) {
                   `<span>${value > 0 ? "+" : "−"}${Math.abs(value)}${icon(name)}</span>`,
               )
               .join(""),
-            event.action === "sail" ? 500 : 130,
+            ["sail", "buy"].includes(event.action) ? 500 : 130,
           );
         if (event.type === "conversion")
           gain(
@@ -357,6 +374,10 @@ export function createEffects(root, { icon, sound, center }) {
           )
             pulse(query(`[data-action="${action}"]`));
       }
+      if (!animations.size) {
+        resolveReady?.();
+        resolveReady = null;
+      }
     });
   }
   // Cancel overlays on scrolling instead of tracking layout on every frame.
@@ -377,6 +398,7 @@ export function createEffects(root, { icon, sound, center }) {
   motion.addEventListener("change", cancel);
   return {
     capture,
+    whenIdle: () => ready,
     show,
     cancel,
     drop,

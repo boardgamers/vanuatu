@@ -35,6 +35,9 @@ try {
       errors.push(e.message);
       console.error(e.message);
     });
+    await page.addInitScript(() =>
+      localStorage.setItem("vanuatu-map-view", "2d"),
+    );
     await page.goto(`http://127.0.0.1:${server.address().port}/`);
     await page.evaluate(async () => {
       window.progress = null;
@@ -113,6 +116,9 @@ try {
     ["nl", "Varen", "Als je bij geen enkele actie de meerderheid hebt"],
   ]) {
     const page = await browser.newPage();
+    await page.addInitScript(() =>
+      localStorage.setItem("vanuatu-map-view", "2d"),
+    );
     await page.goto(`http://127.0.0.1:${server.address().port}/`);
     await page.evaluate(async (locale) => {
       await window.vanuatu.launchTutorial("#game", {
@@ -168,6 +174,9 @@ try {
         });
       }, locale);
     };
+    await page.addInitScript(() =>
+      localStorage.setItem("vanuatu-map-view", "2d"),
+    );
     await page.goto(`http://127.0.0.1:${server.address().port}/`);
     await launch();
     assert.equal(await page.locator(".fish-price b").innerText(), "3");
@@ -246,6 +255,9 @@ try {
   const page = await browser.newPage({
     viewport: { width: 1440, height: 1000 },
   });
+  await page.addInitScript(() =>
+    localStorage.setItem("vanuatu-map-view", "2d"),
+  );
   await page.goto(`http://127.0.0.1:${server.address().port}/`);
   await page.evaluate(
     async (entries) => {

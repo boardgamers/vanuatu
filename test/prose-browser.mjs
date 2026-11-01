@@ -43,6 +43,9 @@ try {
   const errors = [];
   page.on("pageerror", (e) => errors.push(e.message));
   for (const locale of Object.keys(languages)) {
+    await page.addInitScript(() =>
+      localStorage.setItem("vanuatu-map-view", "2d"),
+    );
     await page.goto(`${base}/?lesson=beggar&locale=${locale}`);
     const prose = page.locator(".bgs-tutorial-body > p").first();
     for (const name of ["coin", "point", "draw", "build"])
@@ -100,6 +103,9 @@ try {
     [...saved],
   );
   for (const locale of ["en", "fr"]) {
+    await page.addInitScript(() =>
+      localStorage.setItem("vanuatu-map-view", "2d"),
+    );
     await page.goto(`${base}/?lesson=trade&locale=${locale}`);
     const prose = page.locator(".bgs-tutorial-body > p").first();
     await prose.locator(".icon-copra").waitFor();
@@ -123,6 +129,9 @@ try {
       .locator(".vanuatu-tutorial")
       .screenshot({ path: `.local/qa/prose-export-${locale}.png` });
   }
+  await page.addInitScript(() =>
+    localStorage.setItem("vanuatu-map-view", "2d"),
+  );
   await page.goto(`${base}/?new&hotseat&locale=fr`);
   await page.locator('[data-character-choice="beggar"]').click();
   const help = page.locator('dialog [data-character-help="beggar"]');

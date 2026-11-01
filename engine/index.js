@@ -810,13 +810,17 @@ function endRound(s) {
     s._demandDiscards.push(d);
   s.demands = s.demands.filter((d) => !d.filled.every(Boolean));
   while (s.demands.length < 3) s.demands.push(revealDemand(s));
-  for (const t of Object.values(s.board))
+  const refills = [];
+  for (const [cell, t] of Object.entries(s.board))
     if (
       t.type === "island" &&
       !t.submerged &&
       sum(Object.values(t.goods)) === 0
-    )
+    ) {
       t.goods = { ...TILES[t.id].goods };
+      if (sum(Object.values(t.goods)))
+        refills.push({ cell, goods: { ...t.goods } });
+    }
   if (s.players.length === 2) {
     const previous = new Set([
       ...s.characters,
@@ -838,7 +842,12 @@ function endRound(s) {
   s.planningPass = 0;
   s.neutral = emptyMarkers();
   s.neutralPlaced = 0;
-  say(s, "round", { round: s.round, first: s.first, tourists: s.tourists });
+  say(s, "round", {
+    round: s.round,
+    first: s.first,
+    tourists: s.tourists,
+    refills,
+  });
 }
 function finish(s) {
   for (const [p, a] of s.players.entries()) {

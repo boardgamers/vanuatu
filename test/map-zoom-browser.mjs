@@ -98,6 +98,9 @@ try {
     const page = await browser.newPage({ viewport: { width, height } });
     page.on("pageerror", (error) => errors.push(error.message));
     for (const state of [E.init(3, [], {}, "map-fit"), partial, expanded]) {
+      await page.addInitScript(() =>
+        localStorage.setItem("vanuatu-map-view", "2d"),
+      );
       await page.goto(base + "/?hotseat");
       await page.evaluate(
         (s) => localStorage.setItem("vanuatu-practice-v1", JSON.stringify(s)),
@@ -230,6 +233,9 @@ try {
     viewport: { width: 390, height: 844 },
   });
   resizedPage.on("pageerror", (error) => errors.push(error.message));
+  await resizedPage.addInitScript(() =>
+    localStorage.setItem("vanuatu-map-view", "2d"),
+  );
   await resizedPage.goto(base + "/?hotseat");
   await resizedPage.evaluate(
     (s) => localStorage.setItem("vanuatu-practice-v1", JSON.stringify(s)),
@@ -264,6 +270,9 @@ try {
       hasTouch: true,
     });
     page.on("pageerror", (error) => errors.push(error.message));
+    await page.addInitScript(() =>
+      localStorage.setItem("vanuatu-map-view", "2d"),
+    );
     await page.goto(base + "/?new&hotseat&locale=fr");
     await page.waitForSelector(".map-scroll[data-zoom]");
     assert.equal(

@@ -1,3 +1,4 @@
+import { goodsSlots } from "./goods-slots.js";
 import { playerSymbolGlyph } from "@boardgamers/protocol/player-symbols";
 import { boardCells, tileState, TILES, COLORS } from "../engine/catalog.js";
 import { esc, svgIcon, iconLabel } from "./art.js";
@@ -143,22 +144,16 @@ export function boardSvg(
             })),
           );
       } else {
-        const goods = Object.entries(tile.goods).filter(([, n]) => n > 0);
+        const slots = goodsSlots(tile);
         svg += '<g class="island-goods">';
-        let j = 0;
-        for (const [good, n] of goods)
-          for (let k = 0; k < n; k++, j++)
-            svg += svgIcon(
-              good,
-              c.x -
-                goods.reduce((sum, [, count]) => sum + count, 0) * 14 +
-                j * 28,
-              c.y + 34,
-              29,
-              "currentColor",
-              `${label(good)} · ${"available to export"}`,
-              colorBlind,
-            );
+        for (const [j, { good, filled }] of slots.entries()) {
+          const x = c.x - slots.length * 14 + j * 28,
+            y = c.y + 34;
+          const help = `${label(good)} · ${filled ? "available to export" : "Empty goods space"}`;
+          svg += `<g class="goods-slot ${filled ? "stocked" : "empty"}" data-good="${good}" opacity="${filled ? 1 : 0.55}"><title>${esc(help)}</title>`;
+          svg += svgIcon(good, x, y, 29, "currentColor", help, colorBlind);
+          svg += "</g>";
+        }
         svg += "</g>";
         const huts = tile.huts;
         for (let i = 0; i < spec.huts; i++) {

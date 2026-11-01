@@ -948,5 +948,8 @@
   "Wait for your turn.": "Περιμένετε τη σειρά σας.",
   "Choose an action to take back its markers without acting.": "Επίλεξε μια ενέργεια για να πάρεις πίσω τους δείκτες της χωρίς να την εκτελέσεις.",
   "Undo my move": "Αναίρεση κίνησης",
-  "Automatically retrieve markers when there is no choice": "Αυτόματη ανάκτηση δεικτών όταν δεν υπάρχει επιλογή"
+  "Automatically retrieve markers when there is no choice": "Αυτόματη ανάκτηση δεικτών όταν δεν υπάρχει επιλογή",
+  "Goods replenished": "Αναπλήρωση αγαθών",
+  "Empty goods space": "Κενή θέση αγαθού",
+  "At the start of each round, completed ships are replaced. An island with no goods left receives its original assortment again. If even one cube remains, none are replenished.": "Στην αρχή κάθε γύρου, τα γεμάτα πλοία αντικαθίστανται. Ένα νησί χωρίς κανένα αγαθό λαμβάνει ξανά την αρχική του συλλογή. Αν απομένει έστω ένας κύβος, δεν αναπληρώνεται τίποτα."
 }

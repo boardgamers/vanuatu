@@ -42,6 +42,7 @@ const page = await browser.newPage({
   locale: "fr-FR",
 });
 page.on("pageerror", (e) => errors.push(e.message));
+await page.addInitScript(() => localStorage.setItem("vanuatu-map-view", "2d"));
 await page.goto(base + "/?new&hotseat");
 await page.waitForSelector("[data-character-choice]");
 // Decorative motion must never move a tile's clickable/focusable SVG bounds.
@@ -94,6 +95,9 @@ for (const locale of [
       "utf8",
     ),
   );
+  await page.addInitScript(() =>
+    localStorage.setItem("vanuatu-map-view", "2d"),
+  );
   await page.goto(`${base}/?new&hotseat&locale=${locale}`);
   await page.waitForFunction(
     (expected) =>
@@ -116,6 +120,7 @@ for (const locale of [
       );
   }
 }
+await page.addInitScript(() => localStorage.setItem("vanuatu-map-view", "2d"));
 await page.goto(base + "/?new&hotseat");
 await page.waitForSelector("[data-character-choice]");
 // Action descriptions remain available even before an action can be selected.
@@ -763,6 +768,7 @@ await page.locator("[data-scores]").click();
 assert.equal(await page.locator(".final-scores>div").count(), 3);
 await page.locator("[data-close]").click();
 // Hosted protocol: replay, names, analysis chat visibility, hover anchors and board thumbnail.
+await page.addInitScript(() => localStorage.setItem("vanuatu-map-view", "2d"));
 await page.goto(base + "/");
 await page.evaluate(() => {
   document.body.innerHTML = '<div id="host"></div>';

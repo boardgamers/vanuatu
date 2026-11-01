@@ -948,5 +948,8 @@
   "Wait for your turn.": "Дождитесь своего хода.",
   "Choose an action to take back its markers without acting.": "Выберите действие, маркеры которого вы заберёте без выполнения действия.",
   "Undo my move": "Отменить ход",
-  "Automatically retrieve markers when there is no choice": "Автоматически забирать маркеры, когда нет выбора"
+  "Automatically retrieve markers when there is no choice": "Автоматически забирать маркеры, когда нет выбора",
+  "Goods replenished": "Товары пополнены",
+  "Empty goods space": "Пустое место для товара",
+  "At the start of each round, completed ships are replaced. An island with no goods left receives its original assortment again. If even one cube remains, none are replenished.": "В начале каждого раунда заполненные корабли заменяются. Остров, на котором не осталось товаров, снова получает исходный набор. Если остался хотя бы один кубик, товары не пополняются."
 }

@@ -1,5 +1,6 @@
 import {
   EXPORT_RULE,
+  REFILL_RULE,
   EXTEND_TITLE,
   EXTEND_RULE,
   ROUND_TITLE,
@@ -90,7 +91,8 @@ export function rulesHtml(lang = "en", colorBlind = false) {
         "</span>" +
         message("Completing a ship adds {p0} to the good's reward.", [
           token("point", "+2"),
-        ]),
+        ]) +
+        `<br><br>${prose(REFILL_RULE)}`,
     ],
     [
       "Develop the islands",

@@ -36,6 +36,9 @@ try {
       p.setDefaultTimeout(5000);
       const errors = [];
       p.on("pageerror", (e) => errors.push(e.message));
+      await p.addInitScript(() =>
+        localStorage.setItem("vanuatu-map-view", "2d"),
+      );
       await p.goto(`http://127.0.0.1:${server.address().port}/`);
       await p.evaluate(async (id) => {
         window.progress = null;

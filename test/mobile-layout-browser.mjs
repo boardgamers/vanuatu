@@ -43,6 +43,9 @@ try {
     });
     page.on("pageerror", (error) => errors.push(error.message));
     for (const count of [2, 3, 5]) {
+      await page.addInitScript(() =>
+        localStorage.setItem("vanuatu-map-view", "2d"),
+      );
       await page.goto(`${base}/?new&hotseat&players=${count}&locale=fr`);
       await page.waitForFunction(() => window.vanuatuDemo);
       await page.evaluate(() => {

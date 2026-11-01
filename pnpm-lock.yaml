@@ -17,6 +17,9 @@ importers:
       morphdom:
         specifier: 2.7.8
         version: 2.7.8
+      three:
+        specifier: 0.186.1
+        version: 0.186.1
     devDependencies:
       esbuild:
         specifier: 0.25.12
@@ -221,6 +224,9 @@ packages:
     engines: {node: '>=14'}
     hasBin: true
 
+  three@0.186.1:
+    resolution: {integrity: sha512-blFeqb49wRCSGUGj7gtpfnSGHy2lwDk94RhUmS1c/hTby70kvChbWpkJ4Pm1390LqzzvTmzgXKHPEafJwCb8jA==}
+
   zod@4.6.5:
     resolution: {integrity: sha512-v5l/aFXZQeai4awLbOpSoHecE9UiMrnfx75tEXLjNonXVARxQ5mOeipTjROUchszUNCqnE+hqAMujRsRHsut2Q==}
 
@@ -353,5 +359,7 @@ snapshots:
       fsevents: 2.3.2
 
   prettier@3.6.2: {}
+
+  three@0.186.1: {}
 
   zod@4.6.5: {}

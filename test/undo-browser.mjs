@@ -37,6 +37,7 @@ const browser = await chromium.launch({
 const errors = [];
 const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
 page.on("pageerror", (e) => errors.push(e.message));
+await page.addInitScript(() => localStorage.setItem("vanuatu-map-view", "2d"));
 await page.goto(`http://127.0.0.1:${server.address().port}/?new&hotseat`);
 await page.waitForSelector("[data-character-choice]");
 

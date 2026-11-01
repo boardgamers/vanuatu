@@ -1,0 +1,166 @@
+.vanuatu .map-3d {
+  position: absolute;
+  inset: 0 0 var(--tray-height, 73px);
+  isolation: isolate;
+  overflow: hidden;
+  touch-action: none;
+  display: none;
+}
+.vanuatu[data-map-view="3d"] .map-3d {
+  display: block;
+}
+.vanuatu[data-map-view="3d"] .map-scroll {
+  visibility: hidden;
+  pointer-events: none;
+}
+.vanuatu .map-3d .world,
+.vanuatu .map-3d canvas,
+.vanuatu .map-3d .labels {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.vanuatu .map-3d canvas {
+  display: block;
+  cursor: grab;
+}
+.vanuatu .map-3d canvas:active {
+  cursor: grabbing;
+}
+.vanuatu .map-3d .labels {
+  pointer-events: none;
+  overflow: hidden;
+}
+.vanuatu .map-3d .map-label-link {
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-top: 1px dashed #fff9df;
+  filter: drop-shadow(0 1px 1px #31595788);
+  transform-origin: 0 0;
+  pointer-events: none;
+}
+.vanuatu .map-3d .map-label {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
+  pointer-events: auto;
+  background: #fffae6f5;
+  border: 1px solid #f8f9dacc;
+  color: #244d4e;
+  border-radius: 14px;
+  padding: 3px 7px;
+  box-shadow: 0 2px 3px #194e4c22;
+  font-size: 13px;
+  touch-action: none;
+}
+.vanuatu .map-3d .map-label .icon {
+  width: 21px;
+  height: 21px;
+}
+.vanuatu .map-3d .map-label .token {
+  gap: 1px;
+}
+.vanuatu .map-3d .map-label[aria-pressed="true"] {
+  outline: 2px solid #a7692f;
+  outline-offset: 2px;
+}
+.vanuatu .map-3d .map-label.legal {
+  border-color: #a7692f;
+}
+.vanuatu .map-3d .map-label[hidden] {
+  display: none;
+}
+.vanuatu .map-3d .map-label.model-label {
+  min-width: 24px;
+  min-height: 24px;
+  justify-content: center;
+  padding: 1px 6px;
+  border-radius: 50%;
+  font-size: 13px;
+}
+.vanuatu .map-3d .map-label.placement-label {
+  font-size: 15px;
+  padding: 4px 8px;
+  border-color: #f8f9dacc;
+}
+.vanuatu .map-3d .map-label.placement-label .icon {
+  width: 24px;
+  height: 24px;
+}
+.vanuatu .map-3d .map-label.placement-label[aria-pressed="true"] {
+  outline: none;
+}
+.vanuatu .map-3d .map-label.placement-label:focus-visible {
+  outline: 2px solid #a7692f;
+  outline-offset: 2px;
+}
+.vanuatu .map-3d .map-label.empty-placement {
+  width: 44px;
+  height: 44px;
+  border: 0;
+  background: none;
+  box-shadow: none;
+}
+.vanuatu .map-view-switch,
+.vanuatu .three-tools {
+  display: flex;
+  gap: 4px;
+}
+.vanuatu .map-view-switch {
+  margin-right: 6px;
+}
+.vanuatu .map-view-switch button {
+  font-weight: 700;
+  min-width: 40px;
+  padding: 6px 8px;
+}
+.vanuatu .map-view-switch button[aria-pressed="true"] {
+  background: #fdf9e7;
+  border-color: #876c3b;
+}
+.vanuatu[data-map-view="2d"] .three-tools {
+  display: none;
+}
+.vanuatu[data-map-view="3d"] .map-tools > [data-zoom-in],
+.vanuatu[data-map-view="3d"] .map-tools > [data-zoom-out] {
+  display: none;
+}
+@media (max-width: 700px) {
+  .vanuatu .map-3d .map-label {
+    font-size: 11px;
+    gap: 4px;
+    padding: 2px 4px;
+  }
+  .vanuatu .map-3d .map-label .icon {
+    width: 17px;
+    height: 17px;
+  }
+  .vanuatu .map-3d .map-label.model-label {
+    min-width: 20px;
+    min-height: 20px;
+    padding: 1px 5px;
+    font-size: 11px;
+  }
+  .vanuatu .map-3d .map-label.placement-label {
+    flex-direction: column;
+    gap: 1px;
+    padding: 3px 5px;
+    font-size: 14px;
+  }
+  .vanuatu .map-3d .map-label.placement-label .icon {
+    width: 20px;
+    height: 20px;
+  }
+  .vanuatu .map-view-switch {
+    margin-right: 2px;
+  }
+  .vanuatu .map-view-switch button {
+    min-width: 34px;
+  }
+}

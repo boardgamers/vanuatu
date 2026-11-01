@@ -17,6 +17,32 @@ export function mountMapZoom(root) {
     autoFit = true,
     suppressClick = false;
   const events = new AbortController();
+  const motion = matchMedia("(prefers-reduced-motion: reduce)");
+  let enabled = true,
+    flight,
+    ready = Promise.resolve(),
+    resolveReady;
+  function settle() {
+    flight?.cancel();
+    flight = null;
+    const map = elements()?.map;
+    if (map) delete map.dataset.mapTransition;
+    resolveReady?.();
+    resolveReady = null;
+  }
+  const canAnimate = () =>
+    enabled &&
+    !motion.matches &&
+    !document.hidden &&
+    root.closest("[data-map-view]")?.dataset.mapView !== "3d";
+  motion.addEventListener("change", settle, { signal: events.signal });
+  document.addEventListener(
+    "visibilitychange",
+    () => {
+      if (document.hidden) settle();
+    },
+    { signal: events.signal },
+  );
   const observer = new ResizeObserver(() => update(capture()));
   const elements = () => {
     const map = root.querySelector(".map-scroll");
@@ -72,9 +98,9 @@ export function mountMapZoom(root) {
     const world = new DOMPoint(client.x, client.y).matrixTransform(
       matrix.inverse(),
     );
-    return { world, client: point };
+    return { world, client: point, matrix: matrix };
   }
-  function update(anchor) {
+  function update(anchor, { smooth = true } = {}) {
     const el = elements();
     if (!el) return;
     const { map, canvas, svg } = el,
@@ -122,6 +148,18 @@ export function mountMapZoom(root) {
         viewport,
         size + 2 * Math.max(0, viewport / 2 - Math.min(middle, size - middle)),
       );
+    const nextLayout = [
+      box.x,
+      box.y,
+      box.width,
+      box.height,
+      svg.dataset.focusBox,
+      f.width,
+      f.height,
+      zoom,
+    ].join();
+    const changed = layoutKey !== nextLayout;
+    if (changed) settle();
     let resized = false;
     for (const [node, property, value] of [
       [
@@ -151,16 +189,6 @@ export function mountMapZoom(root) {
         resized = true;
       }
     }
-    const nextLayout = [
-      box.x,
-      box.y,
-      box.width,
-      box.height,
-      svg.dataset.focusBox,
-      f.width,
-      f.height,
-      zoom,
-    ].join();
     if (map.dataset.zoom !== String(zoom)) map.dataset.zoom = String(zoom);
     if (!autoFit && anchor && (resized || layoutKey !== nextLayout)) {
       const client = anchor.client ?? center(map);
@@ -174,6 +202,35 @@ export function mountMapZoom(root) {
       ).matrixTransform(svg.getScreenCTM());
       map.scrollLeft += middle.x - (f.x + f.width / 2);
       map.scrollTop += middle.y - (f.y + f.height / 2);
+    }
+    if (
+      changed &&
+      !initial &&
+      smooth &&
+      anchor?.matrix &&
+      canAnimate() &&
+      svg.animate
+    ) {
+      const next = svg.getScreenCTM(),
+        r = svg.getBoundingClientRect();
+      const ratio = anchor.matrix.a / next.a;
+      const dx = anchor.matrix.e - ratio * next.e + (ratio - 1) * r.left;
+      const dy = anchor.matrix.f - ratio * next.f + (ratio - 1) * r.top;
+      if (Math.abs(ratio - 1) > 0.001 || Math.hypot(dx, dy) > 1) {
+        map.dataset.mapTransition = "reframe";
+        ready = new Promise((resolve) => (resolveReady = resolve));
+        flight = svg.animate(
+          [
+            {
+              transformOrigin: "0 0",
+              transform: `translate(${dx}px,${dy}px) scale(${ratio})`,
+            },
+            { transformOrigin: "0 0", transform: "none" },
+          ],
+          { duration: 850, easing: "cubic-bezier(.22,.61,.36,1)" },
+        );
+        flight.onfinish = settle;
+      }
     }
     layoutKey = nextLayout;
     updatePanCursor(map);
@@ -195,6 +252,7 @@ export function mountMapZoom(root) {
         map.addEventListener(
           type,
           () => {
+            settle();
             autoFit = false;
           },
           {
@@ -225,11 +283,11 @@ export function mountMapZoom(root) {
       observed = map;
     }
   }
-  function setZoom(value, anchor = capture()) {
+  function setZoom(value, anchor = capture(), smooth = true) {
     endDrag();
     autoFit = false;
     zoom = clamp(value, minZoom, MAX_ZOOM);
-    update(anchor);
+    update(anchor, { smooth });
   }
   function endDrag(event) {
     if (
@@ -335,10 +393,14 @@ export function mountMapZoom(root) {
     if (!pinch || event.touches.length !== 2) return;
     if (event.cancelable) event.preventDefault();
     const { distance, point } = geometry(event.touches);
-    setZoom((pinch.zoom * distance) / pinch.distance, {
-      ...pinch.anchor,
-      client: point,
-    });
+    setZoom(
+      (pinch.zoom * distance) / pinch.distance,
+      {
+        ...pinch.anchor,
+        client: point,
+      },
+      false,
+    );
   }
   root.addEventListener(
     "pointerdown",
@@ -365,10 +427,19 @@ export function mountMapZoom(root) {
   return {
     capture,
     update,
+    settle,
+    whenIdle: async () => {
+      while (flight) await ready;
+    },
+    setEnabled(value) {
+      enabled = value;
+      if (!enabled) settle();
+    },
     step(direction) {
       setZoom((zoom ?? 1) * STEP ** direction);
     },
     destroy() {
+      settle();
       endPinch();
       endDrag();
       mapEvents?.abort();
