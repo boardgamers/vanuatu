@@ -412,6 +412,14 @@
 .vanuatu .map-canvas {
   display: grid;
   place-items: center;
+  user-select: none;
+}
+.vanuatu .map-scroll[data-pan="ready"] {
+  cursor: grab;
+}
+.vanuatu .map-scroll[data-pan="dragging"],
+.vanuatu .map-scroll[data-pan="dragging"] .map-cell {
+  cursor: grabbing;
 }
 .vanuatu .archipelago {
   display: block;

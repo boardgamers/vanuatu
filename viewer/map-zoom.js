@@ -9,8 +9,10 @@ export function mountMapZoom(root) {
     minZoom = 1,
     observed,
     pinch,
+    drag,
     mapEvents,
     pinchEvents,
+    dragEvents,
     layoutKey,
     autoFit = true,
     suppressClick = false;
@@ -22,6 +24,18 @@ export function mountMapZoom(root) {
     const svg = canvas?.querySelector(".archipelago");
     return svg ? { map, canvas, svg } : null;
   };
+  const canPan = (map) =>
+    map.scrollWidth > map.clientWidth + 1 ||
+    map.scrollHeight > map.clientHeight + 1;
+  function updatePanCursor(map) {
+    const state =
+      drag?.map === map && drag.moving
+        ? "dragging"
+        : canPan(map)
+          ? "ready"
+          : "none";
+    if (map.dataset.pan !== state) map.dataset.pan = state;
+  }
   function frame(map) {
     const css = getComputedStyle(map),
       rect = map.getBoundingClientRect();
@@ -162,6 +176,7 @@ export function mountMapZoom(root) {
       map.scrollTop += middle.y - (f.y + f.height / 2);
     }
     layoutKey = nextLayout;
+    updatePanCursor(map);
     for (const [selector, disabled] of [
       ["[data-zoom-out]", zoom <= minZoom + 0.000001],
       ["[data-zoom-in]", zoom >= MAX_ZOOM],
@@ -174,6 +189,7 @@ export function mountMapZoom(root) {
       observer.disconnect();
       mapEvents?.abort();
       endPinch();
+      endDrag();
       mapEvents = new AbortController();
       for (const type of ["pointerdown", "wheel"])
         map.addEventListener(
@@ -186,6 +202,13 @@ export function mountMapZoom(root) {
             signal: mapEvents.signal,
           },
         );
+      map.addEventListener("pointerdown", startDrag, {
+        passive: true,
+        signal: mapEvents.signal,
+      });
+      map.addEventListener("dragstart", (event) => event.preventDefault(), {
+        signal: mapEvents.signal,
+      });
       map.addEventListener("touchstart", startPinch, {
         passive: true,
         signal: mapEvents.signal,
@@ -203,9 +226,76 @@ export function mountMapZoom(root) {
     }
   }
   function setZoom(value, anchor = capture()) {
+    endDrag();
     autoFit = false;
     zoom = clamp(value, minZoom, MAX_ZOOM);
     update(anchor);
+  }
+  function endDrag(event) {
+    if (
+      !drag ||
+      (event?.pointerId !== undefined && event.pointerId !== drag.id)
+    )
+      return;
+    const { map, id } = drag;
+    drag = null;
+    dragEvents?.abort();
+    dragEvents = null;
+    if (map.hasPointerCapture(id)) map.releasePointerCapture(id);
+    updatePanCursor(map);
+  }
+  function startDrag(event) {
+    const map = event.currentTarget;
+    if (event.pointerType !== "mouse" || event.button !== 0 || !canPan(map))
+      return;
+    const rect = map.getBoundingClientRect();
+    // Leave native scrollbar drags alone.
+    if (
+      event.clientX >= rect.left + map.clientWidth ||
+      event.clientY >= rect.top + map.clientHeight
+    )
+      return;
+    endDrag();
+    drag = {
+      map,
+      id: event.pointerId,
+      x: event.clientX,
+      y: event.clientY,
+      left: map.scrollLeft,
+      top: map.scrollTop,
+      moving: false,
+    };
+    dragEvents = new AbortController();
+    const options = { signal: dragEvents.signal };
+    const doc = map.ownerDocument;
+    doc.addEventListener("pointermove", moveDrag, {
+      ...options,
+      passive: false,
+    });
+    doc.addEventListener("pointerup", endDrag, options);
+    doc.addEventListener("pointercancel", endDrag, options);
+    map.addEventListener("lostpointercapture", endDrag, options);
+    doc.defaultView.addEventListener("blur", endDrag, options);
+  }
+  function moveDrag(event) {
+    if (!drag || event.pointerId !== drag.id) return;
+    if (!(event.buttons & 1)) {
+      endDrag(event);
+      return;
+    }
+    const dx = event.clientX - drag.x,
+      dy = event.clientY - drag.y;
+    if (!drag.moving) {
+      // Small hand movements still count as an ordinary tile click.
+      if (Math.hypot(dx, dy) < 5) return;
+      drag.moving = true;
+      suppressClick = true;
+      drag.map.setPointerCapture(drag.id);
+      updatePanCursor(drag.map);
+    }
+    event.preventDefault();
+    drag.map.scrollLeft = drag.left - dx;
+    drag.map.scrollTop = drag.top - dy;
   }
   const geometry = (touches) => {
     const [a, b] = touches;
@@ -280,6 +370,7 @@ export function mountMapZoom(root) {
     },
     destroy() {
       endPinch();
+      endDrag();
       mapEvents?.abort();
       events.abort();
       observer.disconnect();
