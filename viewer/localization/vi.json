@@ -948,7 +948,7 @@
   "Wait for your turn.": "Hãy chờ đến lượt bạn.",
   "Choose an action to take back its markers without acting.": "Chọn một hành động để thu hồi dấu của nó mà không thực hiện hành động.",
   "Undo my move": "Hoàn tác nước đi",
-  "Automatically retrieve markers when there is no choice": "Tự động thu hồi dấu khi không có lựa chọn",
+  "Auto-retrieve when forced": "Tự thu hồi khi bắt buộc",
   "Goods replenished": "Đã bổ sung hàng hóa",
   "Empty goods space": "Ô hàng hóa trống",
   "At the start of each round, completed ships are replaced. An island with no goods left receives its original assortment again. If even one cube remains, none are replenished.": "Ở đầu mỗi vòng, các tàu đã đầy được thay thế. Một đảo không còn hàng hóa nào sẽ được bổ sung lại đúng loại và số lượng ban đầu. Nếu vẫn còn dù chỉ một khối, sẽ không bổ sung gì."

@@ -948,7 +948,7 @@
   "Wait for your turn.": "Wacht op je beurt.",
   "Choose an action to take back its markers without acting.": "Kies een actie waarvan je de markers zonder actie terugneemt.",
   "Undo my move": "Zet ongedaan maken",
-  "Automatically retrieve markers when there is no choice": "Markeringen automatisch terugnemen als er geen keuze is",
+  "Auto-retrieve when forced": "Verplicht terugnemen automatisch",
   "Goods replenished": "Goederen aangevuld",
   "Empty goods space": "Lege goederenplek",
   "At the start of each round, completed ships are replaced. An island with no goods left receives its original assortment again. If even one cube remains, none are replenished.": "Aan het begin van elke ronde worden volle schepen vervangen. Een eiland zonder goederen krijgt zijn oorspronkelijke assortiment terug. Als er ook maar één blokje over is, wordt niets aangevuld."

@@ -948,7 +948,7 @@
   "Wait for your turn.": "Aguarde sua vez.",
   "Choose an action to take back its markers without acting.": "Escolha uma ação para recolher os marcadores dela sem agir.",
   "Undo my move": "Desfazer jogada",
-  "Automatically retrieve markers when there is no choice": "Recolher marcadores automaticamente quando não há escolha",
+  "Auto-retrieve when forced": "Recolher automaticamente se obrigatório",
   "Goods replenished": "Mercadorias reabastecidas",
   "Empty goods space": "Espaço vazio de mercadoria",
   "At the start of each round, completed ships are replaced. An island with no goods left receives its original assortment again. If even one cube remains, none are replenished.": "No início de cada rodada, os navios completos são substituídos. Uma ilha sem nenhuma mercadoria recebe novamente seu conjunto original. Se restar um único cubo, nada é reabastecido."

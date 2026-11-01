@@ -948,7 +948,7 @@
   "Wait for your turn.": "Așteaptă-ți rândul.",
   "Choose an action to take back its markers without acting.": "Alege o acțiune ale cărei marcaje le retragi fără a acționa.",
   "Undo my move": "Anulează mutarea",
-  "Automatically retrieve markers when there is no choice": "Retrage automat marcatorii când nu există altă opțiune",
+  "Auto-retrieve when forced": "Retragere forțată automată",
   "Goods replenished": "Mărfuri reaprovizionate",
   "Empty goods space": "Loc gol pentru marfă",
   "At the start of each round, completed ships are replaced. An island with no goods left receives its original assortment again. If even one cube remains, none are replenished.": "La începutul fiecărei runde, navele complete sunt înlocuite. O insulă fără nicio marfă primește din nou sortimentul inițial. Dacă a rămas chiar și un singur cub, nu se reaprovizionează nimic."

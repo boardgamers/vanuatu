@@ -2,7 +2,7 @@ export const mapViewPreference = {
   name: "mapView",
   label: "2D / 3D",
   type: "select",
-  default: "3d",
+  default: "2d",
   items: [
     { name: "2d", label: "2D" },
     { name: "3d", label: "3D" },

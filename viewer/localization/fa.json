@@ -948,7 +948,7 @@
   "Wait for your turn.": "منتظر نوبت خود باشید.",
   "Choose an action to take back its markers without acting.": "اقدامی را انتخاب کنید تا مهره‌هایش را بدون انجام آن پس بگیرید.",
   "Undo my move": "بازگرداندن حرکت",
-  "Automatically retrieve markers when there is no choice": "پس‌گرفتن خودکار نشانگرها وقتی انتخابی وجود ندارد",
+  "Auto-retrieve when forced": "بازگشت خودکار در حالت اجباری",
   "Goods replenished": "کالاها دوباره تأمین شدند",
   "Empty goods space": "جای خالی کالا",
   "At the start of each round, completed ships are replaced. An island with no goods left receives its original assortment again. If even one cube remains, none are replenished.": "در آغاز هر دور، کشتی‌های تکمیل‌شده جایگزین می‌شوند. جزیره‌ای که هیچ کالایی در آن نمانده، دوباره مجموعهٔ اولیهٔ کالاهایش را دریافت می‌کند. اگر حتی یک مکعب باقی مانده باشد، هیچ کالایی اضافه نمی‌شود."

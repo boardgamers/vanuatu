@@ -113,11 +113,12 @@ export function mountGame(target, options = {}) {
     focusReturn;
   let board3D,
     threeUnavailable = false,
-    mapView = "3d",
+    mapView = "2d",
     mapLive = false,
     journalCells = [];
   try {
-    if (localStorage.getItem("vanuatu-map-view") === "2d") mapView = "2d";
+    const savedView = localStorage.getItem("vanuatu-map-view");
+    if (savedView === "2d" || savedView === "3d") mapView = savedView;
   } catch {}
   root.dataset.mapView = mapView;
   const patch = createRenderer(
@@ -983,7 +984,7 @@ export function mountGame(target, options = {}) {
       }
       if ("help" in d) {
         showDialog(
-          `<h2>${t("help")}</h2><div class="preferences"><label><input type="checkbox" data-pref="colorBlind" ${colorBlind ? "checked" : ""}>${t("colorBlind")}</label><select data-map-preference aria-label="2D / 3D"><option value="2d" ${mapView === "2d" ? "selected" : ""}>2D</option><option value="3d" ${mapView === "3d" ? "selected" : ""} ${threeUnavailable ? "disabled" : ""}>3D</option></select><label><input type="checkbox" data-pref="sound" ${sound ? "checked" : ""}>${t("sound")}</label>${options.onSetting && Number.isInteger(player) && !analysis ? `<label><input type="checkbox" data-setting="autoRetrieve" ${autoRetrieve ? "checked" : ""}>${esc(translateText("Automatically retrieve markers when there is no choice", lang))}</label>` : ""}${
+          `<h2>${t("help")}</h2><div class="preferences"><label><input type="checkbox" data-pref="colorBlind" ${colorBlind ? "checked" : ""}>${t("colorBlind")}</label><select data-map-preference aria-label="2D / 3D"><option value="2d" ${mapView === "2d" ? "selected" : ""}>2D</option><option value="3d" ${mapView === "3d" ? "selected" : ""} ${threeUnavailable ? "disabled" : ""}>3D</option></select><label><input type="checkbox" data-pref="sound" ${sound ? "checked" : ""}>${t("sound")}</label>${options.onSetting && Number.isInteger(player) && !analysis ? `<label><input type="checkbox" data-setting="autoRetrieve" ${autoRetrieve ? "checked" : ""}>${esc(translateText("Auto-retrieve when forced", lang))}</label>` : ""}${
             hostedLocale
               ? ""
               : `<select data-language aria-label="Language">${Object.entries(

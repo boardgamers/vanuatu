@@ -15,7 +15,7 @@ test("release replaces animation preference with a persistent view selector, pre
     next.some((p) => p.name === "animations"),
     false,
   );
-  assert.equal(next.at(-1).default, "3d");
+  assert.equal(next.at(-1).default, "2d");
   assert.deepEqual(
     next.at(-1).items.map((p) => p.name),
     ["2d", "3d"],

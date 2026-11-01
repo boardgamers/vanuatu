@@ -948,7 +948,7 @@
   "Wait for your turn.": "Wait for your turn.",
   "Choose an action to take back its markers without acting.": "Choose an action to take back its markers without acting.",
   "Undo my move": "Undo my move",
-  "Automatically retrieve markers when there is no choice": "Automatically retrieve markers when there is no choice",
+  "Auto-retrieve when forced": "Auto-retrieve when forced",
   "Goods replenished": "Goods replenished",
   "Empty goods space": "Empty goods space",
   "At the start of each round, completed ships are replaced. An island with no goods left receives its original assortment again. If even one cube remains, none are replenished.": "At the start of each round, completed ships are replaced. An island with no goods left receives its original assortment again. If even one cube remains, none are replenished."

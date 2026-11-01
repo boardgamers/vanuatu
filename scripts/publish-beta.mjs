@@ -59,7 +59,7 @@ const defaults = {
   settings: [
     {
       name: "autoRetrieve",
-      label: "Automatically retrieve markers when there is no choice",
+      label: "Auto-retrieve when forced",
       type: "checkbox",
       default: false,
     },
