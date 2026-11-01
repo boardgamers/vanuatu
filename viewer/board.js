@@ -40,6 +40,16 @@ function tilePath(x, y) {
   return path + "Z";
 }
 const defaultSymbols = ["●", "◆", "▲", "■", "✦"];
+function boardBounds(cells) {
+  const x = Math.min(...cells.map((c) => c.x)) - 120;
+  const y = Math.min(...cells.map((c) => c.y)) - 120;
+  return [
+    x,
+    y,
+    Math.max(...cells.map((c) => c.x)) + 120 - x,
+    Math.max(...cells.map((c) => c.y)) + 120 - y,
+  ].join(" ");
+}
 function tileImage(spec, c, ghost = false, prefix = "board") {
   const clip = `url(#${prefix}-cell-${c.q + 2}-${c.r})`;
   const ocean = oceanSurface(c, prefix);
@@ -90,20 +100,19 @@ export function boardSvg(
   const all = boardCells(s)
     .filter((c) => !preview || s.board[c.id])
     .map((c) => ({ ...c, ...center(c.id) }));
-  const visible = overview
+  const active = overview
     ? all
     : all.filter((c) => s.board[c.id] || targetSet.has(c.id));
-  const x0 = Math.min(...visible.map((c) => c.x)) - 120,
-    x1 = Math.max(...visible.map((c) => c.x)) + 120,
-    y0 = Math.min(...visible.map((c) => c.y)) - 120,
-    y1 = Math.max(...visible.map((c) => c.y)) + 120;
+  // Frame the active tiles on arrival, but retain the complete map so empty
+  // spaces are not cut off and the zoom controls can reveal the whole board.
+  const focusBox = boardBounds(active.length ? active : all);
   const defs = all
     .map(
       (c) =>
         `<clipPath id="${prefix}-cell-${c.q + 2}-${c.r}"><path d="${tilePath(c.x, c.y)}"/></clipPath>`,
     )
     .join("");
-  let svg = `<svg class="${preview ? "tile-art" : "archipelago"}${overview ? " overview" : ""}" viewBox="${x0} ${y0} ${x1 - x0} ${y1 - y0}" role="group" aria-label="${preview ? esc(t(s.board["0,0"].type === "island" ? "island" : "sea")) : "Vanuatu"}"><defs>${defs}${oceanDefs(prefix)}<filter id="${prefix}-boat-shadow" x="-25%" y="-25%" width="150%" height="150%"><feDropShadow dx="0" dy="0" stdDeviation=".9" flood-color="#fff9df" flood-opacity="1"/><feDropShadow dx="0" dy="2" stdDeviation="1.5" flood-opacity=".45"/></filter></defs>`;
+  let svg = `<svg class="${preview ? "tile-art" : "archipelago"}${overview ? " overview" : ""}" viewBox="${boardBounds(all)}" data-focus-box="${focusBox}" role="group" aria-label="${preview ? esc(t(s.board["0,0"].type === "island" ? "island" : "sea")) : "Vanuatu"}"><defs>${defs}${oceanDefs(prefix)}<filter id="${prefix}-boat-shadow" x="-25%" y="-25%" width="150%" height="150%"><feDropShadow dx="0" dy="0" stdDeviation=".9" flood-color="#fff9df" flood-opacity="1"/><feDropShadow dx="0" dy="2" stdDeviation="1.5" flood-opacity=".45"/></filter></defs>`;
   let dikes = "";
   for (const c of all) {
     const legal = targetSet.has(c.id),

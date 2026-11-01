@@ -36,7 +36,49 @@ const browser = await chromium.launch({
 });
 const errors = [];
 await mkdir(".local/qa", { recursive: true });
+async function zoomOutFully(page) {
+  const out = page.locator("[data-zoom-out]");
+  let steps = 0;
+  while ((await out.getAttribute("aria-disabled")) !== "true") {
+    assert.ok(steps++ < 20, "Zoom out reaches its full-board limit");
+    await out.click();
+  }
+  const clipped = await page.locator(".map-scroll").evaluate((map) => {
+    const frame = map.getBoundingClientRect();
+    const css = getComputedStyle(map);
+    const svg = map.querySelector(".archipelago");
+    const bounds = svg.viewBox.baseVal;
+    return [...svg.querySelectorAll(".map-cell .cell-surface")].flatMap(
+      (path) => {
+        const tile = path.getBoundingClientRect();
+        const world = path.getBBox();
+        const inside =
+          tile.left >= frame.left + parseFloat(css.paddingLeft) - 1 &&
+          tile.top >= frame.top + parseFloat(css.paddingTop) - 1 &&
+          tile.right <=
+            frame.left + map.clientWidth - parseFloat(css.paddingRight) + 1 &&
+          tile.bottom <=
+            frame.top + map.clientHeight - parseFloat(css.paddingBottom) + 1 &&
+          world.x >= bounds.x &&
+          world.y >= bounds.y &&
+          world.x + world.width <= bounds.x + bounds.width &&
+          world.y + world.height <= bounds.y + bounds.height;
+        return inside ? [] : [path.closest("[data-cell]").dataset.cell];
+      },
+    );
+  });
+  assert.deepEqual(
+    clipped,
+    [],
+    "Full overview includes every complete tile space, even empty ones",
+  );
+}
 try {
+  const partial = E.init(3, [], {}, "map-fit");
+  partial.board["2,0"] = E.tileState("c1");
+  partial.board["2,1"] = E.tileState("a1");
+  partial.round = 2;
+  partial.phase = "plan";
   const expanded = E.init(3, [], {}, "map-fit");
   const remainingTiles = Object.keys(E.TILES).filter(
     (id) => !Object.values(expanded.board).some((tile) => tile.id === id),
@@ -55,7 +97,7 @@ try {
   ]) {
     const page = await browser.newPage({ viewport: { width, height } });
     page.on("pageerror", (error) => errors.push(error.message));
-    for (const state of [E.init(3, [], {}, "map-fit"), expanded]) {
+    for (const state of [E.init(3, [], {}, "map-fit"), partial, expanded]) {
       await page.goto(base + "/?hotseat");
       await page.evaluate(
         (s) => localStorage.setItem("vanuatu-practice-v1", JSON.stringify(s)),
@@ -78,7 +120,11 @@ try {
       const fit = await page.locator(".map-scroll").evaluate((map) => {
         const frame = map.getBoundingClientRect(),
           css = getComputedStyle(map);
-        const svg = map.querySelector(".archipelago").getBoundingClientRect();
+        const svg = map.querySelector(".archipelago");
+        const [x, y, w, h] = svg.dataset.focusBox.split(" ").map(Number);
+        const matrix = svg.getScreenCTM();
+        const first = new DOMPoint(x, y).matrixTransform(matrix);
+        const last = new DOMPoint(x + w, y + h).matrixTransform(matrix);
         const wide =
           map.clientWidth -
             parseFloat(css.paddingLeft) -
@@ -92,12 +138,22 @@ try {
               .querySelector(".turn-tray")
               .getBoundingClientRect().height + 12
           : parseFloat(css.paddingBottom);
+        const middleX = frame.left + map.clientWidth / 2;
+        const middleY =
+          frame.top +
+          parseFloat(css.paddingTop) +
+          (map.clientHeight -
+            parseFloat(css.paddingTop) -
+            parseFloat(css.paddingBottom)) /
+            2;
         return (
-          svg.left >= frame.left + parseFloat(css.paddingLeft) - 1 &&
-          svg.right <=
+          Math.abs((first.x + last.x) / 2 - middleX) < 1 &&
+          Math.abs((first.y + last.y) / 2 - middleY) < 1 &&
+          first.x >= frame.left + parseFloat(css.paddingLeft) - 1 &&
+          last.x <=
             frame.left + map.clientWidth - parseFloat(css.paddingRight) + 1 &&
-          svg.top >= frame.top + top - 1 &&
-          svg.bottom <= frame.top + map.clientHeight - bottom + 1
+          first.y >= frame.top + top - 1 &&
+          last.y <= frame.top + map.clientHeight - bottom + 1
         );
       });
       assert.ok(fit, `${width}px: the whole active map fits after reload`);
@@ -151,6 +207,21 @@ try {
           [],
           `${width}px: controls do not obscure tiles at the default zoom`,
         );
+      if (state === partial)
+        await page.screenshot({
+          path: `.local/qa/map-partial-default-${width}.png`,
+        });
+      await zoomOutFully(page);
+      if (state !== expanded)
+        assert.ok(
+          Number(await page.locator(".map-scroll").getAttribute("data-zoom")) <
+            1,
+          "An incomplete map can zoom out beyond the active tiles",
+        );
+      if (state === partial)
+        await page.screenshot({
+          path: `.local/qa/map-partial-overview-${width}.png`,
+        });
     }
     await page.screenshot({ path: `.local/qa/map-fit-expanded-${width}.png` });
     await page.close();
@@ -337,12 +408,8 @@ try {
     );
     // Zoom out reaches a complete overview; the limit button also permits a
     // vertical swipe to scroll the page, without changing the game state.
-    while (
-      (await page.locator("[data-zoom-out]").getAttribute("aria-disabled")) !==
-      "true"
-    )
-      await page.locator("[data-zoom-out]").click();
-    assert.equal(await zoom(), 1);
+    await zoomOutFully(page);
+    assert.ok((await zoom()) < 1);
     const button = await page.locator("[data-zoom-out]").boundingBox();
     const beforeY = await page.evaluate(() => scrollY);
     await cdp.send("Input.dispatchTouchEvent", {

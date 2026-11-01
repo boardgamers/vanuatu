@@ -679,9 +679,13 @@ for (const width of [1440, 390]) {
     path: `.local/qa/zoom-min-${width}.png`,
     fullPage: true,
   });
+  const minimumZoom = Number(
+    await page.locator(".map-scroll").getAttribute("data-zoom"),
+  );
   for (let i = 0; i < 3; i++) await page.locator("[data-zoom-in]").click();
   assert.ok(
-    Number(await page.locator(".map-scroll").getAttribute("data-zoom")) > 1,
+    Number(await page.locator(".map-scroll").getAttribute("data-zoom")) >
+      minimumZoom,
   );
   assert.equal(
     await page.locator(".archipelago").getAttribute("viewBox"),

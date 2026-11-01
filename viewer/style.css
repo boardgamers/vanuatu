@@ -1606,9 +1606,6 @@ body:has(.vanuatu) {
     scroll-behavior: auto !important;
   }
 }
-.vanuatu .archipelago {
-  overflow: hidden;
-}
 .vanuatu .map-scroll {
   padding-bottom: 145px;
 }

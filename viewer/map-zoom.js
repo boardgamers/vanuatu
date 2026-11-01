@@ -1,4 +1,4 @@
-const MIN_ZOOM = 1;
+const DEFAULT_ZOOM = 1;
 const MAX_ZOOM = 4;
 const STEP = 1.25;
 const READABLE_TILE_SCALE = 0.5;
@@ -6,6 +6,7 @@ const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
 
 export function mountMapZoom(root) {
   let zoom,
+    minZoom = 1,
     observed,
     pinch,
     mapEvents,
@@ -65,18 +66,22 @@ export function mountMapZoom(root) {
     const { map, canvas, svg } = el,
       f = frame(map),
       box = svg.viewBox.baseVal;
+    const [x, y, w, h] = svg.dataset.focusBox.split(" ").map(Number);
+    const active = { x, y, width: w, height: h };
     if (f.width <= 0 || f.height <= 0) return;
     const initial = zoom === undefined;
-    const fitScale = Math.min(f.width / box.width, f.height / box.height);
+    const fitScale = Math.min(f.width / active.width, f.height / active.height);
+    const overviewScale = Math.min(f.width / box.width, f.height / box.height);
+    minZoom = Math.min(DEFAULT_ZOOM, overviewScale / fitScale);
     if (autoFit) {
       // Fit desktop panels even when narrow; on phones keep 176-unit tiles
       // at least 88px wide so their resource badges remain readable.
       zoom = matchMedia("(max-width: 700px)").matches
-        ? clamp(READABLE_TILE_SCALE / fitScale, MIN_ZOOM, MAX_ZOOM)
-        : MIN_ZOOM;
+        ? clamp(READABLE_TILE_SCALE / fitScale, DEFAULT_ZOOM, MAX_ZOOM)
+        : DEFAULT_ZOOM;
       if (f.width >= 900) {
         // Wide panels leave room between the corner controls. Use the spare
-        // vertical padding for a closer view, while keeping the entire SVG
+        // vertical padding for a closer view, while keeping the active tiles
         // above the action tray and at least 12px from the viewport edges.
         const trayHeight =
           root.querySelector(".turn-tray")?.getBoundingClientRect().height ?? 0;
@@ -85,19 +90,40 @@ export function mountMapZoom(root) {
           Math.min(f.top - 12, f.bottom - trayHeight - 12),
         );
         const closeScale = Math.min(
-          f.width / box.width,
-          (f.height + 2 * extra) / box.height,
+          f.width / active.width,
+          (f.height + 2 * extra) / active.height,
         );
-        zoom = clamp(closeScale / fitScale, MIN_ZOOM, STEP);
+        zoom = clamp(closeScale / fitScale, DEFAULT_ZOOM, STEP);
       }
-    }
+    } else zoom = clamp(zoom, minZoom, MAX_ZOOM);
     const scale = fitScale * zoom;
     const width = box.width * scale,
       height = box.height * scale;
+    // Leave enough room to center an off-center cluster of active tiles, even
+    // when the full map fits along one axis. At overview, remove that room so
+    // the whole board fits without leaving an unnecessary scrollable area.
+    const focus = zoom <= minZoom + 0.000001 ? box : active;
+    const canvasSize = (size, viewport, middle) =>
+      Math.max(
+        viewport,
+        size + 2 * Math.max(0, viewport / 2 - Math.min(middle, size - middle)),
+      );
     let resized = false;
     for (const [node, property, value] of [
-      [canvas, "width", Math.max(f.width, width)],
-      [canvas, "height", Math.max(f.height, height)],
+      [
+        canvas,
+        "width",
+        canvasSize(width, f.width, (focus.x + focus.width / 2 - box.x) * scale),
+      ],
+      [
+        canvas,
+        "height",
+        canvasSize(
+          height,
+          f.height,
+          (focus.y + focus.height / 2 - box.y) * scale,
+        ),
+      ],
       [svg, "width", width],
       [svg, "height", height],
     ]) {
@@ -116,6 +142,7 @@ export function mountMapZoom(root) {
       box.y,
       box.width,
       box.height,
+      svg.dataset.focusBox,
       f.width,
       f.height,
       zoom,
@@ -127,12 +154,16 @@ export function mountMapZoom(root) {
       map.scrollLeft += actual.x - client.x;
       map.scrollTop += actual.y - client.y;
     } else if (initial || (autoFit && layoutKey !== nextLayout)) {
-      map.scrollLeft = (canvas.clientWidth - f.width) / 2;
-      map.scrollTop = (canvas.clientHeight - f.height) / 2;
+      const middle = new DOMPoint(
+        active.x + active.width / 2,
+        active.y + active.height / 2,
+      ).matrixTransform(svg.getScreenCTM());
+      map.scrollLeft += middle.x - (f.x + f.width / 2);
+      map.scrollTop += middle.y - (f.y + f.height / 2);
     }
     layoutKey = nextLayout;
     for (const [selector, disabled] of [
-      ["[data-zoom-out]", zoom <= MIN_ZOOM],
+      ["[data-zoom-out]", zoom <= minZoom + 0.000001],
       ["[data-zoom-in]", zoom >= MAX_ZOOM],
     ]) {
       const button = root.querySelector(selector);
@@ -173,7 +204,7 @@ export function mountMapZoom(root) {
   }
   function setZoom(value, anchor = capture()) {
     autoFit = false;
-    zoom = clamp(value, MIN_ZOOM, MAX_ZOOM);
+    zoom = clamp(value, minZoom, MAX_ZOOM);
     update(anchor);
   }
   const geometry = (touches) => {
