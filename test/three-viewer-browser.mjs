@@ -16,6 +16,15 @@ try {
       0,
       "Receiving preferences never echoes them",
     );
+    // Rebuilding the 3D board must retain/reuse the resource-letter textures.
+    for (const enabled of [true, false, true]) {
+      await page.locator("[data-color-blind]").click();
+      assert.equal((await state()).preferences.colorBlind, enabled);
+      assert.equal(
+        await page.locator(".export-reference .resource-symbol").count(),
+        enabled ? 3 : 0,
+      );
+    }
     await page.locator('[data-map-view="2d"]').click();
     assert.equal(
       await page.locator(".vanuatu").getAttribute("data-map-view"),

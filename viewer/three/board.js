@@ -1,6 +1,11 @@
 import * as THREE from "three";
 import { translateText } from "../localization/index.js";
 import { goodsSlots } from "../goods-slots.js";
+import {
+  createGoodsLabel,
+  GOODS_CUBE,
+  GOODS_FOOTPRINT_Y,
+} from "./goods-label.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { TILES } from "../../engine/catalog.js";
 import { icon, token as renderToken, esc } from "../art.js";
@@ -440,7 +445,17 @@ export function mountBoard3D(target, { onSelect } = {}) {
       const color = { kava: "#9aca49", copra: "#fff7dc", beef: "#e77557" }[
         good
       ];
-      if (filled) box(slot, color, 0.23, 0.24, 0.23, 0, 0, 0);
+      if (filled)
+        box(
+          slot,
+          color,
+          GOODS_CUBE.width,
+          GOODS_CUBE.height,
+          GOODS_CUBE.depth,
+          0,
+          0,
+          0,
+        );
       else {
         // A solid, flat colour patch marks the missing cube's footprint.
         const footprint = mesh(
@@ -448,7 +463,7 @@ export function mountBoard3D(target, { onSelect } = {}) {
           new THREE.PlaneGeometry(0.26, 0.26),
           new THREE.MeshBasicMaterial({ color, side: THREE.DoubleSide }),
           0,
-          -0.097,
+          GOODS_FOOTPRINT_Y,
           0,
         );
         footprint.rotation.x = -Math.PI / 2;
@@ -468,33 +483,9 @@ export function mountBoard3D(target, { onSelect } = {}) {
           ctx.fillText({ kava: "K", copra: "C", beef: "B" }[good], 32, 34);
           const texture = new THREE.CanvasTexture(canvas);
           texture.colorSpace = THREE.SRGBColorSpace;
-          goodsLabels.set(
-            good,
-            new THREE.SpriteMaterial({ map: texture, depthTest: true }),
-          );
+          goodsLabels.set(good, texture);
         }
-        if (filled) {
-          const letter = new THREE.Sprite(goodsLabels.get(good));
-          letter.position.set(0, 0.02, 0.13);
-          letter.scale.set(0.18, 0.18, 1);
-          slot.add(letter);
-        } else {
-          const letter = mesh(
-            slot,
-            new THREE.PlaneGeometry(0.16, 0.16),
-            new THREE.MeshBasicMaterial({
-              map: goodsLabels.get(good).map,
-              transparent: true,
-              depthWrite: false,
-            }),
-            0,
-            -0.094,
-            0,
-          );
-          letter.rotation.x = -Math.PI / 2;
-          letter.castShadow = false;
-          letter.receiveShadow = false;
-        }
+        slot.add(createGoodsLabel(goodsLabels.get(good), filled));
       }
     });
     for (let slot = 0; slot < t.drawings; slot++) {
@@ -1851,10 +1842,7 @@ export function mountBoard3D(target, { onSelect } = {}) {
       controls.dispose();
       disposeBoard();
       for (const m of palette.values()) m.dispose();
-      for (const m of goodsLabels.values()) {
-        m.map.dispose();
-        m.dispose();
-      }
+      for (const texture of goodsLabels.values()) texture.dispose();
       scene.traverse((o) => {
         o.geometry?.dispose();
         if (!Array.isArray(o.material)) o.material?.dispose();
