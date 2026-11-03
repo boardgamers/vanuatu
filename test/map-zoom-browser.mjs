@@ -43,6 +43,10 @@ async function zoomOutFully(page) {
     assert.ok(steps++ < 20, "Zoom out reaches its full-board limit");
     await out.click();
   }
+  // The zoom limit is set before the final camera animation has settled.
+  await page.waitForFunction(
+    () => !document.querySelector("[data-map-transition]"),
+  );
   const clipped = await page.locator(".map-scroll").evaluate((map) => {
     const frame = map.getBoundingClientRect();
     const css = getComputedStyle(map);

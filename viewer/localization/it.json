@@ -950,6 +950,10 @@
   "Undo my move": "Annulla la mossa",
   "Auto-retrieve when forced": "Ritiro automatico se obbligato",
   "Goods replenished": "Merci rifornite",
+  "{p0}: −{p1} vatus → +{p2} prosperity": "{p0}: −{p1} vatu → +{p2} prosperità",
+  "{p0}: already delivered": "{p0}: consegna effettuata",
+  "{p0}: empty": "{p0}: spazio vuoto",
+  "First ship needing the good (1 → 3). Complete ship: +2 prosperity.": "Prima nave che richiede la merce (1 → 3). Nave completa: +2 prosperità.",
   "Empty goods space": "Spazio merce vuoto",
   "At the start of each round, completed ships are replaced. An island with no goods left receives its original assortment again. If even one cube remains, none are replenished.": "All’inizio di ogni round, le navi complete vengono sostituite. Un’isola senza più merci riceve nuovamente il suo assortimento iniziale. Se rimane anche un solo cubetto, non viene rifornito nulla."
 }

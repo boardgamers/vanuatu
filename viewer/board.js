@@ -1,4 +1,5 @@
 import { goodsSlots } from "./goods-slots.js";
+import { exportGoodHelp } from "./export-reference.js";
 import { playerSymbolGlyph } from "@boardgamers/protocol/player-symbols";
 import { boardCells, tileState, TILES, COLORS } from "../engine/catalog.js";
 import { esc, svgIcon, iconLabel } from "./art.js";
@@ -149,8 +150,8 @@ export function boardSvg(
         for (const [j, { good, filled }] of slots.entries()) {
           const x = c.x - slots.length * 14 + j * 28,
             y = c.y + 34;
-          const help = `${label(good)} · ${filled ? "available to export" : "Empty goods space"}`;
-          svg += `<g class="goods-slot ${filled ? "stocked" : "empty"}" data-good="${good}" opacity="${filled ? 1 : 0.55}"><title>${esc(help)}</title>`;
+          const help = exportGoodHelp(good, filled ? "available" : "empty");
+          svg += `<g class="goods-slot ${filled ? "stocked" : "empty"}" data-good="${good}" role="img" aria-label="${esc(help)}" opacity="${filled ? 1 : 0.55}"><title>${esc(help)}</title>`;
           svg += svgIcon(good, x, y, 29, "currentColor", help, colorBlind);
           svg += "</g>";
         }

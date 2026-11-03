@@ -950,6 +950,10 @@
   "Undo my move": "Отменить ход",
   "Auto-retrieve when forced": "Автовозврат без выбора",
   "Goods replenished": "Товары пополнены",
+  "{p0}: −{p1} vatus → +{p2} prosperity": "{p0}: −{p1} вату → +{p2} процветания",
+  "{p0}: already delivered": "{p0}: уже доставлено",
+  "{p0}: empty": "{p0}: пусто",
+  "First ship needing the good (1 → 3). Complete ship: +2 prosperity.": "Первый корабль, которому нужен товар (1 → 3). Полный корабль: +2 процветания.",
   "Empty goods space": "Пустое место для товара",
   "At the start of each round, completed ships are replaced. An island with no goods left receives its original assortment again. If even one cube remains, none are replenished.": "В начале каждого раунда заполненные корабли заменяются. Остров, на котором не осталось товаров, снова получает исходный набор. Если остался хотя бы один кубик, товары не пополняются."
 }

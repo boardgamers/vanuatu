@@ -174,15 +174,19 @@ for (const width of [390, 1440]) {
         requestAnimationFrame(() => requestAnimationFrame(resolve)),
       ),
   );
+  // Resizing reframes the camera too; measure only settled geometry.
+  await page.evaluate(() => window.vanuatuDemo.ui.whenIdle());
   const before = await page
     .locator(".archipelago")
     .evaluate((svg) => svg.getBoundingClientRect().width);
   await page.locator("[data-zoom-in]").click();
+  await page.evaluate(() => window.vanuatuDemo.ui.whenIdle());
   const after = await page
     .locator(".archipelago")
     .evaluate((svg) => svg.getBoundingClientRect().width);
   assert.ok(Math.abs(after / before - 1.25) < 0.02);
   await page.locator("[data-zoom-out]").click();
+  await page.evaluate(() => window.vanuatuDemo.ui.whenIdle());
 }
 // Empty action stacks do not leave labels above their icons or shift columns.
 const actionLayout = await page
@@ -265,10 +269,12 @@ assert.equal(
 await page.locator("[data-character-choice]").first().click();
 assert.equal(await page.locator("dialog[open]").count(), 1);
 await page.locator("dialog [data-move]").click();
+await page.locator("dialog[open]").waitFor({ state: "hidden" });
 assert.equal(await page.locator("dialog[open]").count(), 0);
 for (let n = 0; n < 2; n++) {
   await page.locator("[data-character-choice]").first().click();
   await page.locator("dialog [data-move]").click();
+  await page.locator("dialog[open]").waitFor({ state: "hidden" });
 }
 // Unavailable planning actions explain prerequisites without placing a marker.
 const blockedFish = page.locator('[data-action="fish"]');
@@ -321,6 +327,139 @@ function actionState() {
   s.players[0].fish = [1, 2];
   s.players[0].treasures = [1];
   return s;
+}
+// Export rates are icon-only visually, but every hover/accessibility target
+// explains both the cost and reward. Keep expectations independent of the renderer.
+const exportGoods = [
+  ["kava", "Kava", "Kava", 1, 1],
+  ["copra", "Copra", "Coprah", 2, 3],
+  ["beef", "Beef", "Bœuf", 3, 5],
+];
+// Ignore icon artwork/SVG titles and hidden mobile arrows when checking copy.
+function visibleHelperText(el) {
+  const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+  let text = "",
+    node;
+  while ((node = walker.nextNode())) {
+    if (node.parentElement.closest("svg")) continue;
+    const range = document.createRange();
+    range.selectNodeContents(node);
+    const box = range.getBoundingClientRect();
+    if (box.width && box.height) text += node.textContent;
+  }
+  return text.replace(/\s+/g, "");
+}
+async function assertExportHelp(language = "en", colorBlind = false) {
+  const french = language === "fr";
+  const labels = Object.fromEntries(
+    exportGoods.map(([good, en, fr, cost, reward]) => [
+      good,
+      {
+        available: `${french ? fr + " :" : en + ":"} −${cost} vatus → +${reward} ${french ? "prospérité" : "prosperity"}`,
+        delivered: `${french ? fr + " : déjà livré" : en + ": already delivered"}`,
+        empty: `${french ? fr + " : vide" : en + ": empty"}`,
+      },
+    ]),
+  );
+  const reference = page.locator(".trade-info > .export-reference");
+  assert.equal(await reference.count(), 1);
+  assert.equal(await reference.getAttribute("role"), "group");
+  assert.equal(
+    await reference.getAttribute("aria-label"),
+    french ? "Exporter des marchandises" : "Export goods",
+  );
+  assert.equal(await reference.locator(".export-rate").count(), 3);
+  assert.equal(await page.locator(".trade-info > .demand-ships").count(), 1);
+  assert.equal(await page.locator(".demand-ships").getAttribute("title"), null);
+  for (const [index, [good, , , cost, reward]] of exportGoods.entries()) {
+    const rate = reference.locator(".export-rate").nth(index);
+    assert.equal(await rate.getAttribute("role"), "img");
+    assert.equal(await rate.getAttribute("title"), labels[good].available);
+    assert.equal(await rate.getAttribute("aria-label"), labels[good].available);
+    assert.equal(
+      await rate
+        .and(
+          page.getByRole("img", { name: labels[good].available, exact: true }),
+        )
+        .count(),
+      1,
+    );
+    for (const kind of [good, "coin", "point"])
+      assert.equal(await rate.locator(`.icon-${kind}`).count(), 1);
+    const visibleText = await rate.evaluate(visibleHelperText);
+    const arrow = page.viewportSize().width >= 360 ? "→" : "";
+    assert.equal(
+      visibleText,
+      `${cost === 1 ? "" : cost}${arrow}${reward === 1 ? "" : reward}`,
+    );
+    assert.equal(await rate.locator("b").count(), index === 0 ? 0 : 2);
+  }
+  assert.deepEqual(
+    await reference.locator(".resource-symbol").allTextContents(),
+    colorBlind ? ["K", "C", "B"] : [],
+  );
+  const completion = reference.locator(".export-completion");
+  assert.equal(await completion.count(), 1);
+  assert.equal(await completion.evaluate(visibleHelperText), "→2");
+  assert.equal(
+    await completion.getAttribute("title"),
+    french
+      ? "Compléter un navire ajoute 2 au gain de la marchandise."
+      : "Completing a ship adds 2 to the good's reward.",
+  );
+  for (const kind of ["buy", "check", "point"])
+    assert.equal(await completion.locator(`.icon-${kind}`).count(), 1);
+  assert.equal(
+    await completion.locator(".completed-ship").getAttribute("aria-label"),
+    french ? "Terminer" : "Complete",
+  );
+  const targets = page.locator(
+    '.export-rate, .export-completion, .demand-ships span[data-good], .map-cell[data-cell="0,0"] .goods-slot',
+  );
+  for (const target of await targets.all()) {
+    const info = await target.evaluate((el) => ({
+      good: el.dataset.good,
+      status: el.classList.contains("empty")
+        ? "empty"
+        : el.classList.contains("filled")
+          ? "delivered"
+          : "available",
+      role: el.getAttribute("role"),
+      label: el.getAttribute("aria-label"),
+      title:
+        el.getAttribute("title") ??
+        el.querySelector(":scope > title")?.textContent,
+    }));
+    if (info.good) {
+      assert.equal(info.role, "img");
+      assert.equal(info.title, labels[info.good][info.status]);
+      assert.equal(info.label, info.title);
+      assert.equal(
+        await target
+          .and(page.getByRole("img", { name: info.title, exact: true }))
+          .count(),
+        1,
+      );
+    }
+    await target.scrollIntoViewIfNeeded();
+    assert.ok(
+      await target.evaluate((el) =>
+        [el, ...el.querySelectorAll("svg, b")].every((part) => {
+          const r = part.getBoundingClientRect();
+          const hit = document.elementFromPoint(
+            r.x + r.width / 2,
+            r.y + r.height / 2,
+          );
+          return (
+            hit?.closest(
+              ".export-rate, .export-completion, span[data-good], .goods-slot",
+            ) === el
+          );
+        }),
+      ),
+      `${info.title}: the good, coin and reward must hit their tooltip owner, not the map underneath`,
+    );
+  }
 }
 // A neighbouring destination has 1- and 3-step legal paths, but only needs one UI choice.
 const sailing = actionState();
@@ -419,10 +558,14 @@ for (const width of [1440, 390]) {
   await touristAction.click();
   assert.equal(await page.locator(".action-dock .supply-empty").count(), 0);
   assert.ok((await page.locator(".cell-highlight.legal").count()) > 0);
+  await page.evaluate(() =>
+    window.vanuatuDemo.ui.setPreferences({ language: "en", colorBlind: false }),
+  );
   for (const [index, good] of E.GOODS.entries()) {
     const s = actionState();
     s.demands = [{ id: 1, goods: [...E.GOODS], filled: [false, false, false] }];
     await page.evaluate((s) => window.vanuatuDemo.setState(s), s);
+    await assertExportHelp();
     await page.locator('[data-action="buy"]').click();
     assert.equal(
       await page
@@ -451,7 +594,39 @@ for (const width of [1440, 390]) {
     assert.equal(exported.players[0].money, 9 - E.PRICES[good]);
     assert.equal(exported.players[0].score, E.VALUES[good]);
     assert.equal(exported.board["0,0"].goods[good], 0);
+    await page.waitForFunction(
+      () => !document.querySelector("[data-trade-transition]"),
+    );
+    await page.evaluate(() => window.vanuatuDemo.ui.whenIdle());
+    assert.equal(
+      await page.locator(`.demand-ships .filled[data-good="${good}"]`).count(),
+      1,
+    );
+    assert.equal(
+      await page.locator(`.goods-slot.empty[data-good="${good}"]`).count(),
+      1,
+    );
+    await assertExportHelp();
   }
+  // Live localization/color-blind updates preserve all three sources of help,
+  // including the delivered demand and empty island space from the last export.
+  await page.locator(".header-tools [data-help]").click();
+  await page.locator("[data-language]").selectOption("fr");
+  if (
+    (await page.locator("[data-color-blind]").getAttribute("aria-pressed")) !==
+    "true"
+  )
+    await page.locator("[data-color-blind]").click();
+  await page.waitForFunction(() =>
+    document.querySelector(".export-rate")?.title.includes("prospérité"),
+  );
+  await assertExportHelp("fr", true);
+  await page.locator(".header-tools [data-help]").click();
+  await page.locator("[data-language]").selectOption("en");
+  await page.locator("[data-color-blind]").click();
+  await page.waitForFunction(() =>
+    document.querySelector(".export-rate")?.title.includes("prosperity"),
+  );
   // Choosing a full island explains why it cannot take another hut.
   const crowded = actionState();
   crowded.players[0].character = null;

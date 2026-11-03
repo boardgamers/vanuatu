@@ -74,6 +74,9 @@ try {
       // Even five players' stacks plus a draft marker fit in the same band.
       await page.locator('[data-action="rest"]').click();
       assert.equal(await page.locator(".draft-marker").textContent(), "+1");
+      await page.locator(".trade-info").scrollIntoViewIfNeeded();
+      // Measure settled geometry, not the marker-drop animation's temporary scale.
+      await page.evaluate(() => window.vanuatuDemo.ui.whenIdle());
       const layout = await page.evaluate(() => {
         const dock = document.querySelector(".action-dock");
         const strip = document.querySelector(".players");
@@ -88,7 +91,72 @@ try {
             b.bottom <= a.bottom + 1
           );
         };
+        const board = document.querySelector(".sea-board");
+        const trade = board.querySelector(".trade-info");
+        const reference = trade.querySelector(".export-reference");
+        const rates = [...reference.querySelectorAll(".export-rate")];
+        const items = [
+          ...reference.querySelectorAll(".export-rate, .export-completion"),
+        ];
+        const overlaps = (a, b) => {
+          a = a.getBoundingClientRect();
+          b = b.getBoundingClientRect();
+          return (
+            a.left < b.right - 1 &&
+            a.right > b.left + 1 &&
+            a.top < b.bottom - 1 &&
+            a.bottom > b.top + 1
+          );
+        };
         return {
+          exportReference: {
+            count: rates.length,
+            completion: reference.querySelectorAll(".export-completion").length,
+            arrowsVisible: rates.map(
+              (rate) =>
+                rate.querySelector(".export-arrow").getBoundingClientRect()
+                  .width > 0,
+            ),
+            contained: contained(board, trade) && contained(trade, reference),
+            itemsFit: items.every(
+              (rate) =>
+                contained(reference, rate) &&
+                [...rate.querySelectorAll("svg, b")].every((part) =>
+                  contained(rate, part),
+                ),
+            ),
+            noScroll: reference.scrollWidth <= reference.clientWidth + 1,
+            singleRow: items.every(
+              (rate) =>
+                Math.abs(
+                  rate.getBoundingClientRect().top -
+                    rates[0].getBoundingClientRect().top,
+                ) < 1,
+            ),
+            noCollisions:
+              [
+                ...board.querySelectorAll(
+                  ".market-info, .map-tools, .upcoming, .turn-tray",
+                ),
+              ].every((overlay) => !overlaps(trade, overlay)) &&
+              !overlaps(reference, trade.querySelector(".demand-ships")),
+            hitTargets: [
+              ...trade.querySelectorAll(
+                ".export-rate, .export-completion, span[data-good]",
+              ),
+            ].every((el) =>
+              [el, ...el.querySelectorAll("svg, b")].every((part) => {
+                const r = part.getBoundingClientRect();
+                return (
+                  document
+                    .elementFromPoint(r.x + r.width / 2, r.y + r.height / 2)
+                    ?.closest(
+                      ".export-rate, .export-completion, span[data-good]",
+                    ) === el
+                );
+              }),
+            ),
+          },
           dockWidth: dock.clientWidth,
           dockScroll: dock.scrollWidth,
           dockHeight: dock.clientHeight,
@@ -118,6 +186,21 @@ try {
           names: cards.map((c) => c.querySelector(".profile").title),
         };
       });
+      assert.deepEqual(
+        layout.exportReference,
+        {
+          count: 3,
+          completion: 1,
+          arrowsVisible: Array(3).fill(width >= 360),
+          contained: true,
+          itemsFit: true,
+          noScroll: true,
+          singleRow: true,
+          noCollisions: true,
+          hitTargets: true,
+        },
+        `${width}px/${count} players: French/color-blind export helper fits without clipping or covering other overlays; tooltips receive pointer hits`,
+      );
       assert.equal(layout.actions, 9);
       assert.equal(
         layout.dockScroll,
@@ -141,8 +224,10 @@ try {
         layout.cardsFit,
         "individual stock values and scores are not clipped",
       );
+      // At 320px supplies need a second row, alongside the character and
+      // treasure-conversion rows; larger screens retain the tighter bound.
       assert.ok(
-        layout.height <= 140,
+        layout.height <= (width === 320 ? 152 : 140),
         "loaded player cards stay shorter than the previous 191px strip",
       );
       for (const values of layout.supplies)

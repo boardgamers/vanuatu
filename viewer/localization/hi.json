@@ -950,6 +950,10 @@
   "Undo my move": "अपनी चाल वापस लें",
   "Auto-retrieve when forced": "अनिवार्य वापसी अपने-आप",
   "Goods replenished": "माल फिर भरा गया",
+  "{p0}: −{p1} vatus → +{p2} prosperity": "{p0}: −{p1} वातु → +{p2} समृद्धि",
+  "{p0}: already delivered": "{p0}: पहले ही पहुँचाया गया",
+  "{p0}: empty": "{p0}: खाली",
+  "First ship needing the good (1 → 3). Complete ship: +2 prosperity.": "पहला जहाज़ जिसे इस माल की ज़रूरत है (1 → 3)। जहाज़ पूरा भरने पर: +2 समृद्धि।",
   "Empty goods space": "माल की खाली जगह",
   "At the start of each round, completed ships are replaced. An island with no goods left receives its original assortment again. If even one cube remains, none are replenished.": "हर दौर की शुरुआत में भरे हुए जहाज़ बदल दिए जाते हैं। जिस द्वीप पर कोई माल नहीं बचा है, वहाँ शुरुआती माल फिर रख दिया जाता है। अगर एक भी घन बचा हो, तो कोई माल नहीं भरा जाता।"
 }

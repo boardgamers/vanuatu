@@ -407,7 +407,7 @@
   scrollbar-width: thin;
   min-height: 490px;
   height: min(69vh, 740px);
-  padding: 65px 10px 83px;
+  padding: 80px 10px 83px;
 }
 .vanuatu .map-canvas {
   display: grid;
@@ -507,7 +507,7 @@
   right: 18px;
   z-index: 2;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 10px;
   pointer-events: none;
@@ -528,12 +528,64 @@
   align-items: center;
   gap: 3px;
 }
+.vanuatu .trade-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
+}
+.vanuatu .export-reference {
+  display: flex;
+  background: #f6f4dfdb;
+  border: 1px solid #fff9;
+  border-radius: 7px;
+  font-size: 11px;
+  white-space: nowrap;
+}
+.vanuatu .export-rate,
+.vanuatu .export-completion {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 3px 6px;
+}
+.vanuatu .export-reference > span + span {
+  border-left: 1px solid #b7975c44;
+}
+.vanuatu .export-reference .token {
+  gap: 2px;
+}
+.vanuatu .export-reference .icon {
+  width: 18px;
+  height: 18px;
+}
+.vanuatu .completed-ship {
+  position: relative;
+  display: flex;
+}
+.vanuatu .completed-ship .icon-check {
+  position: absolute;
+  right: -3px;
+  bottom: -2px;
+  width: 12px;
+  height: 12px;
+  color: #356658;
+  background: #f6f4df;
+  border-radius: 50%;
+}
+.vanuatu .export-reference > span > *,
+.vanuatu .demand-ship > span > *,
+.vanuatu .demand-ship > .icon {
+  pointer-events: none;
+}
+@media (max-width: 359px) {
+  .vanuatu .export-arrow {
+    display: none;
+  }
+}
 .vanuatu .demand-ships {
   display: flex;
   gap: 7px;
-}
-.vanuatu .demand-ships * {
-  pointer-events: none;
 }
 .vanuatu .demand-ship {
   background: #faf1cfdf;
@@ -1426,7 +1478,7 @@ body:has(.vanuatu) {
   .vanuatu .map-scroll {
     height: 57vh;
     min-height: 430px;
-    padding: 80px 0 104px;
+    padding: 108px 0 104px;
   }
   .vanuatu .sea-dashboard {
     top: 8px;
@@ -1443,6 +1495,24 @@ body:has(.vanuatu) {
   .vanuatu .market-info .icon {
     width: 19px;
     height: 19px;
+  }
+  .vanuatu .trade-info {
+    align-items: center;
+  }
+  .vanuatu .export-reference {
+    font-size: 10px;
+  }
+  .vanuatu .export-rate,
+  .vanuatu .export-completion {
+    gap: 1px;
+    padding: 3px;
+  }
+  .vanuatu .export-reference .token {
+    gap: 1px;
+  }
+  .vanuatu .export-reference .icon:not(.icon-check) {
+    width: 16px;
+    height: 16px;
   }
   .vanuatu .demand-ships {
     gap: 4px;

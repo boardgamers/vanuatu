@@ -1472,7 +1472,7 @@ export function mountBoard3D(target, { onSelect } = {}) {
     const occupied = [...pieces.values()];
     const frame = host.getBoundingClientRect();
     for (const overlay of target.parentElement.querySelectorAll(
-      ".market-info, .demand-ships, .map-tools, .upcoming",
+      ".market-info, .trade-info, .map-tools, .upcoming",
     )) {
       const r = overlay.getBoundingClientRect();
       if (r.width && r.height)

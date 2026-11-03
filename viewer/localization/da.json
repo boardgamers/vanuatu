@@ -950,6 +950,10 @@
   "Undo my move": "Fortryd mit træk",
   "Auto-retrieve when forced": "Automatisk tvungen tilbagetagning",
   "Goods replenished": "Varer genopfyldt",
+  "{p0}: −{p1} vatus → +{p2} prosperity": "{p0}: −{p1} vatu → +{p2} velstand",
+  "{p0}: already delivered": "{p0}: allerede leveret",
+  "{p0}: empty": "{p0}: tom",
+  "First ship needing the good (1 → 3). Complete ship: +2 prosperity.": "Første skib, der mangler varen (1 → 3). Fyldt skib: +2 velstand.",
   "Empty goods space": "Tom vareplads",
   "At the start of each round, completed ships are replaced. An island with no goods left receives its original assortment again. If even one cube remains, none are replenished.": "Ved begyndelsen af hver runde udskiftes fyldte skibe. En ø uden varer får sit oprindelige udvalg igen. Hvis blot én terning er tilbage, genopfyldes intet."
 }

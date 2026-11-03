@@ -1,4 +1,5 @@
 import { createTradeTransition } from "./trade-transition.js";
+import { exportGoodHelp, exportReference } from "./export-reference.js";
 import { mountBoard3D } from "./three/board.js";
 import { playerSymbolGlyph } from "@boardgamers/protocol/player-symbols";
 import {
@@ -122,7 +123,7 @@ export function mountGame(target, options = {}) {
   } catch {}
   root.dataset.mapView = mapView;
   const patch = createRenderer(
-    ".map-3d, .game-header, .action-dock, .market-info, .demand-ships, .map-scroll, .map-tools, .upcoming, .turn-tray, .player-card, .play-footer",
+    ".map-3d, .game-header, .action-dock, .market-info, .demand-ships, .export-reference, .map-scroll, .map-tools, .upcoming, .turn-tray, .player-card, .play-footer",
     (from, to) => {
       // These attributes belong to the layout/zoom controllers, not the state.
       const attr = from.matches(".sea-board, .map-canvas, .archipelago")
@@ -489,12 +490,21 @@ export function mountGame(target, options = {}) {
     return `<div class="turn-tray ${discard ? "retrieval-tray" : ""}"><div class="tray-title">${selectedAction ? `${icon(action)} ${t(action)}` : t("actions")}</div>${discard ? `<p class="retrieval-help obstacles">${blockingHtml(s, player, action, lang, undefined, colorBlind)}</p>` : !selectedAction && moves.some((m) => m.type === "discard") ? `<p class="retrieval-help">${esc(translateText(RETRIEVE_CHOICE, lang))}</p>` : ""}${hasBonus && hasNormal ? `<label class="bonus-switch" title="${charHelp(own()?.character)}"><input type="checkbox" data-bonus ${bonus ? "checked" : ""}>${charName(own()?.character)}</label>` : ""}<span class="pick-hint">${pickText}</span><div class="move-options">${opts.map((m) => moveButton(m, true)).join("")}${discard ? moveButton(discard) : ""}</div>${governor ? btn(`${icon("marker")} ↔`, `data-governor title="${t("governor")}"`) : ""}${selectedAction ? titled(t("cancel"), icon("close"), "data-cancel", "icon-button") : ""}</div>`;
   }
   function tradeShips() {
-    const help = `Foreign trade\n${colorBlind ? "K: kava · C: copra · B: beef." : "Green: kava · White: copra · Red: beef."}\nEach export fills the first ship (1 → 3) still needing that good. ✓ = already delivered.\nCompleting a ship adds 2 prosperity points.`;
-    return `<div class="demand-ships" title="${esc(help)}" aria-label="${esc(help)}">${tradeTransition
+    const help =
+      "First ship needing the good (1 → 3). Complete ship: +2 prosperity.";
+    return `<div class="demand-ships" role="group" aria-label="Foreign trade">${tradeTransition
       .demands(s.demands)
       .map(
         (d, i) =>
-          `<div class="demand-ship" data-ship="${d.id}"><small>${i + 1}</small>${d.goods.map((g, j) => `<span class="${d.filled[j] ? "filled" : ""}">${icon(g)}${d.filled[j] ? icon("check") : ""}</span>`).join("")}${icon("buy")}</div>`,
+          `<div class="demand-ship" data-ship="${d.id}" title="${esc(help)}"><small>${i + 1}</small>${d.goods
+            .map((g, j) => {
+              const goodHelp = exportGoodHelp(
+                g,
+                d.filled[j] ? "delivered" : "available",
+              );
+              return `<span class="${d.filled[j] ? "filled" : ""}" data-good="${g}" role="img" aria-label="${esc(goodHelp)}" title="${esc(goodHelp)}">${icon(g, goodHelp)}${d.filled[j] ? icon("check", goodHelp) : ""}</span>`;
+            })
+            .join("")}${icon("buy", help)}</div>`,
       )
       .join("")}</div>`;
   }
@@ -640,7 +650,7 @@ export function mountGame(target, options = {}) {
             .map((m) => m.cell)
         : actualTargets();
     const html = `<header class="game-header"><div class="brand">${btn("🏝️ Vanuatu", "data-boardgame", "wordmark")}<div class="game-credits"><span>Designed by Alain Epron</span><span>Published by Quined Games</span></div></div><div class="round-track" aria-label="${t("round")} ${s.round}/8">${Array.from({ length: 8 }, (_, i) => `<span title="${t("round")} ${i + 1}/8" class="${i + 1 === s.round ? "current" : i + 1 < s.round ? "past" : ""}">${i + 1}</span>`).join("")}</div><nav class="header-tools">${undoAvailable && enabled && !analysis ? titled(t("undoMove"), icon("undo"), "data-undo-move", "icon-button") : ""}${analysis || !options.chat ? "" : titled(t("chat"), `${icon("chat")}<span class="unread-badge" hidden></span>`, 'data-activity="chat"', "icon-button")}${titled(t("journal"), icon("journal"), 'data-activity="journal"', "icon-button")}${titled(t("colorBlind"), icon("colorBlind"), `data-color-blind aria-pressed="${colorBlind}"`, "icon-button")}${titled(t("help"), icon("help"), "data-help", "icon-button")}${titled(t("full"), icon("fullscreen"), "data-fullscreen", "icon-button")}</nav></header>
-  <div class="table">${dock()}<section class="sea-board"><div class="sea-dashboard"><div class="market-info"><span class="fish-price" title="${esc(marketHelp)}">${icon("fish", marketHelp)} = ${token("coin", s.market, marketHelp)}</span><span title="${t("tourist")}">${token("tourist", s.tourists, `${"Tourists available this round"}: ${s.tourists}`)}</span>${s.waterCountdown !== null ? `<span title="${t("waterLeft")}">${token("water", s.waterCountdown, `${t("waterLeft")}: ${s.waterCountdown}`)}</span>` : ""}</div>${tradeShips()}</div><div class="map-scroll"><div class="map-canvas">${renderBoard(targets)}</div></div><div class="map-3d"></div><div class="map-tools"><span class="map-view-switch">${btn("2D", `data-map-view="2d" aria-pressed="${mapView === "2d"}"`)}${btn("3D", `data-map-view="3d" aria-pressed="${mapView === "3d"}" ${threeUnavailable ? "disabled" : ""}`)}</span><span class="three-tools">${titled(translateText("Overview", lang), icon("overview"), "data-three-home", "icon-button")}${titled("Zoom out", icon("zoomOut"), "data-three-out", "icon-button")}${titled("Zoom in", icon("zoom"), "data-three-in", "icon-button")}</span>${titled("Zoom out", icon("zoomOut"), "data-zoom-out", "icon-button")}${titled("Zoom in", icon("zoom"), "data-zoom-in", "icon-button")}</div>${s.upcoming.length && s.phase !== "expand" ? titled(t("next"), `${s.upcoming.map((id) => tilePreviewSvg(id, { t, colorBlind, language: lang, prefix: "upcoming-" + id })).join("")}${icon("zoom", t("next"))}`, "data-upcoming", "upcoming") : ""}${trayHtml}</section></div><section class="players">${s.players.map(playerCard).join("")}</section><footer class="play-footer"><span title="${"Automatic conversion"}">${token("coin", 10)} → ${token("point", 5)}</span>${btn(t("help"), "data-help", "text-button")}</footer>`;
+  <div class="table">${dock()}<section class="sea-board"><div class="sea-dashboard"><div class="market-info"><span class="fish-price" title="${esc(marketHelp)}">${icon("fish", marketHelp)} = ${token("coin", s.market, marketHelp)}</span><span title="${t("tourist")}">${token("tourist", s.tourists, `${"Tourists available this round"}: ${s.tourists}`)}</span>${s.waterCountdown !== null ? `<span title="${t("waterLeft")}">${token("water", s.waterCountdown, `${t("waterLeft")}: ${s.waterCountdown}`)}</span>` : ""}</div><div class="trade-info">${tradeShips()}${exportReference(colorBlind)}</div></div><div class="map-scroll"><div class="map-canvas">${renderBoard(targets)}</div></div><div class="map-3d"></div><div class="map-tools"><span class="map-view-switch">${btn("2D", `data-map-view="2d" aria-pressed="${mapView === "2d"}"`)}${btn("3D", `data-map-view="3d" aria-pressed="${mapView === "3d"}" ${threeUnavailable ? "disabled" : ""}`)}</span><span class="three-tools">${titled(translateText("Overview", lang), icon("overview"), "data-three-home", "icon-button")}${titled("Zoom out", icon("zoomOut"), "data-three-out", "icon-button")}${titled("Zoom in", icon("zoom"), "data-three-in", "icon-button")}</span>${titled("Zoom out", icon("zoomOut"), "data-zoom-out", "icon-button")}${titled("Zoom in", icon("zoom"), "data-zoom-in", "icon-button")}</div>${s.upcoming.length && s.phase !== "expand" ? titled(t("next"), `${s.upcoming.map((id) => tilePreviewSvg(id, { t, colorBlind, language: lang, prefix: "upcoming-" + id })).join("")}${icon("zoom", t("next"))}`, "data-upcoming", "upcoming") : ""}${trayHtml}</section></div><section class="players">${s.players.map(playerCard).join("")}</section><footer class="play-footer"><span title="${"Automatic conversion"}">${token("coin", 10)} → ${token("point", 5)}</span>${btn(t("help"), "data-help", "text-button")}</footer>`;
     // Patch in place so cached SVG tile images and focused controls survive
     // preference changes and incoming state updates.
     patch(play, `<div class="play">${html}</div>`, true);

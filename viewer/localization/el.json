@@ -950,6 +950,10 @@
   "Undo my move": "Αναίρεση κίνησης",
   "Auto-retrieve when forced": "Αυτόματη υποχρεωτική ανάκτηση",
   "Goods replenished": "Αναπλήρωση αγαθών",
+  "{p0}: −{p1} vatus → +{p2} prosperity": "{p0}: −{p1} βάτου → +{p2} ευημερία",
+  "{p0}: already delivered": "{p0}: έχει ήδη παραδοθεί",
+  "{p0}: empty": "{p0}: κενή θέση",
+  "First ship needing the good (1 → 3). Complete ship: +2 prosperity.": "Πρώτο πλοίο που χρειάζεται το αγαθό (1 → 3). Γεμάτο πλοίο: +2 ευημερία.",
   "Empty goods space": "Κενή θέση αγαθού",
   "At the start of each round, completed ships are replaced. An island with no goods left receives its original assortment again. If even one cube remains, none are replenished.": "Στην αρχή κάθε γύρου, τα γεμάτα πλοία αντικαθίστανται. Ένα νησί χωρίς κανένα αγαθό λαμβάνει ξανά την αρχική του συλλογή. Αν απομένει έστω ένας κύβος, δεν αναπληρώνεται τίποτα."
 }

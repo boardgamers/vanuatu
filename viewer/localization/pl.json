@@ -950,6 +950,10 @@
   "Undo my move": "Cofnij ruch",
   "Auto-retrieve when forced": "Automatyczne wymuszone wycofanie",
   "Goods replenished": "Uzupełniono towary",
+  "{p0}: −{p1} vatus → +{p2} prosperity": "{p0}: −{p1} vatu → +{p2} dobrobytu",
+  "{p0}: already delivered": "{p0}: już dostarczono",
+  "{p0}: empty": "{p0}: puste miejsce",
+  "First ship needing the good (1 → 3). Complete ship: +2 prosperity.": "Pierwszy statek potrzebujący tego towaru (1 → 3). Pełny statek: +2 dobrobytu.",
   "Empty goods space": "Puste miejsce na towar",
   "At the start of each round, completed ships are replaced. An island with no goods left receives its original assortment again. If even one cube remains, none are replenished.": "Na początku każdej rundy pełne statki są zastępowane nowymi. Wyspa, na której nie ma już żadnych towarów, odzyskuje swój początkowy zestaw. Jeśli pozostała choć jedna kostka, niczego się nie uzupełnia."
 }

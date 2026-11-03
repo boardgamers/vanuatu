@@ -950,6 +950,10 @@
   "Undo my move": "Zet ongedaan maken",
   "Auto-retrieve when forced": "Verplicht terugnemen automatisch",
   "Goods replenished": "Goederen aangevuld",
+  "{p0}: −{p1} vatus → +{p2} prosperity": "{p0}: −{p1} vatu → +{p2} welvaart",
+  "{p0}: already delivered": "{p0}: al geleverd",
+  "{p0}: empty": "{p0}: leeg",
+  "First ship needing the good (1 → 3). Complete ship: +2 prosperity.": "Eerste schip dat dit goed nodig heeft (1 → 3). Vol schip: +2 welvaart.",
   "Empty goods space": "Lege goederenplek",
   "At the start of each round, completed ships are replaced. An island with no goods left receives its original assortment again. If even one cube remains, none are replenished.": "Aan het begin van elke ronde worden volle schepen vervangen. Een eiland zonder goederen krijgt zijn oorspronkelijke assortiment terug. Als er ook maar één blokje over is, wordt niets aangevuld."
 }

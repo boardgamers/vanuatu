@@ -950,6 +950,10 @@
   "Undo my move": "Anulează mutarea",
   "Auto-retrieve when forced": "Retragere forțată automată",
   "Goods replenished": "Mărfuri reaprovizionate",
+  "{p0}: −{p1} vatus → +{p2} prosperity": "{p0}: −{p1} vatu → +{p2} prosperitate",
+  "{p0}: already delivered": "{p0}: livrare efectuată",
+  "{p0}: empty": "{p0}: loc gol",
+  "First ship needing the good (1 → 3). Complete ship: +2 prosperity.": "Prima navă care are nevoie de marfă (1 → 3). Navă plină: +2 prosperitate.",
   "Empty goods space": "Loc gol pentru marfă",
   "At the start of each round, completed ships are replaced. An island with no goods left receives its original assortment again. If even one cube remains, none are replenished.": "La începutul fiecărei runde, navele complete sunt înlocuite. O insulă fără nicio marfă primește din nou sortimentul inițial. Dacă a rămas chiar și un singur cub, nu se reaprovizionează nimic."
 }

@@ -950,6 +950,10 @@
   "Undo my move": "내 수 되돌리기",
   "Auto-retrieve when forced": "강제 회수 자동화",
   "Goods replenished": "상품 보충",
+  "{p0}: −{p1} vatus → +{p2} prosperity": "{p0}: −{p1}바투 → 번영 +{p2}",
+  "{p0}: already delivered": "{p0}: 이미 배달됨",
+  "{p0}: empty": "{p0}: 비어 있음",
+  "First ship needing the good (1 → 3). Complete ship: +2 prosperity.": "해당 상품이 필요한 첫 번째 배(1 → 3). 배를 모두 채우면: 번영 +2.",
   "Empty goods space": "빈 상품 자리",
   "At the start of each round, completed ships are replaced. An island with no goods left receives its original assortment again. If even one cube remains, none are replenished.": "매 라운드 시작 시 가득 찬 배를 교체합니다. 상품이 하나도 남지 않은 섬은 처음의 상품 구성을 다시 받습니다. 큐브가 하나라도 남아 있으면 보충하지 않습니다."
 }

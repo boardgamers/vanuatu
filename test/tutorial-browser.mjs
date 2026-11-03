@@ -289,12 +289,18 @@ try {
       .innerText(),
     "0",
   );
-  assert.ok(
-    !(
-      await page
-        .locator('[data-cell="0,0"] .island-goods title')
-        .allTextContents()
-    ).some((text) => text.includes("Copra")),
+  // Exporting clears the cube, but its named empty slot remains on the island.
+  assert.equal(
+    await page
+      .locator('[data-cell="0,0"] .goods-slot.stocked[data-good="copra"]')
+      .count(),
+    0,
+  );
+  assert.equal(
+    await page
+      .locator('[data-cell="0,0"] .goods-slot.empty[data-good="copra"]')
+      .getAttribute("aria-label"),
+    "Copra: empty",
   );
   await page.close();
   console.log(

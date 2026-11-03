@@ -950,6 +950,10 @@
   "Undo my move": "Annuler mon coup",
   "Auto-retrieve when forced": "Retrait auto si forcé",
   "Goods replenished": "Marchandises réapprovisionnées",
+  "{p0}: −{p1} vatus → +{p2} prosperity": "{p0} : −{p1} vatus → +{p2} prospérité",
+  "{p0}: already delivered": "{p0} : déjà livré",
+  "{p0}: empty": "{p0} : vide",
+  "First ship needing the good (1 → 3). Complete ship: +2 prosperity.": "Premier navire demandant cette marchandise (1 → 3). Navire complet : +2 prospérité.",
   "Empty goods space": "Emplacement de marchandise vide",
   "At the start of each round, completed ships are replaced. An island with no goods left receives its original assortment again. If even one cube remains, none are replenished.": "Au début de chaque manche, les navires complets sont remplacés. Une île sans aucune marchandise retrouve son assortiment initial. S’il reste ne serait-ce qu’un cube, rien n’est réapprovisionné."
 }

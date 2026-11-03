@@ -950,6 +950,10 @@
   "Undo my move": "Hoàn tác nước đi",
   "Auto-retrieve when forced": "Tự thu hồi khi bắt buộc",
   "Goods replenished": "Đã bổ sung hàng hóa",
+  "{p0}: −{p1} vatus → +{p2} prosperity": "{p0}: −{p1} vatu → +{p2} thịnh vượng",
+  "{p0}: already delivered": "{p0}: đã giao",
+  "{p0}: empty": "{p0}: trống",
+  "First ship needing the good (1 → 3). Complete ship: +2 prosperity.": "Tàu đầu tiên cần mặt hàng này (1 → 3). Tàu đầy hàng: +2 thịnh vượng.",
   "Empty goods space": "Ô hàng hóa trống",
   "At the start of each round, completed ships are replaced. An island with no goods left receives its original assortment again. If even one cube remains, none are replenished.": "Ở đầu mỗi vòng, các tàu đã đầy được thay thế. Một đảo không còn hàng hóa nào sẽ được bổ sung lại đúng loại và số lượng ban đầu. Nếu vẫn còn dù chỉ một khối, sẽ không bổ sung gì."
 }
