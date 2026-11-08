@@ -1481,23 +1481,38 @@ body:has(.vanuatu) {
   .vanuatu .map-scroll {
     height: 57vh;
     min-height: 430px;
-    padding: 80px 0 104px;
+    padding: 48px 0 104px;
   }
   .vanuatu .sea-dashboard {
     top: 8px;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 5px;
+    left: 5px;
+    right: 5px;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
   }
   .vanuatu .market-info {
+    flex: none;
+    flex-wrap: nowrap;
     font-size: 10px;
-    gap: 12px;
-    padding: 3px 9px;
+    gap: 4px;
+    padding: 3px 4px;
     background: #fff7dbb5;
   }
+  .vanuatu .market-info > span,
+  .vanuatu .market-info .token {
+    gap: 1px;
+  }
   .vanuatu .market-info .icon {
-    width: 19px;
-    height: 19px;
+    width: 16px;
+    height: 16px;
+  }
+  .vanuatu .market-info .fish-price {
+    font-size: 0;
+  }
+  .vanuatu .market-info .fish-price .token {
+    font-size: 10px;
   }
   .vanuatu .trade-info {
     align-items: center;
@@ -1506,12 +1521,12 @@ body:has(.vanuatu) {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
+    width: 30px;
     height: 28px;
-    min-width: 32px;
+    min-width: 30px;
     min-height: 28px;
     padding: 2px 5px;
-    margin: -3px -9px -3px 0;
+    margin: -3px -4px -3px 0;
     border-radius: 0 8px 8px 0;
     border: 0;
     border-left: 1px solid #b7975c44;
@@ -1527,9 +1542,16 @@ body:has(.vanuatu) {
   }
   .vanuatu [data-export-help-open="true"] .export-reference {
     display: flex;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .vanuatu [data-export-help-open="true"] .sea-dashboard {
+    padding-bottom: 29px;
   }
   .vanuatu [data-export-help-open="true"] .map-scroll {
-    padding-top: 108px;
+    padding-top: 77px;
   }
   .vanuatu .export-rate,
   .vanuatu .export-completion {
@@ -1544,14 +1566,19 @@ body:has(.vanuatu) {
     height: 16px;
   }
   .vanuatu .demand-ships {
-    gap: 4px;
+    gap: 2px;
   }
   .vanuatu .demand-ship {
-    padding: 3px 5px;
+    padding: 3px 2px;
+    gap: 0;
+  }
+  .vanuatu .demand-ship > small {
+    margin-right: 1px;
+    font-size: 8px;
   }
   .vanuatu .demand-ship .icon {
-    width: 17px;
-    height: 17px;
+    width: clamp(12px, calc(4vw - 1px), 17px);
+    height: clamp(12px, calc(4vw - 1px), 17px);
   }
   .vanuatu .turn-tray {
     min-height: 95px;

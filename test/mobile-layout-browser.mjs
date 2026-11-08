@@ -42,12 +42,22 @@ try {
       hasTouch: true,
     });
     page.on("pageerror", (error) => errors.push(error.message));
-    for (const count of [2, 3, 5]) {
+    for (const { count, water } of [2, 3, 5].flatMap((count) =>
+      [false, true].map((water) => ({ count, water })),
+    )) {
+      const scenario = `${width}px/${count} players/${water ? "rising-waters" : "default"}`;
       await page.addInitScript(() =>
         localStorage.setItem("vanuatu-map-view", "2d"),
       );
-      await page.goto(`${base}/?new&hotseat&players=${count}&locale=fr`);
+      await page.goto(
+        `${base}/?new&hotseat&players=${count}&locale=fr${water ? "&water" : ""}`,
+      );
       await page.waitForFunction(() => window.vanuatuDemo);
+      assert.equal(
+        await page.evaluate(() => vanuatuDemo.state.options.risingWaters),
+        water,
+        `${scenario}: expected expansion is active`,
+      );
       const toggle = page.locator(".market-info [data-export-help]");
       const reference = page.locator(".trade-info > .export-reference");
       const dashboard = page.locator(".sea-dashboard");
@@ -64,7 +74,7 @@ try {
           await page
             .locator(".map-scroll")
             .evaluate((el) => getComputedStyle(el).paddingTop),
-          open ? "108px" : "80px",
+          open ? "77px" : "48px",
         );
       }
       await assertExpanded(false);
@@ -83,8 +93,8 @@ try {
         (el) => el.getBoundingClientRect().height,
       );
       assert.ok(
-        closedHeight <= 70,
-        `${width}px/${count} players: collapsed dashboard stays at most 70px tall`,
+        closedHeight <= 35,
+        `${scenario}: collapsed dashboard stays at most 35px tall`,
       );
       assert.ok(
         await dashboard.evaluate((el) => {
@@ -94,9 +104,30 @@ try {
           const ships = el
             .querySelector(".demand-ships")
             .getBoundingClientRect();
-          return ships.top >= market.bottom && ships.height > 0;
+          const dashboard = el.getBoundingClientRect();
+          const board = el.closest(".sea-board").getBoundingClientRect();
+          const parts = [market, ships];
+          return (
+            parts.every((r) => r.height > 0 && r.width > 0) &&
+            Math.abs(
+              (market.top + market.bottom) / 2 - (ships.top + ships.bottom) / 2,
+            ) <= 1 &&
+            market.right <= ships.left + 1 &&
+            dashboard.left >= board.left - 1 &&
+            dashboard.right <= board.right + 1 &&
+            dashboard.left >= -1 &&
+            dashboard.right <= innerWidth + 1 &&
+            parts.every(
+              (r) =>
+                r.left >= dashboard.left - 1 && r.right <= dashboard.right + 1,
+            ) &&
+            el.scrollWidth <= el.clientWidth + 1 &&
+            [...el.querySelectorAll(".market-info, .demand-ships")].every(
+              (part) => part.scrollWidth <= part.clientWidth + 1,
+            )
+          );
         }),
-        "market and demand ships occupy two visible rows",
+        `${scenario}: market and demand ships fit side by side in one centered row without collision or horizontal overflow`,
       );
       await toggle.click();
       await assertExpanded(true);
@@ -175,7 +206,9 @@ try {
                 rate.querySelector(".export-arrow").getBoundingClientRect()
                   .width > 0,
             ),
-            contained: contained(board, trade) && contained(trade, reference),
+            contained:
+              contained(board, reference) &&
+              contained(board.querySelector(".sea-dashboard"), reference),
             itemsFit: items.every(
               (rate) =>
                 contained(reference, rate) &&
@@ -196,8 +229,10 @@ try {
                 ...board.querySelectorAll(
                   ".market-info, .map-tools, .upcoming, .turn-tray",
                 ),
-              ].every((overlay) => !overlaps(trade, overlay)) &&
-              !overlaps(reference, trade.querySelector(".demand-ships")),
+              ].every(
+                (overlay) =>
+                  !overlaps(trade, overlay) && !overlaps(reference, overlay),
+              ) && !overlaps(reference, trade.querySelector(".demand-ships")),
             hitTargets: [
               ...trade.querySelectorAll(
                 ".export-rate, .export-completion, span[data-good]",
@@ -257,7 +292,7 @@ try {
           noCollisions: true,
           hitTargets: true,
         },
-        `${width}px/${count} players: French/color-blind export helper fits without clipping or covering other overlays; tooltips receive pointer hits`,
+        `${scenario}: French/color-blind export helper fits without clipping or covering other overlays; tooltips receive pointer hits`,
       );
       await toggle.click();
       await assertExpanded(false);
@@ -354,7 +389,7 @@ try {
     );
     await page.close();
     console.log(
-      `${width}px: nine actions, two visible player cards, full stocks, color-blind markers and touch scrolling passed`,
+      `${width}px: default and rising-waters single-row dashboards (2/3/5 players), export helper, nine actions, player stocks and touch scrolling passed`,
     );
   }
   assert.deepEqual(errors, []);
