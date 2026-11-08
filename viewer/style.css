@@ -528,6 +528,9 @@
   align-items: center;
   gap: 3px;
 }
+.vanuatu .export-help-toggle {
+  display: none;
+}
 .vanuatu .trade-info {
   display: flex;
   flex-direction: column;
@@ -1478,7 +1481,7 @@ body:has(.vanuatu) {
   .vanuatu .map-scroll {
     height: 57vh;
     min-height: 430px;
-    padding: 108px 0 104px;
+    padding: 80px 0 104px;
   }
   .vanuatu .sea-dashboard {
     top: 8px;
@@ -1499,8 +1502,34 @@ body:has(.vanuatu) {
   .vanuatu .trade-info {
     align-items: center;
   }
+  .vanuatu .export-help-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 28px;
+    min-width: 32px;
+    min-height: 28px;
+    padding: 2px 5px;
+    margin: -3px -9px -3px 0;
+    border-radius: 0 8px 8px 0;
+    border: 0;
+    border-left: 1px solid #b7975c44;
+    box-shadow: none;
+    background: transparent;
+  }
+  .vanuatu .export-help-toggle[aria-expanded="true"] {
+    background: #f5d99f;
+  }
   .vanuatu .export-reference {
+    display: none;
     font-size: 10px;
+  }
+  .vanuatu [data-export-help-open="true"] .export-reference {
+    display: flex;
+  }
+  .vanuatu [data-export-help-open="true"] .map-scroll {
+    padding-top: 108px;
   }
   .vanuatu .export-rate,
   .vanuatu .export-completion {

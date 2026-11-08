@@ -48,6 +48,62 @@ try {
       );
       await page.goto(`${base}/?new&hotseat&players=${count}&locale=fr`);
       await page.waitForFunction(() => window.vanuatuDemo);
+      const toggle = page.locator(".market-info [data-export-help]");
+      const reference = page.locator(".trade-info > .export-reference");
+      const dashboard = page.locator(".sea-dashboard");
+      async function assertExpanded(open) {
+        assert.equal(await toggle.getAttribute("aria-expanded"), String(open));
+        assert.equal(
+          await page
+            .locator(".sea-board")
+            .getAttribute("data-export-help-open"),
+          String(open),
+        );
+        assert.equal(await reference.isVisible(), open);
+        assert.equal(
+          await page
+            .locator(".map-scroll")
+            .evaluate((el) => getComputedStyle(el).paddingTop),
+          open ? "108px" : "80px",
+        );
+      }
+      await assertExpanded(false);
+      // The localized accessible name identifies the same visible button.
+      assert.equal(
+        await page
+          .getByRole("button", {
+            name: "Exporter des marchandises",
+            exact: true,
+          })
+          .count(),
+        1,
+      );
+      assert.ok(await toggle.isVisible());
+      const closedHeight = await dashboard.evaluate(
+        (el) => el.getBoundingClientRect().height,
+      );
+      assert.ok(
+        closedHeight <= 70,
+        `${width}px/${count} players: collapsed dashboard stays at most 70px tall`,
+      );
+      assert.ok(
+        await dashboard.evaluate((el) => {
+          const market = el
+            .querySelector(".market-info")
+            .getBoundingClientRect();
+          const ships = el
+            .querySelector(".demand-ships")
+            .getBoundingClientRect();
+          return ships.top >= market.bottom && ships.height > 0;
+        }),
+        "market and demand ships occupy two visible rows",
+      );
+      await toggle.click();
+      await assertExpanded(true);
+      assert.ok(
+        (await dashboard.evaluate((el) => el.getBoundingClientRect().height)) >
+          closedHeight,
+      );
       await page.evaluate(() => {
         let s = vanuatuDemo.state;
         while (s.phase === "character")
@@ -71,9 +127,11 @@ try {
         vanuatuDemo.setState(s);
         vanuatuDemo.ui.setPreferences({ language: "fr", colorBlind: true });
       });
+      await assertExpanded(true); // State and preference updates preserve expansion.
       // Even five players' stacks plus a draft marker fit in the same band.
       await page.locator('[data-action="rest"]').click();
       assert.equal(await page.locator(".draft-marker").textContent(), "+1");
+      await assertExpanded(true); // Draft redraws preserve expansion too.
       await page.locator(".trade-info").scrollIntoViewIfNeeded();
       // Measure settled geometry, not the marker-drop animation's temporary scale.
       await page.evaluate(() => window.vanuatuDemo.ui.whenIdle());
@@ -200,6 +258,16 @@ try {
           hitTargets: true,
         },
         `${width}px/${count} players: French/color-blind export helper fits without clipping or covering other overlays; tooltips receive pointer hits`,
+      );
+      await toggle.click();
+      await assertExpanded(false);
+      assert.ok(
+        Math.abs(
+          (await dashboard.evaluate(
+            (el) => el.getBoundingClientRect().height,
+          )) - closedHeight,
+        ) <= 1,
+        "closing restores the compact dashboard height after state, preferences and draft updates",
       );
       assert.equal(layout.actions, 9);
       assert.equal(

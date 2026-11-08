@@ -361,7 +361,14 @@ async function assertExportHelp(language = "en", colorBlind = false) {
       },
     ]),
   );
+  const toggle = page.locator(".market-info [data-export-help]");
+  if (await toggle.isVisible()) {
+    if ((await toggle.getAttribute("aria-expanded")) === "false")
+      await toggle.click();
+    assert.equal(await toggle.getAttribute("aria-expanded"), "true");
+  }
   const reference = page.locator(".trade-info > .export-reference");
+  assert.ok(await reference.isVisible());
   assert.equal(await reference.count(), 1);
   assert.equal(await reference.getAttribute("role"), "group");
   assert.equal(

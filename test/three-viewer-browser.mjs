@@ -10,6 +10,17 @@ try {
     page.on("pageerror", (e) => errors.push(e.message));
     await page.goto(base + "/qa/hosted.html");
     await page.locator(".map-3d canvas").waitFor();
+    async function openExportHelp() {
+      const toggle = page.locator(".market-info [data-export-help]");
+      assert.equal(await toggle.isVisible(), width <= 700);
+      if (width <= 700) {
+        assert.equal(await toggle.getAttribute("aria-expanded"), "false");
+        await toggle.click();
+        assert.equal(await toggle.getAttribute("aria-expanded"), "true");
+      }
+      assert.ok(await page.locator(".export-reference").isVisible());
+    }
+    await openExportHelp();
     const state = () => page.locator("#status").textContent().then(JSON.parse);
     assert.equal(
       (await state()).updates.length,
@@ -20,6 +31,14 @@ try {
     for (const enabled of [true, false, true]) {
       await page.locator("[data-color-blind]").click();
       assert.equal((await state()).preferences.colorBlind, enabled);
+      assert.ok(await page.locator(".export-reference").isVisible());
+      if (width <= 700)
+        assert.equal(
+          await page
+            .locator("[data-export-help]")
+            .getAttribute("aria-expanded"),
+          "true",
+        );
       assert.equal(
         await page.locator(".export-reference .resource-symbol").count(),
         enabled ? 3 : 0,
@@ -61,6 +80,7 @@ try {
     await page.goto(base + "/qa/hosted.html?saved");
     assert.equal((await state()).preferences.mapView, "3d");
     await page.locator(".map-3d canvas").waitFor();
+    await openExportHelp();
     const reference = page.locator(".trade-info > .export-reference");
     assert.deepEqual(
       await reference
