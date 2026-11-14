@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@boardgamers/protocol':
-        specifier: 0.10.0
-        version: 0.10.0
+        specifier: 0.11.0
+        version: 0.11.0
       '@noble/hashes':
         specifier: 2.0.1
         version: 2.0.1
@@ -30,11 +30,14 @@ importers:
       prettier:
         specifier: 3.6.2
         version: 3.6.2
+      typescript:
+        specifier: 5.9.3
+        version: 5.9.3
 
 packages:
 
-  '@boardgamers/protocol@0.10.0':
-    resolution: {integrity: sha512-U+nOK8xeQANvjzwacHirBW+ItDf9AOmHLtkoyTI/XYFCOpL6lPsEgCbmcxnmkXv2a1/lgtVN3WpSERHUqkQkXw==}
+  '@boardgamers/protocol@0.11.0':
+    resolution: {integrity: sha512-YQ54+aVOIZvxUJvFmUbZR7xSBEgQaemstPdmYKVGCUHCviRX2UXRLgqLSQl6PFhr++lUT+Nynbf+p7h19zN+/g==}
 
   '@esbuild/aix-ppc64@0.25.12':
     resolution: {integrity: sha512-Hhmwd6CInZ3dwpuGTF8fJG6yoWmsToE+vYgD4nytZVxcu1ulHpUQRAB1UJ8+N1Am3Mz4+xOByoQoSZf4D+CpkA==}
@@ -227,12 +230,17 @@ packages:
   three@0.186.1:
     resolution: {integrity: sha512-blFeqb49wRCSGUGj7gtpfnSGHy2lwDk94RhUmS1c/hTby70kvChbWpkJ4Pm1390LqzzvTmzgXKHPEafJwCb8jA==}
 
+  typescript@5.9.3:
+    resolution: {integrity: sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+
   zod@4.6.5:
     resolution: {integrity: sha512-v5l/aFXZQeai4awLbOpSoHecE9UiMrnfx75tEXLjNonXVARxQ5mOeipTjROUchszUNCqnE+hqAMujRsRHsut2Q==}
 
 snapshots:
 
-  '@boardgamers/protocol@0.10.0':
+  '@boardgamers/protocol@0.11.0':
     dependencies:
       zod: 4.6.5
 
@@ -361,5 +369,7 @@ snapshots:
   prettier@3.6.2: {}
 
   three@0.186.1: {}
+
+  typescript@5.9.3: {}
 
   zod@4.6.5: {}

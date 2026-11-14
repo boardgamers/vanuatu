@@ -49,7 +49,7 @@ export const chapterMetadata = [
   },
 ];
 function prepared(phase = "actions") {
-  const s = E.init(3, [], {}, "vanuatu-lesson");
+  const s = E.init(3, [], { tutorial: true }, "vanuatu-lesson");
   s.actor = 0;
   s.first = 0;
   s.phase = phase;

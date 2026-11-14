@@ -10,14 +10,15 @@
   "scripts": {
     "build": "node scripts/build.mjs",
     "test": "node --test test/*.test.js",
+    "test:achievements:types": "tsc --allowJs --noEmit --skipLibCheck --noImplicitAny false --target es2022 --module nodenext engine/achievements.js test/achievements-contract.ts",
     "dev": "node scripts/dev.mjs",
     "test:browser": "node test/browser.mjs && node test/undo-browser.mjs && node test/journal-browser.mjs && node test/map-zoom-browser.mjs && node test/map-drag-browser.mjs && node test/redraw-browser.mjs && node test/mobile-layout-browser.mjs && node test/prose-browser.mjs && node test/effects-browser.mjs && node test/three-viewer-browser.mjs",
-    "check": "pnpm test:locales && pnpm build && pnpm test && pnpm test:browser && pnpm test:tutorial:browser",
+    "check": "pnpm test:achievements:types && pnpm test:locales && pnpm build && pnpm test && pnpm test:browser && pnpm test:tutorial:browser",
     "test:locales": "node scripts/check-locales.mjs viewer/localization && node --test scripts/localization.test.mjs",
     "test:tutorial:browser": "node test/tutorial-browser.mjs && node test/tutorial-walkthrough-browser.mjs && node test/tutorial-errors-browser.mjs"
   },
   "dependencies": {
-    "@boardgamers/protocol": "0.10.0",
+    "@boardgamers/protocol": "0.11.0",
     "@noble/hashes": "2.0.1",
     "morphdom": "2.7.8",
     "three": "0.186.1"
@@ -25,7 +26,8 @@
   "devDependencies": {
     "esbuild": "0.25.12",
     "playwright": "1.62.1",
-    "prettier": "3.6.2"
+    "prettier": "3.6.2",
+    "typescript": "5.9.3"
   },
   "repository": {
     "type": "git",

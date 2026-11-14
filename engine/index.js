@@ -18,6 +18,13 @@ import {
   tileState,
 } from "./catalog.js";
 export * from "./catalog.js";
+export { achievementDefinitions } from "./achievements.js";
+import { evaluateAchievements } from "./achievements.js";
+
+/** @type {NonNullable<import('@boardgamers/protocol/engine').Engine<any>['achievements']>} */
+export function achievements(s) {
+  return evaluateAchievements(s, s?.finished ? rankings(s) : []);
+}
 export const hashSeed = true;
 const copy = (x) => structuredClone(x);
 const check = (b, m = "Illegal move") => {
@@ -1143,6 +1150,7 @@ export function replay(s, { to = logLength(s) } = {}) {
     // Replay owns this fresh state; cloning its accumulated frames per move is quadratic.
     applyMoveInPlace(r, h.move, h.p);
   }
+  if (s.achievementMode) r.achievementMode = s.achievementMode;
   s.players.forEach((p, i) => {
     r.players[i].name = p.name;
     r.players[i].dropped = p.dropped;
@@ -1152,11 +1160,13 @@ export function replay(s, { to = logLength(s) } = {}) {
 }
 export function createAnalysis(s, { to }) {
   const r = replay(s, { to });
+  r.achievementMode = "analysis";
   r.players.forEach((p) => (p.dropped = false));
   return r;
 }
 export function createAnalysisScenario(s, { player, seed }) {
   const r = publicFrame(capture(s), player, false);
+  r.achievementMode = "analysis";
   delete r.restAvailable;
   delete r.lastEvents;
   r.events = [];

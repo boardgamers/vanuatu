@@ -41,9 +41,10 @@ if (params.has("lesson")) {
     state = engine.init(
       count,
       params.has("water") ? ["rising-waters"] : [],
-      {},
+      { practice: true },
       params.get("seed") ?? "island-breeze",
     );
+  state.achievementMode = "practice";
   state.players.forEach(
     (p, i) => (p.name = ["You", "Maya", "Noa", "Leo", "Nina"][i]),
   );
@@ -122,7 +123,7 @@ if (params.has("lesson")) {
     state = engine.init(
       Number(control.querySelector("[data-count]").value),
       control.querySelector("[data-water]").checked ? ["rising-waters"] : [],
-      {},
+      { practice: true },
       crypto.randomUUID(),
     );
     state.players.forEach(

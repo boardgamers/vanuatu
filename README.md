@@ -18,6 +18,8 @@ Marker retrieval is manual by default, including the last unusable action stack.
 
 Supported scope: 2–5 players, all eleven characters, the official two-player variant, optional Rising Waters, replay and finished-game analysis, bots, BGS chat, player hover cards and board thumbnails.
 
+Per-game achievements: see the [revision-1 manifest, eligibility semantics, and release prerequisites](docs/achievements.md). `pnpm check` includes official protocol contract typechecks.
+
 ## References
 
 - [Publisher and rules](https://www.quined.nl/featured_item/vanuatu-2nd-edition/)
