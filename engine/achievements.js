@@ -2,7 +2,7 @@
 
 /** @type {import('@boardgamers/protocol/engine').AchievementManifest} */
 const manifest = {
-  revision: 1,
+  revision: 2,
   achievements: [
     ["island-victory", "Island Victory", "Win a game outright."],
     ["duel-victory", "Duel Victory", "Win a two-player game outright."],
@@ -56,7 +56,12 @@ const manifest = {
       "Weather the Waters",
       "Complete all eight rounds of Rising Waters without the collective flood loss.",
     ],
-  ].map(([id, name, description]) => ({ id, name, description })),
+  ].map(([id, name, description]) => ({
+    id,
+    name,
+    description,
+    icon: { type: "asset", key: `achievement-${id}` },
+  })),
 };
 
 export function achievementDefinitions() {
