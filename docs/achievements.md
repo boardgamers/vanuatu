@@ -62,11 +62,15 @@ hooks against `Engine`. Tests validate results with the official runtime schemas
 
 ## Release prerequisites
 
-This branch is for independent review only; no BGS upload or release-branch push
-is part of this change. Before publication, deploy platform achievement support
-and verify authoritative completion/cancellation and human-seat eligibility in
-integration. Run `pnpm check`, review the manifest, and follow the repository's BGS
-release workflow (including required version bumps, latest release-branch
+Engine package 0.2.1 introduces this manifest. Its release is engine-only: the
+existing hosted viewer is retained. The local practice/tutorial markers described
+above are source changes, not a claim that the hosted viewer was replaced or that
+all historical practice saves can be recognized. Platform result eligibility
+remains the authoritative award boundary.
+
+Before publication, deploy platform achievement support and verify authoritative
+completion/cancellation and human-seat eligibility in integration. Run `pnpm check`,
+review the manifest, and follow the repository's BGS release workflow (including required version bumps, latest release-branch
 integration, source/lockfile commit, release-branch push and public mirror update).
 Do not repurpose IDs. Any future definition changes require a manifest revision
 bump. No new protocol release or artwork is needed for this manifest.
