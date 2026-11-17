@@ -246,6 +246,28 @@ test("dropped players are automated on future turns and replay boundaries remain
       s._frames[n - 1].board,
     );
 });
+test("planning preserves current and legacy board layouts", () => {
+  for (const boardLayout of [2, 1, undefined]) {
+    const s = actionState();
+    s.boardLayout = boardLayout;
+    s.phase = "plan";
+    s.planningPass = 1;
+    s.players[0].boat = "3,1";
+    s.players[0].markers = Object.fromEntries(E.ACTIONS.map((a) => [a, 0]));
+    s.players[0].markers.sail = 1;
+    s.players[0].markers.buy = 1;
+    s.players[0].treasures = [3];
+    const island = boardLayout === 2 ? "4,2" : "3,0";
+    s.board[island] = E.tileState("d1");
+    assert.ok(E.actionOptions(s, 0, "draw").some((m) => m.cell === island));
+    assert.equal(E.canPlan(s, 0, "draw"), true);
+    assert.ok(
+      E.availableMoves(s, 0).some(
+        (m) => m.type === "plan" && m.actions.includes("draw"),
+      ),
+    );
+  }
+});
 test("batched planning accounts for the first new marker as a prerequisite", () => {
   const s = actionState();
   s.phase = "plan";

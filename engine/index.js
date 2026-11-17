@@ -436,6 +436,7 @@ function planningState(s) {
   const b = copy({
     players: s.players,
     board: s.board,
+    boardLayout: s.boardLayout,
     market: s.market,
     tourists: s.tourists,
     demands: s.demands,
