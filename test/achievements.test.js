@@ -81,7 +81,7 @@ function islands(s) {
 test("manifest passes the official runtime schema and is independently owned", () => {
   const manifest = E.achievementDefinitions();
   achievementManifestSchema.parse(manifest);
-  assert.equal(manifest.revision, 1);
+  assert.equal(manifest.revision, 2);
   assert.deepEqual(
     manifest.achievements.map((a) => a.id),
     ids,

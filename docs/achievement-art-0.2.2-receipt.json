@@ -1,0 +1,386 @@
+{
+  "schema": 1,
+  "game": "vanuatu",
+  "status": "activated-and-verified",
+  "sourceCommit": "62bee2a001dd97b3d544f6e7add068c7d7502d73",
+  "envelopeSha256": "bb0cde0d620543dbdefdc55144d34948c05098e7443f8a117a07dce2cd3ca221",
+  "privateReceiptSha256": "3a596a2b24caad5da275c94b2134ca6140db8c936acebaeccfaec776291ec634",
+  "assets": {
+    "achievement-duel-victory": {
+      "sourceSha256": "04edb7b33e514ab1f02eaf4927d994fb7c697d65e8f5ce119e829cce1e5ea6c3",
+      "url": "https://s3.fr-par.scw.cloud/bgs-assets/achievements/vanuatu/achievement-duel-victory/2f668fbfb10232e7/achievement-duel-victory.webp",
+      "sha256": "2f668fbfb10232e7d3179b81a8d07f1750daac22149eede615c4da1702a2664a",
+      "size": 8338,
+      "format": "webp",
+      "width": 256,
+      "height": 256,
+      "verifiedAt": "2026-11-14T12:45:14.705Z",
+      "metadataPreserved": true
+    },
+    "achievement-fifty-points": {
+      "sourceSha256": "74f9ef25404e02e3ef578c26050be1bf9857f3bb1f756089750092ea1ddef718",
+      "url": "https://s3.fr-par.scw.cloud/bgs-assets/achievements/vanuatu/achievement-fifty-points/4580b396b93996c7/achievement-fifty-points.webp",
+      "sha256": "4580b396b93996c750bd1eb85f2a9262ec7ad05ee0770d997e6120c0dff7b060",
+      "size": 8622,
+      "format": "webp",
+      "width": 256,
+      "height": 256,
+      "verifiedAt": "2026-11-14T12:45:14.730Z",
+      "metadataPreserved": true
+    },
+    "achievement-four-huts": {
+      "sourceSha256": "9c8215302a61049694cbb1a380890f8b32de53fb3609dbf4c539e168f0e3f60b",
+      "url": "https://s3.fr-par.scw.cloud/bgs-assets/achievements/vanuatu/achievement-four-huts/7a20f3b891ddc9c1/achievement-four-huts.webp",
+      "sha256": "7a20f3b891ddc9c101ff4d91f7b678b883903a92df5d437d10a02cc5d16f495b",
+      "size": 8310,
+      "format": "webp",
+      "width": 256,
+      "height": 256,
+      "verifiedAt": "2026-11-14T12:45:14.759Z",
+      "metadataPreserved": true
+    },
+    "achievement-full-table-victory": {
+      "sourceSha256": "37f7879c4a7a26ec0680712d32373f77adee4416d00037bd84d34b017ac7f1f5",
+      "url": "https://s3.fr-par.scw.cloud/bgs-assets/achievements/vanuatu/achievement-full-table-victory/014744fb0bf56ba9/achievement-full-table-victory.webp",
+      "sha256": "014744fb0bf56ba9db573b66b62e7ae59d397f635664a017cd715b0da4bb2663",
+      "size": 8828,
+      "format": "webp",
+      "width": 256,
+      "height": 256,
+      "verifiedAt": "2026-11-14T12:45:14.783Z",
+      "metadataPreserved": true
+    },
+    "achievement-island-victory": {
+      "sourceSha256": "1a6e4fce8b3891c595ecd3898fefd2cab81a3b3263a35193b85cb4d9597db1a1",
+      "url": "https://s3.fr-par.scw.cloud/bgs-assets/achievements/vanuatu/achievement-island-victory/f2e93c82ccbbcf22/achievement-island-victory.webp",
+      "sha256": "f2e93c82ccbbcf225be35e669e9d8f95d9ddd1bb08e1e0ecadec6e2d3ee3359a",
+      "size": 7420,
+      "format": "webp",
+      "width": 256,
+      "height": 256,
+      "verifiedAt": "2026-11-14T12:45:14.858Z",
+      "metadataPreserved": true
+    },
+    "achievement-nine-vatus": {
+      "sourceSha256": "5a426620dbbee00d4fe337fc9d64f267c8c35830a3f8d9e3205bc992f5c26944",
+      "url": "https://s3.fr-par.scw.cloud/bgs-assets/achievements/vanuatu/achievement-nine-vatus/1bede944b6c4a3d9/achievement-nine-vatus.webp",
+      "sha256": "1bede944b6c4a3d997f8e62a8b8355e3aafc3bc70b2ab10e973584e4ca32d032",
+      "size": 8064,
+      "format": "webp",
+      "width": 256,
+      "height": 256,
+      "verifiedAt": "2026-11-14T12:45:14.880Z",
+      "metadataPreserved": true
+    },
+    "achievement-no-characters-victory": {
+      "sourceSha256": "c0bdec89cf12645326afd6719262bfc81c6bafd4307b3221d3fc463186ee0035",
+      "url": "https://s3.fr-par.scw.cloud/bgs-assets/achievements/vanuatu/achievement-no-characters-victory/8280f312e22cdfa7/achievement-no-characters-victory.webp",
+      "sha256": "8280f312e22cdfa72a514a8a9cebb143918ce8edcfac009472d8df3844884852",
+      "size": 8128,
+      "format": "webp",
+      "width": 256,
+      "height": 256,
+      "verifiedAt": "2026-11-14T12:45:14.902Z",
+      "metadataPreserved": true
+    },
+    "achievement-quartet-victory": {
+      "sourceSha256": "78e584f3ef0c118e596e129317dd1221ee559f80fd2277ea6508331bf20e235d",
+      "url": "https://s3.fr-par.scw.cloud/bgs-assets/achievements/vanuatu/achievement-quartet-victory/976aa2de04d00f92/achievement-quartet-victory.webp",
+      "sha256": "976aa2de04d00f922cf4cf4b8d1b29b1c0250c0a87ecbddb6f5030f4c4ff8086",
+      "size": 8328,
+      "format": "webp",
+      "width": 256,
+      "height": 256,
+      "verifiedAt": "2026-11-14T12:45:14.926Z",
+      "metadataPreserved": true
+    },
+    "achievement-rising-waters-victory": {
+      "sourceSha256": "c463d282a375e70194c8bd719fbf907377b702c90412e99c256bddf9f8def656",
+      "url": "https://s3.fr-par.scw.cloud/bgs-assets/achievements/vanuatu/achievement-rising-waters-victory/7eb116bfbb406a32/achievement-rising-waters-victory.webp",
+      "sha256": "7eb116bfbb406a32ac04eca2361d970c51ff6ff8e374de186867bcfe020c3305",
+      "size": 7602,
+      "format": "webp",
+      "width": 256,
+      "height": 256,
+      "verifiedAt": "2026-11-14T12:45:14.948Z",
+      "metadataPreserved": true
+    },
+    "achievement-seventy-five-points": {
+      "sourceSha256": "d44359a53f15d720ae7b6c4827a446fe572d7d9fd2af6db807f0fc8abf92d2a5",
+      "url": "https://s3.fr-par.scw.cloud/bgs-assets/achievements/vanuatu/achievement-seventy-five-points/b1d314d38850ac3a/achievement-seventy-five-points.webp",
+      "sha256": "b1d314d38850ac3af849d0f5539872f56f9cf351a2de3a18d764e37e4ae98f46",
+      "size": 8932,
+      "format": "webp",
+      "width": 256,
+      "height": 256,
+      "verifiedAt": "2026-11-14T12:45:14.973Z",
+      "metadataPreserved": true
+    },
+    "achievement-three-islands": {
+      "sourceSha256": "7030b357f4a128bbf5e9af3c2c7c00b2c4f1d462d73d92c06d40cb84b8f3a571",
+      "url": "https://s3.fr-par.scw.cloud/bgs-assets/achievements/vanuatu/achievement-three-islands/0250a2626037b08c/achievement-three-islands.webp",
+      "sha256": "0250a2626037b08ccb6d13edceb39053f424550b0318f8118b353dfc03b825dc",
+      "size": 9088,
+      "format": "webp",
+      "width": 256,
+      "height": 256,
+      "verifiedAt": "2026-11-14T12:45:15.003Z",
+      "metadataPreserved": true
+    },
+    "achievement-tourism-twelve": {
+      "sourceSha256": "3fbe653a82d193e6e79dfb72d4284e196058980f840885a6ef4612a1111b786a",
+      "url": "https://s3.fr-par.scw.cloud/bgs-assets/achievements/vanuatu/achievement-tourism-twelve/7b0d9732e5f69593/achievement-tourism-twelve.webp",
+      "sha256": "7b0d9732e5f695930d59eb8c0e620fa62ca584362f2b99ef7596b52a10f84fd9",
+      "size": 9406,
+      "format": "webp",
+      "width": 256,
+      "height": 256,
+      "verifiedAt": "2026-11-14T12:45:15.029Z",
+      "metadataPreserved": true
+    },
+    "achievement-treasure-six": {
+      "sourceSha256": "d0e8f4274693eff9183e4f93c1700cdafaa9722aac166cac63d64d3b768f3098",
+      "url": "https://s3.fr-par.scw.cloud/bgs-assets/achievements/vanuatu/achievement-treasure-six/3b5d2f31df086366/achievement-treasure-six.webp",
+      "sha256": "3b5d2f31df086366761f983b44e395dd8f8a4b5adbd35cb0131f165cdb532cd2",
+      "size": 7472,
+      "format": "webp",
+      "width": 256,
+      "height": 256,
+      "verifiedAt": "2026-11-14T12:45:15.055Z",
+      "metadataPreserved": true
+    },
+    "achievement-treasure-twelve": {
+      "sourceSha256": "64d2e85e91027726025fd1815cf59694831be61c3a35a90356c0be20d87c03f0",
+      "url": "https://s3.fr-par.scw.cloud/bgs-assets/achievements/vanuatu/achievement-treasure-twelve/1f89e29a8fa998d9/achievement-treasure-twelve.webp",
+      "sha256": "1f89e29a8fa998d947e9cd7a9f313b76409edcb3d4b9d771ff742026d2e90101",
+      "size": 9440,
+      "format": "webp",
+      "width": 256,
+      "height": 256,
+      "verifiedAt": "2026-11-14T12:45:15.078Z",
+      "metadataPreserved": true
+    },
+    "achievement-trio-victory": {
+      "sourceSha256": "05aa8836ee91f5976bcd0f16c29e6fd03dfd334384ce1649a7848924c5d30d5c",
+      "url": "https://s3.fr-par.scw.cloud/bgs-assets/achievements/vanuatu/achievement-trio-victory/3335546854f0312a/achievement-trio-victory.webp",
+      "sha256": "3335546854f0312af2d457b7dcb44e762621048b748021e2366cd0d4c8a835a1",
+      "size": 8034,
+      "format": "webp",
+      "width": 256,
+      "height": 256,
+      "verifiedAt": "2026-11-14T12:45:15.100Z",
+      "metadataPreserved": true
+    },
+    "achievement-weather-the-waters": {
+      "sourceSha256": "57e087f316d52aeff1a22a39c68db95710eca57cba751af9ecc2a6e24b628914",
+      "url": "https://s3.fr-par.scw.cloud/bgs-assets/achievements/vanuatu/achievement-weather-the-waters/0a73ee787326981d/achievement-weather-the-waters.webp",
+      "sha256": "0a73ee787326981d0cd4af6f322fdc113fc9a312eddfd9ce7fe5a929da0a05a9",
+      "size": 8520,
+      "format": "webp",
+      "width": 256,
+      "height": 256,
+      "verifiedAt": "2026-11-14T12:45:15.136Z",
+      "metadataPreserved": true
+    }
+  },
+  "preserved": {
+    "cover": {
+      "preservation": "metadata-only-403",
+      "status": 403
+    },
+    "pictogram": {
+      "url": "https://s3.fr-par.scw.cloud/bgs-assets/assets/vanuatu/pictogram/d37761b3405c3942/pictogram.webp",
+      "sha256": "d37761b3405c3942770db4d7502eaa7a0bdb5dea4e50084c7350f5ed50d52956",
+      "size": 17462,
+      "format": "webp",
+      "width": 256,
+      "height": 256,
+      "verifiedAt": "2026-11-14T12:45:15.249Z"
+    },
+    "screenshot-showcase-1": {
+      "url": "https://s3.fr-par.scw.cloud/bgs-assets/assets/vanuatu/screenshot-showcase-1/4bf39605ef3bc1a0/screenshot-showcase-1.webp",
+      "sha256": "4bf39605ef3bc1a0335c44fd2e8000c364076eddcfd42e476d1542e7b835d25d",
+      "size": 93008,
+      "format": "webp",
+      "width": 1536,
+      "height": 993,
+      "verifiedAt": "2026-11-14T12:45:15.324Z"
+    },
+    "screenshot-showcase-2": {
+      "url": "https://s3.fr-par.scw.cloud/bgs-assets/assets/vanuatu/screenshot-showcase-2/0da4e91452aa578c/screenshot-showcase-2.webp",
+      "sha256": "0da4e91452aa578ca4d8455a777b8b6978f157d3a48029bf1c391f9fe28ba152",
+      "size": 41298,
+      "format": "webp",
+      "width": 430,
+      "height": 875,
+      "verifiedAt": "2026-11-14T12:45:15.398Z"
+    }
+  },
+  "planSha256": "2f100409b0c8d07bed2f3632887606b038dc4086ccd0988dd8065557fa65ff91",
+  "activationReceiptSha256": "68e53026852861a721483c47a2b4f0444afba16e706c91be1e8d8e459f860726",
+  "tgzSha256": "c6a87b6a07239f140bceab0f78722a7f1df23c08f49dacd2307797643eaf647c",
+  "package": {
+    "name": "@boardgamers/vanuatu",
+    "version": "0.2.2",
+    "url": "https://s3.fr-par.scw.cloud/bgs-assets/games/vanuatu/1/engine/c6a87b6a07239f14/boardgamers-vanuatu-0.2.2.tgz"
+  },
+  "hostedPackage": {
+    "url": "https://s3.fr-par.scw.cloud/bgs-assets/games/vanuatu/1/engine/c6a87b6a07239f14/boardgamers-vanuatu-0.2.2.tgz",
+    "size": 20263,
+    "sha256": "c6a87b6a07239f140bceab0f78722a7f1df23c08f49dacd2307797643eaf647c"
+  },
+  "manifest": {
+    "revision": 2,
+    "achievements": [
+      {
+        "id": "island-victory",
+        "name": "Island Victory",
+        "description": "Win a game outright.",
+        "icon": {
+          "type": "asset",
+          "key": "achievement-island-victory"
+        }
+      },
+      {
+        "id": "duel-victory",
+        "name": "Duel Victory",
+        "description": "Win a two-player game outright.",
+        "icon": {
+          "type": "asset",
+          "key": "achievement-duel-victory"
+        }
+      },
+      {
+        "id": "trio-victory",
+        "name": "Trio Victory",
+        "description": "Win a three-player game outright.",
+        "icon": {
+          "type": "asset",
+          "key": "achievement-trio-victory"
+        }
+      },
+      {
+        "id": "quartet-victory",
+        "name": "Quartet Victory",
+        "description": "Win a four-player game outright.",
+        "icon": {
+          "type": "asset",
+          "key": "achievement-quartet-victory"
+        }
+      },
+      {
+        "id": "full-table-victory",
+        "name": "Full Table Victory",
+        "description": "Win a five-player game outright.",
+        "icon": {
+          "type": "asset",
+          "key": "achievement-full-table-victory"
+        }
+      },
+      {
+        "id": "rising-waters-victory",
+        "name": "Against the Tide",
+        "description": "Win a Rising Waters game outright.",
+        "icon": {
+          "type": "asset",
+          "key": "achievement-rising-waters-victory"
+        }
+      },
+      {
+        "id": "no-characters-victory",
+        "name": "On Your Own Merits",
+        "description": "Win outright with Characters disabled.",
+        "icon": {
+          "type": "asset",
+          "key": "achievement-no-characters-victory"
+        }
+      },
+      {
+        "id": "fifty-points",
+        "name": "Island Prosperity",
+        "description": "Finish with at least 50 points.",
+        "icon": {
+          "type": "asset",
+          "key": "achievement-fifty-points"
+        }
+      },
+      {
+        "id": "seventy-five-points",
+        "name": "Island Renown",
+        "description": "Finish with at least 75 points.",
+        "icon": {
+          "type": "asset",
+          "key": "achievement-seventy-five-points"
+        }
+      },
+      {
+        "id": "nine-vatus",
+        "name": "Full Purse",
+        "description": "Retain 9 vatus after final scoring.",
+        "icon": {
+          "type": "asset",
+          "key": "achievement-nine-vatus"
+        }
+      },
+      {
+        "id": "four-huts",
+        "name": "Village Builder",
+        "description": "Finish with at least four surviving huts.",
+        "icon": {
+          "type": "asset",
+          "key": "achievement-four-huts"
+        }
+      },
+      {
+        "id": "three-islands",
+        "name": "Island Network",
+        "description": "Finish with huts on at least three islands.",
+        "icon": {
+          "type": "asset",
+          "key": "achievement-three-islands"
+        }
+      },
+      {
+        "id": "tourism-twelve",
+        "name": "Welcoming Shores",
+        "description": "Earn at least 12 final-scoring points from hut tourism.",
+        "icon": {
+          "type": "asset",
+          "key": "achievement-tourism-twelve"
+        }
+      },
+      {
+        "id": "treasure-six",
+        "name": "Treasure Keeper",
+        "description": "Retain treasure worth at least 6 final-scoring points.",
+        "icon": {
+          "type": "asset",
+          "key": "achievement-treasure-six"
+        }
+      },
+      {
+        "id": "treasure-twelve",
+        "name": "Sunken Riches",
+        "description": "Retain treasure worth at least 12 final-scoring points.",
+        "icon": {
+          "type": "asset",
+          "key": "achievement-treasure-twelve"
+        }
+      },
+      {
+        "id": "weather-the-waters",
+        "name": "Weather the Waters",
+        "description": "Complete all eight rounds of Rising Waters without the collective flood loss.",
+        "icon": {
+          "type": "asset",
+          "key": "achievement-weather-the-waters"
+        }
+      }
+    ]
+  },
+  "verification": {
+    "publicCatalog": true,
+    "allAssets": true,
+    "unchangedMetadata": true
+  }
+}

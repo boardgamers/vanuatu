@@ -1,0 +1,169 @@
+{
+  "game": "vanuatu",
+  "engineVersion": "0.2.2",
+  "revision": 2,
+  "sourceSha256": "c2f3c0583fa62bbb384f6ba87deeabcbd193df506f85a8b24ae22033296caca3",
+  "provenance": "README.md",
+  "assets": [
+    {
+      "id": "island-victory",
+      "key": "achievement-island-victory",
+      "svg": "achievement-island-victory.svg",
+      "png": "achievement-island-victory.png",
+      "svgSha256": "0a0cc14df792421eae495548266cd03bc5722b42a05d4e67c3f2d351b2c921eb",
+      "pngSha256": "1a6e4fce8b3891c595ecd3898fefd2cab81a3b3263a35193b85cb4d9597db1a1",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "duel-victory",
+      "key": "achievement-duel-victory",
+      "svg": "achievement-duel-victory.svg",
+      "png": "achievement-duel-victory.png",
+      "svgSha256": "5cf9b2998e1303cb5418d299832078f5ab955bb3a0af16a8a53221177c943884",
+      "pngSha256": "04edb7b33e514ab1f02eaf4927d994fb7c697d65e8f5ce119e829cce1e5ea6c3",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "trio-victory",
+      "key": "achievement-trio-victory",
+      "svg": "achievement-trio-victory.svg",
+      "png": "achievement-trio-victory.png",
+      "svgSha256": "ef71777ea75c4c7f015b1bbbfed965e183bbd4a7270bfd74bf8780ad8ad10a61",
+      "pngSha256": "05aa8836ee91f5976bcd0f16c29e6fd03dfd334384ce1649a7848924c5d30d5c",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "quartet-victory",
+      "key": "achievement-quartet-victory",
+      "svg": "achievement-quartet-victory.svg",
+      "png": "achievement-quartet-victory.png",
+      "svgSha256": "189e808bf5de943c1f1b36bc883db70146e3cfde463d523a62741e5fc70b9b6f",
+      "pngSha256": "78e584f3ef0c118e596e129317dd1221ee559f80fd2277ea6508331bf20e235d",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "full-table-victory",
+      "key": "achievement-full-table-victory",
+      "svg": "achievement-full-table-victory.svg",
+      "png": "achievement-full-table-victory.png",
+      "svgSha256": "ddd122c5e4d1a2b7ae4032ab7b746f615dec5992f8d011ae3b4685d4a85bcd3e",
+      "pngSha256": "37f7879c4a7a26ec0680712d32373f77adee4416d00037bd84d34b017ac7f1f5",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "rising-waters-victory",
+      "key": "achievement-rising-waters-victory",
+      "svg": "achievement-rising-waters-victory.svg",
+      "png": "achievement-rising-waters-victory.png",
+      "svgSha256": "ba6f1a5814c48f28f0867faf6ea5c8b5dbbd64a94ba05c41d0e1b84d0ae79a5d",
+      "pngSha256": "c463d282a375e70194c8bd719fbf907377b702c90412e99c256bddf9f8def656",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "no-characters-victory",
+      "key": "achievement-no-characters-victory",
+      "svg": "achievement-no-characters-victory.svg",
+      "png": "achievement-no-characters-victory.png",
+      "svgSha256": "dee275035af5f99180f2605da9282358b140832173e21f80e7cd3d9d3206e439",
+      "pngSha256": "c0bdec89cf12645326afd6719262bfc81c6bafd4307b3221d3fc463186ee0035",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "fifty-points",
+      "key": "achievement-fifty-points",
+      "svg": "achievement-fifty-points.svg",
+      "png": "achievement-fifty-points.png",
+      "svgSha256": "2a735faf1bce576db67351d4c699a474653ed7fb49fd070df43eb5840e7b49ea",
+      "pngSha256": "74f9ef25404e02e3ef578c26050be1bf9857f3bb1f756089750092ea1ddef718",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "seventy-five-points",
+      "key": "achievement-seventy-five-points",
+      "svg": "achievement-seventy-five-points.svg",
+      "png": "achievement-seventy-five-points.png",
+      "svgSha256": "02a873d2e6d646deb90eb6c96c35161ab9c302c8051f90365c3da745cb38d13e",
+      "pngSha256": "d44359a53f15d720ae7b6c4827a446fe572d7d9fd2af6db807f0fc8abf92d2a5",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "nine-vatus",
+      "key": "achievement-nine-vatus",
+      "svg": "achievement-nine-vatus.svg",
+      "png": "achievement-nine-vatus.png",
+      "svgSha256": "826a1f167b3595e5a3a565c045536289149931fda3b68e76533ca6e056cce0d7",
+      "pngSha256": "5a426620dbbee00d4fe337fc9d64f267c8c35830a3f8d9e3205bc992f5c26944",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "four-huts",
+      "key": "achievement-four-huts",
+      "svg": "achievement-four-huts.svg",
+      "png": "achievement-four-huts.png",
+      "svgSha256": "f3ccad1e87763e88319e9ec83caa9b245a3e1522bcc54fd93127d4587a71bbf3",
+      "pngSha256": "9c8215302a61049694cbb1a380890f8b32de53fb3609dbf4c539e168f0e3f60b",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "three-islands",
+      "key": "achievement-three-islands",
+      "svg": "achievement-three-islands.svg",
+      "png": "achievement-three-islands.png",
+      "svgSha256": "937106b26094272efac3fe09618492c81af6a08c3604dd7cc39f800393ead043",
+      "pngSha256": "7030b357f4a128bbf5e9af3c2c7c00b2c4f1d462d73d92c06d40cb84b8f3a571",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "tourism-twelve",
+      "key": "achievement-tourism-twelve",
+      "svg": "achievement-tourism-twelve.svg",
+      "png": "achievement-tourism-twelve.png",
+      "svgSha256": "ef781e670446253ff26906229660f5b04348fd7b7fb6404cd9eb6a59d85b992d",
+      "pngSha256": "3fbe653a82d193e6e79dfb72d4284e196058980f840885a6ef4612a1111b786a",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "treasure-six",
+      "key": "achievement-treasure-six",
+      "svg": "achievement-treasure-six.svg",
+      "png": "achievement-treasure-six.png",
+      "svgSha256": "6e6fe574b8f763e93f39ecf067bcf36146faf52a1526308095409bf6c249e31a",
+      "pngSha256": "d0e8f4274693eff9183e4f93c1700cdafaa9722aac166cac63d64d3b768f3098",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "treasure-twelve",
+      "key": "achievement-treasure-twelve",
+      "svg": "achievement-treasure-twelve.svg",
+      "png": "achievement-treasure-twelve.png",
+      "svgSha256": "19b1af7564010341965e59e8d072ffa828a57125c1a1744e5b4941be874e4aeb",
+      "pngSha256": "64d2e85e91027726025fd1815cf59694831be61c3a35a90356c0be20d87c03f0",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "weather-the-waters",
+      "key": "achievement-weather-the-waters",
+      "svg": "achievement-weather-the-waters.svg",
+      "png": "achievement-weather-the-waters.png",
+      "svgSha256": "abf43b8310add890e0f64b7ac5eefcdcb5f7dfdaea9fc3f47b31b153dda594c5",
+      "pngSha256": "57e087f316d52aeff1a22a39c68db95710eca57cba751af9ecc2a6e24b628914",
+      "width": 256,
+      "height": 256
+    }
+  ]
+}

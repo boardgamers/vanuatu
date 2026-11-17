@@ -60,6 +60,31 @@ hooks against `Engine`. Tests validate results with the official runtime schemas
   Dropped seats retain their actual game outcome; platform eligibility is separate.
   No historical backfill or cross-game counters are implemented.
 
+## Artwork release 0.2.2 (manifest revision 2)
+
+The [sanitized activation receipt](achievement-art-0.2.2-receipt.json) records
+engine 0.2.2 and all 16 original achievement artworks activated on BGS. Reviewed
+source: `62bee2a001dd97b3d544f6e7add068c7d7502d73`; approval reference:
+`sub-1794658380624-99c86ece`. The receipt contains public asset URLs, source and
+hosted asset SHA-256 hashes, and combined asset/activation evidence hashes; no
+private snapshots or credentials are included.
+
+The exact original engine tarball SHA-256 is
+`c6a87b6a07239f140bceab0f78722a7f1df23c08f49dacd2307797643eaf647c`.
+Delivery verification used public GETs of the latest catalog, all 16 achievement
+assets, the three accessible preserved assets, and the hosted engine tarball.
+The catalog package and complete revision-2 manifest matched the receipt; every
+achievement source/hosted hash matched, and hosted tarball bytes matched the
+original local archive without rebuilding or repacking. The cover remains the
+receipt's metadata-only preservation case (HTTP 403), not a verified byte hash.
+
+The hosted viewer, settings, visibility/status, options, preferences, expansions,
+tutorial, and game metadata matched the pre-activation version backup. This
+source delivery performed no uploads or production mutations. The concurrent
+GitHub `.gitignore`-only change was merged without changing reviewed runtime or
+artwork source. Focused checks passed: achievement behavior/runtime-schema tests,
+achievement TypeScript contract, and artwork baseline/hash/decoded-export tests.
+
 ## Release prerequisites
 
 Engine package 0.2.1 introduces this manifest. Its release is engine-only: the

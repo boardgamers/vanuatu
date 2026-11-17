@@ -1,0 +1,85 @@
+{
+  "revision": 1,
+  "achievements": [
+    {
+      "id": "island-victory",
+      "name": "Island Victory",
+      "description": "Win a game outright."
+    },
+    {
+      "id": "duel-victory",
+      "name": "Duel Victory",
+      "description": "Win a two-player game outright."
+    },
+    {
+      "id": "trio-victory",
+      "name": "Trio Victory",
+      "description": "Win a three-player game outright."
+    },
+    {
+      "id": "quartet-victory",
+      "name": "Quartet Victory",
+      "description": "Win a four-player game outright."
+    },
+    {
+      "id": "full-table-victory",
+      "name": "Full Table Victory",
+      "description": "Win a five-player game outright."
+    },
+    {
+      "id": "rising-waters-victory",
+      "name": "Against the Tide",
+      "description": "Win a Rising Waters game outright."
+    },
+    {
+      "id": "no-characters-victory",
+      "name": "On Your Own Merits",
+      "description": "Win outright with Characters disabled."
+    },
+    {
+      "id": "fifty-points",
+      "name": "Island Prosperity",
+      "description": "Finish with at least 50 points."
+    },
+    {
+      "id": "seventy-five-points",
+      "name": "Island Renown",
+      "description": "Finish with at least 75 points."
+    },
+    {
+      "id": "nine-vatus",
+      "name": "Full Purse",
+      "description": "Retain 9 vatus after final scoring."
+    },
+    {
+      "id": "four-huts",
+      "name": "Village Builder",
+      "description": "Finish with at least four surviving huts."
+    },
+    {
+      "id": "three-islands",
+      "name": "Island Network",
+      "description": "Finish with huts on at least three islands."
+    },
+    {
+      "id": "tourism-twelve",
+      "name": "Welcoming Shores",
+      "description": "Earn at least 12 final-scoring points from hut tourism."
+    },
+    {
+      "id": "treasure-six",
+      "name": "Treasure Keeper",
+      "description": "Retain treasure worth at least 6 final-scoring points."
+    },
+    {
+      "id": "treasure-twelve",
+      "name": "Sunken Riches",
+      "description": "Retain treasure worth at least 12 final-scoring points."
+    },
+    {
+      "id": "weather-the-waters",
+      "name": "Weather the Waters",
+      "description": "Complete all eight rounds of Rising Waters without the collective flood loss."
+    }
+  ]
+}
